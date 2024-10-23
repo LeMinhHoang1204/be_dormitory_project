@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('STUDENT', function (Blueprint $table) {
             $table->increments('DORM_STU_ID');
-            $table->integer('STU_ACC_ID')->unsigned();
+            $table->bigInteger('STU_USER_ID')->unsigned();
             $table->integer('STU_UNI_ID');
             $table->string('STU_UNI_NAME', 255);
             $table->string('STU_NAME', 50);
             $table->dateTime('STU_DOB');
             $table->tinyInteger('STU_GENDER');
             $table->integer('STU_TRAINING_POINT')->default(100);
+            $table->timestamps(false);
 
-            $table->foreign('STU_ACC_ID')->references('ACC_ID')->on('ACCOUNT')->onDelete('cascade');
+            $table->foreign('STU_USER_ID')->references('ID')->on('USERS')->onDelete('cascade');
         });
 
         DB::statement('ALTER TABLE STUDENT ADD CONSTRAINT check_student_gender CHECK (STU_GENDER IN (0, 1))');

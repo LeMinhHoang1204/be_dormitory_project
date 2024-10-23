@@ -13,13 +13,25 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email', 50)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // expand
             $table->rememberToken();
             $table->timestamps();
+
+            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('type')->default(3);
+            $table->string('phone', 50)->nullable();
+            $table->string('profile_image_path', 255)->nullable();
+            $table->string('bio', 255)->nullable();
         });
+
+        DB::statement('ALTER TABLE users ADD CONSTRAINT check_user_status CHECK (status IN (0, 1))');
+        // 0: KHONG CON HOAT DONG, 1: CON HOAT DONG
+        DB::statement('ALTER TABLE users ADD CONSTRAINT check_user_type CHECK (type IN (0, 1, 2, 3))');
+        // 0: ADMIN, 1: BUILDING MANAGER, 2: ACCOUNTANT, 3: STUDENT
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
@@ -35,6 +47,11 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'STU_USER_ID'); // assuming 'STU_USER_ID' is the foreign key in 'student' table
     }
 
     /**

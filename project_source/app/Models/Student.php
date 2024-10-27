@@ -10,7 +10,7 @@ class Student extends Model
     use HasFactory;
     protected $table = 'student';
 
-    protected $fillable = ['STU_USER_ID', 'STU_UNI_ID', 'STU_NAME',
+    protected $fillable = ['STU_USER_ID', 'STU_UNI_ID',
             'STU_UNI_NAME', 'STU_DOB', 'STU_GENDER'];
 
     // Thiết lập mối quan hệ với User

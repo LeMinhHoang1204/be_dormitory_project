@@ -123,4 +123,12 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+//    'providers' => [
+//        // Các providers khác ở đây
+//        App\Providers\BroadcastServiceProvider::class,
+//        App\Providers\AppServiceProvider::class,
+//        App\Providers\AuthServiceProvider::class,
+//        App\Providers\FortifyServiceProvider::class,
+//    ],
+
 ];

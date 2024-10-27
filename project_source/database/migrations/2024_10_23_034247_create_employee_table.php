@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('EMP_ACC_ID')->unsigned();
             $table->integer('EMP_MANAGER_ID')->unsigned();
             $table->bigInteger('EMP_CITIZEN_ID');
-            $table->string('EMP_NAME', 50);
+//            $table->string('EMP_NAME', 50);
             $table->dateTime('EMP_DOB');
             $table->tinyInteger('EMP_GENDER');
             $table->tinyInteger('EMP_TYPE');

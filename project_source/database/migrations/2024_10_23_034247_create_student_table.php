@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('STU_USER_ID')->unsigned();
             $table->integer('STU_UNI_ID');
             $table->string('STU_UNI_NAME', 255);
-            $table->string('STU_NAME', 50);
+//            $table->string('STU_NAME', 50);
             $table->dateTime('STU_DOB');
             $table->tinyInteger('STU_GENDER');
             $table->integer('STU_TRAINING_POINT')->default(100);

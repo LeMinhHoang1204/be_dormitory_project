@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Student;
+use App\Events\UserRegistration;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,6 +39,7 @@ class RegisteredUserController extends Controller
 
         // luu vao bang user
         $user = User::create([
+            'name' => $request['name'],
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
@@ -46,7 +48,6 @@ class RegisteredUserController extends Controller
         // luu vao bang student
         Student::create([
             'STU_USER_ID' => $user->id, //  STU_USER_ID là khóa ngoại trong bảng student
-            'STU_NAME' => $request->name,
             'STU_UNI_ID' => $request->stu_uni_id,
             'STU_UNI_NAME' => $request->university,
             'STU_DOB' => $request->dob,
@@ -58,6 +59,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        event(new UserRegistration($user->name));
 
         return redirect(route('dashboard', absolute: false));
     }

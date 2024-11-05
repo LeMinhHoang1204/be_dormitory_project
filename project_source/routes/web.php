@@ -3,8 +3,35 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
+//đăng nhập
 Route::get('/', function () {
-    return view('welcome');
+    return view('Auth_.login');
+});
+
+//đăng ký
+Route::get('/register-user', function () {
+    return view('Auth_.register');
+});
+
+//thay đổi mật khẩu
+Route::get('/password-user', function () {
+    return view('Auth_.password');
+});
+
+//xác thực
+Route::get('/accept-user', function () {
+    return view('Auth_.accept');
+});
+
+//thông báo
+Route::get('/success-user', function () {
+    return view('Auth_.success');
+});
+
+//cofirm password
+Route::get('/cofirm-user', function () {
+    return view('Auth_.cofirm');
 });
 
 Route::get('/dashboard', function () {

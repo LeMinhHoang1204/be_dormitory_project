@@ -5,3 +5,4 @@ mix.js('resources/js/app.js', 'public/js')
         require('tailwindcss'),
     ])
     .postCss('resources/css/login.css', 'public/css'); //
+mix.js('resources/js/login.js', 'public/js');

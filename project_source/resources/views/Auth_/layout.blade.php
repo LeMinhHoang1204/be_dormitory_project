@@ -1,4 +1,4 @@
-<div class="container-fluid layout" style=" box-shadow: 0px 6px 4px 0px  #ECEFFF;">
+<div class="container-fluid layout" style=" box-shadow: 0px 6px 4px 0px  #ECEFFF;height: 70px; flex-shrink: 0;">
     <div class="container">
         <div class="row d-flex align-items-center justify-content-between">
             <div class="col-md-3 d-flex align-items-center">
@@ -14,10 +14,6 @@
                     <li><a href="#">Room</a></li>
                     <li><a href="#">Service</a></li>
                     <li><a href="#">About</a></li>
-
-
-
-
                 </ul>
             </div>
             <div class="col-md-3">

@@ -6,6 +6,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/brands.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+
 </head>
 <style>
     ul {
@@ -29,6 +33,9 @@
         font-style: normal;
         font-weight: 600;
         line-height: 22.4px;
+    }
+    .text-center {
+        font-family: 'Roboto', sans-serif;
     }
 
     .h3_header {
@@ -102,6 +109,9 @@
         text-align: center;
         justify-content: center;
     }
+    .text-center {
+        font-family: 'Inter', sans-serif;
+    }
 
     .center {
         display: flex;
@@ -153,6 +163,16 @@
         justify-content: center;
     }
 
+    .change {
+        color: #0C589C;
+        text-align: center;
+        font-family: Inter;
+        font-size: 12px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: normal;
+        text-decoration-line: underline;
+    }
     .forgot {
         color: #0C589C;
         text-align: center;

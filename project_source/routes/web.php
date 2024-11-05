@@ -15,8 +15,12 @@ Route::get('/register-user', function () {
 });
 
 //thay đổi mật khẩu
-Route::get('/password-user', function () {
-    return view('Auth_.password');
+Route::get('/change-password-user', function () {
+    return view('Auth_.change-password');
+});
+
+Route::get('/forgot-password-user', function () {
+    return view('Auth_.forgot-password');
 });
 
 //xác thực

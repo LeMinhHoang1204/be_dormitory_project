@@ -43,7 +43,7 @@
                     <input type="text" class="form-control" placeholder="Phone number">
                 </div>
                 <div class="col-md-12 margin-input" >
-                    <input type="text" class="form-control" placeholder="Date of birth">
+                    <input type="date" class="form-control" placeholder="Date of birth">
                 </div>
                 <div class="col-md-12 margin-input" >
                     <select class="form-control" name="" id="" style="width: 90%;">

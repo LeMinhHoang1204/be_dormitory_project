@@ -1,6 +1,3 @@
-
-
-
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
@@ -12,14 +9,15 @@
 
     Pusher.logToConsole = true;
 
-    var pusher = new Pusher('93fd8aeba9d1b2cd6e0a', {
-        cluster: 'ap1',
+    var pusher = new Pusher('a42fc293e9345264b282', {
+        cluster: 'ap1'
     });
 
     var channel = pusher.subscribe('be-dormitory-channel');
-    console.log(1);
+    // const channel = window.Echo.channel('be-dormitory-channel');
+
     channel.bind('user-login', function(data) {
-        console.log(12);
+            console.log(12);
         toastr.success(JSON.stringify(data.email) + ' has joined our website');
     });
 </script>

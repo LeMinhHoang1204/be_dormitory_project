@@ -13,6 +13,14 @@ class VerifyCsrfToken
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+//    protected $except = [
+//        'stripe/*',
+//        'http://localhost/login',
+//    ];
+
+    protected $except = [
+        '/login',
+    ];
     public function handle(Request $request, Closure $next): Response
     {
         return $next($request);

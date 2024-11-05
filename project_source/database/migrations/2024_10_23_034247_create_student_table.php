@@ -11,22 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('STUDENT', function (Blueprint $table) {
-            $table->increments('DORM_STU_ID');
-            $table->bigInteger('STU_USER_ID')->unsigned();
-            $table->integer('STU_UNI_ID');
-            $table->string('STU_UNI_NAME', 255);
-//            $table->string('STU_NAME', 50);
-            $table->dateTime('STU_DOB');
-            $table->tinyInteger('STU_GENDER');
-            $table->integer('STU_TRAINING_POINT')->default(100);
-            $table->timestamps(false);
+        Schema::create('students', function (Blueprint $table) {
+            $table->increments('id');
+            $table->bigInteger('user_id')->unsigned();
+            $table->integer('uni_id');
+            $table->string('uni_name', 255);
+            $table->dateTime('dob');
+            $table->enum('gender', ['male', 'female']);
+            $table->integer('training_point')->default(100);
+            $table->timestamps();
 
-            $table->foreign('STU_USER_ID')->references('ID')->on('USERS')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
-
-        DB::statement('ALTER TABLE STUDENT ADD CONSTRAINT check_student_gender CHECK (STU_GENDER IN (0, 1))');
-        // 0: nu, 1: nam
     }
 
     /**
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student');
+        Schema::dropIfExists('students');
     }
 };

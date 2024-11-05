@@ -27,7 +27,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function student()
     {
-        return $this->hasOne(Student::class, 'STU_USER_ID'); // assuming 'STU_USER_ID' is the foreign key in 'student' table
+        // assuming 'STU_USER_ID' is the foreign key in 'student' table
+        return $this->hasOne(Student::class, 'user_id', 'id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id', 'id');
     }
 
     /**
@@ -52,6 +58,4 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
-
-
 }

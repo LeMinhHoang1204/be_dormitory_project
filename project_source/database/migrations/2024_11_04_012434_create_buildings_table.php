@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('buildings', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('user_id')->unsigned();
             $table->integer('manager_id')->unsigned();
-            $table->bigInteger('citizen_id');
-            $table->dateTime('dob');
-            $table->enum('gender', ['male', 'female']);
-            $table->enum('type', ['admin', 'building manager', 'accountant']); // enum
+            $table->enum('type', ['male', 'female']);
+            $table->integer('floor_count');
+            $table->integer('room_count');
+            $table->integer('student_count')->default(0);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('manager_id')->references('id')->on('employees')->onDelete('cascade');
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('buildings');
     }
 };

@@ -13,3 +13,8 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
     cluster:import.meta.env.VITE_PUSHER_APP_CLUSTER,
 });
+
+window.Echo.channel('be-dormitory-channel2')
+    .listen('user-login', (event) => {
+        console.log(`User login detected: ${event.email}`);
+    });

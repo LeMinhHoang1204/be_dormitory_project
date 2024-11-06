@@ -10,9 +10,12 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
+
+
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
@@ -37,6 +40,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
@@ -58,10 +62,17 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index')->can('viewAny', \App\Models\Notification::class);
 
-    Route::get('/notifications/create', [NotificationController::class, 'create']);
+    Route::get('/notifications/create', [NotificationController::class, 'create'])->can('create', \App\Models\Notification::class);
 
-    Route::post('/notifications/create', [NotificationController::class, 'create']);
+    Route::post('/notifications/create', [NotificationController::class, 'store'])->name('notifications.store')->can('create', \App\Models\Notification::class);
+
+    Route::get('/notifications/edit/{notification}', [NotificationController::class, 'edit'])->name('notifications.show')->can('update', 'notification');
+
+    Route::post('/notifications/edit/{notification}', [NotificationController::class, 'update'])->name('notifications.edit')->can('update', 'notification');
+
+    Route::delete('/notifications/delete/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy')->can('delete', 'notification');
 
 });
+

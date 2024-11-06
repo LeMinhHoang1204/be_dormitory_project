@@ -1,0 +1,376 @@
+/* home */
+#home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    background-image: url('../images/ktx.png');
+    background-size: cover;
+    background-position: center;
+}
+
+/* banner */
+#banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 3em;
+    border-radius: 8px;
+    margin-bottom: 1em;
+    background-color: transparent;
+    ;
+}
+
+#banner h1 {
+    font-size: 2.5em;
+    color: var(--title);
+    margin-bottom: 0.5em;
+}
+
+#banner p {
+    font-size: 1.5em;
+    color: var(--title);
+    margin: 0;
+}
+
+/* quick-search */
+.quick-search {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    margin: 0 150px;
+    background-color: var(--box);
+    border-radius: 20px;
+    box-shadow: 0 2px 4px var(--stroke);
+}
+
+.quick-search .container,
+.quick-search .container-2,
+.quick-search .container-3 {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.8em;
+    margin: 0 1em;
+}
+
+.quick-search .button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+}
+
+.button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6em 1em;
+    background-color: var(--title);
+    color: white;
+    font-size: 1em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    transform: translateX(-10%);
+    ;
+}
+
+.button i {
+    margin-right: 0.5em;
+}
+
+.button:hover {
+    background-color: var(--hover);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.div-wrapper {
+    margin-left: 0.5em;
+}
+
+.fa-solid.fa-user,
+.fa-door-open,
+.fa-building {
+    font-size: 1em;
+    color: var(--title);
+}
+
+.fa-solid.fa-s {
+    font-size: 1em;
+    color: white;
+}
+
+.text-wrapper {
+    font-size: 1.2em;
+    color: var(--title);
+}
+
+.combobox-menu-wrapper {
+    margin-top: 0.5em;
+}
+
+.combobox {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid var(--stroke);
+    border-radius: 4px;
+    background-color: var(--box);
+    font-size: 1em;
+}
+
+/* infor */
+#infor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.flex-container .banner {
+    flex: 1;
+    text-align: left;
+}
+
+.flex-container .banner h1 {
+    color: var(--title);
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.flex-container .banner p {
+    color: var(--title);
+    font-size: 1.5em;
+}
+
+.image-container {
+    flex: 1;
+    text-align: right;
+
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* facility */
+#facility {
+    padding: 100px 0;
+    /* height: 100vh; */
+}
+
+.facility-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.facility-container h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: var(--title);
+}
+
+.facility-container p {
+    font-size: 1.5em;
+    color: var(--text);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.facility-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.facility-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--stroke);
+    text-align: left;
+}
+
+.facility-item h2 {
+    font-size: 1.7em;
+    margin-bottom: 10px;
+    color: var(--title);
+}
+
+.facility-item p {
+    font-size: 1em;
+    color: var(--title);
+}
+
+.facility-item i {
+    margin-right: 5px;
+    color: var(--title);
+}
+
+/* Benefit Section */
+#benefit {
+    padding: 50px 0;
+    background-color: #f0f0f0;
+}
+
+.benefit-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.benefit-container h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: var(--title);
+    font-weight: bold;
+}
+
+.benefit-container p {
+    font-size: 1.5em;
+    color: var(--text);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.benefit-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--stroke);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.benefit-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.benefit-item h2 {
+    font-size: 1.7em;
+    margin-bottom: 10px;
+    color: var(--title);
+}
+
+.benefit-item p {
+    font-size: 1em;
+    margin-bottom: 20px;
+    color: var(--text);
+    text-align: center;
+    width: 100%;
+}
+
+.benefit-item i {
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.benefit-item span {
+    display: block;
+    margin-top: auto;
+    font-size: 1em;
+    color: #666;
+}
+
+/* About Section */
+#about {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+    height: 100vh;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.about-container h1 {
+    font-size: 3em;
+    margin-bottom: 30px;
+    color: var(--title);
+}
+
+.about-container p {
+    font-size: 1em;
+    color: var(--text);
+    margin-bottom: 30px;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.about-container .team {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.team-member {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--stroke);
+    text-align: center;
+}
+
+.team-member h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: var(--title);
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.team-member p {
+    font-size: 1em;
+    color: var(--text);
+    text-align: left;
+}

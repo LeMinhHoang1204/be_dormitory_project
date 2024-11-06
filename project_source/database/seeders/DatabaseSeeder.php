@@ -4,9 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Notification;
 use App\Models\NotificationRecipient;
+use App\Models\Student;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,18 +20,40 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)->create();
         Notification::factory(10)->create();
-        NotificationRecipient::factory(10)->create();
 
-//        $users = User::factory(10)->create();
-//        $notifications = Notification::factory(10)->create();
-//
-//        foreach ($notifications as $notification) {
-//            foreach ($users->random(3) as $user) { // Attach a few random users to each notification
-//                NotificationRecipient::create([
-//                    'noti_id' => $notification->id,
-//                    'user_id' => $user->id,
-//                ]);
-//            }
-//        }
+        User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'leminhhoang1204@gmail.com', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Châu Minh Trí',
+            'email' => '22521515@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'building-manager',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Lê Minh Hoàng',
+            'email' => '22520464@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'student',
+        ]);
+
+        Student::factory()->create([
+            'user_id' => '13',
+            'uni_id' => '22520464', // Set a known email
+            'uni_name' => 'UIT', // Use a secure password
+            'dob' => now(),
+            'gender' =>'male',
+        ]);
     }
 }

@@ -33,7 +33,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function notifications()
     {
-        return $this->hasMany(Notification::class, 'user_id', 'id');
+        return $this->hasMany(NotificationRecipient::class, 'user_id', 'id');
+    }
+
+    public function send_notification()
+    {
+        return $this->hasMany(Notification::class, 'sender_id', 'id');
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == 'admin';
     }
 
     /**

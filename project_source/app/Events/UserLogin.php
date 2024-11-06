@@ -21,7 +21,6 @@ class UserLogin implements ShouldBroadcast
     public function __construct($email)
     {
         $this->email = $email;
-        echo($email);
     }
 
     /**

@@ -1,0 +1,68 @@
+/* header */
+header {
+    background-color: var(--bgr);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3em 8em;
+    box-shadow: 0 2px 4px var(--stroke);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    width: 130px;
+    height: 50px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    margin: 0 2em;
+}
+
+nav ul li a {
+    color: var(--title);
+    text-decoration: none;
+    transition: color 0.3s, border-bottom 0.3s;
+    padding: 0.5em 0;
+}
+
+nav ul li a:hover {
+    color: var(--hover);
+    border-bottom: 2px solid var(--hover);
+}
+
+
+.auth-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.auth-buttons button {
+    background-color: transparent;
+    color: var(--title);
+    border: none;
+    border-radius: 3px;
+    padding: 0.5em 1em;
+    margin-left: 0.5em;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.auth-buttons button#register {
+    border: 2px solid var(--title);
+}
+
+.auth-buttons button:hover {
+    background-color: var(--title);
+    color: white;
+}

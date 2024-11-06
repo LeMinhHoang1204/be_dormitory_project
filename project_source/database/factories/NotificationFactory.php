@@ -18,11 +18,12 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'sender_id' => User::factory(),
-            'receiver_id' => User::factory(),
+            'sender_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'receiver_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'type' => $this->faker->randomElement(['individual', 'group']),
-            'post_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'title' => $this->faker->text(20),
             'content' => $this->faker->text(200),
+            'created_at' => now(),
         ];
     }
 }

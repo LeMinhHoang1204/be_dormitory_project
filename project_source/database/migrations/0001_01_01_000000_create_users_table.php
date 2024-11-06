@@ -22,17 +22,12 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table->tinyInteger('status')->default(1);
-            $table->tinyInteger('role')->default(3);
+            $table->boolean('status')->default(true);
+            $table->enum('role', ['admin', 'building-manager', 'accountant', 'student'])->default('student');
             $table->string('phone', 50)->nullable();
             $table->string('profile_image_path', 255)->nullable();
             $table->string('bio', 255)->nullable();
         });
-
-        DB::statement('ALTER TABLE users ADD CONSTRAINT check_user_status CHECK (status IN (0, 1))');
-        // 0: KHONG CON HOAT DONG, 1: CON HOAT DONG
-        DB::statement('ALTER TABLE users ADD CONSTRAINT check_user_type CHECK (role IN (0, 1, 2, 3))');
-        // 0: ADMIN, 1: BUILDING MANAGER, 2: ACCOUNTANT, 3: STUDENT
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

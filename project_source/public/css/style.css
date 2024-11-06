@@ -1,0 +1,210 @@
+:root {
+    --text: #001738;
+    --title: #1D267D;
+    --bgr: #F9F9F9;
+    --table_row: #ECEFFF;
+    --stroke: #CBD4F3;
+    --placeholder: #a2a2a2;
+    --box: #ffffff;
+    --hover: #EF5A6F;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--bgr);
+    cursor: default;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.show {
+    display: block;
+}
+
+
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.avatar {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.modal-content h2 {
+    margin-bottom: 10px;
+    color: var(--title);
+}
+
+.modal-content p {
+    margin: 5px 0;
+    color: var(--text);
+}
+
+
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    header {
+        padding: 0.3em 4em;
+    }
+
+    .about-container .team {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    header {
+        padding: 0.3em 1em;
+    }
+
+    nav ul {
+        gap: 10px;
+    }
+
+    nav ul li a {
+        font-size: 0.9em;
+    }
+
+    .benefit-container h1,
+    .benefit-container p,
+    .facilities-container h1,
+    .facilities-container p,
+    .infor-container h1,
+    .infor-container p {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 1em;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin: 0.5em 0;
+    }
+
+    .quick-search {
+        margin: 0 1em;
+        flex-direction: column;
+    }
+
+    .quick-search .container,
+    .quick-search .container-2,
+    .quick-search .container-3 {
+        margin: 1em 0;
+    }
+
+    .flex-container {
+        flex-direction: column;
+        padding: 1em;
+    }
+
+    .banner,
+    .image-container {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #banner h1 {
+        font-size: 1.5em;
+    }
+
+    #banner p {
+        font-size: 1em;
+    }
+
+    .quick-search {
+        margin: 0;
+    }
+
+    .quick-search .container,
+    .quick-search .container-2,
+    .quick-search .container-3 {
+        padding: 0.5em;
+    }
+
+    .auth-buttons button {
+        padding: 0.5em;
+        margin: 0.2em;
+    }
+}

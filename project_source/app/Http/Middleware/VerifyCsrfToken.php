@@ -18,9 +18,9 @@ class VerifyCsrfToken
 //        'http://localhost/login',
 //    ];
 
-    protected $except = [
-        '/login',
-    ];
+//    protected $except = [
+//        '/login',
+//    ];
     public function handle(Request $request, Closure $next): Response
     {
         return $next($request);

@@ -4,16 +4,19 @@ namespace App\Policies;
 
 use App\Models\Notification;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
 class NotificationPolicy
 {
+    use HandlesAuthorization;
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        //
+        // Allow all users to view the list of notifications
+        return true;
     }
 
     /**
@@ -21,7 +24,7 @@ class NotificationPolicy
      */
     public function view(User $user, Notification $notification): bool
     {
-        //
+        return $user->id === $notification->sender_id || $notification->recipients->contains($user->id) || $user->role === 'admin';
     }
 
     /**
@@ -29,7 +32,7 @@ class NotificationPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role == 'admin' || $user->role == 'building-manager' || $user->role == 'accountant';
     }
 
     /**
@@ -37,7 +40,8 @@ class NotificationPolicy
      */
     public function update(User $user, Notification $notification): bool
     {
-        //
+        // Allow the sender or an admin to update the notification
+        return $user->id === $notification->sender_id || $user->role === 'admin';
     }
 
     /**
@@ -45,7 +49,8 @@ class NotificationPolicy
      */
     public function delete(User $user, Notification $notification): bool
     {
-        //
+        // Allow the sender or an admin to delete the notification
+        return $user->id === $notification->sender_id || $user->role === 'admin';
     }
 
     /**
@@ -53,7 +58,7 @@ class NotificationPolicy
      */
     public function restore(User $user, Notification $notification): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +66,6 @@ class NotificationPolicy
      */
     public function forceDelete(User $user, Notification $notification): bool
     {
-        //
+        return false;
     }
 }

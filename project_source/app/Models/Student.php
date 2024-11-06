@@ -20,6 +20,12 @@ class Student extends Model
     protected $fillable = ['user_id', 'uni_id',
             'uni_name', 'dob', 'gender'];
 
+    protected $casts = [
+        'dob' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     // tất cả đều được thêm vào (chỉ ghi 1 trong 2 fillable or guarded)
 //    protected $guarded = [];
 

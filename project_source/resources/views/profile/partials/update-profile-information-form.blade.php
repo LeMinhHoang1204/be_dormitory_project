@@ -47,6 +47,39 @@
             @endif
         </div>
 
+        @if($user->role === 'student' && isset($user->student))
+            <div>
+                <x-input-label for="university" :value="__('University')" />
+                <x-text-input id="uni_name" name="uni_name" type="text" class="mt-1 block w-full" :value="old('uni_name', $user->student->uni_name)" required autofocus autocomplete="uni_name" />
+                <x-input-error class="mt-2" :messages="$errors->get('university')" />
+            </div>
+
+            <div>
+                <x-input-label for="Student ID" :value="__('Student ID')" />
+                <x-text-input id="uni_id" name="uni_id" type="text" class="mt-1 block w-full" :value="old('uni_id', $user->student->uni_id)" required autofocus autocomplete="uni_id" />
+                <x-input-error class="mt-2" :messages="$errors->get('uni_id')" />
+            </div>
+
+            <div>
+                <x-input-label for="Phone number" :value="__('Phone number')" />
+                <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" required autofocus autocomplete="phone" />
+                <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+            </div>
+
+            <div>
+                <x-input-label for="Date of Birth" :value="__('Date of Birth')" />
+                <x-text-input id="dob" name="dob" type="date" class="mt-1 block w-full" :value="old('dob', $user->student->dob->format('Y-m-d'))" required autofocus autocomplete="dob" />
+
+                <x-input-error class="mt-2" :messages="$errors->get('dob')" />
+            </div>
+
+            <div>
+                <x-input-label for="Gender" :value="__('Gender')" />
+                <x-text-input id="gender" name="gender" type="text" class="mt-1 block w-full" :value="old('gender', $user->student->gender === 'male' ? 'Male' : ($user->student->gender === 'female' ? 'Female' : ''))" required autofocus autocomplete="gender" />
+                <x-input-error class="mt-2" :messages="$errors->get('gender')" />
+            </div>
+        @endif
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

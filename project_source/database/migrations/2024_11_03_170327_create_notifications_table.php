@@ -15,10 +15,10 @@ return new class extends Migration
             $table->increments('id');
             $table->bigInteger('sender_id')->unsigned();
             $table->bigInteger('receiver_id')->unsigned();
+            $table->string('title');
             $table->enum('type', ['individual', 'group'])->default('individual');
-            $table->dateTime('post_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('content', 2000);
-            $table->timestamps();
+            $table->timestamps(true);
 
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
         });

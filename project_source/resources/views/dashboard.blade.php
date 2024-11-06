@@ -14,10 +14,8 @@
     });
 
     var channel = pusher.subscribe('be-dormitory-channel');
-    // const channel = window.Echo.channel('be-dormitory-channel');
 
     channel.bind('user-login', function(data) {
-            console.log(12);
         toastr.success(JSON.stringify(data.email) + ' has joined our website');
     });
 </script>

@@ -36,4 +36,8 @@ class Student extends Model
         // ownerKey: nếu khoá chính của user không phải là "id"
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function residence(){
+        return $this->hasMany(Residence::class, 'stu_id', 'id');
+    }
 }

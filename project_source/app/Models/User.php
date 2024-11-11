@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,6 +45,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAdmin()
     {
         return $this->role == 'admin';
+    }
+
+    public function object(): MorphOne
+    {
+        return $this->morphOne(Notification::class, 'objective');
+    }
+
+    public function manager(){
+        return $this->hasMany(Employee::class, 'manager_id', 'id');
     }
 
     /**

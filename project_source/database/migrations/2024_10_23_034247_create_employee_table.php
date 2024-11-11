@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('user_id')->unsigned();
-            $table->integer('manager_id')->unsigned();
+            $table->integer('manager_id')->unsigned()->nullable();
             $table->bigInteger('citizen_id');
             $table->dateTime('dob');
             $table->enum('gender', ['male', 'female']);

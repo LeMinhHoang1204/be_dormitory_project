@@ -13,7 +13,7 @@ class RoomPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->role == 'admin' || $user->role == 'building-manager';
     }
 
     /**
@@ -21,7 +21,7 @@ class RoomPolicy
      */
     public function view(User $user, Room $room): bool
     {
-        //
+        return $user->role == 'admin' || $user->role == 'building-manager';
     }
 
     /**
@@ -29,7 +29,7 @@ class RoomPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -37,7 +37,7 @@ class RoomPolicy
      */
     public function update(User $user, Room $room): bool
     {
-        //
+        return $user->role == 'admin' || $user->role == 'building-manager';
     }
 
     /**
@@ -45,7 +45,7 @@ class RoomPolicy
      */
     public function delete(User $user, Room $room): bool
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -53,7 +53,7 @@ class RoomPolicy
      */
     public function restore(User $user, Room $room): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class RoomPolicy
      */
     public function forceDelete(User $user, Room $room): bool
     {
-        //
+        return false;
     }
 }

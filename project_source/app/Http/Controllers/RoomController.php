@@ -13,7 +13,8 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+        $rooms = Room::all();
+        return view('rooms.index', compact('rooms'));
     }
 
     /**
@@ -21,7 +22,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        return view('rooms.create');
     }
 
     /**
@@ -29,7 +30,9 @@ class RoomController extends Controller
      */
     public function store(StoreRoomRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        Room::create($validatedData);
+        return redirect(route('rooms.index'));
     }
 
     /**
@@ -37,7 +40,7 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        //
+        return view('rooms.show', compact('room'));
     }
 
     /**
@@ -45,7 +48,7 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
-        //
+        return view('rooms.edit', compact('room'));
     }
 
     /**
@@ -53,7 +56,9 @@ class RoomController extends Controller
      */
     public function update(UpdateRoomRequest $request, Room $room)
     {
-        //
+        $validatedData = $request->validated();
+        $room->update($validatedData);
+        return redirect(route('rooms.index'));
     }
 
     /**
@@ -61,6 +66,7 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
-        //
+        $room->delete();
+        return redirect(route('rooms.index'));
     }
 }

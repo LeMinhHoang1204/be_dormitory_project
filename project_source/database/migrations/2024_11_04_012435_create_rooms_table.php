@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('unit_price', 10, 2);
             $table->integer('member_number')->default(0);
             $table->tinyInteger('status')->default(0)->check('status IN (0, 1)');
+            $table->timestamps();
 
             $table->foreign('building_id')->references('id')->on('buildings')->onDelete('cascade');
         });

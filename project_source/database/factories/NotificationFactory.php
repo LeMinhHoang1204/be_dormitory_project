@@ -19,7 +19,8 @@ class NotificationFactory extends Factory
     {
         return [
             'sender_id' => User::inRandomOrder()->first()->id ?? User::factory(),
-            'receiver_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'object_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'object_type' => $this->faker->randomElement(['user', 'building', 'room']),
             'type' => $this->faker->randomElement(['individual', 'group']),
             'title' => $this->faker->text(20),
             'content' => $this->faker->text(200),

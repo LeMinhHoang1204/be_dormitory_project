@@ -2,8 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Building;
+use App\Models\Employee;
 use App\Models\Notification;
 use App\Models\NotificationRecipient;
+use App\Models\Residence;
+use App\Models\Room;
 use App\Models\Student;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,9 +22,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-        Notification::factory(10)->create();
-
         User::factory()->create([
             'name' => 'Admin User',
             'email' => 'leminhhoang1204@gmail.com', // Set a known email
@@ -29,6 +30,13 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
             'role' => 'admin',
         ]);
+
+        User::factory(50)->create();
+        Notification::factory(10)->create();
+        Student::factory(100)->create();
+        Building::factory(10)->create();
+        Room::factory(200)->create();
+        Residence::factory(100)->create();
 
         User::factory()->create([
             'name' => 'Châu Minh Trí',

@@ -26,8 +26,8 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="recipients" class="block text-gray-700 font-bold mb-2">Recipients (IDs separated by commas):</label>
-                            <input type="number" id="receiver_id" name="receiver_id" value="{{ $notification->receiver_id }}" required
+                            <label for="recipients" class="block text-gray-700 font-bold mb-2">Object (ID):</label>
+                            <input type="number" id="object_id" name="object_id" value="{{ $notification->object_id }}" required
                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
 

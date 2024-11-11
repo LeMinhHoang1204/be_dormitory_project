@@ -13,7 +13,8 @@ class BuildingController extends Controller
      */
     public function index()
     {
-        //
+        $buildings = Building::all();
+        return view('buildings.index', compact('buildings'));
     }
 
     /**
@@ -21,7 +22,7 @@ class BuildingController extends Controller
      */
     public function create()
     {
-        //
+        return view('buildings.create');
     }
 
     /**
@@ -29,7 +30,9 @@ class BuildingController extends Controller
      */
     public function store(StoreBuildingRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        Building::create($validatedData);
+        return redirect(route('buildings.index'));
     }
 
     /**
@@ -37,7 +40,7 @@ class BuildingController extends Controller
      */
     public function show(Building $building)
     {
-        //
+        return view('buildings.show', compact('building'));
     }
 
     /**
@@ -45,7 +48,7 @@ class BuildingController extends Controller
      */
     public function edit(Building $building)
     {
-        //
+        return view('buildings.edit', compact('building'));
     }
 
     /**
@@ -53,7 +56,9 @@ class BuildingController extends Controller
      */
     public function update(UpdateBuildingRequest $request, Building $building)
     {
-        //
+        $validatedData = $request->validated();
+        $building->update($validatedData);
+        return redirect(route('buildings.index'));
     }
 
     /**
@@ -61,6 +66,7 @@ class BuildingController extends Controller
      */
     public function destroy(Building $building)
     {
-        //
+        $building->delete();
+        return redirect(route('buildings.index'));
     }
 }

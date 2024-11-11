@@ -57,7 +57,7 @@
 
 
                         {{-- @can('create', App\Models\Notification::class)--}}
-                        <x-primary-button class="ms-4" type="submit">
+                        <x-primary-button type="submit">
                             {{ ('Save') }}
                         </x-primary-button>
                         {{-- @endcan--}}

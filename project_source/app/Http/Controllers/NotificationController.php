@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
-use App\Http\Requests\UpdateNotificationRequest;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-//use Illuminate\Support\Facades\Request;
 
 
 class NotificationController extends Controller
@@ -22,12 +20,12 @@ class NotificationController extends Controller
         $user = auth()->user(); // Lấy người dùng hiện tại
 
         // Khởi tạo query để lọc dữ liệu
-        $query = Notification::with('receiver.user');
+        $query = Notification::with('object.user');
 
         if (!$user->isAdmin()) {
             $query->where(function ($q) use ($user) {
                 $q->where('sender_id', $user->id) // Lọc nếu người dùng là người gửi
-                ->orWhereHas('receiver', function ($q) use ($user) {
+                ->orWhereHas('object', function ($q) use ($user) {
                     $q->where('user_id', $user->id); // Lọc nếu người dùng là người nhận
                 });
             });
@@ -89,7 +87,7 @@ class NotificationController extends Controller
             'title' => 'required|string',
             'type' => 'required|string',
             'content' => 'required|string',
-            'receiver_id' => 'required|integer',
+            'object_id' => 'required|integer',
         ]);
 
 //        dd($request->all());
@@ -128,7 +126,7 @@ class NotificationController extends Controller
             'content' => 'required|string',
             'type' => 'required|string',
             'sender_id' => 'required|integer',
-            'receiver_id' => 'required|integer',
+            'object_id' => 'required|integer',
         ]);
         // Cập nhật thông báo
         $notification->update($validatedData);

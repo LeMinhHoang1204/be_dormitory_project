@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Broadcast;
 //    return (int) $user->id === (int) $id;
 //});
 
-Broadcast::channel('be-dormitory-channel2', function () {
+Broadcast::channel('be-dormitory-channel', function () {
     return true; // hoặc điều kiện để xác thực người dùng
 });
 

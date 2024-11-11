@@ -15,8 +15,8 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('manager_id')->unsigned();
             $table->enum('type', ['male', 'female']);
-            $table->integer('floor_count');
-            $table->integer('room_count');
+            $table->integer('floor_numbers');
+            $table->integer('room_numbers');
             $table->integer('student_count')->default(0);
             $table->timestamps();
 

@@ -12,13 +12,6 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function (Request $request) {
-    // Check if the 'login' query parameter is present and true
-//    if ($request->query('login') === 'true') {
-//        // Process if the login parameter is true
-//        // For example, set a session variable or trigger an action
-//        event(new \App\Events\UserLogin('LEMINHHOANG'));
-//    }
-
     event(new UserLogin($request->user()->email));
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

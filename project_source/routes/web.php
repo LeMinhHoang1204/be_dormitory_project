@@ -37,7 +37,10 @@ Route::get('/success-user', function () {
 Route::get('/cofirm-user', function () {
     return view('Auth_.cofirm');
 });
-
+//register room
+Route::get('/reg-room-user', function () {
+    return view('Reg_room.reg_room');
+});
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -1,0 +1,333 @@
+body {
+    background-color: #f9fafc;
+    font-family: "Poppins", sans-serif;
+    color: #3c3c3c;
+}
+
+.container-fluid.layout {
+    background-color: #fff;
+    padding: 10px 0;
+}
+
+.ul {
+    list-style: none;
+}
+.ul li a {
+    color: #0e3b9c;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* .title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2f6bff;
+  margin-bottom: 10px;
+} */
+
+.regisster{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-around;
+    width: 1090px;
+    text-align: center;
+}
+/*.rooms {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    justify-content: center;*/
+/*    align-content: space-around;*/
+/*    gap: 15px 20px; !*15px khoảng cách dọc, 20px khoảng cách ngang *!*/
+/*    justify-items: stretch;*/
+/*    border-radius: 20px;*/
+/*    width: 1090px;*/
+/*    height: 855px;*/
+/*    padding: 10px;*/
+/*    text-align: center;*/
+/*    flex-shrink: 0;*/
+/*    margin: 220px auto 0 auto; !* Ensures it appears below the title *!*/
+/*    position: relative; !* Adjusts position relative to parent *!*/
+/*}*/
+.title {
+    color: #0e3b9c;
+    /*text-align: center;*/
+    font-family: Inter;
+    font-size: 47px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 66px;
+    position: absolute; /* hoặc relative */
+    top: 145px;
+    left: 145px;
+}
+
+.res-certifi {
+    width: 247px;
+    height: 28px;
+    flex-shrink: 0;
+    position: absolute; /* hoặc relative */
+    top: 238px;
+    left: 145px;
+}
+.ul-res-certifi {
+    /* display: flex; */
+    width: 212px;
+    height: 26px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #005d4d;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    text-decoration-line: underline;
+}
+
+.filter-button {
+    background-color: #e3e9ef;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+.search-input {
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 8px;
+    width: 250px;
+}
+
+/* .room-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.room-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+} */
+
+.room-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+/*.room-info {*/
+/*    padding: 15px;*/
+/*}*/
+
+
+/*#room-price {*/
+/*    font-size: 16px;*/
+/*    color: #333;*/
+/*}*/
+
+.per-month {
+    font-size: 12px;
+    color: #888;
+}
+.type-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: fit-content;
+    /*gap: 10px;*/
+    border: 1px solid;
+    /*position: absolute; !* hoặc relative *!*/
+    /*top: 145px;*/
+    /*left: 357px;*/
+
+}
+
+.detail-item {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 10px 5px;
+    text-align: center;
+    heigh: 21px;
+}
+
+.rooms {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-around;
+    gap: 15px 20px; /*15px khoảng cách dọc, 20px khoảng cách ngang */
+    justify-items: stretch;
+    border-radius: 20px;
+    width: 1090px;
+    height: 855px;
+    padding: 10px;
+    text-align: center;
+    flex-shrink: 0;
+    margin: 220px auto 0 auto; /* Ensures it appears below the title */
+    position: relative; /* Adjusts position relative to parent */
+}
+/*.register{*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    width: 1090px;*/
+/*    justify-content: center;*/
+/*    align-content: space-around;*/
+/*}*/
+.room {
+    flex-grow: 1;
+    flex-basis: 340px;
+    background-color: #fff;
+    border: 1px solid var(--Stroke_Box, #cbd4f3);
+    border-radius: 20px;
+    width: 340px; /* Fixed width */
+    height: 420px; /* Fixed height */
+    flex-shrink: 0;
+    box-shadow: 0px 6px 4px 0px var(--table_row, #ecefff);
+}
+
+.form-group {
+    width: 305px;
+    height: 213px;
+    flex-shrink: 0;
+    margin: 20px 10px 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid;
+}
+
+.detail-item {
+    color: var(--text_ph, #001738);
+    font-family: Roboto;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+.room-description {
+    font-size: 14px;
+    color: #666;
+}
+.room img {
+    width: 100%;
+    border-radius: 20px 20px 0px 0px;
+}
+
+.form-group {
+    width: 305px;
+    height: 213px;
+    flex-shrink: 0;
+    /* margin: 175px 15px 32px 20px; */
+}
+.roomname {
+    text-align: left;
+    width: auto;
+    color: #1d5cef;
+    font-family: Roboto;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    align-items: start;
+    justify-items: start;
+}
+#room-price {
+    text-align: left;
+
+    width: auto;
+    color: var(--text_ph, #001738);
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.room-info {
+    display: flex;
+    width: 296px;
+    height: 28px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    text-align: justify;
+
+    color: var(--text_ph, #001738);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.type-group button {
+    display: flex;
+    width: 105px;
+    height: 42px;
+    flex-shrink: 0;
+    padding: 10px 0px ;
+    align-items: center;
+    /*gap: 10px;*/
+    border-radius: 10px;
+    border: none;
+    color: white;
+    background: var(--Complete, #2f6bff);
+    text-align: center;
+    justify-content: center;
+}
+
+.tags {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.tag {
+    background-color: #e3e9ef;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+/*
+.status-button {
+  background-color: #2f6bff;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.status-button.full {
+  background-color: #ff6b6b;
+} */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-link {
+    color: #333;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.page-link.active {
+    background-color: #2f6bff;
+    color: #fff;
+}
+
+.dots {
+    color: #888;
+}

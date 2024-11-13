@@ -105,3 +105,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/rooms/delete/{building}', [RoomController::class, 'destroy'])->name('rooms.destroy')->can('delete', 'room');
 });
 
+
+
+Route::get('/regis-test', function () {
+    return view('/Reg_room/reg_room');
+});

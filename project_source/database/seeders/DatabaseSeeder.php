@@ -65,6 +65,14 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
+        User::factory()->create([
+            'name' => 'Tường Vi',
+            'email' => 'tuthituongvi9@gmail.com', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'admin',
+        ]);
         Student::factory()->create([
             'user_id' => '13',
             'uni_id' => '22520464', // Set a known email
@@ -72,5 +80,7 @@ class DatabaseSeeder extends Seeder
             'dob' => now(),
             'gender' =>'male',
         ]);
+
+
     }
 }

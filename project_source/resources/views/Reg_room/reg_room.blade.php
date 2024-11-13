@@ -16,8 +16,8 @@
          </div>
 
 {{--        button loc filter--}}
-            <div class="filter-sgv">
-            <svg xmlns="http://www.w3.org/2000/svg"  width="67" height="66" viewBox="0 0 67 66" fill="none"  onclick="toggleFilter()">
+        <div class="filter-sgv" onclick="toggleFilter()">
+            <svg xmlns="http://www.w3.org/2000/svg"  width="67" height="66" viewBox="0 0 67 66" fill="none"  >
                 <g filter="url(#filter0_d_1132_2655)">
                     <g filter="url(#filter1_d_1132_2655)">
                         <path d="M4 15C4 6.71573 10.7157 0 19 0H48C56.2843 0 63 6.71573 63 15V41C63 49.2843 56.2843 56 48 56H19C10.7157 56 4 49.2843 4 41V15Z" fill="white"/>
@@ -81,12 +81,9 @@
             </div>
         </div>
 
-    <div class="rooms" id="room-list">
-        <div class="room"></div>
-    </div>
 
-{{--    Hien thi panel filter để lọc--}}
-    <div class="filter-panel">
+    {{--    Hien thi panel filter để lọc--}}
+    <div id="filter-panel" class="filter-panel hidden" onclick="closeFilter(event)" >
         <div class="filter-section">
             <h3>Room status</h3>
             <label><input type="checkbox" /> Vacancy</label>
@@ -127,6 +124,11 @@
         <div class="apply-button">
             <button>Apply</button>
         </div>
+    </div>
+
+
+    <div class="rooms" id="room-list">
+        <div class="room"></div>
     </div>
 
 

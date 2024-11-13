@@ -72,12 +72,23 @@ document.addEventListener("DOMContentLoaded", function () {
 // }
 
 // click vào biểu tượng filter thì hiện ra filter panel giữa trang
+// function toggleFilter() {
+//     const filterPanel = document.querySelector('.filter-panel');
+//     if (filterPanel.style.display === 'none' || filterPanel.style.display === '') {
+//         filterPanel.style.display = 'block';
+//     } else {
+//         filterPanel.style.display = 'none';
+//     }
+// }
+
 function toggleFilter() {
-    const filterPanel = document.querySelector('.filter-panel');
-    if (filterPanel.style.display === 'none' || filterPanel.style.display === '') {
-        filterPanel.style.display = 'block';
-    } else {
-        filterPanel.style.display = 'none';
-    }
+    const panel = document.getElementById('filter-panel');
+    panel.classList.toggle('hidden');
 }
 
+function closeFilter(event) {
+    const panel = document.getElementById('filter-panel');
+    if (event.target === panel) {
+        panel.classList.add('hidden');
+    }
+}

@@ -73,6 +73,15 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
             'role' => 'admin',
         ]);
+        User::factory()->create([
+            'name' => 'Từ Thị Tường Vi',
+            'email' => '22521660@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'admin',
+        ]);
+
         Student::factory()->create([
             'user_id' => '13',
             'uni_id' => '22520464', // Set a known email

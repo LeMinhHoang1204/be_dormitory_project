@@ -1,18 +1,13 @@
 <?php
 
-use App\Events\UserLogin;
-use App\Events\UserRegistration;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
 
-Route::get('/dashboard', function (Request $request) {
-    event(new UserLogin($request->user()->email));
+Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

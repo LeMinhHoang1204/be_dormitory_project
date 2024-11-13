@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Student;
-use App\Events\UserRegistration;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,6 +37,7 @@ class RegisteredUserController extends Controller
         ]);
 
         // luu vao bang user
+        // olequent ORM
         $user = User::create([
             'name' => $request['name'],
             'email' => $request->email,
@@ -47,20 +47,17 @@ class RegisteredUserController extends Controller
 
         // luu vao bang student
         Student::create([
-            'STU_USER_ID' => $user->id, //  STU_USER_ID là khóa ngoại trong bảng student
-            'STU_UNI_ID' => $request->stu_uni_id,
-            'STU_UNI_NAME' => $request->university,
-            'STU_DOB' => $request->dob,
-            'STU_GENDER' => $request->gender,
+            'user_id' => $user->id, //  STU_USER_ID là khóa ngoại trong bảng student
+            'uni_id' => $request->stu_uni_id,
+            'uni_name' => $request->university,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
             // Thêm các trường khác nếu có
         ]);
-
 
         event(new Registered($user));
 
         Auth::login($user);
-
-        event(new UserRegistration($user->name));
 
         return redirect(route('dashboard', absolute: false));
     }

@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -27,7 +28,32 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function student()
     {
-        return $this->hasOne(Student::class, 'STU_USER_ID'); // assuming 'STU_USER_ID' is the foreign key in 'student' table
+        // assuming 'STU_USER_ID' is the foreign key in 'student' table
+        return $this->hasOne(Student::class, 'user_id', 'id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(NotificationRecipient::class, 'user_id', 'id');
+    }
+
+    public function send_notification()
+    {
+        return $this->hasMany(Notification::class, 'sender_id', 'id');
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == 'admin';
+    }
+
+    public function object(): MorphOne
+    {
+        return $this->morphOne(Notification::class, 'objective');
+    }
+
+    public function manager(){
+        return $this->hasMany(Employee::class, 'manager_id', 'id');
     }
 
     /**
@@ -52,6 +78,4 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
-
-
 }

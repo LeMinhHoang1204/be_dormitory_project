@@ -2,9 +2,14 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Models\Notification;
+use App\Policies\NotificationPolicy;
+use Illuminate\Support\Facades\Gate;
+//use Illuminate\Support\ServiceProvider;
 use app\Models\User;
 use app\Policies\UserPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+
 
 class   AuthServiceProvider extends ServiceProvider
 {
@@ -14,6 +19,7 @@ class   AuthServiceProvider extends ServiceProvider
 
     protected $policies = [
         User::class => UserPolicy::class, // Mapping User model to UserPolicy
+        Notification::class => NotificationPolicy::class,
     ];
 
     public function register(): void
@@ -26,6 +32,6 @@ class   AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
     }
 }

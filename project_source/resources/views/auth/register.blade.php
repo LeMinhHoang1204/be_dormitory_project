@@ -2,15 +2,22 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
+        <!-- Email Address -->
+        <div class="mt-4">
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
         <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
+        <div class="mt-4">
+            <x-input-label for="name" :value="__('Fullname')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- University -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="university" :value="__('Chọn trường đại học')" />
             <select id="university" name="university" class="block mt-1 w-full" required>
                 <option value="">-- Chọn trường --</option>
@@ -29,17 +36,10 @@
         </div>
 
         <!-- Student ID -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="stu_uni_id" :value="__('Student ID')" />
             <x-text-input id="stu_uni_id" class="block mt-1 w-full" type="text" name="stu_uni_id" :value="old('stu_uni_id')" required autofocus autocomplete="stu_uni_id" />
             <x-input-error :messages="$errors->get('stu_uni_id')" class="mt-2" />
-        </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Phone Number -->
@@ -51,7 +51,7 @@
 
         <!-- Date Of Birth -->
         <div class="mt-4">
-            <x-input-label for="dob" :value="__('Phone Number')" />
+            <x-input-label for="dob" :value="__('Date Of Birth')" />
             <x-text-input id="dob" class="block mt-1 w-full" type="date" name="dob" :value="old('dob')" required autocomplete="dob" />
             <x-input-error :messages="$errors->get('dob')" class="mt-2" />
         </div>

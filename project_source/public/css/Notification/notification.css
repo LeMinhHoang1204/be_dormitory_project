@@ -1,0 +1,187 @@
+/* Notification List Styles */
+.notification-frame {
+    background-color: white;
+    max-width: 1550px;
+    min-width: 640px;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05); /* Tương đương với shadow-lg */
+}
+
+/* Main panel content */
+.filter-panel-content {
+    background-color: white;
+    padding: 24px; /* 1.5rem = 24px */
+    border-radius: 8px; /* 0.5rem = 8px */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow */
+    width: 384px; /* 24rem = 384px */
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* 1.5rem = 24px */
+}
+
+.text-right {
+    text-align: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+/* Title */
+.filter-title {
+    font-size: 18px; /* 1.125rem = 18px */
+    font-weight: 600;
+    color: #4B5563; /* Gray-700 */
+}
+
+/* Section layout */
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* 0.25rem = 4px */
+}
+
+.filter-label {
+    font-size: 14px; /* 0.875rem = 14px */
+    color: #4B5563; /* Gray-600 */
+}
+
+/* Input styling */
+.filter-input {
+    border: 1px solid #D1D5DB; /* Gray-300 border */
+    border-radius: 4px; /* 0.25rem = 4px */
+    width: 100%;
+    padding: 8px 16px; /* Padding inside the input */
+    font-size: 16px; /* Base font size */
+}
+
+/* Date range section styling */
+.filter-date-range {
+    display: flex;
+    gap: 16px; /* 1rem = 16px */
+}
+
+.date-box {
+    flex: 1;
+}
+
+.filter-date-input {
+    border: 1px solid #D1D5DB;
+    border-radius: 4px;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+}
+
+/* Checkbox group styling */
+.filter-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 0.5rem = 8px */
+}
+
+.filter-checkbox {
+    margin-right: 8px;
+}
+
+/* Button styling */
+.filter-button-container {
+    text-align: right;
+}
+
+.filter-apply-button {
+    background-color: #2F6BFF; /* Custom blue color */
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.filter-apply-button:hover {
+    background-color: #1E50B3; /* Darker blue for hover */
+}
+
+.notifications-container {
+    border-bottom: 1px solid #e5e7eb;
+    margin-top: 59px;
+    margin-bottom: auto;
+    max-width: 1060px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 38px;
+    justify-content: center;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.notification-item {
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    max-width: 1060px;
+    height: 225px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+}
+
+.notification-title {
+    color: #1E50BD;
+    max-width: 1060px;
+    /*font-family: Poppins;*/
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.notification-meta {
+    color: rgba(0, 0, 0, 0.38);
+    max-width: 1060px;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.notification-content {
+    color: #000000;
+    width: 100%;
+    max-width: 1060px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.btn {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 40px;
+}
+
+.btn-edit {
+    background-color: #2F6BFF;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-edit:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-delete {
+    background-color: #dc2626;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #b91c1c;
+}

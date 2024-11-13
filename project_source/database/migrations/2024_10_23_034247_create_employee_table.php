@@ -11,25 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('EMPLOYEE', function (Blueprint $table) {
-            $table->increments('EMP_ID');
-            $table->integer('EMP_ACC_ID')->unsigned();
-            $table->integer('EMP_MANAGER_ID')->unsigned();
-            $table->bigInteger('EMP_CITIZEN_ID');
-//            $table->string('EMP_NAME', 50);
-            $table->dateTime('EMP_DOB');
-            $table->tinyInteger('EMP_GENDER');
-            $table->tinyInteger('EMP_TYPE');
+        Schema::create('employees', function (Blueprint $table) {
+            $table->increments('id');
+            $table->bigInteger('user_id')->unsigned();
+            $table->integer('manager_id')->unsigned()->nullable();
+            $table->bigInteger('citizen_id');
+            $table->dateTime('dob');
+            $table->enum('gender', ['male', 'female']);
+            $table->enum('type', ['admin', 'building manager', 'accountant']); // enum
+            $table->timestamps();
 
-            $table->foreign('EMP_ACC_ID')->references('ACC_ID')->on('ACCOUNT')->onDelete('cascade');
-            $table->foreign('EMP_MANAGER_ID')->references('EMP_ID')->on('EMPLOYEE')->onDelete('cascade');
-
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('manager_id')->references('id')->on('employees')->onDelete('cascade');
         });
-
-        DB::statement('ALTER TABLE EMPLOYEE ADD CONSTRAINT check_employee_gender CHECK (EMP_GENDER IN (0, 1))');
-        // 0: nu, 1: nam
-        DB::statement('ALTER TABLE EMPLOYEE ADD CONSTRAINT check_employee_type CHECK (EMP_TYPE IN (0, 1, 2))');
-        // 0: ADMIN, 1: BUILDING MANAGER, 2: ACCOUNTANT
     }
 
     /**
@@ -37,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee');
+        Schema::dropIfExists('employees');
     }
 };

@@ -33,10 +33,10 @@ class DatabaseSeeder extends Seeder
 
         User::factory(50)->create();
         Notification::factory(10)->create();
-        Student::factory(100)->create();
-        Building::factory(10)->create();
-        Room::factory(200)->create();
-        Residence::factory(100)->create();
+//        Student::factory(100)->create();
+//        Building::factory(10)->create();
+//        Room::factory(200)->create();
+//        Residence::factory(100)->create();
 
         User::factory()->create([
             'name' => 'Châu Minh Trí',

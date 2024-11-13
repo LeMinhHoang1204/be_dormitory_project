@@ -61,3 +61,23 @@ function displayRoom() {
 document.addEventListener("DOMContentLoaded", function () {
     displayRoom();
 });
+
+// function toggleFilter() {
+//     const filterPanel = document.getElementById('filter-panel');
+//     if (filterPanel.style.display === 'none' || filterPanel.style.display === '') {
+//         filterPanel.style.display = 'flex';
+//     } else {
+//         filterPanel.style.display = 'none';
+//     }
+// }
+
+// click vào biểu tượng filter thì hiện ra filter panel giữa trang
+function toggleFilter() {
+    const filterPanel = document.querySelector('.filter-panel');
+    if (filterPanel.style.display === 'none' || filterPanel.style.display === '') {
+        filterPanel.style.display = 'block';
+    } else {
+        filterPanel.style.display = 'none';
+    }
+}
+

@@ -28,7 +28,7 @@
                         <div class="justify-content-between" style=" display: flex; width: 90%; align-items: center;">
                             <input type="text" class="form-control" placeholder="Username" style="width:70%;  ">
                             <div style="width:90px !important;">
-                                <u class="send_code">Sencode</u>
+                                <u class="send_code">Sendcode</u>
                             </div>
                         </div>
 

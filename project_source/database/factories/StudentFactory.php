@@ -17,8 +17,10 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
-        return [
+        $studentUserIds = User::where('role', 'student')->pluck('id')->toArray();
 
+        return [
+            'user_id' => $this->faker->randomElement($studentUserIds),
             'uni_id' => $this->faker->unique()->numberBetween(1000, 9999),
             'uni_name' => $this->faker->name(),
             'dob' => $this->faker->dateTimeBetween('-25 years', '-18 years'),

@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('12345678'), // Use a secure password
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'role' => 'building-manager',
+            'role' => 'building manager',
         ]);
 
         User::factory()->create([

@@ -124,6 +124,7 @@ function closeConfirm() {
     }
 }
 
+
 // Đóng confirm panel và overlay khi nhấn ra ngoài
 document.querySelector('.overlay2').addEventListener('click', closeConfirm);
 
@@ -131,34 +132,129 @@ document.querySelector('.overlay2').addEventListener('click', closeConfirm);
 document.querySelector('.confirm-regis .no-btn').addEventListener('click', closeConfirm);
 
 // Nhấn mở confirm panel
-document.querySelector('.change-button').addEventListener('click', toggleConfirm);
+document.getElementById("room-list").addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('change-button')) {
+        toggleConfirm();
+    }
+});
 
-// Hiện success panel sau khi nhấn "Yes" trong confirm-regis
-function showSuccessPanel() {
-    // Ẩn confirm-regis panel
+
+// document.querySelector('.yes-btn').addEventListener('click', showSuccessPanel);
+//
+// // Hiện success panel sau khi nhấn "Yes" trong confirm-regis
+// function showSuccessPanel() {
+//     const confirmPanel = document.querySelector('.confirm-regis');
+//     const successPanel = document.querySelector('.success-panel');
+//     const overlay2 = document.querySelector('.overlay2');
+//
+//     if (confirmPanel && successPanel && overlay2) {
+//         confirmPanel.classList.remove('active');
+//         successPanel.classList.add('active');
+//         overlay2.classList.add('active'); // Ensure overlay2 remains active
+//     }
+// }
+//
+// // Đóng tất cả các panel và overlay khi nhấn "Continue" hoặc overlay
+// function closeAllPanels() {
+//     const confirmPanel = document.querySelector('.confirm-regis');
+//     const successPanel = document.querySelector('.success-panel');
+//     const overlay2 = document.querySelector('.overlay2');
+//
+//     if (confirmPanel && successPanel && overlay2) {
+//         confirmPanel.classList.remove('active');
+//         successPanel.classList.remove('active');
+//         overlay2.classList.remove('active');
+//     }
+// }
+//
+// // Sự kiện khi nhấn vào nút "Yes" (để hiển thị success panel)
+// document.querySelector('.confirm-regis .yes-btn').addEventListener('click', showSuccessPanel);
+//
+// // Sự kiện khi nhấn vào overlay hoặc nút "Continue" (để đóng tất cả các panel)
+// document.querySelector('.overlay2').addEventListener('click', closeAllPanels);
+// document.querySelector('.success-panel .continue-btn').addEventListener('click', closeAllPanels);
+
+
+// Hiển thị confirm-info-container khi nhấn "Yes" trong confirm-regis
+function showConfirmInfoContainer() {
     const confirmPanel = document.querySelector('.confirm-regis');
-    const successPanel = document.querySelector('.success-panel');
+    const confirmInfoContainer = document.querySelector('.confirm-info-container');
     const overlay2 = document.querySelector('.overlay2');
 
-    if (confirmPanel && successPanel && overlay2) {
-        confirmPanel.classList.remove('active');
-        successPanel.classList.add('active');
-        overlay2.classList.add('active'); // Ensure overlay2 remains active
+    if (confirmPanel && confirmInfoContainer && overlay2) {
+        confirmPanel.classList.remove('active'); // Ẩn confirm-regis
+        confirmInfoContainer.classList.add('active'); // Hiển thị popup confirm-info-container
+        overlay2.classList.add('active'); // Hiển thị overlay
     }
 }
 
-// Đóng success panel khi nhấn "Continue"
-function closePanel() {
+// Hiển thị success-panel khi nhấn "Confirm" trong confirm-info-container
+function showSuccessPanel() {
+    const confirmInfoContainer = document.querySelector('.confirm-info-container');
     const successPanel = document.querySelector('.success-panel');
     const overlay2 = document.querySelector('.overlay2');
 
-    if (successPanel && overlay2) {
-        successPanel.classList.remove('active');
-        overlay2.classList.remove('active');
+    if (confirmInfoContainer && successPanel && overlay2) {
+        confirmInfoContainer.classList.remove('active'); // Ẩn confirm-info-container
+        successPanel.classList.add('active'); // Hiển thị success-panel
+        overlay2.classList.add('active'); // Overlay vẫn hiển thị
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+
+// Hiển thị success-panel khi nhấn "Confirm" trong confirm-info-container
+function showSuccessPanel() {
+    // Lưu trạng thái form đã được gửi vào sessionStorage
+    sessionStorage.setItem("formSubmitted", "true");
+
+    const confirmInfoContainer = document.querySelector('.confirm-info-container');
+    const successPanel = document.querySelector('.success-panel');
+    const overlay2 = document.querySelector('.overlay2');
+
+    if (confirmInfoContainer && successPanel && overlay2) {
+        confirmInfoContainer.classList.remove('active'); // Ẩn confirm-info-container
+        successPanel.classList.add('active'); // Hiển thị success-panel
+        overlay2.classList.add('active'); // Overlay vẫn hiển thị
+    }
+
+    // Gửi form sau khi xác nhận thành công
+    document.querySelector('.confirm-info-form').submit();
+}
+
+// Ẩn tất cả popup và overlay khi nhấn vào "Continue" hoặc overlay
+function closeAllPanels() {
+    const confirmPanel = document.querySelector('.confirm-regis');
+    const confirmInfoContainer = document.querySelector('.confirm-info-container');
+    const successPanel = document.querySelector('.success-panel');
+    const overlay2 = document.querySelector('.overlay2');
+
+    if (confirmPanel && confirmInfoContainer && successPanel && overlay2) {
+        confirmPanel.classList.remove('active'); // Ẩn confirm-regis
+        confirmInfoContainer.classList.remove('active'); // Ẩn confirm-info-container
+        successPanel.classList.remove('active'); // Ẩn success-panel
+        overlay2.classList.remove('active'); // Ẩn overlay
+    }
+}
+
+// Sự kiện khi nhấn vào nút "Yes"
+document.querySelector('.confirm-regis .yes-btn').addEventListener('click', showConfirmInfoContainer);
+
+// Sự kiện khi nhấn vào nút "Confirm"
+document.querySelector('.confirm-info-container button[type="submit"]').addEventListener('click', function(event) {
+    event.preventDefault();
+    console.log('Submit prevented');
+    showSuccessPanel();
+});
+
+// Sự kiện khi nhấn vào overlay hoặc "Continue"
+document.querySelector('.overlay2').addEventListener('click', closeAllPanels);
+document.querySelector('.success-panel .continue-btn').addEventListener('click', closeAllPanels);
+
+
+
+
+// Hàm để điền dữ liệu vào form ROOM APPLICATION
+document.addEventListener('DOMContentLoaded', function () {
     const inforData = {
         dormId: "A01333",
         roomId: "A101",
@@ -168,24 +264,26 @@ document.addEventListener('DOMContentLoaded', function() {
         floor: "1",
         price: "1.000.000 VND/month",
         capacity: "0/2",
+        // startDate: "2024-10-01",
         gender: "Male",
         roomType: "Male",
+        // duration: "6",
     };
-
     // Hàm để điền dữ liệu vào form ROOM APPLICATION
     function populateRoomInfo(data) {
-        document.getElementById("dorm-id").value = data.dormId;
-        document.getElementById("room-id").value = data.roomId;
-        document.getElementById("student-id").value = data.studentId;
-        document.getElementById("full-name").value = data.fullName;
-        document.getElementById("building-id").value = data.buildingId;
-        document.getElementById("floor").value = data.floor;
-        document.getElementById("price").value = data.price;
-        document.getElementById("capacity").value = data.capacity;
-        document.getElementById("start-date").value = data.startDate; // Đảm bảo định dạng ngày tháng là YYYY-MM-DD
-        document.getElementById("gender").value = data.gender;
-        document.getElementById("room-type").value = data.roomType;
-        document.getElementById("duration").value = data.duration; // Đảm bảo rằng combobox duration có ID 'duration'
+        console.log("Populating data..."); // Debug
+        document.getElementById("dorm-id").value = data.dormId || "";
+        document.getElementById("room-id").value = data.roomId || "";
+        document.getElementById("student-id").value = data.studentId || "";
+        document.getElementById("full-name").value = data.fullName || "";
+        document.getElementById("building-id").value = data.buildingId || "";
+        document.getElementById("floor").value = data.floor || "";
+        document.getElementById("price").value = data.price || "";
+        document.getElementById("capacity").value = data.capacity || "";
+        document.getElementById("start-date").value = data.startDate || "";
+        document.getElementById("gender").value = data.gender || "";
+        document.getElementById("room-type").value = data.roomType || "";
+        document.getElementById("duration").value = data.duration || "";
     }
 
     // Gọi hàm để điền dữ liệu vào form

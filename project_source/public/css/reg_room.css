@@ -86,6 +86,7 @@ body {
     border-radius: 8px;
     border: none;
     font-size: 16px;
+
 }
 
 .search-input {
@@ -465,18 +466,21 @@ margin: auto 10px auto auto;
 .apply-button {
     display: inline-block;
     padding: 10px 20px;
-    margin-top: 10px;
+    margin-top: auto;
     margin-right: auto;
     background-color: #007bff; /* Màu xanh */
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
     transition: background-color 0.3s ease;
 
+    font-family: Poppins;
+    font-style: normal;
+    line-height: normal;
 }
 
 .apply-button:hover {
@@ -553,14 +557,15 @@ margin-top: 30px;
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
+    width: fit-content;
+    position: relative;
+    left: 45%;
 }
 
 .success-panel button:hover {
     background-color: #2558d1;
 }
-.hidden {
-    display: none;
-}
+
 .confirm-regis {
     display: flex;
     position: fixed;
@@ -582,6 +587,9 @@ margin-top: 30px;
     justify-content: center;
     display: none;
 }
+.hidden {
+    display: none;
+}
 
 .overlay2 {
     position: fixed;
@@ -595,12 +603,21 @@ margin-top: 30px;
     justify-content: center;
     align-items: center;
 }
-.success-panel {
-    display: none;
+
+
+.confirm-regis,
+.success-panel,
+.confirm-info-container {
+    display: none; /* Initially hidden */
 }
+
+.overlay2.active,
+.confirm-info-container.active,
+.confirm-regis.active,
 .success-panel.active {
-    display: flex; /* Show when active */
+    display: grid; /* Show when active */
 }
+
 .confirm-regis h2 {
     margin-bottom: 30px;
     margin-top: 50px;
@@ -645,21 +662,44 @@ margin-top: 30px;
 
 /* Container for the confirmation form */
 .confirm-info-container {
-    width: 60%;
-    margin: 30px auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
     background-color: #fff;
     padding: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
     font-family: 'Arial', sans-serif;
+    margin: 50px auto 20px auto;
+
+
 }
 
 /* Header section */
 .confirm-info-header h2 {
     text-align: center;
-    color: #007bff;
-    font-size: 28px;
+    justify-self: center;
+
+    /*color: #007bff;*/
+    /*font-size: 28px;*/
     margin-bottom: 30px;
+    border-radius: 20px;
+    background: #2F6BFF;
+    display: flex;
+    width: 350px;
+    height: 50px;
+    flex-direction: column;
+    flex-shrink: 0;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
 
 /* Body section */
@@ -722,15 +762,21 @@ margin-top: 30px;
 
 /* Footer button styles */
 .confirm-info-footer button {
-    background-color: #007bff;
+    color: #FFF;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
     color: white;
-    font-size: 16px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
+    border: 1px;
+    border-radius: 15px;
+    background: #2F6BFF;    font-size: 20px;
     cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease;
+    height: 50px;
+    width: 120px;
+    position: relative;
+    left: 43%;
+    margin-top: 25px;
 }
 
 .confirm-info-footer button:hover {

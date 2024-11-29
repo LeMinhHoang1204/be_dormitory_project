@@ -18,12 +18,12 @@ class BuildingFactory extends Factory
      */
     public function definition(): array
     {
+        $floorNumbers = $this->faker->randomElement([10, 15, 20, 25]);
         return [
-            'building_manager_id' => User::where('role', 'building-manager')->inRandomOrder()->first()->id,
             'type' => $this->faker->randomElement(['male', 'female']),
-            'floor_numbers' => $this->faker->numberBetween(10, 20),
-            'room_numbers' => $this->faker->numberBetween(100, 500),
-            'student_count' => 0, // hoặc mặc định từ schema
+            'floor_numbers' => $floorNumbers,
+            'room_numbers' => $floorNumbers * 10,
+            'student_count' => 0, 
         ];
     }
 }

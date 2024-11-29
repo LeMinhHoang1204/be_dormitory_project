@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        User::factory(10)->create();
+
         Notification::factory(10)->create();
 //        Student::factory(100)->create();
 //        Building::factory(10)->create();
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('12345678'), // Use a secure password
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'role' => 'building-manager',
+            'role' => 'building manager',
         ]);
 
         User::factory()->create([
@@ -65,12 +65,20 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        Student::factory()->create([
-            'user_id' => '13',
-            'uni_id' => '22520464', // Set a known email
-            'uni_name' => 'UIT', // Use a secure password
-            'dob' => now(),
-            'gender' =>'male',
+//        Student::factory()->create([
+//            'user_id' => '13',
+//            'uni_id' => '22520464', // Set a known email
+//            'uni_name' => 'UIT', // Use a secure password
+//            'dob' => now(),
+//            'gender' =>'male',
+//        ]);
+
+        $this->call([
+            UserSeeder::class,
+            StudentSeeder::class,
+            EmployeeSeeder::class,
+            BuildingSeeder::class,
+            RoomSeeder::class,
         ]);
     }
 }

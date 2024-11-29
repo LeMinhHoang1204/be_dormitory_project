@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Building;
 use App\Models\Notification;
 use App\Policies\NotificationPolicy;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -28,6 +30,5 @@ class AppServiceProvider extends ServiceProvider
             return class_exists($policy = $modelClass . 'Policy') ? $policy : null;
         });
 //        Gate::policy(Notification::class, NotificationPolicy::class);
-
     }
 }

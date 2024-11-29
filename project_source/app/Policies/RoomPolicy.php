@@ -13,7 +13,7 @@ class RoomPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role == 'admin' || $user->role == 'building-manager';
+        return $user->role == 'admin' || $user->role == 'building manager';
     }
 
     /**
@@ -21,7 +21,7 @@ class RoomPolicy
      */
     public function view(User $user, Room $room): bool
     {
-        return $user->role == 'admin' || $user->role == 'building-manager';
+        return $user->role == 'admin' || $user->role == 'building manager';
     }
 
     /**
@@ -37,7 +37,7 @@ class RoomPolicy
      */
     public function update(User $user, Room $room): bool
     {
-        return $user->role == 'admin' || $user->role == 'building-manager';
+        return $user->role == 'admin' || $user->role == 'building manager';
     }
 
     /**

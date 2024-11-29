@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -32,6 +33,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Student::class, 'user_id', 'id');
     }
 
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'user_id', 'id');
+    }
+
     public function notifications()
     {
         return $this->hasMany(NotificationRecipient::class, 'user_id', 'id');
@@ -44,7 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin()
     {
-        return $this->role == 'admin';
+        return $this->role === 'admin';
     }
 
     public function object(): MorphOne

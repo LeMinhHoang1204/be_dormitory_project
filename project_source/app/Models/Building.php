@@ -15,19 +15,19 @@ class Building extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'building_manager_id',
+        'manager_id',
         'type',
         'floor_numbers',
         'room_numbers',
         'student_count'
     ];
 
-    public function manager()
+    public function managed()
     {
-        return $this->belongsTo(Employee::class, 'building_manager_id', 'id');
+        return $this->belongsTo(Employee::class, 'manager_id', 'id');
     }
 
-    public function room()
+    public function hasRooms()
     {
         return $this->hasMany(Room::class, 'building_id', 'id');
     }
@@ -36,4 +36,5 @@ class Building extends Model
     {
         return $this->morphOne(Notification::class, 'objective');
     }
+
 }

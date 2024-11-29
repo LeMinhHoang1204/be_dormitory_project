@@ -2,37 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Building;
 use App\Models\Room;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
+
 
 class RoomController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    use AuthorizesRequests;
+    public function index(Building $building)
     {
-        $rooms = Room::all();
-        return view('rooms.index', compact('rooms'));
+        if (auth()->user()->role == 'admin' ||
+            (auth()->user()->role == 'building manager' && $building->managed && $building->managed->user->id == auth()->user()->id)) {
+            $rooms = $building->hasRooms()->paginate(10);
+        }
+        else {
+            $rooms = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10);
+        }
+
+        return view('admin_rooms.list', compact('building', 'rooms'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Building $building)
     {
-        return view('rooms.create');
+        $distinctRoomTypes = $this->getAllRoomType();
+        return view('admin_rooms.create', compact('building', 'distinctRoomTypes'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoomRequest $request)
+    public function store(Request $request, Building $building)
     {
-        $validatedData = $request->validated();
+        // Validate data
+        $validatedData = $request->validate([
+            'building_id' => 'required|integer',
+            'name' => 'required|string',
+            'floor_number' => 'required|integer',
+            'type' => 'required|string',
+            'unit_price' => 'required|integer',
+        ]);
+
         Room::create($validatedData);
-        return redirect(route('rooms.index'));
+        return redirect(route('rooms.index', ['building' => $building]));
     }
 
     /**
@@ -46,19 +67,29 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Room $room)
+    public function edit(Building $building, Room $room)
     {
-        return view('rooms.edit', compact('room'));
+        $distinctRoomTypes = $this->getAllRoomType();
+        return view('admin_rooms.edit', compact('building','room', 'distinctRoomTypes'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoomRequest $request, Room $room)
+    public function update(Request $request, Building $building, Room $room)
     {
-        $validatedData = $request->validated();
+        $validatedData = $request->validate([
+            'building_id' => 'required|integer',
+            'name' => 'required|string',
+            'floor_number' => 'required|integer',
+            'type' => 'required|string',
+            'unit_price' => 'required|numeric',
+            'status' => 'required|integer',
+        ]);
+
         $room->update($validatedData);
-        return redirect(route('rooms.index'));
+
+        return redirect(route('rooms.index', ['building' => $building]));
     }
 
     /**
@@ -67,6 +98,13 @@ class RoomController extends Controller
     public function destroy(Room $room)
     {
         $room->delete();
-        return redirect(route('rooms.index'));
+        return redirect()->back();
     }
+
+    private function getAllRoomType()
+    {
+        return Room::distinct('type')->orderBy('type', 'asc')->get('type');
+    }
+
+
 }

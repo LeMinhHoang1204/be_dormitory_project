@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Student;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 
 class StudentSeeder extends Seeder
 {
@@ -19,9 +19,9 @@ class StudentSeeder extends Seeder
 
         // Tạo Student cho mỗi User
         $users->each(function ($user) {
-            Student::factory()->create([
+            Student::factory()->state([
                 'user_id' => $user->id, // Gán user_id từ User hiện tại
-            ]);
+            ])->create();
         });
     }
 }

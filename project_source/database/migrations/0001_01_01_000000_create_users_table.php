@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->boolean('status')->default(true);
-            $table->enum('role', ['admin', 'building-manager', 'accountant', 'student'])->default('student');
+            $table->enum('role', ['admin', 'building manager', 'accountant', 'student'])->default('student');
             $table->string('phone', 50)->nullable();
             $table->string('profile_image_path', 255)->nullable();
             $table->string('bio', 255)->nullable();

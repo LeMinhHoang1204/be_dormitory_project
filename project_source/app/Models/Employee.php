@@ -37,4 +37,9 @@ class Employee extends Model
     public function manager(){
         return $this->belongsTo(User::class, 'manager_id', 'id');
     }
+
+    public function manage()
+    {
+        return $this->hasOne(Building::class, 'manager_id', 'id');
+    }
 }

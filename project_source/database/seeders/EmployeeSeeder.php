@@ -15,15 +15,15 @@ class EmployeeSeeder extends Seeder
     public function run(): void
     {
         // Lấy tất cả User có vai trò là 'building manager' hoặc 'accountant'
-        $users = User::whereIn('role', ['building-manager', 'accountant'])->get();
+        $users = User::whereIn('role', ['building manager', 'accountant'])->get();
 
         // Duyệt qua từng User và tạo một Employee cho mỗi User
         $users->each(function ($user) {
-            Employee::factory()->create([
+            Employee::factory()->state([
                 'user_id' => $user->id,
                 'manager_id' => User::where('role', 'admin')->inRandomOrder()->first()->id ?? null, // Lấy admin ngẫu nhiên làm manager
                 'type' => $user->role, // Đặt type theo role của User
-            ]);
+            ])->create();
         });
     }
 }

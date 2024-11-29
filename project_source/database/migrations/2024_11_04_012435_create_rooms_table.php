@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('building_id')->unsigned();
             $table->integer('floor_number');
-            $table->tinyInteger('type'); //check
+            $table->enum('type', ['2', '4', '6', '8', '10']);
             $table->decimal('unit_price', 10, 2);
             $table->integer('member_number')->default(0);
             $table->tinyInteger('status')->default(0)->check('status IN (0, 1)');

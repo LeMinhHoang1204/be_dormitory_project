@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('buildings', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('manager_id')->unsigned();
+            $table->integer('manager_id')->unsigned()->nullable();
             $table->enum('type', ['male', 'female']);
             $table->integer('floor_numbers');
             $table->integer('room_numbers');

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Building;
-use App\Http\Requests\StoreBuildingRequest;
-use App\Http\Requests\UpdateBuildingRequest;
+use App\Models\Employee;
+use Illuminate\Http\Request;
+
 
 class BuildingController extends Controller
 {
@@ -14,7 +15,15 @@ class BuildingController extends Controller
     public function index()
     {
         $buildings = Building::all();
-        return view('buildings.index', compact('buildings'));
+
+        $managers = $this->getAvailableManagers();
+        return view('admin_buildings.list', compact('buildings', 'managers'));
+    }
+
+    public function updateManager(Request $request, Building $building)
+    {
+        $building->update(['manager_id' => $request->manager_id]);
+        return redirect()->route('buildings.index')->with('success', 'Manager updated successfully');
     }
 
     /**
@@ -22,17 +31,25 @@ class BuildingController extends Controller
      */
     public function create()
     {
-        return view('buildings.create');
+        $managers = $this->getAvailableManagers();
+        return view('admin_buildings.create', compact('managers'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBuildingRequest $request)
+    public function store(Request $request)
     {
-        $validatedData = $request->validated();
+        $validatedData = $request->validate([
+            'manager_id' => 'nullable|exists:employees,id',
+            'type' => 'required|string|max:255',
+            'floor_numbers' => 'required|integer',
+            'room_numbers' => 'required|integer',
+        ]);
+
         Building::create($validatedData);
-        return redirect(route('buildings.index'));
+
+        return redirect(route('buildings.index', absolute: false));
     }
 
     /**
@@ -40,7 +57,8 @@ class BuildingController extends Controller
      */
     public function show(Building $building)
     {
-        return view('buildings.show', compact('building'));
+        $rooms = $building->hasRooms()->where('building_id', $building->id)->get();
+        return view('admin_buildings.show', compact('building', 'rooms'));
     }
 
     /**
@@ -48,17 +66,26 @@ class BuildingController extends Controller
      */
     public function edit(Building $building)
     {
-        return view('buildings.edit', compact('building'));
+        $managers = $this->getAvailableManagers();
+        return view('admin_buildings.edit', compact('building', 'managers'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBuildingRequest $request, Building $building)
+    public function update(Request $request, Building $building)
     {
-        $validatedData = $request->validated();
+
+        $validatedData = $request->validate([
+            'manager_id' => 'nullable|exists:employees,id',
+            'type' => 'required|in:male,female',
+            'floor_numbers' => 'required|integer',
+            'room_numbers' => 'required|integer',
+        ]);
+
         $building->update($validatedData);
-        return redirect(route('buildings.index'));
+
+        return redirect(route('buildings.index', absolute: false));
     }
 
     /**
@@ -67,6 +94,13 @@ class BuildingController extends Controller
     public function destroy(Building $building)
     {
         $building->delete();
-        return redirect(route('buildings.index'));
+        return redirect(route('buildings.index', absolute: false));
+    }
+
+    private function getAvailableManagers()
+    {
+        return Employee::where('type', 'building manager')
+            ->whereNotIn('id', Building::pluck('manager_id')->filter())
+            ->get();
     }
 }

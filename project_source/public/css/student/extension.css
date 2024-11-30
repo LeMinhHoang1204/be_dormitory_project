@@ -1,0 +1,68 @@
+body {
+    background-color: #f9fafc;
+    font-family: "Poppins", sans-serif;
+    color: #3c3c3c;
+}
+
+.container-fluid.layout {
+    background-color: #fff;
+    padding: 10px 0;
+}
+
+.extension {
+    max-width: 60%;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 6px 4px 0px #ECEFFF;
+    border-radius: 20px;
+}
+
+.heading {
+    font-family: Inter;
+
+    color: #0e3b9c;
+    font-size: 47px;
+    font-weight: 700;
+}
+
+.section-title {
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #2F6BFF;
+    margin-top: 20px;
+}
+
+.current-room-info {
+    background-color: #F1F1F1;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.current-room-info p {
+    margin: 5px 0;
+}
+
+.btn-complete {
+    background-color: #2F6BFF;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+}
+
+.dropdown-item {
+    color: #0E3B9C;
+    font-weight: normal;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+.message-alert {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #d7242a;
+    /*text-align: center;*/
+    margin-top: 20px;
+}

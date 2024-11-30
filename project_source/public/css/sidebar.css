@@ -88,21 +88,6 @@
     font-weight: 400;
 }
 
-/*#sidebar .menu-item .submenu a {*/
-/*    font-size: 15px;*/
-/*    color: var(--Gray-600, #1C1C1C);*/
-/*    font-family: 'Inter', sans-serif;*/
-/*    font-weight: 400;*/
-/*}*/
-/*#sidebar .menu-item.has-submenu .submenu {*/
-/*    display: none;*/
-/*    padding-left: 20px;*/
-/*}*/
-
-/*#sidebar:hover .menu-item.has-submenu:hover .submenu {*/
-/*    display: block;*/
-/*}*/
-
 /* Mặc định, submenu ẩn đi */
 #sidebar .menu-item.has-submenu .submenu {
     display: none;
@@ -137,8 +122,9 @@
 }
 /* Các item trong submenu */
 #sidebar .menu-item .submenu a {
-    padding: 10px;
+    padding: 15px;
     display: block;
+    margin-left: 35px;
     font-size: 14px;
     color: var(--Gray-600, #1C1C1C);
     font-family: 'Inter', sans-serif;

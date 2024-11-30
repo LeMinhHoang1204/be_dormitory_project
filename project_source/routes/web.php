@@ -23,6 +23,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+//// Route hiển thị trang gia hạn phòng
+//Route::get('/student/room/extension', [RoomController::class, 'showRoomExtensionForm'])->middleware('auth')->name('student.room.extension');
+//// Route xử lý khi người dùng gửi form gia hạn
+//Route::post('/student/room/extension', [RoomController::class, 'extendRoomContract'])->middleware('auth')->name('student.room.extension.submit');
+Route::get('/student/extension', [RoomController::class, 'showRoomExtensionForm'])->middleware('auth');
+
+
 require __DIR__.'/auth.php';
 require __DIR__ .'/api/building-room.php';
 require __DIR__.'/api/notification.php';

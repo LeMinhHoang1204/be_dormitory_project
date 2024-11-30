@@ -41,4 +41,12 @@ class Student extends Model
     public function residence(){
         return $this->hasMany(Residence::class, 'stu_id', 'id');
     }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class, 'residences', 'stu_id', 'room_id')
+            ->withPivot('start_date', 'end_date', 'check_out_date', 'status', 'note')
+            ->withTimestamps();
+    }
+
 }

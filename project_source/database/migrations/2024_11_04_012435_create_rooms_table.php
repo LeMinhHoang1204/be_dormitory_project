@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+
             $table->integer('building_id')->unsigned();
             $table->integer('floor_number');
             $table->enum('type', ['2', '4', '6', '8', '10']);

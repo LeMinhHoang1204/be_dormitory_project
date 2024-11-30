@@ -8,6 +8,7 @@ use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class RoomController extends Controller
@@ -107,4 +108,58 @@ class RoomController extends Controller
     }
 
 
+    public function showRoomExtensionForm()
+    {
+        // Kiểm tra nếu người dùng không phải là student thì chuyển hướng về home
+        if (auth()->check() && auth()->user()->role !== 'student') {
+            return redirect()->route('home'); // Chuyển hướng nếu không phải sinh viên
+        }
+
+        // Lấy thông tin sinh viên từ user
+        $student = auth()->user()->student;
+
+        // Kiểm tra nếu không có sinh viên liên kết
+        if (!$student) {
+            // Nếu không có thông tin sinh viên, vẫn hiển thị trang extension
+            return view('/student/extension', ['message' => 'You do not have room, register!']);        }
+
+        // Lấy thông tin phòng của sinh viên
+        $studentRoom = $student->rooms()->first(); // Truy xuất phòng của sinh viên
+
+//        // Nếu không tìm thấy phòng, hiển thị thông báo
+//        if (!$studentRoom) {
+//            return view('/student/extension', ['message' => 'No room found for this student.']);
+//        }
+
+        // Nếu có phòng, hiển thị phòng
+        return view('/student/extension', compact('studentRoom'));
+    }
+
+
+
+
+
+//
+//    public function extendRoomContract(Request $request)
+//    {
+//        // Lấy thông tin phòng của người dùng
+//        $room = Room::where('user_id', auth()->id())->first();
+//
+//        // Validate dữ liệu gửi từ form
+//        $validatedData = $request->validate([
+//            'renewal-period' => 'required|in:3,6,9,12',
+//            'description' => 'nullable|string|max:255',
+//        ]);
+//
+//        // Cập nhật ngày hết hạn hợp đồng
+//        $newExpiryDate = now()->addMonths($validatedData['renewal-period']);
+//        $room->expiry_date = $newExpiryDate;
+//        $room->description = $validatedData['description'] ?? $room->description;
+//
+//        // Lưu lại thông tin đã cập nhật
+//        $room->save();
+//
+//        // Trả về thông báo thành công
+//        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
+//    }
 }

@@ -40,7 +40,7 @@
             <ul class="submenu">
                 <li><a href="{{ url('/regis-test') }}">Register</a></li>
                 <li><a href="#">Change</a></li>
-                <li><a href="#">Renew</a></li>
+                <li><a href="/student/extension">Extension</a></li>
                 <li><a href="#">Check-out</a></li>
             </ul>
         </li>
@@ -62,23 +62,6 @@
 @endif
 
 <script>
-    // document.addEventListener("DOMContentLoaded", () => {
-    //     document.querySelectorAll(".menu-item.has-submenu").forEach(item => {
-    //         item.addEventListener("mouseenter", () => {
-    //             const submenu = item.querySelector(".submenu");
-    //             if (submenu) submenu.style.display = "block";
-    //             const nextItems = item.nextElementSibling;
-    //             if (nextItems) nextItems.style.transform = "translateY(100%)";
-    //         });
-    //         item.addEventListener("mouseleave", () => {
-    //             const submenu = item.querySelector(".submenu");
-    //             if (submenu) submenu.style.display = "none";
-    //             const nextItems = item.nextElementSibling;
-    //             if (nextItems) nextItems.style.transform = "translateY(0)";
-    //         });
-    //     });
-    // });
-
 
     document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".menu-item.has-submenu").forEach(item => {
@@ -87,7 +70,7 @@
                 if (submenu) submenu.style.display = "block";
                 let nextItem = item.nextElementSibling;
                 while (nextItem) {
-                    nextItem.style.transform = "translateY(250%)";
+                    nextItem.style.transform = "translateY(300%)";
                     nextItem = nextItem.nextElementSibling;
                 }
             });

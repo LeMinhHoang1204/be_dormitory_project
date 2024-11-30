@@ -1,7 +1,9 @@
 @extends('Auth_.index')
 
 <head>
-        <script src="{{ asset('./reg_room.js')}}"></script>
+    <title>Room Registration</title>
+
+    <script src="{{ asset('./reg_room.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('./css/reg_room.css') }}" type="text/css">
 </head>
 

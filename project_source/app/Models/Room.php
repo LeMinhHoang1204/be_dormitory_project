@@ -38,4 +38,6 @@ class Room extends Model
     {
         return $this->morphOne(Notification::class, 'objective');
     }
+
+
 }

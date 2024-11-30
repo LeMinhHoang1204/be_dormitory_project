@@ -2,7 +2,12 @@
     <link rel="stylesheet" href="{{ asset('./css/sidebar.css') }}" type="text/css">
 </head>
 
+@if (auth()->check() && auth()->user()->role === 'student')
+
 <div id="sidebar" class="sidebar">
+
+{{--    Sidebar cho Student--}}
+
     <div class="logo">
         <span class="icon">📦</span>
         <span class="text">VIP Dormitory</span>
@@ -10,7 +15,7 @@
     <input type="text" class="search" placeholder="Search">
     <ul class="menu">
         <li class="menu-item">
-            <a href="#">
+            <a href="{{ url('/home') }}">
                 <span class="icon">🏠</span>
                 <span class="text">Home</span>
             </a>
@@ -52,7 +57,9 @@
             </a>
         </li>
     </ul>
+
 </div>
+@endif
 
 <script>
     // document.addEventListener("DOMContentLoaded", () => {

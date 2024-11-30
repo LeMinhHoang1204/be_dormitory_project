@@ -3,6 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BuildingController;
+
+
+Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
+Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
 
 Route::get('/', function () {
     return view('home');

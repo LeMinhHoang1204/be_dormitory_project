@@ -21,6 +21,9 @@
 </script>
 
 <x-app-layout>
+
+    @include('layouts.sidebar_student')
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}

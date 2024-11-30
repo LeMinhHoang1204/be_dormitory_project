@@ -1,0 +1,156 @@
+#sidebar {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 80px;
+    height: 100%;
+    background: #fff;
+    border-right: 1px solid #ddd;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    /*border-radius: 20px;*/
+
+}
+
+#sidebar:hover {
+    width: 250px;
+}
+
+#sidebar .logo {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+#sidebar .logo .text {
+    margin-left: 10px;
+    display: none;
+
+    color: var(--Gray-600, #1C1C1C);
+
+    /* Medium/Subtitle */
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 122.222% */
+}
+
+#sidebar .logo .icon {
+    font-size: 40px;
+}
+#sidebar:hover .logo .text {
+    display: block;
+}
+
+#sidebar .search {
+    display: none;
+    margin: 10px 15px;
+    padding: 8px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#sidebar:hover .search {
+    display: block;
+}
+
+#sidebar .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar .menu-item {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+
+#sidebar .menu-item .icon {
+    margin-right: 10px;
+    font-size: 30px;
+}
+
+#sidebar .menu-item .text {
+    display: none;
+}
+
+#sidebar:hover .menu-item .text {
+    display: inline;
+    font-size: 16px;
+    color: var(--Gray-600, #1C1C1C);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+/*#sidebar .menu-item .submenu a {*/
+/*    font-size: 15px;*/
+/*    color: var(--Gray-600, #1C1C1C);*/
+/*    font-family: 'Inter', sans-serif;*/
+/*    font-weight: 400;*/
+/*}*/
+/*#sidebar .menu-item.has-submenu .submenu {*/
+/*    display: none;*/
+/*    padding-left: 20px;*/
+/*}*/
+
+/*#sidebar:hover .menu-item.has-submenu:hover .submenu {*/
+/*    display: block;*/
+/*}*/
+
+/* Mặc định, submenu ẩn đi */
+#sidebar .menu-item.has-submenu .submenu {
+    display: none;
+    padding-left: 20px;
+    background: #FFF;
+    border-radius: 8px;
+    box-shadow: 0px 1px 10px 0px rgba(209, 201, 235, 0.05);
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+ /*Hiển thị submenu khi hover vào menu-item*/
+#sidebar .menu-item.has-submenu:hover .submenu {
+    display: block;
+    background: #FBF8FF;
+    border-radius: 8px;
+    box-shadow: 0px 1px 10px 0px rgba(209, 201, 235, 0.05);
+}
+
+/* Menu item khi hover */
+#sidebar .menu-item.has-submenu:hover {
+    background: #FBF8FF; /* Màu nền cho menu-item khi hover */
+    border-radius: 8px;
+}
+#sidebar .menu-item:hover {
+    background: #FBF8FF; /* Màu nền cho menu-item khi hover */
+    border-radius: 8px;
+}
+/* Các item trong submenu */
+#sidebar .menu-item .submenu a {
+    padding: 10px;
+    display: block;
+    font-size: 14px;
+    color: var(--Gray-600, #1C1C1C);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+/* Hover trên các item trong submenu */
+#sidebar .menu-item .submenu a:hover {
+    background: #E8D8F9;
+    border-radius: 8px;
+}
+#sidebar .menu-item.has-submenu:hover ~ .menu-item {
+    transition: transform 0.2s ease;
+}

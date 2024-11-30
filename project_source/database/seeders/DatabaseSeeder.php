@@ -89,7 +89,5 @@ class DatabaseSeeder extends Seeder
             'dob' => now(),
             'gender' =>'male',
         ]);
-
-
     }
 }

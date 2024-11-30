@@ -103,4 +103,5 @@ class BuildingController extends Controller
             ->whereNotIn('id', Building::pluck('manager_id')->filter())
             ->get();
     }
+
 }

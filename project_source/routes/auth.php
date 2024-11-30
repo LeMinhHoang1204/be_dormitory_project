@@ -77,3 +77,11 @@ Route::get('/home', function () {
 Route::get('/home', function () {
     return view('home');  // Trang home sẽ được hiển thị
 })->name('home');
+
+
+
+Route::get('/buildings/create', function () {
+    return view('/admin_buildings/create');
+});
+
+//Route::get('/admin_building/create', [BuildingController::class, 'managers']);

@@ -44,6 +44,7 @@ class Student extends Model
 
     public function rooms()
     {
+//        Many-to-many giữa student và room thông qua residences
         return $this->belongsToMany(Room::class, 'residences', 'stu_id', 'room_id')
             ->withPivot('start_date', 'end_date', 'check_out_date', 'status', 'note')
             ->withTimestamps();

@@ -46,6 +46,27 @@ body {
     margin: 10px; /* Xóa margin để căn chỉnh sát mép trái */
     /*border: 1px solid;*/
 }
+
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+/* Bo góc cho modal */
+.modal-content {
+    border-radius: 15px; /* Điều chỉnh giá trị này để bo góc theo ý muốn */
+}
+
+/* Thêm bóng cho modal */
+.modal-dialog {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Thêm viền cho hình ảnh */
+.modal-body img {
+    border: 2px solid #005D4D; /* Màu viền */
+    border-radius: 10px; /* Bo góc cho hình ảnh */
+}
+
 .res-certifi svg{
     position: absolute; /* Đặt tiêu đề tuyệt đối trong khung .regisster */
     bottom: 0;

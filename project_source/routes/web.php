@@ -30,6 +30,15 @@ Route::middleware('auth')->group(function () {
 //Route::post('/student/room/extension', [RoomController::class, 'extendRoomContract'])->middleware('auth')->name('student.room.extension.submit');
 Route::get('/student/extension', [RoomController::class, 'showRoomExtensionForm'])->middleware('auth');
 
+Route::middleware(['auth'])->group(function () {
+    // Hiển thị trang Checkout
+    Route::get('student/checkout', [RoomController::class, 'showCheckOutPage'])->name('student.checkout');
+
+//     Xử lý yêu cầu Leave
+    Route::post('student/leave-request', [RoomController::class, 'leaveRequest'])->name('student.leave');
+});
+Route::get('/student/leave', [RoomController::class, 'leave'])->name('student.leave');
+
 
 require __DIR__.'/auth.php';
 require __DIR__ .'/api/building-room.php';

@@ -107,36 +107,77 @@ class RoomController extends Controller
         return Room::distinct('type')->orderBy('type', 'asc')->get('type');
     }
 
-
     public function showRoomExtensionForm()
+    {
+        // 1. Kiểm tra quyền truy cập
+        if (auth()->check() && auth()->user()->role !== 'student') {
+            return redirect()->route('home')->with('error', 'Access denied.');
+        }
+
+        // 2. Lấy thông tin sinh viên từ người dùng hiện tại
+        $user = auth()->user();
+        $student = $user->student;
+
+        if (!$student) {
+            // Nếu không có thông tin sinh viên
+            return view('student.extension', ['message' => 'You do not have a registered room. Please register!']);
+        }
+
+        // 3. Lấy thông tin phòng hiện tại của sinh viên
+        $studentRoom = $student->residences()
+            ->where('status', 'Da nhan phong')
+            ->join('rooms', 'residences.room_id', '=', 'rooms.id')
+            ->select('rooms.name as room_name', 'rooms.unit_price', 'residences.end_date')
+            ->first();
+
+        // 4. Kiểm tra nếu sinh viên chưa có phòng
+        if (!$studentRoom) {
+            return view('student.extension', ['message' => 'No active room found. Please contact the management.']);
+        }
+
+        // 5. Trả dữ liệu về view
+        return view('student.extension', compact('studentRoom'));
+    }
+
+
+// TODO: Xử lý trang check out.
+
+    public function showCheckOutPage()
     {
         // Kiểm tra nếu người dùng không phải là student thì chuyển hướng về home
         if (auth()->check() && auth()->user()->role !== 'student') {
             return redirect()->route('home'); // Chuyển hướng nếu không phải sinh viên
         }
 
-        // Lấy thông tin sinh viên từ user
-        $student = auth()->user()->student;
+        // Lấy thông tin sinh viên từ cơ sở dữ liệu
+        $student = Auth::user()->student;
 
-        // Kiểm tra nếu không có sinh viên liên kết
+        // Kiểm tra nếu không có thông tin sinh viên
         if (!$student) {
-            // Nếu không có thông tin sinh viên, vẫn hiển thị trang extension
-            return view('/student/extension', ['message' => 'You do not have room, register!']);        }
+            return view('student.checkout', ['message' => 'You do not have a room, register!']);
+        }
 
         // Lấy thông tin phòng của sinh viên
-        $studentRoom = $student->rooms()->first(); // Truy xuất phòng của sinh viên
+        $studentRoom = $student->rooms()->first();
 
-//        // Nếu không tìm thấy phòng, hiển thị thông báo
-//        if (!$studentRoom) {
-//            return view('/student/extension', ['message' => 'No room found for this student.']);
-//        }
+        // Nếu sinh viên không có phòng, chuyển hướng hoặc hiển thị thông báo
+        if (!$studentRoom) {
+            return view('student.checkout', ['message' => 'No room found for this student.']);
+        }
 
-        // Nếu có phòng, hiển thị phòng
-        return view('/student/extension', compact('studentRoom'));
+        // Trả về trang checkout với thông tin sinh viên và phòng
+        return view('student.checkout', compact('student', 'studentRoom'));
     }
 
+    public function leaveRequest()
+    {
+        // Thực hiện xử lý khi nhấn "Leave" gửi yêu cầu checkout
 
+        // Lưu thông tin yêu cầu checkout vào cơ sở dữ liệu hoặc gửi email thông báo
 
+        // Chuyển hướng về trang checkout và hiển thị thông báo yêu cầu đã được gửi
+        return redirect()->route('student.checkout')->with('message', 'Request sent');
+    }
 
 
 //

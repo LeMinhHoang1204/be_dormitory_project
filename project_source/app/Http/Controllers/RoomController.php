@@ -180,6 +180,64 @@ class RoomController extends Controller
     }
 
 
+
+    // Xử lý yêu cầu sửa chữa
+    public function repairRequest()
+    {
+        if (auth()->check() && auth()->user()->role !== 'student') {
+            return redirect()->route('home'); // Chuyển hướng nếu không phải sinh viên
+        }
+
+        // Lấy thông tin người dùng đang đăng nhập
+        $user = auth()->user();
+
+
+        // Lấy thông tin sinh viên
+        $student = Auth::user()->student;
+        // Giả lập dữ liệu phòng khi sinh viên chưa đăng ký phòng nào
+        $studentRoom = null;
+        if ($user->student && $user->student->rooms()->exists()) {
+            // Nếu sinh viên đã có phòng, lấy thông tin phòng
+            $studentRoom = $user->student->rooms()->first();
+        } else {
+            // Nếu sinh viên chưa có phòng, tạo dữ liệu giả để hiển thị
+            $studentRoom = (object) [
+                'room_name' => 'Room 101',
+                'unit_price' => 1000000,
+                'end_date' => '2024-12-31',
+            ];
+        }
+
+        return view('.student.repair', compact('studentRoom'));
+//        if (!$student) {
+//            return view('student.repair', ['message' => 'You do not have a room, register!']);
+//        }
+//
+//        // Kiểm tra xem sinh viên có đang ở trong phòng nào không (qua bảng `residences`)
+//        $residence = DB::table('residences')
+//            ->where('stu_id', $student->id)
+//            ->where('status', 'Da nhan phong') // Tìm những sinh viên đã nhận phòng
+//            ->first();
+//
+//        if (!$residence) {
+//            return redirect()->route('dashboard')->with('message', 'Bạn chưa nhận phòng hoặc chưa đủ điều kiện yêu cầu sửa chữa.');
+//        }
+//
+//        // Lấy thông tin phòng từ bảng `rooms` thông qua `room_id` trong bảng `residences`
+//        $room = DB::table('rooms')->where('id', $residence->room_id)->first();
+//
+//        if (!$room) {
+//            return redirect()->route('dashboard')->with('message', 'Phòng của bạn không tồn tại.');
+//        }
+//
+//        // Hiển thị trang yêu cầu sửa chữa với thông tin phòng
+//        return view('student.repair-request', [
+//            'room' => $room, // Chuyển thông tin phòng đến view
+//            'student' => $student,
+//        ]);
+    }
+
+
 //
 //    public function extendRoomContract(Request $request)
 //    {

@@ -9,12 +9,12 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <ul class="ul d-flex justify-content-between">
-                    <li><a href="{{ route('home') }}">Home</a></li> <!-- Đến trang home -->
-                    <li><a href="#">Room</a></li>
-                    <li><a href="#">Service</a></li>
-                    <li><a href="#">About</a></li>
-                </ul>
+{{--                <ul class="ul d-flex justify-content-between">--}}
+{{--                    <li><a href="{{ route('home') }}">Home</a></li> <!-- Đến trang home -->--}}
+{{--                    <li><a href="#">Room</a></li>--}}
+{{--                    <li><a href="#">Service</a></li>--}}
+{{--                    <li><a href="#">About</a></li>--}}
+{{--                </ul>--}}
             </div>
 
             <div class="col-md-3">

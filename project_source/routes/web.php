@@ -5,9 +5,19 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BuildingController;
 
-
+//Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
+//Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
+// Routes for building
+Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
 Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
 Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
+Route::get('/buildings/{building}', [BuildingController::class, 'show'])->name('buildings.show');
+Route::get('/buildings/{building}/edit', [BuildingController::class, 'edit'])->name('buildings.edit');
+Route::put('/buildings/{building}', [BuildingController::class, 'update'])->name('buildings.update');
+Route::delete('/buildings/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
+Route::put('/buildings/{building}/manager', [BuildingController::class, 'updateManager'])->name('buildings.updateManager');
+
+
 
 Route::get('/', function () {
     return view('home');
@@ -24,10 +34,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-//// Route hiển thị trang gia hạn phòng
-//Route::get('/student/room/extension', [RoomController::class, 'showRoomExtensionForm'])->middleware('auth')->name('student.room.extension');
-//// Route xử lý khi người dùng gửi form gia hạn
-//Route::post('/student/room/extension', [RoomController::class, 'extendRoomContract'])->middleware('auth')->name('student.room.extension.submit');
+
 Route::get('/student/extension', [RoomController::class, 'showRoomExtensionForm'])->middleware('auth');
 
 Route::middleware(['auth'])->group(function () {
@@ -39,7 +46,13 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/student/leave', [RoomController::class, 'leave'])->name('student.leave');
 
-
+//Trang Repair request của student
+Route::middleware(['auth'])->group(function () {
+    // Route trang yêu cầu sửa chữa
+    Route::get('/student/repair-request', [RoomController::class, 'repairRequest'])->name('repair-request');
+    // Route gửi yêu cầu sửa chữa
+    Route::post('/student/repair-request', [RoomController::class, 'storeRepairRequest'])->name('repair-request.store');
+});
 require __DIR__.'/auth.php';
 require __DIR__ .'/api/building-room.php';
 require __DIR__.'/api/notification.php';

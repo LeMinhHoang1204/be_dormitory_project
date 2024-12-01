@@ -20,7 +20,6 @@ body {
 
 .extension p {
     align-items: center;
-    margin-bottom: 25px; /* Tăng khoảng cách giữa các đoạn văn */
     font-family: Poppins;
     color: #001738;
     line-height: 1.6; /* Thêm khoảng cách giữa các dòng */

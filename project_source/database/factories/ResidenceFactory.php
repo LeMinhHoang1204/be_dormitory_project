@@ -18,19 +18,20 @@ class ResidenceFactory extends Factory
      */
     public function definition(): array
     {
+        $status = $this->faker->randomElement([
+            'Da dang ky',
+            'Da thanh toan',
+            'Da nhan phong',
+            'Da chuyen nhuong',
+            'Da tra phong'
+        ]);
+
         return [
-            'stu_id' => Student::inRandomOrder()->first()->id,
             'room_id' => Room::inRandomOrder()->first()->id,
             'start_date' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'end_date' => $this->faker->dateTimeBetween('now', '+1 years'),
-            'check_out_date' => null,
-            'status' => $this->faker->randomElement([
-                'Da dang ky',
-                'Da thanh toan',
-                'Da nhan phong',
-                'Da chuyen nhuong',
-                'Da tra phong'
-            ]),
+            'status' => $status,
+            'check_out_date' => $status === 'Da tra phong' ? $this->faker->dateTimeBetween('-1 years', 'now') : null,
             'note' => $this->faker->optional()->sentence(),
         ];
     }

@@ -10,33 +10,50 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="style_header">
-                    <h2 class="h2_header">Room Information</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="border">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="style_header">
-                                <h3 class="h3_header">Room {{ $room->name }}</h3>
-                            </div>
-                        </div>
+        <main>
+            <section class="room-info">
+                <h1>Room Information</h1>
+                <div class="room-details">
+                    <div class="room-meta">
+                        <h2>Room A101</h2>
+                        <span>Price: 800000 VND/month</span>
+                        <p>Address: Ho Chi Minh City</p>
+                        <p>Size: 30 sqm</p>
+                        <p>Floor: 3rd</p>
+                        <p>Available from: 1st November 2023</p>
+                        <button class="register-btn">Register</button>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p>Price: {{ $room->unit_price }}</p>
-                            <p>Type: {{ $room->type }}</p>
-                            <p>Floor Number: {{ $room->floor_number }}</p>
-                            <!-- Thêm các thông tin khác của phòng -->
-                        </div>
+                    <div class="room-image">
+                        <img src="room1.jpg" alt="Room Image">
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="room-description">
+                    <h3>Overview</h3>
+                    <p>The room is cozy and bright with soft cream-colored walls. A comfortable sofa sits in the center,
+                        draped with blankets. A small desk holds a laptop and papers. A bookshelf filled with books and
+                        plants adds personality. Soft lighting and a rug create a warm, inviting atmosphere.</p>
+                </div>
+                <div class="photos">
+                    <h3>Photos</h3>
+                    <div class="photo-grid">
+                        <div class="photo"></div>
+                        <div class="photo"></div>
+                        <div class="photo"></div>
+                    </div>
+                </div>
+                <div class="facilities">
+                    <h3>Facilities</h3>
+                    <ul>
+                        <li>✔ Wifi</li>
+                        <li>✔ Washing machine: 1</li>
+                        <li>✔ Water heater: 1</li>
+                        <li>✔ Air conditioning</li>
+                        <li>✔ Refrigerator</li>
+                        <li>✔ Microwave</li>
+                        <li>✔ Parking space</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
     </div>
 @endsection

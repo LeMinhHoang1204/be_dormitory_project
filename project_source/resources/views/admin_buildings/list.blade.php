@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">
     </head>
+    @include('layouts.sidebar_student')
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-blue-700 leading-tight">

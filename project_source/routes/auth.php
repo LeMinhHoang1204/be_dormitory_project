@@ -79,7 +79,7 @@ Route::get('/home', function () {
 })->name('home');
 
 
-
+//
 //Route::get('/buildings/create', function () {
 //    return view('/admin_buildings/create');
 //});

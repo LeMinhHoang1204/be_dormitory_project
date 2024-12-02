@@ -1,30 +1,36 @@
 const roomsData = [
     {
+        id: "room001",
         name: "A101",
         price: 800000.0,
         img: "room.png",
     },
     {
+        id: "room002",
         name: "A102",
         price: 800000.0,
         img: "room.png",
     },
     {
+        id: "room003",
         name: "A103",
         price: 800000.0,
         img: "room.png",
     },
     {
+        id: "room004",
         name: "A104",
         price: 800000.0,
         img: "room.png",
     },
     {
+        id: "room00",
         name: "A105",
         price: 800000.0,
         img: "room.png",
     },
     {
+        id: "room006",
         name: "A106",
         price: 800000.0,
         img: "room.png",
@@ -52,20 +58,19 @@ function createRoom(room1) {
     `;
 }
 
-
 // Display roomInfor
 function displayRoom() {
     const roomList = document.getElementById("room-list");
     roomList.innerHTML = roomsData.map(createRoom).join("");
 
-    const roomItems = document.querySelectorAll('.room-item');
-    roomItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const roomId = this.dataset.roomId;
-            if (roomId) {
-                window.location.href = `/roomInfor/${roomId}`;
+    const roomItems = document.querySelectorAll(".room-item");
+    roomItems.forEach((item) => {
+        item.addEventListener("click", function () {
+            const id = this.dataset.id;
+            if (id) {
+                window.location.href = `/roomInfor/${id}`;
             } else {
-                console.error('Room ID is undefined');
+                console.error("Room ID is undefined");
             }
         });
     });
@@ -280,7 +285,7 @@ document
 document.addEventListener("DOMContentLoaded", function () {
     const inforData = {
         dormId: "A01333",
-        roomId: "A101",
+        id: "A101",
         studentId: "22520000",
         fullName: "Lê Minh Hoàng",
         buildingId: "A",
@@ -296,7 +301,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function populateRoomInfo(data) {
         console.log("Populating data..."); // Debug
         document.getElementById("dorm-id").value = data.dormId || "";
-        document.getElementById("room-id").value = data.roomId || "";
+        document.getElementById("room-id").value = data.id || "";
         document.getElementById("student-id").value = data.studentId || "";
         document.getElementById("full-name").value = data.fullName || "";
         document.getElementById("building-id").value = data.buildingId || "";
@@ -316,12 +321,12 @@ document.addEventListener("DOMContentLoaded", function () {
 // Hiển thị danh sách phòng khi tải trang
 document.addEventListener("DOMContentLoaded", displayRoom);
 
-document.addEventListener('DOMContentLoaded', function() {
-    const roomItems = document.querySelectorAll('.room-item');
-    roomItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const roomId = this.dataset.roomId;
-            window.location.href = `/roomInfor/${roomId}`;
+document.addEventListener("DOMContentLoaded", function () {
+    const roomItems = document.querySelectorAll(".room-item");
+    roomItems.forEach((item) => {
+        item.addEventListener("click", function () {
+            const id = this.dataset.id;
+            window.location.href = `/roomInfor/${id}`;
         });
     });
 });

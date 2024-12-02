@@ -30,7 +30,7 @@
     color: var(--Gray-600, #1C1C1C);
 
     /* Medium/Subtitle */
-    font-family: Inter;
+    font-family: Poppins;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -59,16 +59,16 @@
 
 #sidebar .menu {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding: 5px;
+    margin: 0px;
+
 }
 
 #sidebar .menu-item {
     padding: 10px 15px;
     display: flex;
-    align-items: center;
+    align-items: self-start;
     position: relative;
-
 }
 
 #sidebar .menu-item .icon {
@@ -78,7 +78,11 @@
 
 #sidebar .menu-item .text {
     display: none;
+    font-family: Poppins;
+
 }
+
+
 
 #sidebar:hover .menu-item .text {
     display: inline;
@@ -138,5 +142,5 @@
     border-radius: 8px;
 }
 #sidebar .menu-item.has-submenu:hover ~ .menu-item {
-    transition: transform 0.2s ease;
+    transition: transform 0.1s ease;
 }

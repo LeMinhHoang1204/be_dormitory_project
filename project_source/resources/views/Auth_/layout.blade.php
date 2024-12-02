@@ -9,25 +9,47 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <ul class="ul d-flex justify-content-between">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Room</a></li>
-                    <li><a href="#">Service</a></li>
-                    <li><a href="#">About</a></li>
-                </ul>
+{{--                <ul class="ul d-flex justify-content-between">--}}
+{{--                    <li><a href="{{ route('home') }}">Home</a></li> <!-- Đến trang home -->--}}
+{{--                    <li><a href="#">Room</a></li>--}}
+{{--                    <li><a href="#">Service</a></li>--}}
+{{--                    <li><a href="#">About</a></li>--}}
+{{--                </ul>--}}
             </div>
+
             <div class="col-md-3">
-                <ul class="ul d-flex justify-content-between align-items-center">
-                    <li><a href="#"><b><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                                </svg></b></a></li>
-                    <li><a href="#">Login</a></li>
-                    <li><a href="#" class="border">Sign up</a></li>
+                <ul class="ul d-flex justify-content-between align-items-center navbar">
+                    @auth
+                        <!-- Hiển thị tên người dùng nếu đã đăng nhập -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
+
+                                <!-- Đảm bảo có form đăng xuất khi nhấn vào Logout -->
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">Log Out</a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+
+                        </li>
+                    @else
+                        <!-- Hiển thị Login và Sign up nếu chưa đăng nhập -->
+                        <li><a href="{{ route('login') }}">Login</a></li>
+                        <li><a href="{{ route('register') }}" class="border">Sign up</a></li>
+                    @endauth
                 </ul>
             </div>
 
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>

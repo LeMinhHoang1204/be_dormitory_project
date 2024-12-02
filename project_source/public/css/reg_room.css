@@ -8,7 +8,6 @@ body {
     background-color: #fff;
     padding: 10px 0;
 }
-
 .ul {
     list-style: none;
 }
@@ -46,6 +45,27 @@ body {
     margin: 10px; /* Xóa margin để căn chỉnh sát mép trái */
     /*border: 1px solid;*/
 }
+
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+/* Bo góc cho modal */
+.modal-content {
+    border-radius: 15px; /* Điều chỉnh giá trị này để bo góc theo ý muốn */
+}
+
+/* Thêm bóng cho modal */
+.modal-dialog {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Thêm viền cho hình ảnh */
+.modal-body img {
+    border: 2px solid #005D4D; /* Màu viền */
+    border-radius: 10px; /* Bo góc cho hình ảnh */
+}
+
 .res-certifi svg{
     position: absolute; /* Đặt tiêu đề tuyệt đối trong khung .regisster */
     bottom: 0;
@@ -86,6 +106,7 @@ body {
     border-radius: 8px;
     border: none;
     font-size: 16px;
+
 }
 
 .search-input {
@@ -299,13 +320,29 @@ body {
 
 
 
-.filter-sgv{
+.filter-sgv {
     position: absolute; /* Đặt tiêu đề tuyệt đối trong khung */
-    bottom: 0;
+    bottom: 0px;
     right: 400px;
-    filter: drop-shadow(0px 6px 4px var(--table_row, #ECEFFF));
-
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
 }
+
+.filter-sgv:hover {
+    transform: scale(1.001); /* Phóng to nhẹ khi hover */
+    filter: drop-shadow(0px 8px 6px rgba(0, 0, 0, 0.3)); /* Tạo shadow đậm hơn khi hover */
+}
+
+/* Thay đổi màu sắc của đường SVG khi hover */
+/*.filter-sgv svg path {*/
+/*    !*fill: #757575; !* Màu mặc định của SVG *!*!*/
+/*    transition: fill 0.2s;*/
+/*}*/
+
+/*.filter-sgv:hover svg path {*/
+/*    fill: #4A90E2; !* Màu mới khi hover *!*/
+/*}*/
+
 .notification-container {
     width: 368px;
     height: 66px;
@@ -352,9 +389,7 @@ margin: auto 10px auto auto;
     flex-shrink: 0;
 }
 
-/*.search-icon:hover {*/
-/*    fill: #4CAF50;*/
-/*}*/
+
 
 #notifications {
     padding-top: 10px;
@@ -365,24 +400,51 @@ margin: auto 10px auto auto;
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
+.hidden {
+    display: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
 
 /*{{--    Hien thi panel filter--}}*/
 .filter-panel {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /*gap: 20px;*/
-    max-width: 700px;
-    /*background-color: #fff;*/
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: var(--Pop-up, #F3F5FF);
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
-    background: var(--Pop-up, #F3F5FF);
-    gap: 40px 40px; /*15px khoảng cách dọc, 20px khoảng cách ngang */
-margin: 50px auto 20px auto;
+    max-width: 1000px;
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px 40px;
+}
+
+
+.overlay.active,
+.filter-panel.active {
+    display: grid; /* Show when active */
 }
 
 .filter-section {
     /*background-color: #f8faff;*/
+    width: 211px;
+    display: flex;
+    flex-direction: column;
     padding: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
     border-radius: 16px;
@@ -390,6 +452,7 @@ margin: 50px auto 20px auto;
     background: var(--white-07, rgba(255, 255, 255, 0.70));
     backdrop-filter: blur(4px);
 }
+
 
 .filter-section input[type="checkbox"]{
     color: var(--Gray-700, #616161);
@@ -404,14 +467,7 @@ margin: 50px auto 20px auto;
     margin-right: 10px;
 }
 
-.filter-section label {
-    display: block;
-    font-size: 14px;
-    margin: 5px 0;
-}
-/*.filter-button:hover {*/
-/*    fill: #4CAF50;*/
-/*}*/
+
 .floor-number-container {
     display: flex;
     flex-direction: column;
@@ -428,26 +484,30 @@ margin: 50px auto 20px auto;
 }
 
 .apply-button {
-    grid-column: span 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.apply-button button {
-    color: #fff;
-    font-size: 16px;
+    display: inline-block;
     padding: 10px 20px;
+    margin-top: auto;
+    margin-right: auto;
+    background-color: #007bff; /* Màu xanh */
+    color: #fff;
     border: none;
+    border-radius: 15px;
     cursor: pointer;
-    border-radius: 10px;
-    background: var(--Complete, #2F6BFF);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
 
+    font-family: Poppins;
+    font-style: normal;
+    line-height: normal;
 }
 
-.apply-button button:hover {
-    background-color: #405edb;
+.apply-button:hover {
+    background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
 }
+
+
 .filter-panel h3{
     color: var(--Complete, #2F6BFF);
     font-family: Poppins;
@@ -461,19 +521,27 @@ margin: 50px auto 20px auto;
 /*{{--    Register room successfully!--}}*/
 .success-panel {
     display: flex;
+    position: fixed;
+    top: 45%; /* Căn từ trên 45% */
+    left: 50%; /* Căn từ trái 50% */
+    transform: translate(-50%, -50%); /* Dịch chuyển về giữa */
     flex-direction: column;
     align-items: center;
+    z-index: 1000;
     width: 692px;
     height: 491px;
     flex-shrink: 0;
     padding: 30px;
     text-align: center;
-    margin: 50px auto 20px auto;
+    margin: 50px auto 20px auto; /* Có thể bỏ margin này để tránh lệch */
     border-radius: 30px;
     background: #FFF;
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
+.success-panel.hidden {
+    display: none;
+}
 .success-icon {
     margin-bottom: 30px;
 margin-top: 30px;
@@ -499,7 +567,6 @@ margin-top: 30px;
     font-weight: 300;
     line-height: normal;
     margin-bottom: 50px;
-
 }
 
 .success-panel button {
@@ -510,8 +577,244 @@ margin-top: 30px;
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
+    width: fit-content;
+    position: relative;
+    left: 45%;
 }
 
 .success-panel button:hover {
     background-color: #2558d1;
+}
+
+.confirm-regis {
+    display: flex;
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    flex-direction: column;
+    align-items: center;
+    width: 692px;
+    height: 300px;
+    flex-shrink: 0;
+    padding: 30px;
+    text-align: center;
+    margin: 50px auto 20px auto;
+    border-radius: 30px;
+    background: #FFF;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+    display: none;
+}
+.hidden {
+    display: none;
+}
+
+.overlay2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.confirm-regis,
+.success-panel,
+.confirm-info-container {
+    display: none; /* Initially hidden */
+}
+
+.overlay2.active,
+.confirm-info-container.active,
+.confirm-regis.active,
+.success-panel.active {
+    display: grid; /* Show when active */
+}
+
+.confirm-regis h2 {
+    margin-bottom: 30px;
+    margin-top: 50px;
+    color: var(--h1, #0E3B9C);
+    font-family: Poppins;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.button-container {
+    display: flex;
+    gap: 40px; /* Khoảng cách giữa các nút */
+    justify-content: center; /* Đặt các nút nằm ở bên phải */
+    width: 100%;
+}
+
+.confirm-regis button {
+    background-color: #2F6BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    height: 50px;
+    width: 120px;
+}
+
+
+.confirm-regis .no-btn {
+    background-color: #d14a4a !important; /* Sử dụng !important để đảm bảo tính ưu tiên */
+}
+
+.confirm-regis button:hover {
+    background-color: #2558d1;
+}
+.overlay2.active,
+.confirm-regis.active {
+    display: grid; /* Show when active */
+}
+
+/* Container for the confirmation form */
+.confirm-info-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
+    background-color: #fff;
+    padding: 25px;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    font-family: 'Arial', sans-serif;
+    margin: 50px auto 20px auto;
+
+
+}
+
+/* Header section */
+.confirm-info-header h2 {
+    text-align: center;
+    justify-self: center;
+
+    /*color: #007bff;*/
+    /*font-size: 28px;*/
+    margin-bottom: 30px;
+    border-radius: 20px;
+    background: #2F6BFF;
+    display: flex;
+    width: 350px;
+    height: 50px;
+    flex-direction: column;
+    flex-shrink: 0;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+/* Body section */
+.confirm-info-body {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Khoảng cách giữa hai cột */
+}
+
+/* Left and right columns */
+.left-column,
+.right-column {
+    width: 48%; /* Chia đều hai cột */
+}
+
+/* Common field styles */
+.confirm-info-field {
+    margin-bottom: 20px; /* Khoảng cách giữa các trường */
+}
+
+.confirm-info-field label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #555;
+}
+
+.confirm-info-field input,
+.confirm-info-field select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box; /* Đảm bảo padding không làm ảnh hưởng kích thước */
+}
+
+.confirm-info-field input[readonly],
+.confirm-info-field select[readonly] {
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Style for date field */
+#start-date {
+    font-size: 14px;
+}
+
+/* Specific field styles */
+.confirm-info-field input#price,
+.confirm-info-field input#capacity,
+.confirm-info-field input#room-id,
+.confirm-info-field input#student-id,
+.confirm-info-field input#full-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Footer button styles */
+.confirm-info-footer button {
+    color: #FFF;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: white;
+    border: 1px;
+    border-radius: 15px;
+    background: #2F6BFF;    font-size: 20px;
+    cursor: pointer;
+    height: 50px;
+    width: 120px;
+    position: relative;
+    left: 43%;
+    margin-top: 25px;
+}
+
+.confirm-info-footer button:hover {
+    background-color: #0056b3;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .confirm-info-body {
+        flex-direction: column;
+    }
+
+    .left-column,
+    .right-column {
+        width: 100%;
+    }
+
+    .confirm-info-container {
+        width: 90%;
+    }
 }

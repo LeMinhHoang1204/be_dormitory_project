@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -27,11 +28,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
     ];
 
+    // App\Models\User.php
     public function student()
     {
-        // assuming 'STU_USER_ID' is the foreign key in 'student' table
         return $this->hasOne(Student::class, 'user_id', 'id');
     }
+
 
     public function employee()
     {
@@ -84,4 +86,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function room()
+    {
+        return $this->hasOne(Room::class, 'stu_id', 'id'); // 'stu_id' là cột khóa ngoại trong bảng rooms liên kết với bảng users
+    }
+
 }

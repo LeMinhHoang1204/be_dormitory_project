@@ -1,23 +1,57 @@
 @extends('Auth_.index')
+
 <head>
-        <script src="{{ asset('./reg_room.js')}}"></script>
+    <title>Room Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="{{ asset('./reg_room.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('./css/reg_room.css') }}" type="text/css">
 </head>
 
 @section('content')
+
+    @include('layouts.sidebar_student')
+
     <div class="regisster">
         <h1 class="title">Room Registration</h1>
-        <div class="res-certifi">
-{{--            Residence certificate: link đi đến chứng nhận chưa trú--}}
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 22 24" fill="none">
-                <path d="M10.181 0.560828C10.6414 0.388572 11.1444 0.366116 11.6183 0.496662L11.819 0.560828L19.9857 3.62333C20.3997 3.7786 20.7612 4.04835 21.0278 4.40115C21.2945 4.75394 21.4554 5.17526 21.4918 5.61599L21.5 5.80849V12.0653C21.5 13.9558 20.9895 15.8112 20.0225 17.4357C19.0556 19.0602 17.668 20.3935 16.0062 21.2948L15.6958 21.457L11.7828 23.4135C11.5674 23.5211 11.332 23.583 11.0915 23.5955C10.851 23.6079 10.6106 23.5706 10.3852 23.4858L10.2172 23.4135L6.30417 21.457C4.61321 20.6115 3.1819 19.3251 2.16134 17.7337C1.14077 16.1423 0.568811 14.3048 0.505833 12.4153L0.5 12.0653V5.80849C0.500007 5.36648 0.625564 4.93356 0.862056 4.56013C1.09855 4.1867 1.43624 3.88812 1.83583 3.69916L2.01433 3.62333L10.181 0.560828ZM11 2.74599L2.83333 5.80849V12.0653C2.83336 13.5295 3.22703 14.9667 3.97311 16.2266C4.7192 17.4864 5.79026 18.5225 7.07417 19.2263L7.34833 19.3698L11 21.1957L14.6517 19.3698C15.9615 18.715 17.0712 17.7201 17.8645 16.4892C18.6578 15.2583 19.1056 13.8367 19.1608 12.3733L19.1667 12.0653V5.80849L11 2.74599ZM15.0052 8.06716C15.2151 7.85792 15.4968 7.73644 15.7931 7.72739C16.0894 7.71835 16.378 7.82241 16.6003 8.01845C16.8226 8.21449 16.962 8.48781 16.9901 8.78288C17.0182 9.07796 16.933 9.37267 16.7517 9.60716L16.6548 9.71683L10.5485 15.8243C10.3261 16.0467 10.0297 16.1797 9.7157 16.198C9.40169 16.2163 9.0919 16.1186 8.84517 15.9235L8.73317 15.8243L5.9285 13.0197C5.71704 12.8102 5.59363 12.5278 5.58354 12.2304C5.57344 11.9329 5.67743 11.6428 5.87421 11.4195C6.07099 11.1962 6.34568 11.0565 6.64206 11.0291C6.93844 11.0017 7.23409 11.0886 7.4685 11.272L7.57817 11.3688L9.64083 13.4315L15.0052 8.06716Z" fill="#005D4D"/>
-            </svg>
-            <a href="#" class="ul-res-certifi">Residence certificate</a>
-         </div>
 
-{{--        button loc filter--}}
-            <div class="filter-sgv">
-            <svg xmlns="http://www.w3.org/2000/svg"  width="67" height="66" viewBox="0 0 67 66" fill="none"  onclick="toggleFilter()">
+{{--            Residence certificate: TODO: link đi đến phiếu xác nhận chưa trú (DONE)--}}
+
+        <div class="res-certifi">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 22 24" fill="none">
+                            <path d="M10.181 0.560828C10.6414 0.388572 11.1444 0.366116 11.6183 0.496662L11.819 0.560828L19.9857 3.62333C20.3997 3.7786 20.7612 4.04835 21.0278 4.40115C21.2945 4.75394 21.4554 5.17526 21.4918 5.61599L21.5 5.80849V12.0653C21.5 13.9558 20.9895 15.8112 20.0225 17.4357C19.0556 19.0602 17.668 20.3935 16.0062 21.2948L15.6958 21.457L11.7828 23.4135C11.5674 23.5211 11.332 23.583 11.0915 23.5955C10.851 23.6079 10.6106 23.5706 10.3852 23.4858L10.2172 23.4135L6.30417 21.457C4.61321 20.6115 3.1819 19.3251 2.16134 17.7337C1.14077 16.1423 0.568811 14.3048 0.505833 12.4153L0.5 12.0653V5.80849C0.500007 5.36648 0.625564 4.93356 0.862056 4.56013C1.09855 4.1867 1.43624 3.88812 1.83583 3.69916L2.01433 3.62333L10.181 0.560828ZM11 2.74599L2.83333 5.80849V12.0653C2.83336 13.5295 3.22703 14.9667 3.97311 16.2266C4.7192 17.4864 5.79026 18.5225 7.07417 19.2263L7.34833 19.3698L11 21.1957L14.6517 19.3698C15.9615 18.715 17.0712 17.7201 17.8645 16.4892C18.6578 15.2583 19.1056 13.8367 19.1608 12.3733L19.1667 12.0653V5.80849L11 2.74599ZM15.0052 8.06716C15.2151 7.85792 15.4968 7.73644 15.7931 7.72739C16.0894 7.71835 16.378 7.82241 16.6003 8.01845C16.8226 8.21449 16.962 8.48781 16.9901 8.78288C17.0182 9.07796 16.933 9.37267 16.7517 9.60716L16.6548 9.71683L10.5485 15.8243C10.3261 16.0467 10.0297 16.1797 9.7157 16.198C9.40169 16.2163 9.0919 16.1186 8.84517 15.9235L8.73317 15.8243L5.9285 13.0197C5.71704 12.8102 5.59363 12.5278 5.58354 12.2304C5.57344 11.9329 5.67743 11.6428 5.87421 11.4195C6.07099 11.1962 6.34568 11.0565 6.64206 11.0291C6.93844 11.0017 7.23409 11.0886 7.4685 11.272L7.57817 11.3688L9.64083 13.4315L15.0052 8.06716Z" fill="#005D4D"/>
+                        </svg>                <!-- SVG code giữ nguyên -->
+            </svg>
+            <a href="#" class="ul-res-certifi" data-bs-toggle="modal" data-bs-target="#resCertModal">Residence certificate</a>
+        </div>
+
+        <!-- Modal hiển thị hình ảnh mẫu phiếu xác nhận -->
+        <div class="modal fade" id="resCertModal" tabindex="-1" aria-labelledby="resCertModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resCertModalLabel">Residence Certificate</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="{{ asset('img/xacnhancutru1.png') }}" alt="Residence Certificate Sample 1" class="img-fluid mb-3">
+                        <img src="{{ asset('img/xacnhancutru2.png') }}" alt="Residence Certificate Sample 2" class="img-fluid">
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ asset('pdf/mau-xac-nhan-thong-tin-ve-cu-tru-ct-07_0112100225.pdf') }}" class="btn btn-primary" download>Download PDF</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        {{--        button loc filter--}}
+        <div class="filter-sgv" onclick="toggleFilter()">
+            <svg xmlns="http://www.w3.org/2000/svg"  width="67" height="66" viewBox="0 0 67 66" fill="none"  >
                 <g filter="url(#filter0_d_1132_2655)">
                     <g filter="url(#filter1_d_1132_2655)">
                         <path d="M4 15C4 6.71573 10.7157 0 19 0H48C56.2843 0 63 6.71573 63 15V41C63 49.2843 56.2843 56 48 56H19C10.7157 56 4 49.2843 4 41V15Z" fill="white"/>
@@ -81,12 +115,11 @@
             </div>
         </div>
 
-    <div class="rooms" id="room-list">
-        <div class="room"></div>
-    </div>
 
-{{--    Hien thi panel filter để lọc--}}
-    <div class="filter-panel">
+    {{--    Hien thi panel filter lọc--}}
+    <div class="overlay hidden" onclick="toggleFilter()"></div>
+    <div id="filter-panel" class="filter-panel hidden" >
+{{--        <div class="filter-sections">--}}
         <div class="filter-section">
             <h3>Room status</h3>
             <label><input type="checkbox" /> Vacancy</label>
@@ -124,14 +157,106 @@
             <label><input type="checkbox" /> Water heater</label>
             <label><input type="checkbox" /> Study desk</label>
         </div>
-        <div class="apply-button">
-            <button>Apply</button>
-        </div>
+{{--        </div>--}}
+{{--        <div class="apply-button"  onclick="closeFilter(event)">--}}
+{{--            <button>Apply</button>--}}
+{{--        </div>--}}
+        <button id="apply-filter" class="apply-button">Apply</button>
+
+    </div>
+
+{{--Danh sach phong--}}
+    <div class="rooms" id="room-list">
+        <div class="room"></div>
     </div>
 
 
-{{--    Nhảy lên màn hình thông báo Register room successfully!--}}
-    <div class="success-panel">
+    {{--    Confirm bạn có chắc chắn muốn đăng ký phòng này?--}}
+{{--    <div class="overlay2 hidden" onclick="toggleConfirm()"></div>--}}
+    <div class="confirm-regis hidden">
+        <h2>Are you sure to register this room?</h2>
+        <div class="button-container">
+            <button class="no-btn" onclick="closeConfirm()">No</button>
+            <button class="yes-btn" onclick="showConfirmInfoContainer()">Yes</button>
+        </div>
+    </div>
+
+{{--    Confirm thông tin đăng ký phòng--}}
+    <div class="confirm-info-container">
+        <form class="confirm-info-form">
+            <div class="confirm-info-header">
+                <h2>   ROOM APPLICATION   </h2>
+            </div>
+            <div class="confirm-info-body">
+                <div class="left-column">
+                    <div class="confirm-info-field">
+                        <label for="dorm-id">Dorm ID</label>
+                        <input type="text" id="dorm-id" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="full-name">Full name</label>
+                        <input type="text" id="full-name" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="room-id">Room ID</label>
+                        <input type="text" id="room-id" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="building-id">Building ID</label>
+                        <input type="text" id="building-id" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="floor">Floor</label>
+                        <input type="text" id="floor" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="start-date">Start date</label>
+                        <input type="date" id="start-date">
+                    </div>
+
+                </div>
+                <div class="right-column">
+                    <div class="confirm-info-field">
+                        <label for="student-id">Student ID</label>
+                        <input type="text" id="student-id" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="gender">Gender</label>
+                        <input type="text" id="gender" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="price">Price</label>
+                        <input type="text" id="price" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="room-type">Room type</label>
+                        <input type="text" id="room-type" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="capacity">Capacity</label>
+                        <input type="text" id="capacity" readonly>
+                    </div>
+                    <div class="confirm-info-field">
+                        <label for="duration">Duration</label>
+                        <select id="duration" readonly>
+                            <option value="3">3 months</option>
+                            <option value="6">6 months</option>
+                            <option value="9">9 months</option>
+                            <option value="12">12 months</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="confirm-info-footer">
+                <button type="submit" onclick="showSuccessPanel()">Confirm</button>
+            </div>
+        </form>
+    </div>
+
+
+    {{--    Nhảy lên màn hình thông báo Register room successfully!--}}
+    {{--  TODO: Xử lý nút Register--}}
+    <div class="success-panel hidden">
         <div class="success-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="156" height="156" viewBox="0 0 156 156" fill="none">
                 <path d="M77.6144 141.082C65.9713 141.093 54.5071 138.218 44.2472 132.714C33.9873 127.209 25.2518 119.248 18.8219 109.541C18.4666 109.008 18.2197 108.411 18.0954 107.782C17.9711 107.154 17.9718 106.507 18.0974 105.879C18.223 105.251 18.4711 104.654 18.8275 104.122C19.184 103.589 19.6417 103.132 20.1747 102.777C20.7077 102.422 21.3054 102.175 21.9337 102.051C22.5621 101.926 23.2088 101.927 23.8369 102.053C24.465 102.178 25.0622 102.426 25.5944 102.783C26.1266 103.139 26.5834 103.597 26.9388 104.13C35.3419 116.758 48.1886 125.762 62.9257 129.352C77.6627 132.943 93.2113 130.857 106.481 123.51C119.751 116.163 129.771 104.092 134.55 89.696C139.328 75.3002 138.515 59.6334 132.273 45.8094C126.03 31.9853 114.815 21.016 100.856 15.0814C86.8969 9.14686 71.216 8.68152 56.9296 13.7779C42.6432 18.8742 30.7972 29.1592 23.746 42.5887C16.6947 56.0183 14.9543 71.6093 18.8706 86.2631C19.1395 87.495 18.9205 88.7831 18.2599 89.857C17.5992 90.9309 16.5481 91.7071 15.3274 92.0225C14.1066 92.3379 12.8111 92.1681 11.7129 91.5487C10.6146 90.9293 9.7991 89.9085 9.4375 88.7006C7.84219 82.7537 7.02289 76.6253 7 70.4681C7.01446 56.5226 11.1621 42.8943 18.9188 31.305C26.6755 19.7158 37.6933 10.6857 50.58 5.35567C63.4668 0.0256401 77.6442 -1.36515 91.3211 1.35903C104.998 4.08321 117.56 10.8001 127.421 20.6611C137.282 30.5221 143.999 43.0846 146.723 56.7614C149.448 70.4383 148.057 84.6157 142.727 97.5025C137.397 110.389 128.367 121.407 116.777 129.164C105.188 136.92 91.5599 141.068 77.6144 141.082Z" fill="#2F6BFF"/>
@@ -140,6 +265,14 @@
         </div>
         <h2>Register room successfully!</h2>
         <p>Please pay the registration invoice within 15 days</p>
-        <button onclick="closePanel()">Continue</button>
+        <button class="continue-btn" onclick="closeAllPanels()">Continue</button>
     </div>
+
+    <div class="overlay2"></div>
+
+
+
+
+    <script src="{{ asset('public/css/reg_room.css')}}"></script>
+
 @endsection

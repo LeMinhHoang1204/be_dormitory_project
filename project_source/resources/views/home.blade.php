@@ -34,6 +34,15 @@
 </header>
 
 <main>
+
+    @if (session('error'))
+        <div class="alert-custom-error">
+            <span>{{ session('error') }}</span>
+            <!-- Nút đóng thông báo -->
+            <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
+        </div>
+    @endif
+
     <!-- home -->
     <section id="home">
         <div id="banner">
@@ -259,6 +268,7 @@
         </div>
     </div>
 </footer>
+
 
 </body>
 </html>

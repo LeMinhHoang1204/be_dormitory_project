@@ -179,6 +179,13 @@ class RoomController extends Controller
         return redirect()->route('student.checkout')->with('message', 'Request sent');
     }
 
+//  Lay va hien thi thong tin phong
+    public function showRoomInfor($roomId)
+    {
+        $room = Room::findOrFail($roomId);
+        return view('roomInfor.roomInfor', compact('room'));
+    }
+
 
 //
 //    public function extendRoomContract(Request $request)

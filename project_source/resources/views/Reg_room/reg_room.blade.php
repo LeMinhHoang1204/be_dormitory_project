@@ -167,7 +167,7 @@
 
 {{--Danh sach phong--}}
     <div class="rooms" id="room-list">
-        <div class="room"></div>
+        <div class="room-item"></div>
     </div>
 
 
@@ -270,9 +270,5 @@
 
     <div class="overlay2"></div>
 
-
-
-
-    <script src="{{ asset('public/css/reg_room.css')}}"></script>
 
 @endsection

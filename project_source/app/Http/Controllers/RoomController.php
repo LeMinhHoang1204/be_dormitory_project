@@ -127,7 +127,7 @@ class RoomController extends Controller
         // 3. Lấy thông tin phòng hiện tại của sinh viên
         $studentRoom = $student->residences()
             ->where('status', 'Da nhan phong')
-            ->join('rooms', 'residences.room_id', '=', 'rooms.id')
+            ->join('rooms', 'residences.room_id', '=', 'rooms.roomId')
             ->select('rooms.name as room_name', 'rooms.unit_price', 'residences.end_date')
             ->first();
 

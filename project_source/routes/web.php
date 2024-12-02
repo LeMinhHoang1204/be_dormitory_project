@@ -17,6 +17,8 @@ Route::put('/buildings/{building}', [BuildingController::class, 'update'])->name
 Route::delete('/buildings/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
 Route::put('/buildings/{building}/manager', [BuildingController::class, 'updateManager'])->name('buildings.updateManager');
 
+
+
 Route::get('/', function () {
     return view('home');
 });
@@ -52,12 +54,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/student/repair-request', [RoomController::class, 'storeRepairRequest'])->name('repair-request.store');
 });
 
-// hien thi room
 
 
 
 
+// Display roomInfor
+Route::middleware('auth')->group(function () {
+    Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
+});
 
-require __DIR__.'/auth.php';
-require __DIR__ .'/api/building-room.php';
-require __DIR__.'/api/notification.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/api/building-room.php';
+require __DIR__ . '/api/notification.php';

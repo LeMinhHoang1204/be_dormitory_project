@@ -1,36 +1,36 @@
 const roomsData = [
     {
-        id: "room001",
+        roomId: "room001",
         name: "A101",
         price: 800000.0,
         img: "room.png",
     },
     {
-        id: "room002",
+        roomId: "room002",
         name: "A102",
         price: 800000.0,
         img: "room.png",
     },
     {
-        id: "room003",
+        roomId: "room003",
         name: "A103",
         price: 800000.0,
         img: "room.png",
     },
     {
-        id: "room004",
+        roomId: "room004",
         name: "A104",
         price: 800000.0,
         img: "room.png",
     },
     {
-        id: "room00",
+        roomId: "room00",
         name: "A105",
         price: 800000.0,
         img: "room.png",
     },
     {
-        id: "room006",
+        roomId: "room006",
         name: "A106",
         price: 800000.0,
         img: "room.png",
@@ -39,7 +39,7 @@ const roomsData = [
 
 function createRoom(room1) {
     return `
-        <div class="room-item" data-room-id="${room1.id}">
+        <div class="room-item" data-room-id="${room1.roomId}">
             <img src="/img/room.png" alt="${room1.name}">
             <div class="form-group">
                 <div class="roomname">Room ${room1.name}</div>
@@ -66,16 +66,15 @@ function displayRoom() {
     const roomItems = document.querySelectorAll(".room-item");
     roomItems.forEach((item) => {
         item.addEventListener("click", function () {
-            const id = this.dataset.id;
-            if (id) {
-                window.location.href = `/roomInfor/${id}`;
+            const roomId = this.dataset.roomId;
+            if (roomId) {
+                window.location.href = `/roomInfor/${roomId}`;
             } else {
                 console.error("Room ID is undefined");
             }
         });
     });
 }
-
 document.addEventListener("DOMContentLoaded", function () {
     displayRoom();
 });

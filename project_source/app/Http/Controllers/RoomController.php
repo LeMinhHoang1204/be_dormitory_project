@@ -182,7 +182,6 @@ class RoomController extends Controller
 
 
 
-
     // Xử lý yêu cầu sửa chữa
     public function repairRequest()
     {
@@ -211,33 +210,34 @@ class RoomController extends Controller
         }
 
         return view('.student.repair', compact('studentRoom'));
-        //        if (!$student) {
-        //            return view('student.repair', ['message' => 'You do not have a room, register!']);
-        //        }
-        //
-        //        // Kiểm tra xem sinh viên có đang ở trong phòng nào không (qua bảng `residences`)
-        //        $residence = DB::table('residences')
-        //            ->where('stu_id', $student->id)
-        //            ->where('status', 'Da nhan phong') // Tìm những sinh viên đã nhận phòng
-        //            ->first();
-        //
-        //        if (!$residence) {
-        //            return redirect()->route('dashboard')->with('message', 'Bạn chưa nhận phòng hoặc chưa đủ điều kiện yêu cầu sửa chữa.');
-        //        }
-        //
-        //        // Lấy thông tin phòng từ bảng `rooms` thông qua `room_id` trong bảng `residences`
-        //        $room = DB::table('rooms')->where('id', $residence->room_id)->first();
-        //
-        //        if (!$room) {
-        //            return redirect()->route('dashboard')->with('message', 'Phòng của bạn không tồn tại.');
-        //        }
-        //
-        //        // Hiển thị trang yêu cầu sửa chữa với thông tin phòng
-        //        return view('student.repair-request', [
-        //            'room' => $room, // Chuyển thông tin phòng đến view
-        //            'student' => $student,
-        //        ]);
+//        if (!$student) {
+//            return view('student.repair', ['message' => 'You do not have a room, register!']);
+//        }
+//
+//        // Kiểm tra xem sinh viên có đang ở trong phòng nào không (qua bảng `residences`)
+//        $residence = DB::table('residences')
+//            ->where('stu_id', $student->id)
+//            ->where('status', 'Da nhan phong') // Tìm những sinh viên đã nhận phòng
+//            ->first();
+//
+//        if (!$residence) {
+//            return redirect()->route('dashboard')->with('message', 'Bạn chưa nhận phòng hoặc chưa đủ điều kiện yêu cầu sửa chữa.');
+//        }
+//
+//        // Lấy thông tin phòng từ bảng `rooms` thông qua `room_id` trong bảng `residences`
+//        $room = DB::table('rooms')->where('id', $residence->room_id)->first();
+//
+//        if (!$room) {
+//            return redirect()->route('dashboard')->with('message', 'Phòng của bạn không tồn tại.');
+//        }
+//
+//        // Hiển thị trang yêu cầu sửa chữa với thông tin phòng
+//        return view('student.repair-request', [
+//            'room' => $room, // Chuyển thông tin phòng đến view
+//            'student' => $student,
+//        ]);
     }
+
 
     //
     //    public function extendRoomContract(Request $request)
@@ -261,8 +261,12 @@ class RoomController extends Controller
     //
     //        // Trả về thông báo thành công
     //        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
-    //    }
 
-
-
+    
+//  Hien thi thong tin phong
+    public function showRoomInfor($roomId)
+    {
+        $room = Room::find($roomId);
+        return view('roomInfor.roomInfor', compact('room'));
+    }
 }

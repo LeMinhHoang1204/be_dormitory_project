@@ -269,4 +269,6 @@ class RoomController extends Controller
         $room = Room::find($roomId);
         return view('roomInfor.roomInfor', compact('room'));
     }
+
+
 }

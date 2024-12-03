@@ -38,4 +38,11 @@ class Room extends Model
     {
         return $this->morphOne(Notification::class, 'objective');
     }
+
+    public function room_assets()
+    {
+        return $this->hasMany(RoomAsset::class, 'room_id', 'id');
+    }
+
+
 }

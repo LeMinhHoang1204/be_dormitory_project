@@ -13,41 +13,45 @@
 
             <div class="mb-4">
                 <label for="building_id" class="block text-gray-700 font-bold mb-2">Building:</label>
-                <input type="number" id="building_id" name="building_id" value="{{$building->id}}" readonly
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="number" id="building_id" name="building_id" value="{{ $building->id }}" readonly
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-bold mb-2">Room Name:</label>
-                <input type="text" id="name" name="name" value="{{$room->name}}" required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="text" id="name" name="name" value="{{ $room->name }}" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="mb-4">
                 <label for="floor_number" class="block text-gray-700 font-bold mb-2">Floor Number:</label>
-                <input type="number" id="floor_number" name="floor_number" value="{{$room->floor_number}}" required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="number" id="floor_number" name="floor_number" value="{{ $room->floor_number }}" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-bold mb-2">Type:</label>
-                <select id="type" name="type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <select id="type" name="type"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="">-- Select Type --</option>
-                    @foreach($distinctRoomTypes as $roomType)
-                        <option value="{{ $roomType->type}}" {{ $roomType->type == $room->type ? 'selected' : '' }}>{{ $roomType->type }}</option>
+                    @foreach ($distinctRoomTypes as $roomType)
+                        <option value="{{ $roomType->type }}" {{ $roomType->type == $room->type ? 'selected' : '' }}>
+                            {{ $roomType->type }}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="mb-4">
                 <label for="unit_price" class="block text-gray-700 font-bold mb-2">Unit Price:</label>
-                <input type="number" id="unit_price" name="unit_price" value="{{$room->unit_price}}" required step="0.01"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="number" id="unit_price" name="unit_price" value="{{ $room->unit_price }}" required
+                    step="0.01"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="mb-4">
                 <label for="status" class="block text-gray-700 font-bold mb-2">Unit Price:</label>
-                <select id="status" name="status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <select id="status" name="status"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="">-- Select status --</option>
                     <option value="1" {{ $room->status == 1 ? 'selected' : '' }}>Active</option>
                     <option value="0" {{ $room->status == 0 ? 'selected' : '' }}>Inactive</option>

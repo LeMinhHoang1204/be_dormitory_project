@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-
+        // chuyen sang seeder
         Notification::factory(10)->create();
 //        Student::factory(100)->create();
 //        Building::factory(10)->create();
@@ -65,13 +65,24 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-//        Student::factory()->create([
-//            'user_id' => '13',
-//            'uni_id' => '22520464', // Set a known email
-//            'uni_name' => 'UIT', // Use a secure password
-//            'dob' => now(),
-//            'gender' =>'male',
-//        ]);
+
+        User::factory()->create([
+            'name' => 'Từ Thị Tường Vi',
+            'email' => '22521660@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Từ Thị Tường Vi',
+            'email' => 'tuthituongvi9@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'accountant',
+        ]);
 
         $this->call([
             UserSeeder::class,
@@ -79,6 +90,9 @@ class DatabaseSeeder extends Seeder
             EmployeeSeeder::class,
             BuildingSeeder::class,
             RoomSeeder::class,
+            ResidenceSeeder::class,
+            AssetSeeder::class,
+            RoomAssetSeeder::class,
         ]);
     }
 }

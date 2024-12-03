@@ -25,6 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+//        DB::table('room_assets')->delete(); // Xóa dữ liệu trong bảng room_assets trước
         Schema::dropIfExists('assets');
     }
 };

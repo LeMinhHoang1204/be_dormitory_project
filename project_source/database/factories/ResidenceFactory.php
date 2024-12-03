@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Room;
 use App\Models\Student;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,11 +20,11 @@ class ResidenceFactory extends Factory
     public function definition(): array
     {
         $status = $this->faker->randomElement([
-            'Da dang ky',
-            'Da thanh toan',
-            'Da nhan phong',
-            'Da chuyen nhuong',
-            'Da tra phong'
+            'Registered',
+            'Paid',
+            'Checked in',
+            'Transfered',
+            'Checked out'
         ]);
 
         return [
@@ -31,7 +32,7 @@ class ResidenceFactory extends Factory
             'start_date' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'end_date' => $this->faker->dateTimeBetween('now', '+1 years'),
             'status' => $status,
-            'check_out_date' => $status === 'Da tra phong' ? $this->faker->dateTimeBetween('-1 years', 'now') : null,
+            'check_out_date' => $status === 'Checked out' ? $this->faker->dateTimeBetween('-1 years', 'now') : null,
             'note' => $this->faker->optional()->sentence(),
         ];
     }

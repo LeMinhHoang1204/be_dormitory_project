@@ -2,25 +2,24 @@
 
 namespace App\Policies;
 
-use App\Models\Residence;
 use App\Models\User;
+use App\Models\Violation;
 use Illuminate\Auth\Access\Response;
 
-class ResidencePolicy
+class ViolationPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-//        return $user->isAdmin();
-        return true;
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Residence $residence): bool
+    public function view(User $user, Violation $violation): bool
     {
         //
     }
@@ -30,38 +29,38 @@ class ResidencePolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Residence $residence): bool
+    public function update(User $user, Violation $violation): bool
     {
-        return $user->role == 'admin' || $user->role == 'student';
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Residence $residence): bool
+    public function delete(User $user, Violation $violation): bool
     {
-        return $user->role == 'admin';
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Residence $residence): bool
+    public function restore(User $user, Violation $violation): bool
     {
-        return false;
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Residence $residence): bool
+    public function forceDelete(User $user, Violation $violation): bool
     {
-        return false;
+        //
     }
 }

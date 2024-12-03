@@ -91,6 +91,8 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             RoomSeeder::class,
             ResidenceSeeder::class,
+            AssetSeeder::class,
+            RoomAssetSeeder::class,
         ]);
     }
 }

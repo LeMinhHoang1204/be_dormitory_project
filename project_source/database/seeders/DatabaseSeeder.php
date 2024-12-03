@@ -92,6 +92,15 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
             'role' => 'accountant',
         ]);
+        // Tạo một user với role là student
+        User::create([
+            'name' => 'Tường Vi',
+            'email' => 'dovanhoang2004cpr@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'student',
+        ]);
 
         $this->call([
             UserSeeder::class,
@@ -100,8 +109,8 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             RoomSeeder::class,
             ResidenceSeeder::class,
-            AssetSeeder::class,
-            RoomAssetSeeder::class,
+//            AssetSeeder::class,
+//            RoomAssetSeeder::class,
         ]);
     }
 }

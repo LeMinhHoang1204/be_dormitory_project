@@ -50,11 +50,15 @@ Route::get('/home', function () {
 
 
 
+
+
+
 // Display roomInfor
 Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
 
+Route::get('/roomInfor/{id}', [RoomController::class, 'showRoom']);
 
 
 

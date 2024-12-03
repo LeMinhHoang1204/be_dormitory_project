@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('residences', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('stu_id')->unsigned();
+
+            $table->string('name', 255);
             $table->integer('room_id')->unsigned();
             $table->dateTime('start_date');
+            //Thêm cột thời hạn
+            $table->enum('duration', ['3 months', '6 months', '9 months', '12 months'])->default('3 months');
             $table->dateTime('end_date');
             $table->dateTime('check_out_date')->nullable();
             $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Transfered', 'Checked out'])->default('Registered');

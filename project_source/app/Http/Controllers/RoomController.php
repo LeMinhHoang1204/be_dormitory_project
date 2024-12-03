@@ -270,5 +270,12 @@ class RoomController extends Controller
         return view('roomInfor.roomInfor', compact('room'));
     }
 
+// Lay du lieu room tu DB
+    public function showRoom($id)
+    {
+        $room = Room::find($id);
+        return view('roomInfor.roomInfor', compact('room'));
+    }
+
 
 }

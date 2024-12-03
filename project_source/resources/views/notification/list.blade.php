@@ -47,7 +47,7 @@
 
                             <!-- Lọc theo ngày tạo -->
                             <div class="filter-section">
-                                <label class="bfilter-lable">Sort by Creation Date</label>
+                                <label class="filter-lable">Sort by Creation Date</label>
                                 <select name="sort_date" class="filter-input">
                                     <option value="recent">Most Recent</option>
                                     <option value="oldest">Oldest</option>

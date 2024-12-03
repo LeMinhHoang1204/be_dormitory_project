@@ -62,5 +62,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-require __DIR__ . '/api/building-room.php';
+require __DIR__ . '/api/building-room-residence.php';
 require __DIR__ . '/api/notification.php';

@@ -1,36 +1,36 @@
 const roomsData = [
     {
-        roomId: "room001",
+        roomId: 1,
         name: "A101",
         price: 800000.0,
         img: "room.png",
     },
     {
-        roomId: "room002",
+        roomId: 2,
         name: "A102",
         price: 700000.0,
         img: "room.png",
     },
     {
-        roomId: "room003",
+        roomId: 3,
         name: "A103",
         price: 600000.0,
         img: "room.png",
     },
     {
-        roomId: "room004",
+        roomId: 4,
         name: "A104",
         price: 500000.0,
         img: "room.png",
     },
     {
-        roomId: "room00",
+        roomId: 5,
         name: "A105",
         price: 400000.0,
         img: "room.png",
     },
     {
-        roomId: "room006",
+        roomId: 6,
         name: "A106",
         price: 300000.0,
         img: "room.png",
@@ -199,6 +199,7 @@ document
 // // Sự kiện khi nhấn vào overlay hoặc nút "Continue" (để đóng tất cả các panel)
 // document.querySelector('.overlay2').addEventListener('click', closeAllPanels);
 // document.querySelector('.success-panel .continue-btn').addEventListener('click', closeAllPanels);
+
 
 // Hiển thị confirm-info-container khi nhấn "Yes" trong confirm-regis
 function showConfirmInfoContainer() {

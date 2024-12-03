@@ -10,20 +10,18 @@
 
 @section('content')
     @include('layouts.sidebar_student')
-
     <div class="container">
         <main>
             <section class="room-info">
                 <h1>Room Information</h1>
                 <div class="room-details">
                     <div class="room-meta">
-                        <h2></h2>
-                        <span></span>
-                        <p>Address: Ho Chi Minh City</p>
-                        <p>Size: 30 sqm</p>
-                        <p>Floor: 3rd</p>
-                        <p>Available from: 1st November 2023</p>
-                        <button class="change-button" onclick="toggleConfirm()">Register</button>
+                        <h2>{{ $room->name }}</h2>
+                        <p>ID Room: {{ $room->id }}</p>
+                        <p>Floor Number: {{ $room->floor_number }}</p>
+                        <p>Price: {{ $room->unit_price }} VND/month</p>
+                        <p>Member number: {{ $room->menber_number }}</p>
+                        <x-register-button />
                     </div>
                     <div class="room-image">
                         <img src="" alt="Room Image">
@@ -58,26 +56,4 @@
             </section>
         </main>
     </div>
-
-    {{-- <div class="confirm-regis hidden">
-        <h2>Are you sure to register this room?</h2>
-        <div class="button-container">
-            <button class="no-btn" onclick="closeConfirm()">No</button>
-            <button class="yes-btn" onclick="showConfirmInfoContainer()">Yes</button>
-        </div>
-    </div>
-
-    <script>
-        function toggleConfirm() {
-            document.querySelector('.confirm-regis').classList.toggle('hidden');
-        }
-
-        function closeConfirm() {
-            document.querySelector('.confirm-regis').classList.add('hidden');
-        }
-
-        function showConfirmInfoContainer() {
-            alert('Register room successfully!');
-        }
-    </script> --}}
 @endsection

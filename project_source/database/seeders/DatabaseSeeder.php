@@ -48,6 +48,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
+            'name' => 'TuVi Building Manager A',
+            'email' => '9a3tuthituongvi@gmail.com', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'building manager',
+        ]);
+
+        User::factory()->create([
             'name' => 'Lê Minh Hoàng',
             'email' => '22520464@gm.uit.edu.vn', // Set a known email
             'password' => Hash::make('12345678'), // Use a secure password

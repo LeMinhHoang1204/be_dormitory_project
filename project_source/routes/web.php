@@ -5,18 +5,25 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BuildingController;
 
-//Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
-//Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
-// Routes for building
-Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
 Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
 Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
-Route::get('/buildings/{building}', [BuildingController::class, 'show'])->name('buildings.show');
-Route::get('/buildings/{building}/edit', [BuildingController::class, 'edit'])->name('buildings.edit');
-Route::put('/buildings/{building}', [BuildingController::class, 'update'])->name('buildings.update');
-Route::delete('/buildings/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
-Route::put('/buildings/{building}/manager', [BuildingController::class, 'updateManager'])->name('buildings.updateManager');
 
+
+//// Routes for building
+//Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
+//Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
+//Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
+//Route::get('/buildings/{building}', [BuildingController::class, 'show'])->name('buildings.show');
+//Route::get('/buildings/{building}/edit', [BuildingController::class, 'edit'])->name('buildings.edit');
+//Route::put('/buildings/{building}', [BuildingController::class, 'update'])->name('buildings.update');
+//Route::delete('/buildings/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
+//Route::put('/buildings/{building}/manager', [BuildingController::class, 'updateManager'])->name('buildings.updateManager');
+//
+//
+//Route::resource('rooms', RoomController::class);
+//Route::get('buildings/{building}/rooms', [RoomController::class, 'index'])->name('rooms.index');
+//Route::get('buildings/{building}/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
+//Route::post('buildings/{building}/rooms', [RoomController::class, 'store'])->name('rooms.store');
 
 
 Route::get('/', function () {

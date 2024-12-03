@@ -25,5 +25,11 @@ class EmployeeSeeder extends Seeder
                 'type' => $user->role, // Đặt type theo role của User
             ])->create();
         });
+
+        //            $admins = User::where('role', 'admin')->get();
+//            foreach ($admins as $admin) {
+//                // Gán admin làm manager cho employee thông qua admin_employee
+//                $employee->admins()->attach($admin->id);
+//            }
     }
 }

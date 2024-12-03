@@ -92,4 +92,23 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Room::class, 'stu_id', 'id'); // 'stu_id' là cột khóa ngoại trong bảng rooms liên kết với bảng users
     }
 
+    public function sendInvoice()
+    {
+        return $this->hasMany(Invoice::class, 'sender_id', 'id');
+    }
+
+    public function hasParticipate()
+    {
+        return $this->hasMany(RegistrationActivity::class, 'participant_id', 'id');
+    }
+
+    public function createViolation()
+    {
+        return $this->hasMany(Invoice::class, 'creator_id', 'id');
+    }
+
+    public function receiveViolation()
+    {
+        return $this->hasMany(Invoice::class, 'receiver_id', 'id');
+    }
 }

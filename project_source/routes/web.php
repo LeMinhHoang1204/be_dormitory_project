@@ -5,20 +5,6 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BuildingController;
 
-//Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
-//Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
-// Routes for building
-Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
-Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
-Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
-Route::get('/buildings/{building}', [BuildingController::class, 'show'])->name('buildings.show');
-Route::get('/buildings/{building}/edit', [BuildingController::class, 'edit'])->name('buildings.edit');
-Route::put('/buildings/{building}', [BuildingController::class, 'update'])->name('buildings.update');
-Route::delete('/buildings/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
-Route::put('/buildings/{building}/manager', [BuildingController::class, 'updateManager'])->name('buildings.updateManager');
-
-
-
 Route::get('/', function () {
     return view('home');
 });
@@ -53,7 +39,16 @@ Route::middleware(['auth'])->group(function () {
     // Route gửi yêu cầu sửa chữa
     Route::post('/student/repair-request', [RoomController::class, 'storeRepairRequest'])->name('repair-request.store');
 });
+
+Route::get('/regis-test', function () {
+    return view('/Reg_room/reg_room');
+});
+
+Route::get('/home', function () {
+    return view('home');
+});
+
 require __DIR__.'/auth.php';
-require __DIR__ .'/api/building-room.php';
+require __DIR__ . '/api/building-room-residence.php';
 require __DIR__.'/api/notification.php';
 

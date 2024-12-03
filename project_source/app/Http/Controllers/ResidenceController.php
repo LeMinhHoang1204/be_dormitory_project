@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Building;
 use App\Models\Residence;
 use App\Http\Requests\StoreResidenceRequest;
 use App\Http\Requests\UpdateResidenceRequest;
+use App\Models\Room;
 
 class ResidenceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Building $building, Room $room)
     {
-        //
+        $residences = Residence::where('room_id', $room->id)->get();
+        return view('admin_residences.list', compact('residences', 'building', 'room'));
     }
 
     /**
@@ -21,7 +24,7 @@ class ResidenceController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin_residences.reg_room');
     }
 
     /**
@@ -29,7 +32,7 @@ class ResidenceController extends Controller
      */
     public function store(StoreResidenceRequest $request)
     {
-        //
+
     }
 
     /**

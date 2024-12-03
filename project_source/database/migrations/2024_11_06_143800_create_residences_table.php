@@ -12,15 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('residences', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('stu_id')->unsigned();
             $table->integer('room_id')->unsigned();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->dateTime('check_out_date')->nullable();
-            $table->enum('status', ['Da dang ky', 'Da thanh toan', 'Da nhan phong', 'Da chuyen nhuong', 'Da tra phong'])->default('Da dang ky');
+            $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Transfered', 'Checked out'])->default('Registered');
             $table->string('note', 200)->nullable();
 
-            $table->primary(['stu_id', 'room_id', 'start_date']);
+            $table->unique(['stu_id', 'room_id', 'start_date']);
             $table->foreign('stu_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
             $table->timestamps();

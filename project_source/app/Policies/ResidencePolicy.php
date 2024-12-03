@@ -13,7 +13,8 @@ class ResidencePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+//        return $user->isAdmin();
+        return true;
     }
 
     /**
@@ -29,7 +30,7 @@ class ResidencePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -37,7 +38,7 @@ class ResidencePolicy
      */
     public function update(User $user, Residence $residence): bool
     {
-        //
+        return $user->role == 'admin' || $user->role == 'student';
     }
 
     /**
@@ -45,7 +46,7 @@ class ResidencePolicy
      */
     public function delete(User $user, Residence $residence): bool
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -53,7 +54,7 @@ class ResidencePolicy
      */
     public function restore(User $user, Residence $residence): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +62,6 @@ class ResidencePolicy
      */
     public function forceDelete(User $user, Residence $residence): bool
     {
-        //
+        return false;
     }
 }

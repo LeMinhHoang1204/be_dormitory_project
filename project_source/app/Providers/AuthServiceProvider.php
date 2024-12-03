@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Models\Building;
 use App\Models\Notification;
+use App\Models\Residence;
 use App\Models\Room;
 use app\Models\User;
 use App\Policies\BuildingPolicy;
 use App\Policies\NotificationPolicy;
+use App\Policies\ResidencePolicy;
 use App\Policies\RoomPolicy;
 use app\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -26,6 +28,7 @@ class   AuthServiceProvider extends ServiceProvider
         Notification::class => NotificationPolicy::class,
         Building::class => BuildingPolicy::class,
         Room::class => RoomPolicy::class,
+        Residence::class => ResidencePolicy::class,
     ];
 
     public function register(): void

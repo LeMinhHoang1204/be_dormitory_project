@@ -24,7 +24,7 @@
                         <button class="register-btn">Register</button>
                     </div>
                     <div class="room-image">
-                        <img src="room1.jpg" alt="Room Image">
+                        <img src="public/images/room1.jpg" alt="Room Image">
                     </div>
                 </div>
                 <div class="room-description">

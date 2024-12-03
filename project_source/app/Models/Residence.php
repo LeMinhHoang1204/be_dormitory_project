@@ -11,7 +11,7 @@ class Residence extends Model
 
     protected $table = 'residences';
 
-    protected $primaryKey = ['stu_id', 'room_id', 'start_date'];
+//    protected $primaryKey = ['stu_id', 'room_id', 'start_date'];
 
     protected $fillable = [
         'stu_id',

@@ -42,7 +42,6 @@ main {
 
 .room-info h1 {
     text-align: center;
-    text-align: left;
     font-size: 2rem;
     color: var(--title);
 }
@@ -57,7 +56,11 @@ main {
 .room-image {
     text-align: right;
     width: 50%;
+    border-radius: 10px;
+}
 
+.room-image img {
+    width: 100%;
     border-radius: 10px;
 }
 
@@ -66,7 +69,7 @@ main {
     text-align: left;
 }
 
-.register-btn {
+.change-button {
     background-color: #007bff;
     color: #fff;
     padding: 10px 15px;
@@ -84,6 +87,7 @@ main {
 .photo-grid {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .photo {
@@ -91,6 +95,8 @@ main {
     height: 100px;
     background-color: #ddd;
     border-radius: 5px;
+    background-size: cover;
+    background-position: center;
 }
 
 .see-all {
@@ -108,4 +114,19 @@ main {
 .facilities li {
     margin: 5px 0;
     color: #555;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .facilities li {
+        margin: 10px 0;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .facilities li {
+        margin: 15px 0;
+        font-size: 12px;
+    }
 }

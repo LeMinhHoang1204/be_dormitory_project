@@ -8,43 +8,44 @@ const roomsData = [
     {
         roomId: "room002",
         name: "A102",
-        price: 800000.0,
+        price: 700000.0,
         img: "room.png",
     },
     {
         roomId: "room003",
         name: "A103",
-        price: 800000.0,
+        price: 600000.0,
         img: "room.png",
     },
     {
         roomId: "room004",
         name: "A104",
-        price: 800000.0,
+        price: 500000.0,
         img: "room.png",
     },
     {
         roomId: "room00",
         name: "A105",
-        price: 800000.0,
+        price: 400000.0,
         img: "room.png",
     },
     {
         roomId: "room006",
         name: "A106",
-        price: 800000.0,
+        price: 300000.0,
         img: "room.png",
     },
 ];
 
-function createRoom(room1) {
+// Creat room
+function createRoom(room) {
     return `
-        <div class="room-item" data-room-id="${room1.roomId}">
-            <img src="/img/room.png" alt="${room1.name}">
+        <div class="room-item" data-room-id="${room.roomId}" data-room-name="${room.name}" data-room-price="${room.price}" data-room-img="${room.img}">
+            <img src="/img/${room.img}" alt="${room.name}">
             <div class="form-group">
-                <div class="roomname">Room ${room1.name}</div>
+                <div class="roomname">Room ${room.name}</div>
                 <div id="room-price">
-                    <span class="price">${room1.price}</span>
+                    <span class="price">${room.price}</span>
                     <span class="per-month">/month</span>
                 </div>
                 <div class="room-info">Phòng được thiết kế mới mẻ với đầy đủ các vật dụng cần thiết</div>
@@ -58,7 +59,7 @@ function createRoom(room1) {
     `;
 }
 
-// Display roomInfor
+// Display rooms
 function displayRoom() {
     const roomList = document.getElementById("room-list");
     roomList.innerHTML = roomsData.map(createRoom).join("");
@@ -67,14 +68,21 @@ function displayRoom() {
     roomItems.forEach((item) => {
         item.addEventListener("click", function () {
             const roomId = this.dataset.roomId;
-            if (roomId) {
-                window.location.href = `/roomInfor/${roomId}`;
-            } else {
-                console.error("Room ID is undefined");
-            }
+            const roomName = this.dataset.roomName;
+            const roomPrice = this.dataset.roomPrice;
+            const roomImg = this.dataset.roomImg;
+
+            // Luu data room-item vao localStorage
+            localStorage.setItem(
+                "selectedRoom",
+                JSON.stringify({ roomId, roomName, roomPrice, roomImg })
+            );
+
+            window.location.href = `/roomInfor/${roomId}`;
         });
     });
 }
+
 document.addEventListener("DOMContentLoaded", function () {
     displayRoom();
 });

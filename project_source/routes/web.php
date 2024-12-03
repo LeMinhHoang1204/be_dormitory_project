@@ -48,18 +48,16 @@ Route::get('/home', function () {
     return view('home');
 });
 
-require __DIR__.'/auth.php';
-require __DIR__ . '/api/building-room-residence.php';
-require __DIR__.'/api/notification.php';
-
-
-
 
 
 // Display roomInfor
 Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
+
+
+
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/api/building-room-residence.php';

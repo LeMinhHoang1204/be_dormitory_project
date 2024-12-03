@@ -9,22 +9,24 @@
 </head>
 
 @section('content')
+    @include('layouts.sidebar_student')
+
     <div class="container">
         <main>
             <section class="room-info">
                 <h1>Room Information</h1>
                 <div class="room-details">
                     <div class="room-meta">
-                        <h2>Room A101</h2>
-                        <span>Price: 800000 VND/month</span>
+                        <h2></h2>
+                        <span></span>
                         <p>Address: Ho Chi Minh City</p>
                         <p>Size: 30 sqm</p>
                         <p>Floor: 3rd</p>
                         <p>Available from: 1st November 2023</p>
-                        <button class="register-btn">Register</button>
+                        <button class="change-button" onclick="toggleConfirm()">Register</button>
                     </div>
                     <div class="room-image">
-                        <img src="public/images/room1.jpg" alt="Room Image">
+                        <img src="" alt="Room Image">
                     </div>
                 </div>
                 <div class="room-description">
@@ -36,9 +38,9 @@
                 <div class="photos">
                     <h3>Photos</h3>
                     <div class="photo-grid">
-                        <div class="photo"></div>
-                        <div class="photo"></div>
-                        <div class="photo"></div>
+                        <img src="{{ asset('images/room1.jpg') }}" alt="Room Image 1">
+                        <img src="{{ asset('images/room1.jpg') }}" alt="Room Image 2">
+                        <img src="{{ asset('images/room1.jpg') }}" alt="Room Image 3">
                     </div>
                 </div>
                 <div class="facilities">
@@ -56,4 +58,26 @@
             </section>
         </main>
     </div>
+
+    {{-- <div class="confirm-regis hidden">
+        <h2>Are you sure to register this room?</h2>
+        <div class="button-container">
+            <button class="no-btn" onclick="closeConfirm()">No</button>
+            <button class="yes-btn" onclick="showConfirmInfoContainer()">Yes</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleConfirm() {
+            document.querySelector('.confirm-regis').classList.toggle('hidden');
+        }
+
+        function closeConfirm() {
+            document.querySelector('.confirm-regis').classList.add('hidden');
+        }
+
+        function showConfirmInfoContainer() {
+            alert('Register room successfully!');
+        }
+    </script> --}}
 @endsection

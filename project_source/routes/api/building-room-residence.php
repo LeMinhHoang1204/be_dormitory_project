@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,5 +39,22 @@ Route::middleware('auth')->group(function () {
         Route::delete('/delete/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy')->can('delete', 'room');
     });
 
+    // residences
+    Route::prefix('/buildings/{building}/rooms/{room}/residences')->group(function () {
+        Route::get('/', [ResidenceController::class, 'index'])->name('residences.index')->can('viewAny', \App\Models\Residence::class);
 
+        Route::get('/create', [ResidenceController::class, 'create'])->name('residences.create')->can('create', \App\Models\Residence::class);
+
+        Route::post('/register', [ResidenceController::class, 'store'])->name('residences.store')->can('create', \App\Models\Residence::class);
+
+        Route::get('/register', [ResidenceController::class, 'create'])->name('residences.create')->can('create', \App\Models\Residence::class);
+
+        Route::post('/register', [ResidenceController::class, 'store'])->name('residences.store')->can('create', \App\Models\Residence::class);
+
+        Route::get('/edit/{residence}', [ResidenceController::class, 'edit'])->name('residences.edit')->can('update', 'residence');
+
+        Route::post('/edit/{residence}', [ResidenceController::class, 'update'])->name('residences.update')->can('update', 'residence');
+
+        Route::delete('/delete/{residence}', [ResidenceController::class, 'destroy'])->name('residences.destroy')->can('delete', 'residence');
+    });
 });

@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        User::factory(50)->create();
+        // chuyen sang seeder
         Notification::factory(10)->create();
 //        Student::factory(100)->create();
 //        Building::factory(10)->create();
@@ -93,12 +93,15 @@ class DatabaseSeeder extends Seeder
             'role' => 'accountant',
         ]);
 
-        Student::factory()->create([
-            'user_id' => '13',
-            'uni_id' => '22520464', // Set a known email
-            'uni_name' => 'UIT', // Use a secure password
-            'dob' => now(),
-            'gender' =>'male',
+        $this->call([
+            UserSeeder::class,
+            StudentSeeder::class,
+            EmployeeSeeder::class,
+            BuildingSeeder::class,
+            RoomSeeder::class,
+            ResidenceSeeder::class,
+            AssetSeeder::class,
+            RoomAssetSeeder::class,
         ]);
     }
 }

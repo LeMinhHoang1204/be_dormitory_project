@@ -8,6 +8,7 @@ body {
     background-color: #fff;
     padding: 10px 0;
 }
+
 .ul {
     list-style: none;
 }
@@ -165,7 +166,7 @@ body {
     position: relative; /* Adjusts position relative to parent */
 }
 
-.room {
+.room-item {
     flex-grow: 1;
     flex-basis: 340px;
     background-color: #fff;
@@ -200,7 +201,7 @@ body {
     font-size: 14px;
     color: #666;
 }
-.room img {
+.room-item img {
     width: 100%;
     border-radius: 20px 20px 0px 0px;
 }

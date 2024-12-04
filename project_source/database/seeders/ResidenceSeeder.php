@@ -37,7 +37,6 @@ class ResidenceSeeder extends Seeder
 
             Residence::create([
                 'stu_id' => $student->id,
-                'name' => $student->uni_name,
                 'room_id' => Arr::random($rooms),
                 'start_date' => $start_date,
                 'duration' => $duration,

@@ -10,19 +10,19 @@ Route::middleware('auth')->group(function () {
     // buildings
     Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index')->can('viewAny', \App\Models\Building::class);
 
-    Route::put('/buildings/update-manager/{building}', [BuildingController::class, 'updateManager'])->name('buildings.updateManager')->can('update', 'building');
+    Route::put('/buildings/update-manager/{building}', [BuildingController::class, 'updateManager'])->name('buildings.updateManager')->can('update', \App\Models\Building::class);
 
     Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create')->can('create', \App\Models\Building::class);
 
     Route::post('/buildings/create', [BuildingController::class, 'store'])->name('buildings.store')->can('create', \App\Models\Building::class);
 
-    Route::get('/buildings/{building}', [BuildingController::class, 'show'])->name('buildings.show')->can('view', 'building');
+    Route::get('/buildings/{building}', [BuildingController::class, 'show'])->name('buildings.show')->can('view', \App\Models\Building::class);
 
-    Route::get('/buildings/edit/{building}', [BuildingController::class, 'edit'])->name('buildings.edit')->can('update', 'building');
+    Route::get('/buildings/edit/{building}', [BuildingController::class, 'edit'])->name('buildings.edit')->can('update', \App\Models\Building::class);
 
-    Route::post('/buildings/edit/{building}', [BuildingController::class, 'update'])->name('buildings.update')->can('update', 'building');
+    Route::post('/buildings/edit/{building}', [BuildingController::class, 'update'])->name('buildings.update')->can('update', \App\Models\Building::class);
 
-    Route::delete('/buildings/delete/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy')->can('delete', 'building');
+    Route::delete('/buildings/delete/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy')->can('delete', \App\Models\Building::class);
 
     // rooms
     Route::prefix('/buildings/{building}/rooms')->group(function () {
@@ -32,11 +32,11 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/create', [RoomController::class, 'store'])->name('rooms.store')->can('create', \App\Models\Room::class);
 
-        Route::get('/edit/{room}', [RoomController::class, 'edit'])->name('rooms.edit')->can('update', 'room');
+        Route::get('/edit/{room}', [RoomController::class, 'edit'])->name('rooms.edit')->can('update', \App\Models\Room::class);
 
-        Route::post('/edit/{room}', [RoomController::class, 'update'])->name('rooms.update')->can('update', 'room');
+        Route::post('/edit/{room}', [RoomController::class, 'update'])->name('rooms.update')->can('update', \App\Models\Room::class);
 
-        Route::delete('/delete/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy')->can('delete', 'room');
+        Route::delete('/delete/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy')->can('delete', \App\Models\Room::class);
     });
 
     // residences
@@ -51,10 +51,12 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/register', [ResidenceController::class, 'store'])->name('residences.store')->can('create', \App\Models\Residence::class);
 
-        Route::get('/edit/{residence}', [ResidenceController::class, 'edit'])->name('residences.edit')->can('update', 'residence');
+        Route::get('/edit/{residence}', [ResidenceController::class, 'edit'])->name('residences.edit')->can('update', \App\Models\Residence::class);
 
-        Route::post('/edit/{residence}', [ResidenceController::class, 'update'])->name('residences.update')->can('update', 'residence');
+        Route::post('/edit/{residence}', [ResidenceController::class, 'update'])->name('residences.update')->can('update', \App\Models\Residence::class);
 
-        Route::delete('/delete/{residence}', [ResidenceController::class, 'destroy'])->name('residences.destroy')->can('delete', 'residence');
+        Route::delete('/delete/{residence}', [ResidenceController::class, 'destroy'])->name('residences.destroy')->can('delete', \App\Models\Residence::class);
     });
+
+
 });

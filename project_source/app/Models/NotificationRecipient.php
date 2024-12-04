@@ -22,7 +22,7 @@ class NotificationRecipient extends Model
 
     public function notification()
     {
-        return $this->belongsTo(NotificationRecipient::class, 'noti_id', 'id');
+        return $this->belongsTo(Notification::class, 'noti_id', 'id');
     }
 
     public function user(){

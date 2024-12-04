@@ -13,7 +13,7 @@ class InvoicePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'accountant';
     }
 
     /**
@@ -21,7 +21,12 @@ class InvoicePolicy
      */
     public function view(User $user, Invoice $invoice): bool
     {
-        //
+        return $user->role === 'admin'
+            || $user->role === 'accountant'
+            || $user->residence->building_id === $invoice->object_id
+            || $user->residence->room_id === $invoice->object_id
+            || $user->residence->stu_user_id === $invoice->object_id;
+
     }
 
     /**
@@ -29,7 +34,7 @@ class InvoicePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'accountant';
     }
 
     /**
@@ -37,7 +42,7 @@ class InvoicePolicy
      */
     public function update(User $user, Invoice $invoice): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'accountant';
     }
 
     /**
@@ -45,7 +50,7 @@ class InvoicePolicy
      */
     public function delete(User $user, Invoice $invoice): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'accountant';
     }
 
     /**
@@ -53,7 +58,7 @@ class InvoicePolicy
      */
     public function restore(User $user, Invoice $invoice): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +66,6 @@ class InvoicePolicy
      */
     public function forceDelete(User $user, Invoice $invoice): bool
     {
-        //
+        return false;
     }
 }

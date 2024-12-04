@@ -14,7 +14,7 @@ class Residence extends Model
 //    protected $primaryKey = ['stu_id', 'room_id', 'start_date'];
 
     protected $fillable = [
-        'stu_id',
+        'stu_user_id',
         'room_id',
         'start_date',
         'end_date',
@@ -24,9 +24,9 @@ class Residence extends Model
     ];
 
     // Quan hệ với Student
-    public function student()
+    public function user()
     {
-        return $this->belongsTo(Student::class, 'stu_id', 'id');
+        return $this->belongsTo(User::class, 'stu_user_id', 'id');
     }
 
     // Quan hệ với Room

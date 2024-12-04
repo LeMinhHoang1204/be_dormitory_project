@@ -14,19 +14,18 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('sender_id')->unsigned();
-            $table->integer('object_id')->unsigned();
+            $table->morphs('object');
             $table->dateTime('send_date');
             $table->dateTime('due_date');
             $table->dateTime('paid_date')->nullable();
-            $table->enum('type', ['Room', 'Service', 'Other']);
-            $table->enum('status', ['Not Paid', 'Paid', 'Overdue', 'Tranfered Roo' ])->default('Not Paid');
+            $table->enum('type', ['Room', 'Electricity', 'Water', 'Fixing', 'Cleaning']);
+            $table->enum('status', ['Not Paid', 'Paid', 'Overdue', 'Transferred Room'])->default('Not Paid');
             $table->decimal('total', 10, 2);
             $table->enum('payment_method', ['Cash', 'Bank Transfer']);
             $table->string('note', 200)->nullable();
             $table->timestamps();
 
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('object_id')->references('id')->on('rooms')->onDelete('cascade');
         });
     }
 

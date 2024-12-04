@@ -13,7 +13,7 @@ class ResidenceSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Student::limit(50)->get()->each(function ($student) {
-            \App\Models\Residence::factory()->state(['stu_id' => $student->id])->create();
+            \App\Models\Residence::factory()->state(['stu_user_id' => $student->user->id])->create();
         });
     }
 }

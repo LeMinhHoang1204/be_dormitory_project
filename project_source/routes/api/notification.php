@@ -7,7 +7,8 @@ Route::middleware('auth')->group(function () {
     // notifications
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index')->can('viewAny', \App\Models\Notification::class);
 
-    Route::get('/notifications/create', [NotificationController::class, 'create'])->can('create', \App\Models\Notification::class);
+//    Route::get('/notifications/create', [NotificationController::class, 'create'])->can('create', \App\Models\Notification::class);
+    Route::get('/notifications/create', [NotificationController::class, 'create'])->name('notifications.create')->can('create', \App\Models\Notification::class);
 
     Route::post('/notifications/create', [NotificationController::class, 'store'])->name('notifications.store')->can('create', \App\Models\Notification::class);
 

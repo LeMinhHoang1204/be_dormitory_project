@@ -30,11 +30,26 @@ class Student extends Model
     // tất cả đều được thêm vào (chỉ ghi 1 trong 2 fillable or guarded)
 //    protected $guarded = [];
 
-    // user relationship
+    // Thiết lập mối quan hệ với User
     public function user()
     {
         // foreign key: khoá ngoại của student không phải là "user_id"
         // ownerKey: nếu khoá chính của user không phải là "id"
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function residence()
+    {
+        return $this->hasMany(Residence::class, 'stu_id', 'id');
+    }
+
+
+    public function rooms()
+    {
+//        Many-to-many giữa student và room thông qua residences
+        return $this->belongsToMany(Room::class, 'residences', 'stu_id', 'room_id')
+            ->withPivot('start_date', 'end_date', 'check_out_date', 'status', 'note')
+            ->withTimestamps();
+    }
+
 }

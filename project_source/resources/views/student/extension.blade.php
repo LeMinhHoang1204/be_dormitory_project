@@ -67,10 +67,9 @@
 
         <h3 class="heading">Room Extension</h3>
 
-        <!-- TODO: LẤY THÔNG TIN TỪ DATABASE LÊN -->
         <div class="current-room-info">
             <h5 class="section-title">Current room information</h5>
-            <p><strong>Room:</strong> A101</p>
+            <p><strong>Room:</strong> {{ $residence->room->name ?? 'N/A'}}</p>
             <p><strong>Price:</strong> 1200000đ</p>
             <p><strong>Contract Expiry Date:</strong> 31/12/2024</p>
         </div>

@@ -12,7 +12,7 @@
         <span class="text">{{ auth()->check() ? ucfirst(auth()->user()->role) : '' }}</span>
     </div>
 
-    <input type="text" class="search" placeholder="Search">
+{{--    <input type="text" class="search" placeholder="Search">--}}
     <ul class="menu">
         <li class="menu-item">
             <a href="{{ url('/home') }}">
@@ -27,7 +27,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="#">
+            <a href="notifications">
                 <span class="icon">🔔</span>
                 <span class="text">Notifications</span>
             </a>
@@ -48,6 +48,12 @@
                 <li><a href="/student/checkout">Check-out</a></li>
             </ul>
         </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span class="icon">🏃‍♂️</span>
+                    <span class="text">Activites</span>
+                </a>
+            </li>
         <li class="menu-item">
             <a href="#">
                 <span class="icon">💳</span>
@@ -61,6 +67,12 @@
                 <a href="/buildings">
                     <span class="icon">🏢</span>
                     <span class="text">Building</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span class="icon">🏃‍♂️</span>
+                    <span class="text">Activites</span>
                 </a>
             </li>
 
@@ -113,67 +125,6 @@
 
 </div>
 
-{{--Sidebar for Admin--}}
-{{--@if (auth()->check() && auth()->user()->role === 'student')--}}
-
-{{--    <div id="sidebar" class="sidebar">--}}
-
-{{--        --}}{{--    Sidebar cho Student--}}
-
-{{--        <div class="logo">--}}
-{{--            <span class="icon">📦</span>--}}
-{{--            <span class="text">VIP Dormitory</span>--}}
-{{--        </div>--}}
-{{--        <input type="text" class="search" placeholder="Search">--}}
-{{--        <ul class="menu">--}}
-{{--            <li class="menu-item">--}}
-{{--                <a href="{{ url('/home') }}">--}}
-{{--                    <span class="icon">🏠</span>--}}
-{{--                    <span class="text">Home</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--            <li class="menu-item">--}}
-{{--                <a href="{{ url('/dashboard') }}">--}}
-{{--                    <span class="icon">📊</span>--}}
-{{--                    <span class="text">Dashboard</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--            <li class="menu-item">--}}
-{{--                <a href="#">--}}
-{{--                    <span class="icon">🔔</span>--}}
-{{--                    <span class="text">Notifications</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--            <li class="menu-item has-submenu">--}}
-{{--                <a href="#">--}}
-{{--                    <span class="icon">🛏️</span>--}}
-{{--                    <span class="text">Room</span>--}}
-{{--                </a>--}}
-{{--                <ul class="submenu">--}}
-{{--                    <li><a href="{{ url('/regis-test') }}">Register</a></li>--}}
-{{--                    <li><a href="/student/repair-request">Repair</a></li>--}}
-{{--                    <li><a href="#">Change</a></li>--}}
-{{--                    <li><a href="/student/extension">Extension</a></li>--}}
-{{--                    <li><a href="/student/checkout">Check-out</a></li>--}}
-
-{{--                </ul>--}}
-{{--            </li>--}}
-{{--            <li class="menu-item">--}}
-{{--                <a href="#">--}}
-{{--                    <span class="icon">💳</span>--}}
-{{--                    <span class="text">Payment</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--            <li class="menu-item">--}}
-{{--                <a href="#">--}}
-{{--                    <span class="icon">⚙️</span>--}}
-{{--                    <span class="text">Account</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--        </ul>--}}
-
-{{--    </div>--}}
-{{--@endif--}}
 
 <script>
 

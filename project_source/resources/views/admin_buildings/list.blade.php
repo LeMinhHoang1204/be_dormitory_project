@@ -31,8 +31,8 @@
             <tbody>
             @forelse($buildings as $building)
                 <tr onclick="window.location='{{ route('buildings.show', $building->id) }}'" style="cursor: pointer;">
-                    <td>{{ $building->buil_name }}</td>
-                    <td>{{ $building->managed->user->name ?? 'N/A' }}</td>
+                    <td>{{ $building->build_name }}</td>
+                    <td>{{ $building->managedBy->user->name ?? 'N/A' }}</td>
                     <td>{{ ucfirst($building->type) }}</td>
                     <td>{{ $building->floor_numbers }}</td>
                     <td>{{ $building->room_numbers }}</td>

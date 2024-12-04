@@ -2,18 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Building;
-use App\Models\Employee;
-use App\Models\Notification;
-use App\Models\NotificationRecipient;
-use App\Models\Residence;
-use App\Models\Room;
-use App\Models\Student;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,25 +25,9 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        // chuyen sang seeder
-        Notification::factory(10)->create();
-//        Student::factory(100)->create();
-//        Building::factory(10)->create();
-//        Room::factory(200)->create();
-//        Residence::factory(100)->create();
-
         User::factory()->create([
             'name' => 'Châu Minh Trí',
             'email' => '22521515@gm.uit.edu.vn', // Set a known email
-            'password' => Hash::make('12345678'), // Use a secure password
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-            'role' => 'building manager',
-        ]);
-
-        User::factory()->create([
-            'name' => 'TuVi Building Manager A',
-            'email' => '9a3tuthituongvi@gmail.com', // Set a known email
             'password' => Hash::make('12345678'), // Use a secure password
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
@@ -63,6 +41,15 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'role' => 'student',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Lê Minh Hoàng Kế Toán',
+            'email' => 'hoangminhle1204@gmail.com', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'accountant',
         ]);
 
         User::factory()->create([
@@ -92,15 +79,6 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
             'role' => 'accountant',
         ]);
-        // Tạo một user với role là student
-        User::create([
-            'name' => 'Tường Vi',
-            'email' => 'dovanhoang2004cpr@gmail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-            'role' => 'student',
-        ]);
 
         $this->call([
             UserSeeder::class,
@@ -109,8 +87,9 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             RoomSeeder::class,
             ResidenceSeeder::class,
-//            AssetSeeder::class,
-//            RoomAssetSeeder::class,
+            AssetSeeder::class,
+            RoomAssetSeeder::class,
+            InvoiceSeeder::class,
         ]);
     }
 }

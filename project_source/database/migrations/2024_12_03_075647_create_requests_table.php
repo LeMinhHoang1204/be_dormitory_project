@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('sender_id')->unsigned();
+            $table->bigInteger('sender_id')->unsigned();
             $table->bigInteger('receiver_id')->unsigned();
             $table->enum('type', ['Change Room', 'Renewal', 'Check out', 'Fixing', 'Suggestion', 'Complaint']);
             $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
@@ -21,12 +21,12 @@ return new class extends Migration
             $table->dateTime('receive_date')->nullable();
             $table->dateTime('resolve_date')->nullable();
             $table->string('note', 200)->nullable();
-            $table->bigInteger('forward_id')->unsigned()->nullable();
+            $table->bigInteger('forwarder_id')->unsigned()->nullable();
             $table->timestamps();
 
-//            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('forward_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('forwarder_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

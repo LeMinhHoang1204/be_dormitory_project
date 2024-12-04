@@ -13,7 +13,7 @@ class RoomAssetPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -21,7 +21,7 @@ class RoomAssetPolicy
      */
     public function view(User $user, RoomAsset $roomAsset): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -29,7 +29,7 @@ class RoomAssetPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -37,7 +37,7 @@ class RoomAssetPolicy
      */
     public function update(User $user, RoomAsset $roomAsset): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -45,7 +45,7 @@ class RoomAssetPolicy
      */
     public function delete(User $user, RoomAsset $roomAsset): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -53,7 +53,7 @@ class RoomAssetPolicy
      */
     public function restore(User $user, RoomAsset $roomAsset): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class RoomAssetPolicy
      */
     public function forceDelete(User $user, RoomAsset $roomAsset): bool
     {
-        //
+        return false;
     }
 }

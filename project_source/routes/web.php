@@ -48,7 +48,9 @@ Route::get('/home', function () {
     return view('home');
 });
 
-
+Route::get('/report', function () {
+    return view('/Report/report_accountant');
+});
 
 
 

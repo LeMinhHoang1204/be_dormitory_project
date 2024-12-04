@@ -33,21 +33,21 @@ body {
 }
 
 .right-header {
-    display: flex;
+    /*display: flex;*/
     gap: 20px;
     justify-content: center;
     padding-right: 50px;
 }
 
 .menu {
-    width: 80px;
-    height: 30px;
-    border: #CBD4F3 1px solid;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /*width: 80px;*/
+    /*height: 30px;*/
+    /*border: #CBD4F3 1px solid;*/
+    /*border-radius: 5px;*/
+    /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
 }
 
 .menu button {
@@ -61,18 +61,57 @@ body {
 .menu:hover {
     background: #f0f0f0;
 }
-
-.search input {
-    padding-left: 20px;
-    height: 30px;
-    font-size: 16px;
+.filter-sgv {
+    position: absolute; /* Đặt tiêu đề tuyệt đối trong khung */
+    bottom: 0px;
+    right: 400px;
     cursor: pointer;
-    color: #757575;
-    border: #CBD4F3 1px solid;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, filter 0.2s;
 }
 
+.filter-sgv:hover {
+    transform: scale(1.001); /* Phóng to nhẹ khi hover */
+    filter: drop-shadow(0px 8px 6px rgba(0, 0, 0, 0.3)); /* Tạo shadow đậm hơn khi hover */
+}
+.search {
+    /*padding-left: 20px;*/
+    /*height: 30px;*/
+    /*font-size: 16px;*/
+    /*cursor: pointer;*/
+    /*color: #757575;*/
+    /*border: #CBD4F3 1px solid;*/
+    /*border-radius: 5px;*/
+    /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+    position: absolute;
+    width: 360px;
+    height: 56px;
+    flex-shrink: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.search input {
+    color: #757575;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: none;
+    outline: none;
+}
+.search-icon {
+    cursor: pointer;
+    fill: #757575;
+    position: absolute;
+    left: 44px;
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+}
 .info-pie {
     display: flex;
     justify-content: space-between;

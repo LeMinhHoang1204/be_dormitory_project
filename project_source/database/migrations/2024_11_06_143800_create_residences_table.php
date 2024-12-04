@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('residences', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('stu_id')->unsigned();
+            $table->integer('stu_user_id')->unsigned();
 
-            $table->string('name', 255);
             $table->integer('room_id')->unsigned();
             $table->dateTime('start_date');
             //Thêm cột thời hạn
@@ -25,8 +24,8 @@ return new class extends Migration
             $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Transfered', 'Checked out'])->default('Registered');
             $table->string('note', 200)->nullable();
 
-            $table->unique(['stu_id', 'room_id', 'start_date']);
-            $table->foreign('stu_id')->references('id')->on('students')->onDelete('cascade');
+            $table->unique(['stu_user_id', 'room_id', 'start_date']);
+            $table->foreign('stu_user_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
             $table->timestamps();
         });

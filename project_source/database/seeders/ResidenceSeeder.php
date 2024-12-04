@@ -36,8 +36,7 @@ class ResidenceSeeder extends Seeder
             $end_date = (clone $start_date)->addMonths((int) filter_var($duration, FILTER_SANITIZE_NUMBER_INT)); // Tính end_date
 
             Residence::create([
-                'stu_id' => $student->id,
-                'name' => $student->uni_name,
+                'stu_user_id' => $student->id,
                 'room_id' => Arr::random($rooms),
                 'start_date' => $start_date,
                 'duration' => $duration,

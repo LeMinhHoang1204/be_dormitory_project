@@ -19,11 +19,12 @@ class RoomController extends Controller
     use AuthorizesRequests;
     public function index(Building $building)
     {
-        if (auth()->user()->role == 'admin' ||
-            (auth()->user()->role == 'building manager' && $building->managed && $building->managed->user->id == auth()->user()->id)) {
+        if (
+            auth()->user()->role == 'admin' ||
+            (auth()->user()->role == 'building manager' && $building->managed && $building->managed->user->id == auth()->user()->id)
+        ) {
             $rooms = $building->hasRooms()->paginate(10);
-        }
-        else {
+        } else {
             $rooms = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10);
         }
 
@@ -71,7 +72,7 @@ class RoomController extends Controller
     public function edit(Building $building, Room $room)
     {
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin_rooms.edit', compact('building','room', 'distinctRoomTypes'));
+        return view('admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes'));
     }
 
     /**
@@ -126,7 +127,7 @@ class RoomController extends Controller
         // 3. Lấy thông tin phòng hiện tại của sinh viên
         $studentRoom = $student->residences()
             ->where('status', 'Da nhan phong')
-            ->join('rooms', 'residences.room_id', '=', 'rooms.id')
+            ->join('rooms', 'residences.room_id', '=', 'rooms.roomId')
             ->select('rooms.name as room_name', 'rooms.unit_price', 'residences.end_date')
             ->first();
 
@@ -140,7 +141,7 @@ class RoomController extends Controller
     }
 
 
-// TODO: Xử lý trang check out.
+    // TODO: Xử lý trang check out.
 
     public function showCheckOutPage()
     {
@@ -238,27 +239,43 @@ class RoomController extends Controller
     }
 
 
-//
-//    public function extendRoomContract(Request $request)
-//    {
-//        // Lấy thông tin phòng của người dùng
-//        $room = Room::where('user_id', auth()->id())->first();
-//
-//        // Validate dữ liệu gửi từ form
-//        $validatedData = $request->validate([
-//            'renewal-period' => 'required|in:3,6,9,12',
-//            'description' => 'nullable|string|max:255',
-//        ]);
-//
-//        // Cập nhật ngày hết hạn hợp đồng
-//        $newExpiryDate = now()->addMonths($validatedData['renewal-period']);
-//        $room->expiry_date = $newExpiryDate;
-//        $room->description = $validatedData['description'] ?? $room->description;
-//
-//        // Lưu lại thông tin đã cập nhật
-//        $room->save();
-//
-//        // Trả về thông báo thành công
-//        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
-//    }
+    //
+    //    public function extendRoomContract(Request $request)
+    //    {
+    //        // Lấy thông tin phòng của người dùng
+    //        $room = Room::where('user_id', auth()->id())->first();
+    //
+    //        // Validate dữ liệu gửi từ form
+    //        $validatedData = $request->validate([
+    //            'renewal-period' => 'required|in:3,6,9,12',
+    //            'description' => 'nullable|string|max:255',
+    //        ]);
+    //
+    //        // Cập nhật ngày hết hạn hợp đồng
+    //        $newExpiryDate = now()->addMonths($validatedData['renewal-period']);
+    //        $room->expiry_date = $newExpiryDate;
+    //        $room->description = $validatedData['description'] ?? $room->description;
+    //
+    //        // Lưu lại thông tin đã cập nhật
+    //        $room->save();
+    //
+    //        // Trả về thông báo thành công
+    //        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
+
+    
+//  Hien thi thong tin phong
+    public function showRoomInfor($roomId)
+    {
+        $room = Room::find($roomId);
+        return view('roomInfor.roomInfor', compact('room'));
+    }
+
+// Lay du lieu room tu DB
+    public function showRoom($id)
+    {
+        $room = Room::find($id);
+        return view('roomInfor.roomInfor', compact('room'));
+    }
+
+
 }

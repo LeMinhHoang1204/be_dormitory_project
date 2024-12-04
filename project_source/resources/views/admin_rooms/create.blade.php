@@ -13,28 +13,29 @@
 
             <div class="mb-4">
                 <label for="building_id" class="block text-gray-700 font-bold mb-2">Building:</label>
-                <input type="number" id="building_id" name="building_id" value="{{$building->id}}" readonly
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="number" id="building_id" name="building_id" value="{{ $building->id }}" readonly
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-bold mb-2">Room Name:</label>
-                <input type="text" id="name" name="name"  required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="text" id="name" name="name" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="mb-4">
                 <label for="floor_number" class="block text-gray-700 font-bold mb-2">Floor Number:</label>
-                <input type="number" id="floor_number" name="floor_number"  required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="number" id="floor_number" name="floor_number" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-bold mb-2">Type:</label>
-                <select id="type" name="type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <select id="type" name="type"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="">-- Select Type --</option>
-                    @foreach($distinctRoomTypes as $roomType)
-                        <option value="{{ $roomType->type}}">{{ $roomType->type }}</option>
+                    @foreach ($distinctRoomTypes as $roomType)
+                        <option value="{{ $roomType->type }}">{{ $roomType->type }}</option>
                     @endforeach
                 </select>
             </div>
@@ -42,7 +43,7 @@
             <div class="mb-4">
                 <label for="unit_price" class="block text-gray-700 font-bold mb-2">Unit Price:</label>
                 <input type="number" id="unit_price" name="unit_price" required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <x-primary-button class="ms-4" type="submit">

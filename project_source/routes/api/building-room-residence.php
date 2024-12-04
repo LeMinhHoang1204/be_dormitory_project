@@ -32,11 +32,13 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/create', [RoomController::class, 'store'])->name('rooms.store')->can('create', \App\Models\Room::class);
 
-        Route::get('/edit/{room}', [RoomController::class, 'edit'])->name('rooms.edit')->can('update', \App\Models\Room::class);
+        Route::get('/{room}', [RoomController::class, 'show'])->name('rooms.show')->can('view', 'room');
 
-        Route::post('/edit/{room}', [RoomController::class, 'update'])->name('rooms.update')->can('update', \App\Models\Room::class);
+        Route::get('/edit/{room}', [RoomController::class, 'edit'])->name('rooms.edit')->can('update', 'room');
 
-        Route::delete('/delete/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy')->can('delete', \App\Models\Room::class);
+        Route::post('/edit/{room}', [RoomController::class, 'update'])->name('rooms.update')->can('update', 'room');
+
+        Route::delete('/delete/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy')->can('delete', 'room');
     });
 
     // residences

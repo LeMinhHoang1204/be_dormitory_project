@@ -9,11 +9,9 @@ class NotificationRecipient extends Model
 {
     use HasFactory;
 
-    protected $table = 'NOTIFICATION_RECIPIENTS';
+    protected $table = 'notification_recipients';
 
 //    protected $primaryKey = ['noti_id', 'user_id'];
-
-    public $timestamps = false;
 
     protected $fillable = [
         'noti_id',

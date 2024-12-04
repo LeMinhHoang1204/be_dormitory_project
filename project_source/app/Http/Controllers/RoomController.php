@@ -65,9 +65,9 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Room $room)
+    public function show(Building $building, Room $room)
     {
-        return view('rooms.show', compact('room'));
+        return view('roomInfor.roomInfor', compact('room'));
     }
 
     /**

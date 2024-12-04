@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('sender_id')->unsigned();
-            $table->morphs('object_id'); // tao 2 cot object, object_type
+            $table->morphs('object'); // tao 2 cot object, object_type
             $table->string('title');
-            $table->enum('type', ['individual', 'group'])->default('individual');
+            $table->integer('reader_count')->default(0);
             $table->string('content', 2000);
             $table->timestamps(true);
 

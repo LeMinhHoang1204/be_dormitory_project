@@ -30,11 +30,13 @@ class Student extends Model
     // tất cả đều được thêm vào (chỉ ghi 1 trong 2 fillable or guarded)
 //    protected $guarded = [];
 
-    // user relationship
+    // Thiết lập mối quan hệ với User
     public function user()
     {
         // foreign key: khoá ngoại của student không phải là "user_id"
         // ownerKey: nếu khoá chính của user không phải là "id"
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+
 }

@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
             RoomSeeder::class,
             ResidenceSeeder::class,
             NotificationSeeder::class,
-            NotificationRecipientSeeder::class,
+//            NotificationRecipientSeeder::class,
             AssetSeeder::class,
             RoomAssetSeeder::class,
             InvoiceSeeder::class,

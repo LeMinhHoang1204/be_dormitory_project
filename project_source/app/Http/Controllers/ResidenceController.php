@@ -66,4 +66,24 @@ class ResidenceController extends Controller
     {
         //
     }
+
+    public function myRoom()
+    {
+        $student = auth()->user()->student;
+
+        if (!$student) {
+            return redirect()->back()->with('error', 'You are not assigned as a student.');
+        }
+
+        $residence = Residence::where('stu_id', $student->id)->with('room')->first()
+        ->with('room.building')
+        ->first();
+
+        if (!$residence) {
+            return redirect()->back()->with('error', 'No room information found.');
+        }
+
+        return view('student.room', compact('residence'));
+    }
+
 }

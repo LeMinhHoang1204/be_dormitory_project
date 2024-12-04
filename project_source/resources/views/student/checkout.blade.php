@@ -14,11 +14,11 @@
 
         <div class="student-info">
 
-{{--            TODO: ĐƯA THÔNG TIN STUDENT LÊN TỪ DATABASE SAU (đang fake infor for view)--}}
+
             <div class="info-left">
                 <p><strong>Full name:</strong> {{ Auth::user()->name }}</p>
-                <p><strong>Gender:</strong> {{ isset($student) ? $student->gender : 'Not Provided' }}</p> <!-- Gender -->
-                <p><strong>Student ID:</strong> {{ isset($student) ? $student->id : '12345' }}</p>
+                <p><strong>Gender:</strong> {{ isset($student) ? $student->gender :'Cant find' }}</p> <!-- Gender -->
+                <p><strong>Student ID:</strong> {{ isset($student) ? $student->id : 'Cant find' }}</p>
                 <p><strong>University:</strong> {{ isset($student) ? $student->uni_name : 'University Name' }}</p>
                 <p><strong>Date of birth:</strong> {{ isset($student) ? \Carbon\Carbon::parse($student->dob)->format('d-m-Y') : '01-01-2000' }}</p>
                 <p><strong>Phone number:</strong> {{ isset($student) ? $student->user->phone_number : '0123456789' }}</p>
@@ -27,7 +27,7 @@
             <div class="info-right">
                 <p><strong>Email:</strong> {{ isset($student) ? $student->user->email : 'email@example.com' }}</p>
                 <p><strong>Room:</strong> {{ isset($studentRoom) ? $studentRoom->name : 'Room 101' }}</p>
-                <p><strong>Building:</strong> {{ isset($studentRoom) ? $studentRoom->building->name : 'Building A' }}</p>
+                <p><strong>Building:</strong> {{ isset($studentRoom) ? $studentRoom->building->build_name : 'Building A' }}</p>
                 <p><strong>Check-in Date:</strong> {{ isset($studentRoom) ? \Carbon\Carbon::parse($studentRoom->pivot->start_date)->format('d-m-Y') : '01-12-2023' }}</p>
                 <p><strong>Expiration Date:</strong> {{ isset($studentRoom) ? \Carbon\Carbon::parse($studentRoom->pivot->end_date)->format('d-m-Y') : '01-12-2024' }}</p>
                 <p><strong>Unit Price:</strong> {{ isset($studentRoom) ? number_format($studentRoom->unit_price) : '800,000' }} VNĐ</p> <!-- Unit Price -->

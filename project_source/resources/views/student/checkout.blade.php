@@ -27,7 +27,7 @@
             <div class="info-right">
                 <p><strong>Email:</strong> {{ isset($student) ? $student->user->email : 'email@example.com' }}</p>
                 <p><strong>Room:</strong> {{ isset($studentRoom) ? $studentRoom->name : 'Room 101' }}</p>
-                <p><strong>Building:</strong> {{ isset($studentRoom) ? $studentRoom->building->name : 'Building A' }}</p>
+                <p><strong>Building:</strong> {{ isset($studentRoom) ? $studentRoom->building->build_name : 'Building A' }}</p>
                 <p><strong>Check-in Date:</strong> {{ isset($studentRoom) ? \Carbon\Carbon::parse($studentRoom->pivot->start_date)->format('d-m-Y') : '01-12-2023' }}</p>
                 <p><strong>Expiration Date:</strong> {{ isset($studentRoom) ? \Carbon\Carbon::parse($studentRoom->pivot->end_date)->format('d-m-Y') : '01-12-2024' }}</p>
                 <p><strong>Unit Price:</strong> {{ isset($studentRoom) ? number_format($studentRoom->unit_price) : '800,000' }} VNĐ</p> <!-- Unit Price -->

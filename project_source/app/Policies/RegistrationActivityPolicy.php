@@ -13,7 +13,7 @@ class RegistrationActivityPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -29,7 +29,7 @@ class RegistrationActivityPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class RegistrationActivityPolicy
      */
     public function update(User $user, RegistrationActivity $registrationActivity): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class RegistrationActivityPolicy
      */
     public function delete(User $user, RegistrationActivity $registrationActivity): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -53,7 +53,7 @@ class RegistrationActivityPolicy
      */
     public function restore(User $user, RegistrationActivity $registrationActivity): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class RegistrationActivityPolicy
      */
     public function forceDelete(User $user, RegistrationActivity $registrationActivity): bool
     {
-        //
+        return false;
     }
 }

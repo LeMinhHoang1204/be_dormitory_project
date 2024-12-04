@@ -45,11 +45,6 @@ return new class extends Migration
         });
     }
 
-    public function student()
-    {
-        return $this->hasOne(Student::class, 'STU_USER_ID'); // assuming 'STU_USER_ID' is the foreign key in 'student' table
-    }
-
     /**
      * Reverse the migrations.
      */

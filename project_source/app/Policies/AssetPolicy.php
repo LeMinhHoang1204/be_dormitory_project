@@ -13,7 +13,7 @@ class AssetPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->role === 'admin';
     }
 
     /**
@@ -21,7 +21,7 @@ class AssetPolicy
      */
     public function view(User $user, Asset $asset): bool
     {
-        //
+        return $user->role === 'admin';
     }
 
     /**
@@ -29,7 +29,7 @@ class AssetPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role === 'admin';
     }
 
     /**
@@ -37,7 +37,7 @@ class AssetPolicy
      */
     public function update(User $user, Asset $asset): bool
     {
-        //
+        return $user->role === 'admin';
     }
 
     /**
@@ -45,7 +45,7 @@ class AssetPolicy
      */
     public function delete(User $user, Asset $asset): bool
     {
-        //
+        return $user->role === 'admin';
     }
 
     /**
@@ -53,7 +53,7 @@ class AssetPolicy
      */
     public function restore(User $user, Asset $asset): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class AssetPolicy
      */
     public function forceDelete(User $user, Asset $asset): bool
     {
-        //
+        return false;
     }
 }

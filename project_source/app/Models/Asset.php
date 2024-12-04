@@ -19,7 +19,7 @@ class Asset extends Model
         'note'
     ];
 
-    public function room_assets()
+    public function RoomAssets()
     {
         return $this->hasMany(RoomAsset::class, 'asset_id', 'id');
     }

@@ -13,7 +13,7 @@ class ActivityPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class ActivityPolicy
      */
     public function view(User $user, Activity $activity): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class ActivityPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -37,7 +37,7 @@ class ActivityPolicy
      */
     public function update(User $user, Activity $activity): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -45,7 +45,7 @@ class ActivityPolicy
      */
     public function delete(User $user, Activity $activity): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -53,7 +53,7 @@ class ActivityPolicy
      */
     public function restore(User $user, Activity $activity): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class ActivityPolicy
      */
     public function forceDelete(User $user, Activity $activity): bool
     {
-        //
+        return false;
     }
 }

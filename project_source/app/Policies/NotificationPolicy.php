@@ -15,8 +15,7 @@ class NotificationPolicy
      */
     public function viewAny(User $user): bool
     {
-        // Allow all users to view the list of notifications
-        return true;
+        return $user->role === 'admin';
     }
 
     /**

@@ -13,7 +13,7 @@ class RequestPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->role === 'admin';
     }
 
     /**
@@ -21,7 +21,9 @@ class RequestPolicy
      */
     public function view(User $user, Request $request): bool
     {
-        //
+        return $user->role === 'admin'
+            || $user->id === $request->sender_id
+            || $user->id === $request->receiver_id;
     }
 
     /**
@@ -29,7 +31,7 @@ class RequestPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +39,7 @@ class RequestPolicy
      */
     public function update(User $user, Request $request): bool
     {
-        //
+        return $user->id === $request->sender_id;
     }
 
     /**
@@ -45,7 +47,7 @@ class RequestPolicy
      */
     public function delete(User $user, Request $request): bool
     {
-        //
+        return $user->id === $request->sender_id;
     }
 
     /**
@@ -53,7 +55,7 @@ class RequestPolicy
      */
     public function restore(User $user, Request $request): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +63,6 @@ class RequestPolicy
      */
     public function forceDelete(User $user, Request $request): bool
     {
-        //
+        return false;
     }
 }

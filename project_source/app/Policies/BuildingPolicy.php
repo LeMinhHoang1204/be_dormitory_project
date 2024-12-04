@@ -13,8 +13,7 @@ class BuildingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
-
+        return $user->role === 'admin';
     }
 
     /**
@@ -22,7 +21,7 @@ class BuildingPolicy
      */
     public function view(User $user, Building $building): bool
     {
-        return $user->isAdmin();
+        return $user->role === 'admin';
     }
 
     /**
@@ -30,7 +29,7 @@ class BuildingPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->role === 'admin';
     }
 
     /**
@@ -38,7 +37,7 @@ class BuildingPolicy
      */
     public function update(User $user, Building $building): bool
     {
-        return $user->isAdmin();
+        return $user->role === 'admin';
     }
 
     /**
@@ -46,7 +45,7 @@ class BuildingPolicy
      */
     public function delete(User $user, Building $building): bool
     {
-        return $user->isAdmin();
+        return $user->role === 'admin';
     }
 
     /**

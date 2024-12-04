@@ -15,7 +15,7 @@ class EmployeeSeeder extends Seeder
     public function run(): void
     {
         // Lấy tất cả User có vai trò là 'building manager' hoặc 'accountant'
-        $users = User::whereIn('role', ['building manager', 'accountant'])->get();
+        $users = User::whereIn('role', ['building manager'])->get();
 
         // Duyệt qua từng User và tạo một Employee cho mỗi User
         $users->each(function ($user) {

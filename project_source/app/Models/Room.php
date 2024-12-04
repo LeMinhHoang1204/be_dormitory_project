@@ -24,24 +24,34 @@ class Room extends Model
         'status'
     ];
 
+    // notification relationship
+    public function object(): MorphOne
+    {
+        return $this->morphOne(Notification::class, 'object');
+    }
+
+    // building relationship
     public function building()
     {
         return $this->belongsTo(Building::class, 'building_id', 'id');
     }
 
+    // residence relationship
     public function residence()
     {
         return $this->hasMany(Residence::class, 'room_id', 'id');
     }
 
-    public function object(): MorphOne
-    {
-        return $this->morphOne(Notification::class, 'objective');
-    }
-
-    public function room_assets()
+    // room asset relationship
+    public function hasRoomAssets()
     {
         return $this->hasMany(RoomAsset::class, 'room_id', 'id');
+    }
+
+    // invoice relationship
+    public function invoice(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Invoice::class, 'object');
     }
 
 

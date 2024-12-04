@@ -22,19 +22,28 @@ class Building extends Model
         'student_count'
     ];
 
-    public function managed()
+    // employee relationship
+    public function managedBy()
     {
         return $this->belongsTo(Employee::class, 'manager_id', 'id');
     }
 
+    // room relationship
     public function hasRooms()
     {
         return $this->hasMany(Room::class, 'building_id', 'id');
     }
 
+    // notification relationship
     public function object(): MorphOne
     {
-        return $this->morphOne(Notification::class, 'objective');
+        return $this->morphOne(Notification::class, 'object');
+    }
+
+    // invoice relationship
+    public function invoice(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Invoice::class, 'object');
     }
 
 }

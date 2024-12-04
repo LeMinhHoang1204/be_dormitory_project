@@ -13,8 +13,7 @@ class ResidencePolicy
      */
     public function viewAny(User $user): bool
     {
-//        return $user->isAdmin();
-        return true;
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -30,7 +29,8 @@ class ResidencePolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->role == 'admin' || $user->role == 'student';
+        // con TH truong toa dk dum
     }
 
     /**

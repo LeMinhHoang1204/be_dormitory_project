@@ -61,9 +61,9 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Room $room)
+    public function show(Building $building, Room $room)
     {
-        return view('rooms.show', compact('room'));
+        return view('roomInfor.roomInfor', compact('room'));
     }
 
     /**
@@ -262,7 +262,7 @@ class RoomController extends Controller
     //        // Trả về thông báo thành công
     //        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
 
-    
+
 //  Hien thi thong tin phong
     public function showRoomInfor($roomId)
     {

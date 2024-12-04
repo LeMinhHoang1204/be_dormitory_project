@@ -17,9 +17,10 @@ class Notification extends Model
     public $fillable = [
         'sender_id',
         'object_id',
+        'object_type',
         'title',
-        'type',
         'content',
+        'reader_count',
     ];
 
     protected $casts = [

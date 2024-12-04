@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\RegistrationActivity;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -87,9 +88,15 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             RoomSeeder::class,
             ResidenceSeeder::class,
+            NotificationSeeder::class,
+            NotificationRecipientSeeder::class,
             AssetSeeder::class,
             RoomAssetSeeder::class,
             InvoiceSeeder::class,
+            RequestSeeder::class,
+            ActivitySeeder::class,
+            RegistrationActivitySeeder::class,
+            ViolationSeeder::class,
         ]);
     }
 }

@@ -19,8 +19,7 @@ class NotificationRecipientFactory extends Factory
     public function definition(): array
     {
         return [
-            'noti_id' => Notification::factory(),
-            'user_id' => User::factory(),
+
         ];
     }
 }

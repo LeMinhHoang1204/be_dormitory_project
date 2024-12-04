@@ -37,7 +37,7 @@ class Residence extends Model
         return $this->belongsTo(Room::class, 'room_id', 'id');
     }
 
-//tự động tính toán end_date
+    //tự động tính toán end_date
     protected static function boot()
     {
         parent::boot();

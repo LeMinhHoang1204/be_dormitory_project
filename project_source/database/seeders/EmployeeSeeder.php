@@ -33,7 +33,6 @@ class EmployeeSeeder extends Seeder
             $unicitiId = rand(1000, 9999);
             Employee::create([
                 'user_id' => $user->id,
-                'emp_name' => $user->name,
                 // (không gán thì tên nhân viên tạo lại ngẫu nhiên chứ ko lấy tên từ user, không phân biệt được)
                 'citizen_id' => $unicitiId, // Gán ngẫu nhiên
                 'manager_id' => User::where('role', 'admin')->inRandomOrder()->first()->id ?? null,

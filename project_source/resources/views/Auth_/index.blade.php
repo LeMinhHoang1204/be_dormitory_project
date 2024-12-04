@@ -40,20 +40,26 @@
     }
 
     .h3_header {
-        color: #2F6BFF;
-        font-family: Poppins;
+        /*color: #2F6BFF;*/
+        color: #0e3b9c;
+
         font-size: 15px;
         font-style: normal;
-        font-weight: 700;
+        font-weight: 500;
         line-height: 12px;
+        font-family: 'Poppins', sans-serif;
+        width: 300px;
+        /*border: #0C589C 1px solid;*/
     }
 
     .h2_header {
-        color: #2F6BFF;
-        font-family: Poppins;
+        /*color: #2F6BFF;*/
+        color: #0e3b9c;
+
+        font-family: 'Poppins', sans-serif;
         font-size: 20px;
         font-style: normal;
-        font-weight: 700;
+        font-weight: 600;
         line-height: 12px;
     }
 

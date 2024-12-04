@@ -13,8 +13,10 @@
             <div class="col-md-3 d-flex align-items-center">
                 <img src="{{asset('./img/img.png')}}" alt="">
                 <div class="ml-2">
-                    <h2 class="h2_header">KÍ TÚC XÁ</h2>
-                    <h3 class="h3_header">Trường ĐH CNTT</h3>
+                    <h2 class="h2_header">Dormitory</h2>
+
+                    <h3 class="h3_header">University of Information Technology</h3>
+
                 </div>
             </div>
             <div class="col-md-5">

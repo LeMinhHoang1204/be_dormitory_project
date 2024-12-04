@@ -34,7 +34,7 @@ class Residence extends Model
     // Quan hệ với Room
     public function room()
     {
-        return $this->belongsTo(Room::class, 'room_id', 'id', 'name,');
+        return $this->belongsTo(Room::class, 'room_id', 'id');
     }
 
 //tự động tính toán end_date

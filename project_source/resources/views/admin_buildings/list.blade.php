@@ -31,7 +31,7 @@
             <tbody>
             @forelse($buildings as $building)
                 <tr onclick="window.location='{{ route('buildings.show', $building->id) }}'" style="cursor: pointer;">
-                    <td>{{ $building->build_name }}</td>
+                    <td>{{ $building->buil_name }}</td>
                     <td>{{ $building->managed->user->name ?? 'N/A' }}</td>
                     <td>{{ ucfirst($building->type) }}</td>
                     <td>{{ $building->floor_numbers }}</td>
@@ -43,7 +43,7 @@
                             @method('PUT')
                             <select name="manager_id" class="form-control">
                                 @if($building->manager_id)
-                                    <option value="{{$building->managed->id}}" selected>{{$building->managed->user->name}}</option>
+                                    <option value="{{$building->managedBy->id}}" selected>{{$building->managedBy->user->name}}</option>
                                 @else
                                     <option value="">-- Select Manager --</option>
                                 @endif

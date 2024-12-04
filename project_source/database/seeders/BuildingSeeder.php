@@ -21,7 +21,7 @@ class BuildingSeeder extends Seeder
             $floorNumbers = rand(3, 11);
             $roomNumbers = $floorNumbers * 10; // (10 phòng mỗi tầng)
             Building::create([
-                'buil_name' => $this->generateRandomBuildingName(),
+                'build_name' => $this->generateRandomBuildingName(),
                 'manager_id' => \App\Models\User::where('role', 'admin')->inRandomOrder()->first()->id ?? null,
                 'type' => ['male', 'female'][array_rand(['male', 'female'])],
                 'floor_numbers' => $floorNumbers,

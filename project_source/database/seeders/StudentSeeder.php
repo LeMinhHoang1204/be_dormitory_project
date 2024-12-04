@@ -31,7 +31,7 @@ class StudentSeeder extends Seeder
             $uniId = rand(1000, 9999);
             Student::create([
                 'user_id' => $user->id,
-                'uni_name' => $user->name,
+                'uni_name' => Arr::random(['DHQGHN', 'DHQGTPHCM', 'BKHN','BKHCM','KTQD','FTU','UEH', 'YHN','YTPHCM']),
                 // (không gán thì tên student tạo lại ngẫu nhiên chứ ko lấy tên từ user, không phân biệt được)
 
                 'uni_id' => $uniId,

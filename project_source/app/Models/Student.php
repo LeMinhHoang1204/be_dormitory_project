@@ -38,9 +38,11 @@ class Student extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function residence(){
+    public function residence()
+    {
         return $this->hasMany(Residence::class, 'stu_id', 'id');
     }
+
 
     public function rooms()
     {

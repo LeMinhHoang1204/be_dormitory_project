@@ -18,7 +18,7 @@
         <table class="table">
             <thead class="thead">
             <tr>
-                <th>ID</th>
+                <th>Building</th>
                 <th>Manager</th>
                 <th>Type</th>
                 <th>Floor Numbers</th>
@@ -31,7 +31,7 @@
             <tbody>
             @forelse($buildings as $building)
                 <tr onclick="window.location='{{ route('buildings.show', $building->id) }}'" style="cursor: pointer;">
-                    <td>{{ $building->id }}</td>
+                    <td>{{ $building->build_name }}</td>
                     <td>{{ $building->managed->user->name ?? 'N/A' }}</td>
                     <td>{{ ucfirst($building->type) }}</td>
                     <td>{{ $building->floor_numbers }}</td>

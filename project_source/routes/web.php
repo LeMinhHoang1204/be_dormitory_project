@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\ResidenceController;
 
 Route::get('/', function () {
     return view('home');
@@ -20,11 +21,12 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+Route::middleware('auth')->group(function () {
+    Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
+});
 Route::get('/student/extension', [RoomController::class, 'showRoomExtensionForm'])->middleware('auth');
 
 Route::middleware(['auth'])->group(function () {
-    // Hiển thị trang Checkout
     Route::get('student/checkout', [RoomController::class, 'showCheckOutPage'])->name('student.checkout');
 
     //     Xử lý yêu cầu Leave
@@ -32,7 +34,6 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/student/leave', [RoomController::class, 'leave'])->name('student.leave');
 
-//Trang Repair request của student
 Route::middleware(['auth'])->group(function () {
     // Route trang yêu cầu sửa chữa
     Route::get('/student/repair-request', [RoomController::class, 'repairRequest'])->name('repair-request');
@@ -60,8 +61,10 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/roomInfor/{id}', [RoomController::class, 'showRoom']);
 
-
-
+//Xem trang thông tin phòng hiện tại của tôi
+Route::middleware('auth')->group(function () {
+    Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
+});
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/api/building-room-residence.php';

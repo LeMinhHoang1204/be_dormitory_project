@@ -34,7 +34,7 @@ class Residence extends Model
     // Quan hệ với Room
     public function room()
     {
-        return $this->belongsTo(Room::class, 'room_id', 'id');
+        return $this->belongsTo(Room::class, 'room_id', 'id', 'name,');
     }
 
 //tự động tính toán end_date
@@ -71,4 +71,14 @@ class Residence extends Model
 
         return Carbon::parse($startDate)->addMonths($monthsToAdd);
     }
+    public function getStartDateAttribute($value)
+    {
+        return $value ? Carbon::parse($value) : null;
+    }
+
+    public function getEndDateAttribute($value)
+    {
+        return $value ? Carbon::parse($value) : null;
+    }
+
 }

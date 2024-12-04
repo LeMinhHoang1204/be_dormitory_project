@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('buildings', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('buil_name', 255);
+            $table->string('build_name', 255);
             //            $table->string('name');
             $table->integer('manager_id')->unsigned()->nullable();
             $table->enum('type', ['male', 'female']);

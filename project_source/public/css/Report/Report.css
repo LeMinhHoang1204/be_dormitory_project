@@ -1,18 +1,23 @@
 /* General styles */
 body {
-    font-family: 'Poppins';
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
+    background-color: #f9fafc;
+    font-family: 'Inter', sans-serif;
+    color: #3c3c3c;
 }
 
-.container {
+.container-fluid.layout {
+    background-color: #fff;
+    padding: 10px 0;
+}
+
+.container-report {
     padding: 50px 80px;
-    width: 60%;
-    margin: 0 auto; /* Căn giữa */
+    width: 70%;
+    margin: 5px auto; /* Căn giữa */
     background: #fff;
-    border: 1px solid #ddd;
+    /*border: 1px solid #ddd;*/
     min-width: 700px;
+    font-family: 'Inter', sans-serif;
 }
 
 .header {
@@ -26,9 +31,9 @@ body {
     color: #0E3B9C;
     /* Title 1 */
     /* font-family: Inter; */
-    font-size: 40px;
+    font-size: 47px;
     font-style: normal;
-    font-weight: 1000;
+    font-weight: 700;
     line-height: normal;
 }
 

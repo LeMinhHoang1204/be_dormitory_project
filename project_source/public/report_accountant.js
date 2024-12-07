@@ -2,8 +2,7 @@ const receiptInfo = [{
     total: 10000,
     buildings: 'All',
     receiptsType: 'All'
-}
-]
+}];
 
 function createReceiptInfo(receipt) {
     return `
@@ -21,7 +20,7 @@ function displayReceiptInfo() {
     receipt.innerHTML = receiptInfo.map(createReceiptInfo).join('');
 }
 
-displayReceiptInfo();
+    document.addEventListener('DOMContentLoaded', displayReceiptInfo);
 
 
 // Dummy data for charts
@@ -54,21 +53,25 @@ const receiptPerBuildingData = {
 };
 
 
+
 // Chart.js initializations
+document.addEventListener('DOMContentLoaded', () => {
 new Chart(document.getElementById('receipt-type-chart'), {
     type: 'pie',
     data: receiptTypeData
-});
+})});
 
+document.addEventListener('DOMContentLoaded', () => {
 new Chart(document.getElementById('receipt-of-month-chart'), {
     type: 'line',
     data: receiptOfMonthData
-});
+})});
 
+document.addEventListener('DOMContentLoaded', () => {
 new Chart(document.getElementById('receipt-per-building-chart'), {
     type: 'bar',
     data: receiptPerBuildingData
-});
+})});
 
 
 function togglePanel() {

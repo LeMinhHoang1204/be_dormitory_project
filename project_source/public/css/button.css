@@ -1,0 +1,60 @@
+/*Nút xanh,đỏ, xám*/
+
+.blue-btn{
+    background-color: #2F6BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    height: fit-content;
+    width: fit-content;
+    font-family: "Poppins", sans-serif;
+}
+.blue-btn:hover {
+    background-color: #0056b3;
+}
+
+.red-btn{
+    background-color: #d14a4a;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    height: fit-content;
+    width: fit-content;
+    font-family: "Poppins", sans-serif;
+}
+.red-btn:hover {
+    background-color: #b91c1c;
+}
+.red-btn{
+    background-color: #d14a4a;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    height: fit-content;
+    width: fit-content;
+    font-family: "Poppins", sans-serif;
+}
+.grey-btn{
+    background-color: #9ca3af;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    height: fit-content;
+    width: fit-content;
+    font-family: "Poppins", sans-serif;
+}
+.grey-btn:hover {
+    background-color: #6B7280;
+}

@@ -42,30 +42,9 @@
                                 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1132_2655" />
                                 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1132_2655" result="shape" />
                             </filter>
-{{--                            <filter id="filter1_d_1132_2655" x="0" y="0" width="67" height="66" filterUnits="userSpaceOnUse"--}}
-{{--                                    color-interpolation-filters="sRGB">--}}
-{{--                                <feFlood flood-opacity="0" result="BackgroundImageFix" />--}}
-{{--                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"--}}
-{{--                                               result="hardAlpha" />--}}
-{{--                                <feOffset dy="6" />--}}
-{{--                                <feGaussianBlur stdDeviation="2" />--}}
-{{--                                <feComposite in2="hardAlpha" operator="out" />--}}
-{{--                                <feColorMatrix type="matrix" values="0 0 0 0 0.925499 0 0 0 0 0.937916 0 0 0 0 1 0 0 0 1 0" />--}}
-{{--                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1132_2655" />--}}
-{{--                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1132_2655" result="shape" />--}}
-{{--                            </filter>--}}
                         </defs>
                     </svg>
                 </div>
-                {{--                <div class="search">--}}
-                {{--                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19"--}}
-                {{--                         fill="none" class="search-icon" onclick="handleSearch(event)">--}}
-                {{--                        <path--}}
-                {{--                            d="M13.0429 12.1366C14.1019 10.8532 14.7708 9.20705 14.7708 7.39354C14.7708 3.32012 11.4543 0 7.3854 0C3.31646 0 0 3.32012 0 7.39354C0 11.467 3.31646 14.7871 7.3854 14.7871C9.16905 14.7871 10.8412 14.1454 12.1232 13.0573L17.8643 18.8047C18.0037 18.9442 18.1709 19 18.3381 19C18.5053 19 18.6725 18.9442 18.8119 18.8047C19.0627 18.5536 19.0627 18.1072 18.8119 17.8561L13.0429 12.1366ZM7.35754 13.4479C4.0132 13.4479 1.30986 10.7416 1.30986 7.39354C1.30986 4.04552 4.0132 1.33921 7.35754 1.33921C10.7019 1.33921 13.4052 4.04552 13.4052 7.39354C13.4052 10.7416 10.7019 13.4479 7.35754 13.4479Z"--}}
-                {{--                            fill="#757575" />--}}
-                {{--                    </svg>--}}
-                {{--                    <input type="search" id="searchInput" placeholder="Search" oninput="handleInput(event)">--}}
-                {{--                </div>--}}
             </div>
         </div>
 

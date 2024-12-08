@@ -34,5 +34,10 @@ class Activity extends Model
         return $this->hasMany(RegistrationActivity::class, 'activity_id', 'id');
     }
 
+    protected $dates = [
+        'start_date', 'end_date', 'register_end_date',
+    ];
+
+
 
 }

@@ -30,7 +30,7 @@ use App\Policies\RoomPolicy;
 use app\Policies\UserPolicy;
 use App\Policies\ViolationPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-
+use Illuminate\Support\Facades\Gate;
 //use Illuminate\Support\ServiceProvider;
 
 
@@ -63,6 +63,7 @@ class   AuthServiceProvider extends ServiceProvider
         Violation::class => ViolationPolicy::class,
     ];
 
+
     public function register(): void
     {
         //
@@ -74,5 +75,7 @@ class   AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
+        Gate::define('update', [ActivityPolicy::class, 'update']);
+
     }
 }

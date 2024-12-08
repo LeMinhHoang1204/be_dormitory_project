@@ -38,5 +38,8 @@ class Student extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class, 'activity_student', 'student_id', 'activity_id');
+    }
 }

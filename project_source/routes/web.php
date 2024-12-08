@@ -5,6 +5,8 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ResidenceController;
+use App\Http\Controllers\ActivityController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -52,8 +54,6 @@ Route::get('/home', function () {
 
 
 
-
-
 // Display roomInfor
 Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
 });
 
+require __DIR__ . '/api/activity.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/api/building-room-residence.php';
 require __DIR__ . '/api/notification.php';

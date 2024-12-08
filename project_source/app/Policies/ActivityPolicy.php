@@ -4,10 +4,15 @@ namespace App\Policies;
 
 use App\Models\Activity;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
 use Illuminate\Auth\Access\Response;
 
 class ActivityPolicy
 {
+
+    use HandlesAuthorization;
+
     /**
      * Determine whether the user can view any models.
      */
@@ -37,6 +42,7 @@ class ActivityPolicy
      */
     public function update(User $user, Activity $activity): bool
     {
+//        return $user->role === 'admin' || $user->id === $activity->creator_id;
         return $user->role === 'admin' || $user->role === 'building manager';
     }
 
@@ -47,8 +53,7 @@ class ActivityPolicy
     {
         return $user->role === 'admin' || $user->role === 'building manager';
     }
-
-    /**
+        /**
      * Determine whether the user can restore the model.
      */
     public function restore(User $user, Activity $activity): bool

@@ -1,4 +1,5 @@
-/*Nút xanh,đỏ, xám*/
+/*Nút xanh:"blue-btn", đỏ:"red-btn", trắng: "light-btn", xám:"grey-btn"*/
+/*Chữ tiêu đề có background màu xanh: class bluefont, chữ h3  */
 
 .blue-btn{
     background-color: #2F6BFF;
@@ -57,4 +58,54 @@
 }
 .grey-btn:hover {
     background-color: #6B7280;
+}
+.light-btn{
+    background-color: #f7fafc;
+    /*color: #2F6BFF;*/
+    color:#2F6BFF;
+    border: 1px dashed #c2baff;
+    padding: 10px 15px;
+    /*border: none;*/
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    height: fit-content;
+    width: fit-content;
+    font-family: "Poppins", sans-serif;
+}
+.light-btn:hover {
+    background-color: aliceblue;
+    color: #1d267d;
+}
+
+.bluefont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    gap: 10px;
+    border-radius: 10px;
+    background: #2F6BFF;
+    width: fit-content;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+
+.bluefont h3 {
+    color: #FFF;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0; /* Xóa khoảng cách mặc định của h3 */
+}
+
+a.grey-btn:hover {
+    background-color: #6B7280;
+    color: #fff;
+    text-decoration: none;
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
 }

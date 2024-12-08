@@ -41,6 +41,7 @@
                 <span class="text">Room</span>
             </a>
             <ul class="submenu">
+                <li><a href="{{ url('/my-room') }}">My room</a></li>
                 <li><a href="{{ url('/regis-test') }}">Register</a></li>
                 <li><a href="/student/repair-request">Repair</a></li>
                 <li><a href="#">Change</a></li>
@@ -49,7 +50,7 @@
             </ul>
         </li>
             <li class="menu-item">
-                <a href="#">
+                <a href="/activities">
                     <span class="icon">🏃‍♂️</span>
                     <span class="text">Activites</span>
                 </a>
@@ -70,7 +71,7 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="#">
+                <a href="/admin/activities">
                     <span class="icon">🏃‍♂️</span>
                     <span class="text">Activites</span>
                 </a>
@@ -88,6 +89,12 @@
                 <a href="">
                     <span class="icon">📑</span>
                     <span class="text">Request</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/admin/activities">
+                    <span class="icon">🏃‍♂️</span>
+                    <span class="text">Activites</span>
                 </a>
             </li>
             <li class="menu-item has-submenu">

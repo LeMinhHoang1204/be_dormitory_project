@@ -21,11 +21,14 @@
 
 @section('content')
     @include('layouts.sidebar_student')
-    @if (auth()->check() && in_array(auth()->user()->role, ['admin','student', 'building manager']))
+    @if (auth()->check() && in_array(auth()->user()->role, ['admin', 'student', 'building manager']))
         <div class="extension">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-{{--        <div class="overlay2 hidden" onclick="toggleDetail()"></div>--}}
-{{--        <div class="detail ">--}}
             <div class="bluefont"><h3>Detail Activities</h3></div>
 
             <div class="popup-details">
@@ -35,7 +38,6 @@
                     <p><strong>Registered Participants:</strong> {{ $activity->registered_participants }}/{{ $activity->max_participants }}</p>
                     <p><strong>Registration Expiry Date:</strong> {{ \Carbon\Carbon::parse($activity->register_end_date)->format('d M, Y') }}</p>
                     <p><strong>Start Date:</strong>{{ \Carbon\Carbon::parse($activity->start_date)->format('d M, Y') }}</p>
-
                 </div>
                 <div class="info-right">
                     <p><strong>Activity id:</strong>  #ACT_{{ $activity->id }}</p>
@@ -44,7 +46,6 @@
                     <p><strong>Bonus point:</strong> {{ $activity->bonus_point }}</p>
                     <p><strong>End Date:</strong> {{ \Carbon\Carbon::parse($activity->end_date)->format('d M, Y') }}</p>
                     <p><strong>Status:</strong> {{ $activity->status }}</p>
-
                 </div>
             </div>
 
@@ -57,9 +58,8 @@
             </div>
 
             @if (auth()->check() && in_array(auth()->user()->role, ['admin', 'building manager']))
-            <!-- Buttons -->
+                <!-- Buttons -->
                 <div class="popup-buttons">
-                    <!-- Back Button with JavaScript function -->
                     <a href="javascript:void(0);" class="grey-btn" onclick="goBack()">Back</a>
 
                     <script>
@@ -80,26 +80,25 @@
                     <!-- Edit Button -->
                     <button class="blue-btn">Edit</button>
                 </div>
-
             @endif
+
             @if (auth()->check() && auth()->user()->role === 'student')
                 <div class="popup-buttons">
-
-{{--                    <button class="blue-btn">Regiter</button>--}}
-                    @if(Auth::check() && !in_array(Auth::user()->id, $activity->students->pluck('id')->toArray()))
-                        <form action="{{ route('activities.register', $activity->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="blue-btn">Register</button>
-                        </form>
-                    @else
-
+{{--                    @if(Auth::check() && !in_array(Auth::user()->id, $activity->students->pluck('id')->toArray()))--}}
+{{--                        <form action="{{ route('activities.register', $activity->id) }}" method="POST">--}}
+{{--                            @csrf--}}
+{{--                            <button type="submit" class="blue-btn">Register</button>--}}
+{{--                        </form>--}}
+{{--                    @else--}}
+{{--                    @endif--}}
                     <a href="javascript:void(0);" class="grey-btn" onclick="window.history.back()">Cancel</a>
+                    <button type="submit" class="blue-btn">Register</button>
 
-                    {{--                    <button class="grey-btn">Edit</button>--}}
                 </div>
             @endif
         </div>
     @endif
+
     @if (auth()->check() && in_array(auth()->user()->role, [ 'accountant']))
         <div class="extension">
             <div>
@@ -114,10 +113,6 @@
             </div>
         </div>
     @endif
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
 
-        @endsection
+
+@endsection

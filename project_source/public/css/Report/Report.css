@@ -53,6 +53,8 @@ body {
     /*display: flex;*/
     /*align-items: center;*/
     /*justify-content: center;*/
+    position: relative; /* Đảm bảo overlay bám vào SVG */
+    border-radius: 12px; /* Tùy chỉnh bo góc */
 }
 
 .menu button {
@@ -63,9 +65,12 @@ body {
     color: #757575;
 }
 
-.menu:hover {
-    background: #f0f0f0;
+.sgv-hover:hover {
+    /*color: #f0f0f0;*/
+    fill: #f0f0f0; /* Màu xám phủ lên khi hover */
+    transition: fill 0.1s ease; /* Hiệu ứng mượt */
 }
+
 .filter-sgv {
     position: absolute; /* Đặt tiêu đề tuyệt đối trong khung */
     bottom: 0px;
@@ -169,7 +174,7 @@ h3 {
 }
 
 .chart {
-    width: 600px;
+    width: 700px;
     /* height: 100px; */
     margin: 0 auto;
 }

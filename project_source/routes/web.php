@@ -53,6 +53,10 @@ Route::get('/report', function () {
     return view('/Report/report_accountant');
 });
 
+Route::get('/student-report', function () {
+    return view('/Report/report_student');
+});
+
 
 
 

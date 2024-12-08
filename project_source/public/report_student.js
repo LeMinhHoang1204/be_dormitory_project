@@ -2,8 +2,7 @@ const receiptInfo = [{
     total: 10000,
     buildings: 'All',
     receiptsType: 'All'
-}
-]
+}];
 
 function createReceiptInfo(receipt) {
     return `
@@ -21,7 +20,7 @@ function displayReceiptInfo() {
     receipt.innerHTML = receiptInfo.map(createReceiptInfo).join('');
 }
 
-displayReceiptInfo();
+document.addEventListener('DOMContentLoaded', displayReceiptInfo);
 
 
 // Data for the combined chart
@@ -116,7 +115,7 @@ const receiptTypeData = {
         backgroundColor: ['#3498db', '#1abc9c', '#e74c3c', '#f1c40f']
     }]
 };
-
+document.addEventListener('DOMContentLoaded', () => {
 new Chart(document.getElementById('receipt-type-chart'), {
     type: 'pie',
     data: receiptTypeData,
@@ -134,11 +133,12 @@ new Chart(document.getElementById('receipt-type-chart'), {
             }
         }
     }
-});
+})});
 
 // Render the chart
 // const ctx = document.getElementById('combined-chart').getContext('2d');
-new Chart(document.getElementById('combined-chart'), config);
+document.addEventListener('DOMContentLoaded', () => {
+new Chart(document.getElementById('combined-chart'), config)});
 
 function togglePanel() {
     const popup = document.getElementById('filter-popup');

@@ -20,7 +20,7 @@ function displayReceiptInfo() {
     receipt.innerHTML = receiptInfo.map(createReceiptInfo).join('');
 }
 
-    document.addEventListener('DOMContentLoaded', displayReceiptInfo);
+document.addEventListener('DOMContentLoaded', displayReceiptInfo);
 
 
 // Dummy data for charts

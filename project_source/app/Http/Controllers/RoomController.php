@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Building;
+use App\Models\Residence;
+use App\Models\Student;
+
+
 use App\Models\Room;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
@@ -61,9 +65,9 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Room $room)
+    public function show(Building $building, Room $room)
     {
-        return view('rooms.show', compact('room'));
+        return view('roomInfor.roomInfor', compact('room'));
     }
 
     /**
@@ -110,28 +114,23 @@ class RoomController extends Controller
 
     public function showRoomExtensionForm()
     {
-        // 1. Kiểm tra quyền truy cập
         if (auth()->check() && auth()->user()->role !== 'student') {
             return redirect()->route('home')->with('error', 'Access denied.');
         }
 
-        // 2. Lấy thông tin sinh viên từ người dùng hiện tại
         $user = auth()->user();
         $student = $user->student;
 
         if (!$student) {
-            // Nếu không có thông tin sinh viên
             return view('student.extension', ['message' => 'You do not have a registered room. Please register!']);
         }
 
-        // 3. Lấy thông tin phòng hiện tại của sinh viên
-        $studentRoom = $student->residences()
-            ->where('status', 'Da nhan phong')
-            ->join('rooms', 'residences.room_id', '=', 'rooms.roomId')
-            ->select('rooms.name as room_name', 'rooms.unit_price', 'residences.end_date')
+        $studentRoom = $student->residence()
+            ->where('status', 'Check in')
+//            ->join('rooms', 'residences.room_id', '=', 'rooms.roomId')
+//            ->select('rooms.name as room_name', 'rooms.unit_price', 'residences.end_date')
             ->first();
 
-        // 4. Kiểm tra nếu sinh viên chưa có phòng
         if (!$studentRoom) {
             return view('student.extension', ['message' => 'No active room found. Please contact the management.']);
         }
@@ -262,7 +261,7 @@ class RoomController extends Controller
     //        // Trả về thông báo thành công
     //        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
 
-    
+
 //  Hien thi thong tin phong
     public function showRoomInfor($roomId)
     {

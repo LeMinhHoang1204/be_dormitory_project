@@ -9,11 +9,9 @@ class NotificationRecipient extends Model
 {
     use HasFactory;
 
-    protected $table = 'NOTIFICATION_RECIPIENTS';
+    protected $table = 'notification_recipients';
 
 //    protected $primaryKey = ['noti_id', 'user_id'];
-
-    public $timestamps = false;
 
     protected $fillable = [
         'noti_id',
@@ -22,7 +20,7 @@ class NotificationRecipient extends Model
 
     public function notification()
     {
-        return $this->belongsTo(NotificationRecipient::class, 'noti_id', 'id');
+        return $this->belongsTo(Notification::class, 'noti_id', 'id');
     }
 
     public function user(){

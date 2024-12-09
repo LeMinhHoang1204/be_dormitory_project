@@ -17,8 +17,13 @@ class Employee extends Model
     protected $primaryKey = 'id';
 
     // Các attribute được phép thêm vào db
-    protected $fillable = ['user_id', 'manager_id',
-        'citizen_id', 'dob', 'gender', 'type'];
+    protected $fillable = [
+        'user_id',
+        'manager_id',
+        'citizen_id',
+        'dob',
+        'gender',
+        'type'];
 
     protected $casts = [
         'dob' => 'date',
@@ -26,7 +31,7 @@ class Employee extends Model
         'updated_at' => 'datetime',
     ];
 
-    // Thiết lập mối quan hệ với User
+    // user relationship
     public function user()
     {
         // foreign key: khoá ngoại của student không phải là "user_id"
@@ -34,11 +39,13 @@ class Employee extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function manager(){
+    // employee relationships
+    public function managedBy(){
         return $this->belongsTo(User::class, 'manager_id', 'id');
     }
 
-    public function manage()
+    // building relationship
+    public function manageBuilding()
     {
         return $this->hasOne(Building::class, 'manager_id', 'id');
     }

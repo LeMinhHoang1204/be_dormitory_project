@@ -1,11 +1,22 @@
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        .dropdown-toggle {
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 16px !important;
+        }
+    </style>
+</head>
 <div class="container-fluid layout" style=" box-shadow: 0px 6px 4px 0px  #ECEFFF;height: 70px; flex-shrink: 0;">
     <div class="container">
         <div class="row d-flex align-items-center justify-content-between">
             <div class="col-md-3 d-flex align-items-center">
                 <img src="{{asset('./img/img.png')}}" alt="">
                 <div class="ml-2">
-                    <h2 class="h2_header">KÍ TÚC XÁ</h2>
-                    <h3 class="h3_header">Trường ĐH CNTT</h3>
+                    <h2 class="h2_header">Dormitory</h2>
+
+                    <h3 class="h3_header">University of Information Technology</h3>
+
                 </div>
             </div>
             <div class="col-md-5">
@@ -25,6 +36,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
+
 
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
@@ -51,5 +63,6 @@
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>

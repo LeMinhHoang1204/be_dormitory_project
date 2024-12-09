@@ -1,3 +1,5 @@
+{{--@extends('Auth_.index')--}}
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
@@ -34,6 +36,13 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="notification-frame">
+                <!-- Nút Create chỉ hiển thị cho người dùng có quyền admin hoặc building-manager -->
+                @if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->role === 'building-manager'))
+                    <div class="text-left">
+                        <a href="{{ route('notifications.create') }}" class="btn-create">Create</a>
+                    </div>
+                @endif
+
                 <!-- Nút mở panel filter -->
                 <div class="text-right">
                     <button onclick="togglePanel()" class="text-right" style="background-color: #2F6BFF; color: white; padding: 8px 16px; border-radius: 4px;">Filter Options</button>
@@ -47,7 +56,7 @@
 
                             <!-- Lọc theo ngày tạo -->
                             <div class="filter-section">
-                                <label class="bfilter-lable">Sort by Creation Date</label>
+                                <label class="filter-lable">Sort by Creation Date</label>
                                 <select name="sort_date" class="filter-input">
                                     <option value="recent">Most Recent</option>
                                     <option value="oldest">Oldest</option>

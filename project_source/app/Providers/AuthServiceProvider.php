@@ -2,16 +2,33 @@
 
 namespace App\Providers;
 
+use App\Models\Activity;
+use App\Models\Asset;
 use App\Models\Building;
+use App\Models\DetailInvoice;
+use App\Models\Invoice;
 use App\Models\Notification;
+use App\Models\NotificationRecipient;
+use App\Models\RegistrationActivity;
+use App\Models\Request;
 use App\Models\Residence;
 use App\Models\Room;
+use App\Models\RoomAsset;
 use app\Models\User;
+use App\Models\Violation;
+use App\Policies\ActivityPolicy;
+use App\Policies\AssetPolicy;
 use App\Policies\BuildingPolicy;
+use App\Policies\DetailInvoicePolicy;
+use App\Policies\InvoicePolicy;
 use App\Policies\NotificationPolicy;
+use App\Policies\RegistrationActivityPolicy;
+use App\Policies\RequestPolicy;
 use App\Policies\ResidencePolicy;
+use App\Policies\RoomAssetPolicy;
 use App\Policies\RoomPolicy;
 use app\Policies\UserPolicy;
+use App\Policies\ViolationPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 //use Illuminate\Support\ServiceProvider;
@@ -26,9 +43,24 @@ class   AuthServiceProvider extends ServiceProvider
     protected $policies = [
         User::class => UserPolicy::class, // Mapping User model to UserPolicy
         Notification::class => NotificationPolicy::class,
+        NotificationRecipient::class => NotificationRecipient::class,
+
         Building::class => BuildingPolicy::class,
         Room::class => RoomPolicy::class,
         Residence::class => ResidencePolicy::class,
+
+        Asset::class => AssetPolicy::class,
+        RoomAsset::class => RoomAssetPolicy::class,
+
+        Request::class => RequestPolicy::class,
+
+        Invoice::class => InvoicePolicy::class,
+        DetailInvoice::class => DetailInvoicePolicy::class,
+
+        Activity::class => ActivityPolicy::class,
+        RegistrationActivity::class => RegistrationActivityPolicy::class,
+
+        Violation::class => ViolationPolicy::class,
     ];
 
     public function register(): void

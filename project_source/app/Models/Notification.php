@@ -17,9 +17,10 @@ class Notification extends Model
     public $fillable = [
         'sender_id',
         'object_id',
+        'object_type',
         'title',
-        'type',
         'content',
+        'reader_count',
     ];
 
     protected $casts = [
@@ -27,17 +28,18 @@ class Notification extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function object()
+    public function readBy()
     {
         return $this->hasMany(NotificationRecipient::class, 'noti_id', 'id');
     }
 
+    // user relationship
     public function sender(){
         return $this->belongsTo(User::class, 'sender_id', 'id');
     }
 
-    // quan he 1-1 voi User, Building, Room
-    public function objective(): MorphTo
+    // object relationship: user, building, room
+    public function object(): MorphTo
     {
         return $this->morphTo();
     }

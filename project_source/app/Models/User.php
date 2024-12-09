@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -28,42 +29,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
     ];
 
-    // App\Models\User.php
-    public function student()
-    {
-        return $this->hasOne(Student::class, 'user_id', 'id');
-    }
-
-
-    public function employee()
-    {
-        return $this->hasOne(Employee::class, 'user_id', 'id');
-    }
-
-    public function notifications()
-    {
-        return $this->hasMany(NotificationRecipient::class, 'user_id', 'id');
-    }
-
-    public function send_notification()
-    {
-        return $this->hasMany(Notification::class, 'sender_id', 'id');
-    }
-
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
-
-    public function object(): MorphOne
-    {
-        return $this->morphOne(Notification::class, 'objective');
-    }
-
-    public function manager(){
-        return $this->hasMany(Employee::class, 'manager_id', 'id');
-    }
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -73,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+
 
     /**
      * Get the attributes that should be cast.
@@ -87,28 +53,115 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function room()
+    public function isAdmin()
     {
-        return $this->hasOne(Room::class, 'stu_id', 'id'); // 'stu_id' là cột khóa ngoại trong bảng rooms liên kết với bảng users
+        return $this->role === 'admin';
     }
 
+
+
+    // student relationships
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'user_id', 'id');
+    }
+
+
+
+    // employee relationships
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'user_id', 'id');
+    }
+
+    public function manageEmployee(){
+        return $this->hasMany(Employee::class, 'manager_id', 'id');
+    }
+
+
+
+    // notification recipient relationships
+    public function read()
+    {
+        return $this->hasMany(NotificationRecipient::class, 'user_id', 'id');
+    }
+
+
+
+    // notification relationships
+    public function senderNotification()
+    {
+        return $this->hasMany(Notification::class, 'sender_id', 'id');
+    }
+
+    // object notification relationship
+    public function notification(): MorphOne
+    {
+        return $this->morphOne(Notification::class, 'object');
+    }
+
+
+
+    // residence relationships
+    public function residence(){
+        return $this->hasMany(Residence::class, 'stu_user_id', 'id');
+    }
+
+
+
+    // request relationships
+    public function sendRequest()
+    {
+        return $this->hasMany(Request::class, 'sender_id', 'id');
+    }
+
+    public function receiveRequest()
+    {
+        return $this->hasMany(Request::class, 'receiver_id', 'id');
+    }
+
+    public function forwardRequest()
+    {
+        return $this->hasMany(Request::class, 'forwarder_id', 'id');
+    }
+
+
+
+    // invoice relationships
     public function sendInvoice()
     {
         return $this->hasMany(Invoice::class, 'sender_id', 'id');
     }
 
-    public function hasParticipate()
+    public function invoice(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Invoice::class, 'object');
+    }
+
+
+
+    // activity relationships
+    public function createActivity()
+    {
+        return $this->hasMany(Activity::class, 'creator_id', 'id');
+    }
+
+    public function hasParticipated()
     {
         return $this->hasMany(RegistrationActivity::class, 'participant_id', 'id');
     }
 
+
+
+    // violation relationships
     public function createViolation()
     {
-        return $this->hasMany(Invoice::class, 'creator_id', 'id');
+        return $this->hasMany(Violation::class, 'creator_id', 'id');
     }
 
     public function receiveViolation()
     {
-        return $this->hasMany(Invoice::class, 'receiver_id', 'id');
+        return $this->hasMany(Violation::class, 'receiver_id', 'id');
     }
+
 }

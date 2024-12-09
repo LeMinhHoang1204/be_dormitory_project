@@ -82,6 +82,37 @@
 .filter-checkbox {
     margin-right: 8px;
 }
+/* Create Button Styling */
+.btn-create {
+    background-color: #2F6BFF; /* Primary blue */
+    color: white;
+    padding: 10px 20px; /* More padding for better size */
+    border-radius: 15px; /* Slightly rounded corners */
+    font-size: 16px; /* Increase font size for better readability */
+    font-weight: 600; /* Make text bolder */
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.btn-create:hover {
+    background-color: #1E50B3; /* Darker blue */
+    transform: scale(1.05); /* Slight scaling effect */
+}
+
+.btn-create:focus {
+    outline: none;
+    border: 2px solid #1E50B3; /* Add a border on focus */
+}
+
+/* Disabled state */
+.btn-create:disabled {
+    background-color: #D1D5DB; /* Gray when disabled */
+    color: #6B7280;
+    cursor: not-allowed;
+}
 
 /* Button styling */
 .filter-button-container {

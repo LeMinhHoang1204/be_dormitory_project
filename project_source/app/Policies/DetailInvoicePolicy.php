@@ -29,7 +29,7 @@ class DetailInvoicePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'accountant';
     }
 
     /**
@@ -37,7 +37,7 @@ class DetailInvoicePolicy
      */
     public function update(User $user, DetailInvoice $detailInvoice): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'accountant';
     }
 
     /**
@@ -45,7 +45,7 @@ class DetailInvoicePolicy
      */
     public function delete(User $user, DetailInvoice $detailInvoice): bool
     {
-        //
+        return $user->role === 'admin' || $user->role === 'accountant';
     }
 
     /**

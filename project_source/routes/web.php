@@ -5,7 +5,7 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BuildingController;
 
-Route::get('/', function () {
+Route::get('/', function () {1
     return view('home');
 });
 
@@ -18,8 +18,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
 
 Route::get('/student/extension', [RoomController::class, 'showRoomExtensionForm'])->middleware('auth');
 
@@ -48,10 +46,10 @@ Route::get('/home', function () {
     return view('home');
 });
 
-
-
-
-
+// payment
+Route::get('/payment', function () {
+    return view('/student_payment/payment');
+});
 
 // Display roomInfor
 Route::middleware('auth')->group(function () {
@@ -59,9 +57,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/roomInfor/{id}', [RoomController::class, 'showRoom']);
-
-
-
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/api/building-room-residence.php';

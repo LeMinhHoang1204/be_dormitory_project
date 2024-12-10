@@ -202,13 +202,15 @@
         <h2>Are you sure to register this room?</h2>
         <div class="button-container">
             <button class="no-btn" onclick="closeConfirm()">No</button>
-            <button class="yes-btn" onclick="showConfirmInfoContainer()">Yes</button>
+{{--            <button class="yes-btn" onclick="showConfirmInfoContainer()">Yes</button>--}}
+            <button class="yes-btn">Yes</button>
         </div>
     </div>
 
     {{--    Confirm thông tin đăng ký phòng --}}
     <div class="confirm-info-container">
-        <form class="confirm-info-form">
+        <form class="confirm-info-form" action="{{ route('students.register-room.create') }}" method="POST">
+            @csrf
             <div class="confirm-info-header">
                 <h2> ROOM APPLICATION </h2>
             </div>
@@ -216,54 +218,53 @@
                 <div class="left-column">
                     <div class="confirm-info-field">
                         <label for="dorm-id">Dorm ID</label>
-                        <input type="text" id="dorm-id" readonly>
+                        <input type="text" id="dorm-id" name="dormId" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="full-name">Full name</label>
-                        <input type="text" id="full-name" readonly>
+                        <input type="text" id="full-name" name="fullName" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="room-id">Room ID</label>
-                        <input type="text" id="room-id" readonly>
+                        <input type="text" id="room-id" name="roomId" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="building-id">Building ID</label>
-                        <input type="text" id="building-id" readonly>
+                        <input type="text" id="building-id" name="buildingId" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="floor">Floor</label>
-                        <input type="text" id="floor" readonly>
+                        <input type="text" id="floor" name="floor" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="start-date">Start date</label>
-                        <input type="date" id="start-date">
+                        <input type="date" id="start-date" name="startDate">
                     </div>
-
                 </div>
                 <div class="right-column">
                     <div class="confirm-info-field">
                         <label for="student-id">Student ID</label>
-                        <input type="text" id="student-id" readonly>
+                        <input type="text" id="student-id" name="studentId" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="gender">Gender</label>
-                        <input type="text" id="gender" readonly>
+                        <input type="text" id="gender" name="gender" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="price">Price</label>
-                        <input type="text" id="price" readonly>
+                        <input type="text" id="price" name="price" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="room-type">Room type</label>
-                        <input type="text" id="room-type" readonly>
+                        <input type="text" id="room-type" name="roomType" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="capacity">Capacity</label>
-                        <input type="text" id="capacity" readonly>
+                        <input type="text" id="capacity" name="capacity" readonly>
                     </div>
                     <div class="confirm-info-field">
                         <label for="duration">Duration</label>
-                        <select id="duration" readonly>
+                        <select id="duration" name="duration">
                             <option value="3">3 months</option>
                             <option value="6">6 months</option>
                             <option value="9">9 months</option>

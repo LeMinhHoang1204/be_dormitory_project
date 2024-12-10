@@ -19,6 +19,11 @@ class Request extends Model
         'forward_id',
     ];
 
+    protected $casts = [
+        'resolve_date' => 'datetime',
+
+    ];
+
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');

@@ -7,6 +7,7 @@ use App\Models\Residence;
 use App\Http\Requests\StoreResidenceRequest;
 use App\Http\Requests\UpdateResidenceRequest;
 use App\Models\Room;
+use Illuminate\Http\Request;
 
 class ResidenceController extends Controller
 {
@@ -24,13 +25,13 @@ class ResidenceController extends Controller
      */
     public function create()
     {
-        return view('admin_residences.reg_room');
+        return view('reg_room.reg_room');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreResidenceRequest $request)
+    public function store(Request $request)
     {
 
     }
@@ -54,7 +55,7 @@ class ResidenceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateResidenceRequest $request, Residence $residence)
+    public function update(Request $request, Residence $residence)
     {
         //
     }

@@ -20,12 +20,12 @@ class NotificationController extends Controller
         $user = auth()->user(); // Lấy người dùng hiện tại
 
         // Khởi tạo query để lọc dữ liệu
-        $query = Notification::with('object.user');
+        $query = Notification::with('object');
 
         if (!$user->isAdmin()) {
             $query->where(function ($q) use ($user) {
                 $q->where('sender_id', $user->id) // Lọc nếu người dùng là người gửi
-                ->orWhereHas('object', function ($q) use ($user) {
+                ->orWhereHas('notification', function ($q) use ($user) {
                     $q->where('user_id', $user->id); // Lọc nếu người dùng là người nhận
                 });
             });
@@ -53,14 +53,15 @@ class NotificationController extends Controller
 
         // Lọc theo người đăng thông báo
         if ($request->has('posted_by') && is_array($request->posted_by)) {
-            $query->whereHas('sender', function ($q) use ($request) {
+            $query->whereHas('senderNotification', function ($q) use ($request) {
                 $q->whereIn('role', $request->posted_by); // Giả sử "role" là trường để xác định vai trò của người gửi
             });
         }
 
         // Lấy danh sách thông báo sau khi áp dụng bộ lọc
         $notifications = $query->latest()->get();
-        return view('/notification/list', compact('notifications'));
+
+        return view('admin/notification/list', compact('notifications'));
     }
 
 
@@ -69,7 +70,7 @@ class NotificationController extends Controller
      */
     public function create(Request $request)
     {
-        return view('notification/create');
+        return view('admin/notification/create');
     }
 
     /**
@@ -90,6 +91,10 @@ class NotificationController extends Controller
             'object_id' => 'required|integer',
         ]);
 
+        if ($validatedData['type'] === 'individual') {
+            $validatedData['object_type'] = 'App\Models\User';
+        }
+
 //        dd($request->all());
         Notification::create($validatedData); // Sử dụng dữ liệu đã xác thực
 
@@ -109,7 +114,7 @@ class NotificationController extends Controller
      */
     public function edit(Notification $notification)
     {
-        return view('notification.edit', compact('notification'));
+        return view('admin/notification/edit', compact('notification'));
     }
 
     /**

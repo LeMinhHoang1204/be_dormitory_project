@@ -42,10 +42,10 @@
             </a>
             <ul class="submenu">
                 <li><a href="{{ url('/regis-test') }}">Register</a></li>
-                <li><a href="/student/repair-request">Repair</a></li>
+                <li><a href="/students/repair-request">Repair</a></li>
                 <li><a href="#">Change</a></li>
-                <li><a href="/student/extension">Extension</a></li>
-                <li><a href="/student/checkout">Check-out</a></li>
+                <li><a href="/students/renew">Extension</a></li>
+                <li><a href="/students/checkout">Check-out</a></li>
             </ul>
         </li>
             <li class="menu-item">

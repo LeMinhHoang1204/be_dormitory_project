@@ -41,7 +41,7 @@
                 <span class="text">Room</span>
             </a>
             <ul class="submenu">
-                <li><a href="{{ url('/regis-test') }}">Register</a></li>
+                <li><a href="{{ url('/register_room') }}">Register</a></li>
                 <li><a href="/student/repair-request">Repair</a></li>
                 <li><a href="#">Change</a></li>
                 <li><a href="/student/extension">Extension</a></li>

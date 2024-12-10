@@ -4,23 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Building;
 use App\Models\Residence;
-use App\Models\Student;
-
-
 use App\Models\Room;
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
+use App\Models\Student;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class RoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    /** Display a listing of the resource. */
     use AuthorizesRequests;
+
     public function index(Building $building)
     {
         if (
@@ -125,10 +119,11 @@ class RoomController extends Controller
             return view('student.extension', ['message' => 'You do not have a registered room. Please register!']);
         }
 
-        $studentRoom = $student->residence()
+        $studentRoom = $student
+            ->residence()
             ->where('status', 'Check in')
-//            ->join('rooms', 'residences.room_id', '=', 'rooms.roomId')
-//            ->select('rooms.name as room_name', 'rooms.unit_price', 'residences.end_date')
+            //            ->join('rooms', 'residences.room_id', '=', 'rooms.roomId')
+            //            ->select('rooms.name as room_name', 'rooms.unit_price', 'residences.end_date')
             ->first();
 
         if (!$studentRoom) {
@@ -139,14 +134,13 @@ class RoomController extends Controller
         return view('student.extension', compact('studentRoom'));
     }
 
-
     // TODO: Xử lý trang check out.
 
     public function showCheckOutPage()
     {
         // Kiểm tra nếu người dùng không phải là student thì chuyển hướng về home
         if (auth()->check() && auth()->user()->role !== 'student') {
-            return redirect()->route('home'); // Chuyển hướng nếu không phải sinh viên
+            return redirect()->route('home');  // Chuyển hướng nếu không phải sinh viên
         }
 
         // Lấy thông tin sinh viên từ cơ sở dữ liệu
@@ -179,18 +173,15 @@ class RoomController extends Controller
         return redirect()->route('student.checkout')->with('message', 'Request sent');
     }
 
-
-
     // Xử lý yêu cầu sửa chữa
     public function repairRequest()
     {
         if (auth()->check() && auth()->user()->role !== 'student') {
-            return redirect()->route('home'); // Chuyển hướng nếu không phải sinh viên
+            return redirect()->route('home');  // Chuyển hướng nếu không phải sinh viên
         }
 
         // Lấy thông tin người dùng đang đăng nhập
         $user = auth()->user();
-
 
         // Lấy thông tin sinh viên
         $student = Auth::user()->student;
@@ -209,34 +200,33 @@ class RoomController extends Controller
         }
 
         return view('.student.repair', compact('studentRoom'));
-//        if (!$student) {
-//            return view('student.repair', ['message' => 'You do not have a room, register!']);
-//        }
-//
-//        // Kiểm tra xem sinh viên có đang ở trong phòng nào không (qua bảng `residences`)
-//        $residence = DB::table('residences')
-//            ->where('stu_id', $student->id)
-//            ->where('status', 'Da nhan phong') // Tìm những sinh viên đã nhận phòng
-//            ->first();
-//
-//        if (!$residence) {
-//            return redirect()->route('dashboard')->with('message', 'Bạn chưa nhận phòng hoặc chưa đủ điều kiện yêu cầu sửa chữa.');
-//        }
-//
-//        // Lấy thông tin phòng từ bảng `rooms` thông qua `room_id` trong bảng `residences`
-//        $room = DB::table('rooms')->where('id', $residence->room_id)->first();
-//
-//        if (!$room) {
-//            return redirect()->route('dashboard')->with('message', 'Phòng của bạn không tồn tại.');
-//        }
-//
-//        // Hiển thị trang yêu cầu sửa chữa với thông tin phòng
-//        return view('student.repair-request', [
-//            'room' => $room, // Chuyển thông tin phòng đến view
-//            'student' => $student,
-//        ]);
+        //        if (!$student) {
+        //            return view('student.repair', ['message' => 'You do not have a room, register!']);
+        //        }
+        //
+        //        // Kiểm tra xem sinh viên có đang ở trong phòng nào không (qua bảng `residences`)
+        //        $residence = DB::table('residences')
+        //            ->where('stu_id', $student->id)
+        //            ->where('status', 'Da nhan phong') // Tìm những sinh viên đã nhận phòng
+        //            ->first();
+        //
+        //        if (!$residence) {
+        //            return redirect()->route('dashboard')->with('message', 'Bạn chưa nhận phòng hoặc chưa đủ điều kiện yêu cầu sửa chữa.');
+        //        }
+        //
+        //        // Lấy thông tin phòng từ bảng `rooms` thông qua `room_id` trong bảng `residences`
+        //        $room = DB::table('rooms')->where('id', $residence->room_id)->first();
+        //
+        //        if (!$room) {
+        //            return redirect()->route('dashboard')->with('message', 'Phòng của bạn không tồn tại.');
+        //        }
+        //
+        //        // Hiển thị trang yêu cầu sửa chữa với thông tin phòng
+        //        return view('student.repair-request', [
+        //            'room' => $room, // Chuyển thông tin phòng đến view
+        //            'student' => $student,
+        //        ]);
     }
-
 
     //
     //    public function extendRoomContract(Request $request)
@@ -261,20 +251,17 @@ class RoomController extends Controller
     //        // Trả về thông báo thành công
     //        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
 
-
-//  Hien thi thong tin phong
-    public function showRoomInfor($roomId)
+    // TODO: HIEN THI THONG TIN PHONG
+    public function showRoomInfor(Request $request)
     {
-        $room = Room::find($roomId);
+        $roomId = $request->query('roomId');
+        $room = Room::findOrFail($roomId);
         return view('roomInfor.roomInfor', compact('room'));
     }
 
-// Lay du lieu room tu DB
-    public function showRoom($id)
+    public function showListRoom()
     {
-        $room = Room::find($id);
-        return view('roomInfor.roomInfor', compact('room'));
+        $rooms = Room::orderBy('id', 'asc')->paginate(6);
+        return view('student_rooms.register', ['rooms' => $rooms]);
     }
-
-
 }

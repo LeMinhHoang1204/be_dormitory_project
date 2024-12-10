@@ -182,10 +182,6 @@
             <label><input type="checkbox" /> Water heater</label>
             <label><input type="checkbox" /> Study desk</label>
         </div>
-        {{--        </div> --}}
-        {{--        <div class="apply-button"  onclick="closeFilter(event)"> --}}
-        {{--            <button>Apply</button> --}}
-        {{--        </div> --}}
         <button id="apply-filter" class="apply-button">Apply</button>
 
     </div>

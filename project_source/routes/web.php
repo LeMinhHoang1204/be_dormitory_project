@@ -48,8 +48,6 @@ Route::get('/home', function () {
     return view('home');
 });
 
-
-
 // Payment
 Route::resource('/payment', InvoiceController::class)->names('invoice');
 
@@ -59,12 +57,28 @@ Route::get('student_payment/detail_payment/{id}', [InvoiceController::class, 'sh
 
 
 
-// Display roomInfor
-Route::middleware('auth')->group(function () {
-    Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
-});
 
-Route::get('/roomInfor/{id}', [RoomController::class, 'showRoom']);
+
+// TODO: DISPLAY ROOM
+
+Route::get('/register_room', [RoomController::class, 'showListRoom']);
+
+Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Xem trang thông tin phòng hiện tại của tôi
 Route::middleware('auth')->group(function () {

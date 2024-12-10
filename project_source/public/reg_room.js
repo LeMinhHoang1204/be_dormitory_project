@@ -41,7 +41,9 @@ const roomsData = [
 function createRoom(room) {
     return `
         <div class="room-item" data-room-id="${room.roomId}" data-room-name="${room.name}" data-room-price="${room.price}" data-room-img="${room.img}">
-            <img src="/img/${room.img}" alt="${room.name}">
+            <a href="/roomInfor/${room.roomId}">
+                <img src="/img/${room.img}" alt="${room.name}">
+            </a>
             <div class="form-group">
                 <div class="roomname">Room ${room.name}</div>
                 <div id="room-price">
@@ -66,20 +68,15 @@ function displayRoom() {
 
     const roomItems = document.querySelectorAll(".room-item");
     roomItems.forEach((item) => {
-        item.addEventListener("click", function () {
-            const roomId = this.dataset.roomId;
-            const roomName = this.dataset.roomName;
-            const roomPrice = this.dataset.roomPrice;
-            const roomImg = this.dataset.roomImg;
+        const roomData = {
+            roomId: item.dataset.roomId,
+            roomName: item.dataset.roomName,
+            roomPrice: item.dataset.roomPrice,
+            roomImg: item.dataset.roomImg
+        };
 
-            // Luu data room-item vao localStorage
-            localStorage.setItem(
-                "selectedRoom",
-                JSON.stringify({ roomId, roomName, roomPrice, roomImg })
-            );
-
-            window.location.href = `/roomInfor/${roomId}`;
-        });
+        // Lưu data room vào localStorage khi click vào bất kỳ phần nào của room-item
+        localStorage.setItem("selectedRoom", JSON.stringify(roomData));
     });
 }
 

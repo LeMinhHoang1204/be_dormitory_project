@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -117,7 +118,7 @@ class StudentController extends Controller
 
         // Kiểm tra nếu không có thông tin sinh viên
         if (!$student) {
-            return view('student.register-room', ['message' => 'You do not have a student profile.']);
+            return view('student.register-room', ['message' => 'You do not have a student user_profile.php.']);
         }
 
         // Lấy thông tin phòng của sinh viên
@@ -132,6 +133,43 @@ class StudentController extends Controller
 
         // Trả về trang đăng ký phòng với thông tin sinh viên và phòng
         return view('student.register-room', compact('student', 'room'));
+    }
+    public function showProfile()
+    {
+        $user = auth()->user();
+        $currentResidence = Residence::where('stu_user_id', auth()->id())
+            ->where('status', 'Checked in', 'Paid')
+            ->with('room')
+            ->first();
+        if (!$user) {
+            return redirect()->route('login')->with('message', 'Please log in first.');
+        }
+
+        if ($user->student) {
+            $student = $user->student;
+            return view('user_profile.student', compact('student'));
+        } else {
+            return redirect()->back()->with('message', 'Student user_profile.php not found');
+        }
+    }
+    public function updateProfileImage(Request $request)
+    {
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user = auth()->user();
+
+        if ($user->profile_image_path && Storage::disk('public')->exists($user->profile_image_path)) {
+            Storage::disk('public')->delete($user->profile_image_path);
+        }
+
+        $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+
+        $user->profile_image_path = $imagePath;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully.!');
     }
 
     public function getCurrentUser()

@@ -206,6 +206,12 @@
                         <x-text-input id="stu_uni_id" class="form-control" type="text" name="stu_uni_id" :value="old('stu_uni_id')" placeholder="Student ID" required />
                         <x-input-error :messages="$errors->get('stu_uni_id')" class="mt-2" />
                     </div>
+                    {{--        <!-- Student ID -->--}}
+                    {{--        <div class="mt-4">--}}
+                    {{--            <x-input-label for="stu_uni_id" :value="__('Student ID')" />--}}
+                    {{--            <x-text-input id="stu_uni_id" class="block mt-1 w-full" type="text" name="stu_uni_id" :value="old('stu_uni_id')" required autofocus autocomplete="stu_uni_id" />--}}
+                    {{--            <x-input-error :messages="$errors->get('stu_uni_id')" class="mt-2" />--}}
+                    {{--        </div>--}}
 
                     <!-- Phone Number -->
                     <div class="col-md-12 margin-input">

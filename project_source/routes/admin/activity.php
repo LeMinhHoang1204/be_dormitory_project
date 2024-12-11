@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\RegistrationActivityController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -13,6 +14,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/activities', [ActivityController::class, 'store'])->name('activities.store');
     // Hiển thị chi tiết hoạt động
     Route::get('/admin/activities/{id}', [ActivityController::class, 'show'])->name('admin_activities.show');
+    Route::get('/activity/{activity}/student/{id}/user_profile.php', [ActivityController::class, 'showProfile'])->name('activity.student.user_profile.php');
 
     Route::put('/activities/{activity}', [ActivityController::class, 'update'])->name('activities.update');
     // Sửa hoạt động

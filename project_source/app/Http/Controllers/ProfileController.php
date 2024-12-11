@@ -12,9 +12,9 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's user_profile.php form.
      */
-    public function edit(Request $request): View
+    public function show(Request $request): View
     {
         return view('profile.edit', [
             'user' => $request->user(),
@@ -22,7 +22,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Update the user's user_profile.php information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -56,5 +56,29 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+    public function myProfile(){
+        return view('user_profile.admin_buildingmanager_accountant');
+    }
+    public function updateImage(Request $request)
+    {
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('profile_image')) {
+            if ($user->profile_image_path && Storage::exists('public/' . $user->profile_image_path)) {
+                Storage::delete('public/' . $user->profile_image_path);
+            }
+
+            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+
+            $user->profile_image_path = $imagePath;
+            $user->save();
+        }
+
+        return redirect()->route('user_profile.php.show')->with('success', 'Profile image updated successfully!');
     }
 }

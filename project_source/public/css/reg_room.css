@@ -134,7 +134,7 @@ body {
     align-items: center;
     width: fit-content;
 /*margin-inside: 10px;*/
-    gap: 20px ;
+    gap: 5px ;
 
 }
 .change-button{
@@ -144,7 +144,7 @@ body {
 .detail-item {
     background-color: #f0f0f0;
     border-radius: 5px;
-    padding: 10px 5px;
+    padding: 5px 5px;
     text-align: center;
     heigh: 21px;
 }

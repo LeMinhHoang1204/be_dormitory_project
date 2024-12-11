@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Student;
 use Carbon\Carbon;
 
 use Illuminate\Foundation\Auth\User;
@@ -401,6 +402,18 @@ class ActivityController extends Controller
         return view('admin_activities.participants', compact('participants', 'activity'));
     }
 
+    public function showProfile($activityId, $studentId)
+    {
+        $activity = Activity::findOrFail($activityId);
+        $student = Student::with('residence.room')->findOrFail($studentId);
+        $currentResidence = $student->residence->firstWhere(fn($res) => in_array($res->status, ['Paid', 'Checked in', 'Registered']));
+
+        if (!in_array(auth()->user()->role, ['admin', 'building manager'])) {
+            return redirect()->back()->with('error', 'You do not have permission to access this page.');
+        }
+
+        return view('admin_activities.profile_participant', compact('student', 'activity', 'currentResidence'));
+    }
 
     /**
      * Show the form for editing the specified resource.

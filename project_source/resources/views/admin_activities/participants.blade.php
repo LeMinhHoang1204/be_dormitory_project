@@ -30,6 +30,19 @@
         .extension{
             max-width: 50%;
         }
+        .popup-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: -30px;
+            margin-top: 45px;
+        }
+        popup-details p{
+            margin: 20px 20px;
+        }
+        .info-left p,
+        .info-right p {
+            display: flex;
+        }
     </style>
 </head>
 @section('content')
@@ -37,7 +50,15 @@
     @if (auth()->check() && in_array(auth()->user()->role, ['admin', 'building manager']))
         <div class="extension">
             <div class="bluefont" style="margin-bottom: -20px!important;"><h3>Participants List</h3></div>
-
+            <div class="popup-details">
+                <div class="info-left">
+                    <p><strong>Title:</strong>{{ $activity->title }}</p>
+                    <p><strong>Registered Participants:</strong> {{ $activity->registered_participants }}/{{ $activity->max_participants }}</p>
+                </div>
+                <div class="info-right">
+                    <p><strong>Activity id:</strong>  #ACT_{{ $activity->id }}</p>
+                </div>
+                </div>
             <div class="action-bar">
                 <div class="filter-sgv" onclick="toggleFilter()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="67" height="66" viewBox="0 0 67 66" fill="none">
@@ -164,7 +185,7 @@
                 @foreach ($participants as $participant)
                     <tr>
                         <td>{{ ($participants->currentPage() - 1) * $participants->perPage() + $loop->iteration }}</td>
-                        <td>#STU_{{ $participant->student->id ?? 'No student ID' }}</td> <!-- Hiển thị Student ID -->
+                        <td>#STU_{{ $participant->student->id ?? 'No student ID' }}</td>
                         <td>{{ $participant->name }}</td>
                         <td>
                             @if($participant->student && $participant->student->residence)
@@ -196,25 +217,10 @@
                                     {{--                                <a href="#" class="more"  data-id="{{ $activity->id }}" onclick="toggleDetail(this)">--}}
                                     {{--                                    More--}}
                                     {{--                                </a>--}}
-                                    <a href="{{ route('admin_activities.show', ['id' => $activity->id]) }}" class="more">
+                                    <a href="{{ route('activity.student.user_profile.php', ['activity' => $activity->id, 'id' => $participant->student->id]) }}" class="more">
                                         More
                                     </a>
 
-{{--                                    <a href="{{ route('activities.edit', $activity->id) }}" class="register">--}}
-{{--                                        <i class="fa-solid fa-pen-nib"></i> Edit--}}
-{{--                                    </a>--}}
-
-
-{{--                                    --}}{{--                                <a href="#" class="delete">--}}
-{{--                                    --}}{{--                                    <i class="fa-solid fa-trash"></i> Delete--}}
-{{--                                    --}}{{--                                </a>--}}
-{{--                                    <form action="{{ route('activities.destroy', $activity->id) }}" method="POST" id="delete-form-{{ $activity->id }}" onsubmit="return confirm('Are you sure you want to delete this activity?')">--}}
-{{--                                        @csrf--}}
-{{--                                        @method('DELETE')--}}
-{{--                                        <a href="#" class="delete" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $activity->id }}').submit();">--}}
-{{--                                            <i class="fa-solid fa-trash"></i> Delete--}}
-{{--                                        </a>--}}
-{{--                                    </form>--}}
 
                                 </div>
                             </div>

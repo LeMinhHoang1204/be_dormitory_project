@@ -27,7 +27,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="notifications">
+            <a href="/notifications">
                 <span class="icon">🔔</span>
                 <span class="text">Notifications</span>
             </a>
@@ -134,12 +134,17 @@
                 </a>
             </li>
         @endif
-{{--        <li class="menu-item">--}}
-{{--            <a href="#">--}}
-{{--                <span class="icon">⚙️</span>--}}
-{{--                <span class="text">Account</span>--}}
-{{--            </a>--}}
-{{--        </li>--}}
+
+        <li class="menu-item">
+            @if (auth()->check() && auth()->user()->role === 'accountant')
+            <a href="/students/my_profile">
+                @else
+                    <a href="/students/my_profile">
+                        @endif
+                    <span class="icon">👤</span>
+                <span class="text">Profile</span>
+            </a>
+        </li>
     </ul>
 
 </div>

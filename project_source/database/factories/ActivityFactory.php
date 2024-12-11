@@ -27,7 +27,10 @@ class ActivityFactory extends Factory
         }
         $start_date = $this->faker->dateTimeBetween('2024-06-30', '2025-2-01');
         $end_date = (clone $start_date)->modify('+' . $this->faker->numberBetween(5, 50) . ' days');
-        $register_end_date = $this->faker->dateTimeBetween($start_date->modify('-30 days'), $start_date->modify('-5 days'));
+        $register_end_date = $this->faker->dateTimeBetween(
+            (clone $start_date)->modify('-30 days'),
+            (clone $start_date)->modify('-5 days')
+        );
         return [
             'creator_id' => $this->faker->randomElement(
                 User::whereIn('role', ['admin', 'building manager'])->pluck('id')->toArray()

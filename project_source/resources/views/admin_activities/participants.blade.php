@@ -28,7 +28,7 @@
         document.querySelector(".filter-sgv").addEventListener("click", toggleFilter);
     </script>    <style>
         .extension{
-            max-width: 50%;
+            max-width: 55%;
         }
         .popup-details {
             display: flex;

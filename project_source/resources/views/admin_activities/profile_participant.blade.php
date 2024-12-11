@@ -30,7 +30,7 @@
                 <h3>Student Profile</h3>
             </div>
                 <div class="profile-image">
-                    <img src="{{ auth()->user()->profile_image_path && file_exists(storage_path('app/public/' . auth()->user()->profile_image_path))
+                    <img src="{{ $student->user->profile_image_path && file_exists(storage_path('app/public/' . $student->user->profile_image_path))
                                 ? asset('storage/' . auth()->user()->profile_image_path)
                                 : asset('images/avatar.png')  }}"
                      alt="User Avatar"

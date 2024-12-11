@@ -355,23 +355,21 @@ class ActivityController extends Controller
             'student.residence' => function ($query) {
                 $query->whereIn('status', ['Paid', 'Checked in', 'Registered'])
                     ->with(['room.building' => function ($query) {
-                        $query->select('id', 'build_name'); // Lấy tên tòa nhà
+                        $query->select('id', 'build_name');
                     }]);
             },
             'student.residence.room' => function ($query) {
-                $query->select('id', 'name'); // Lấy tên phòng của residence
+                $query->select('id', 'name');
             }
         ])
             ->select('users.id', 'users.name');
 
-        // Lọc theo student status nếu có
         if ($status = request('status')) {
             $query->whereHas('student.residence', function ($query) use ($status) {
                 $query->whereIn('status', $status);
             });
         }
 
-// Lọc theo regis_date
         if ($regis_date = request('regis_date')) {
             $query->whereHas('student.activities', function ($query) use ($regis_date, $activity) {
                 $query->whereDate('registration_activities.created_at', '>=', $regis_date)
@@ -380,20 +378,16 @@ class ActivityController extends Controller
         }
 
 
-        // Lọc theo building name nếu có
         if ($building = request('building')) {
             $query->whereHas('student.residence.room.building', function ($query) use ($building) {
                 $query->where('build_name', 'like', '%' . $building . '%');
             });
         }
 
-        // Kiểm tra nếu có residence và lọc các participants không có residence
         $query->whereHas('student.residence'); // Chỉ lấy những người có residence
 
-        // Lấy danh sách participants với phân trang
         $participants = $query->paginate(10);
 
-        // Kiểm tra nếu không có participants
         if ($participants->isEmpty()) {
             return redirect()->back()->with('error', 'No participants found for this activity.');
         }

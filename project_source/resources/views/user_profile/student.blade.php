@@ -4,7 +4,7 @@
     <title>Student Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('./css/student/acitivities.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/avatar.css') }}" type="text/css">
 </head>

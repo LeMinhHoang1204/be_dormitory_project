@@ -112,74 +112,6 @@ class RoomController extends Controller
         return Room::distinct('type')->orderBy('type', 'asc')->get('type');
     }
 
-    public function showRoomExtensionForm()
-    {
-        if (auth()->check() && auth()->user()->role !== 'student') {
-            return redirect()->route('home')->with('error', 'Access denied.');
-        }
-
-        $user = auth()->user();
-        $student = $user->student;
-
-        if (!$student) {
-            return view('student.extension', ['message' => 'You do not have a registered room. Please register!']);
-        }
-
-        $studentRoom = $student->residence()
-            ->where('status', 'Check in')
-//            ->join('rooms', 'residences.room_id', '=', 'rooms.roomId')
-//            ->select('rooms.name as room_name', 'rooms.unit_price', 'residences.end_date')
-            ->first();
-
-        if (!$studentRoom) {
-            return view('student.extension', ['message' => 'No active room found. Please contact the management.']);
-        }
-
-        // 5. Trả dữ liệu về view
-        return view('student.extension', compact('studentRoom'));
-    }
-
-
-    // TODO: Xử lý trang check out.
-
-    public function showCheckOutPage()
-    {
-        // Kiểm tra nếu người dùng không phải là student thì chuyển hướng về home
-        if (auth()->check() && auth()->user()->role !== 'student') {
-            return redirect()->route('home'); // Chuyển hướng nếu không phải sinh viên
-        }
-
-        // Lấy thông tin sinh viên từ cơ sở dữ liệu
-        $student = Auth::user()->student;
-
-        // Kiểm tra nếu không có thông tin sinh viên
-        if (!$student) {
-            return view('student.checkout', ['message' => 'You do not have a room, register!']);
-        }
-
-        // Lấy thông tin phòng của sinh viên
-        $studentRoom = $student->rooms()->first();
-
-        // Nếu sinh viên không có phòng, chuyển hướng hoặc hiển thị thông báo
-        if (!$studentRoom) {
-            return view('student.checkout', ['message' => 'No room found for this student.']);
-        }
-
-        // Trả về trang checkout với thông tin sinh viên và phòng
-        return view('student.checkout', compact('student', 'studentRoom'));
-    }
-
-    public function leaveRequest()
-    {
-        // Thực hiện xử lý khi nhấn "Leave" gửi yêu cầu checkout
-
-        // Lưu thông tin yêu cầu checkout vào cơ sở dữ liệu hoặc gửi email thông báo
-
-        // Chuyển hướng về trang checkout và hiển thị thông báo yêu cầu đã được gửi
-        return redirect()->route('student.checkout')->with('message', 'Request sent');
-    }
-
-
 
     // Xử lý yêu cầu sửa chữa
     public function repairRequest()
@@ -276,5 +208,22 @@ class RoomController extends Controller
         return view('roomInfor.roomInfor', compact('room'));
     }
 
+    public function fetchRoomsForStudent()
+    {
+        $rooms = Room::with(['hasRoomAssets' => function ($query) {
+            $query->select('id', 'room_id', 'asset_id', 'quantity');
+        }, 'hasRoomAssets.asset' => function ($query) {
+            $query->select('id', 'name');
+        }])->get();
+
+        return response()->json($rooms);
+    }
+
+    public function getRoomDataforStudent(Room $room)
+    {
+
+        $room = Room::find($room->id);
+        return response()->json($room);
+    }
 
 }

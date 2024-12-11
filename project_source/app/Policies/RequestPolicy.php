@@ -65,4 +65,9 @@ class RequestPolicy
     {
         return false;
     }
+
+    public function confirmRequest(User $user, Request $request): bool
+    {
+        return $user->role === 'admin'|| $user->role === 'building_manager';
+    }
 }

@@ -7,7 +7,6 @@ Route::middleware('auth')->group(function () {
     // notifications
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index')->can('viewAny', \App\Models\Notification::class);
 
-//    Route::get('/notifications/create', [NotificationController::class, 'create'])->can('create', \App\Models\Notification::class);
     Route::get('/notifications/create', [NotificationController::class, 'create'])->name('notifications.create')->can('create', \App\Models\Notification::class);
 
     Route::post('/notifications/create', [NotificationController::class, 'store'])->name('notifications.store')->can('create', \App\Models\Notification::class);
@@ -17,5 +16,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/notifications/edit/{notification}', [NotificationController::class, 'update'])->name('notifications.edit')->can('update', 'notification');
 
     Route::delete('/notifications/delete/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy')->can('delete', 'notification');
+
+    Route::get('/admin/getAllBuilding', [NotificationController::class, 'getAllBuilding'])->name('notifications.getAllBuilding');
+
+    Route::get('/admin/getAllRoom/{building_id}', [NotificationController::class, 'getAllRoom'])->name('notifications.getAllRoom');
 
 });

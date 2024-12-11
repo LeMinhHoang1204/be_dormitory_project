@@ -15,11 +15,16 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show')->can('view', \App\Models\Request::class);
 
-        Route::get('/edit/{request}', [RequestController::class, 'edit'])->name('requests.edit')->can('update', \App\Models\Request::class);
+        Route::get('/edit/{request}', [RequestController::class, 'edit'])->name('requests.edit')->can('update', 'request');
 
-        Route::post('/edit/{request}', [RequestController::class, 'update'])->name('requests.update')->can('update', \App\Models\Request::class);
+        Route::post('/edit/{request}', [RequestController::class, 'update'])->name('requests.update')->can('update', 'request');
 
-        Route::delete('/delete/{request}', [RequestController::class, 'destroy'])->name('requests.destroy')->can('delete', \App\Models\Request::class);
+        Route::delete('/delete/{request}', [RequestController::class, 'destroy'])->name('requests.destroy')->can('delete', 'request');
+
+        Route::put('/{request}', [RequestController::class, 'accept'])->name('requests.accept')->can('confirmRequest', 'request');
+
+        Route::put('/{request}', [RequestController::class, 'decline'])->name('requests.decline')->can('confirmRequest', 'request');
+
     });
 
 });

@@ -31,7 +31,7 @@
                         </button>
                     </div>
                     <div class="col-md-12 margin-input ml-4" style="justify-content: left;" >
-                        <a href="" class="change"><u>Change Password</u></a>
+                        <a href="" class="change"><u>Forget Password</u></a>
                     </div>
 
                     <div class="col-md-12 margin-input text-center d-flex justify-content-center" >

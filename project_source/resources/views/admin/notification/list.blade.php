@@ -37,7 +37,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="notification-frame">
                 <!-- Nút Create chỉ hiển thị cho người dùng có quyền admin hoặc building-manager -->
-                @if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->role === 'building-manager'))
+                @if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->role === 'building manager'))
                     <div class="text-left">
                         <a href="{{ route('notifications.create') }}" class="btn-create">Create</a>
                     </div>

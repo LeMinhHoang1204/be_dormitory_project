@@ -17,4 +17,8 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/notifications/delete/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy')->can('delete', 'notification');
 
+    Route::get('/admin/getAllBuilding', [NotificationController::class, 'getAllBuilding'])->name('notifications.getAllBuilding');
+
+    Route::get('/admin/getAllRoom/{building_id}', [NotificationController::class, 'getAllRoom'])->name('notifications.getAllRoom');
+
 });

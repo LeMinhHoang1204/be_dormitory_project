@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Building;
 use App\Models\Notification;
 
+use App\Models\Room;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -151,5 +153,18 @@ class NotificationController extends Controller
 
         // Chuyển hướng về danh sách thông báo với thông báo thành công
         return redirect(route('notifications.index', absolute: false));
+    }
+
+    public function getAllBuilding()
+    {
+        $buildings = Building::all();
+        return response()->json($buildings);
+    }
+
+    public function getAllRoom(Building $building)
+    {
+        echo(100) ;
+        $rooms = Room::where('building_id', $building->id)->get();
+        return response()->json($rooms);
     }
 }

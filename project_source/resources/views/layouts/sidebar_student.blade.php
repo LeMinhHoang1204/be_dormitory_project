@@ -33,7 +33,7 @@
             </a>
         </li>
 
-{{--        Paymaent and Request about room for Student--}}
+{{--        Payment and Request about room for Student--}}
         @if (auth()->check() && auth()->user()->role === 'student')
         <li class="menu-item has-submenu">
             <a href="#">
@@ -55,7 +55,7 @@
                 </a>
             </li>
         <li class="menu-item">
-            <a href="#">
+            <a href="{{ url('/payment') }}">
                 <span class="icon">💳</span>
                 <span class="text">Payment</span>
             </a>

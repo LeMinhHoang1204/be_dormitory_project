@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\ResidenceController;
 
 Route::get('/', function () {
     return view('home');
@@ -34,6 +35,14 @@ Route::middleware(['auth'])->group(function () {
     // Route gửi yêu cầu sửa chữa
     Route::post('/student/repair-request', [RoomController::class, 'storeRepairRequest'])->name('repair-request.store');
 });
+
+// Payment
+Route::resource('/payment', InvoiceController::class)->names('invoice');
+
+//Payment detail
+Route::get('student_payment/detail_payment/{id}', [InvoiceController::class, 'showDetail'])->name('student_payment.detail_payment');
+
+
 
 // Display roomInfor
 Route::middleware('auth')->group(function () {

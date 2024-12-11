@@ -95,9 +95,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // object notification relationship
-    public function notification(): MorphOne
+    public function notification(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
-        return $this->morphOne(Notification::class, 'object');
+        return $this->morphMany(Notification::class, 'object');
     }
 
 

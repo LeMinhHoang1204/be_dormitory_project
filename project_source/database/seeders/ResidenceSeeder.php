@@ -30,16 +30,16 @@ class ResidenceSeeder extends Seeder
         $rooms = Room::pluck('id')->toArray();
 
         $students->each(function ($student) use ($rooms) {
-            $duration = Arr::random(['3 months', '6 months', '9 months', '12 months']); // Giá trị duration ngẫu nhiên
+            $months_duration = Arr::random(['3','6','9','12']); // Giá trị duration ngẫu nhiên
             $status = Arr::random(['Registered', 'Paid', 'Checked in', 'Transfered', 'Checked out']); // Giá trị status ngẫu nhiên
             $start_date = Carbon::now(); // Ngày bắt đầu
-            $end_date = (clone $start_date)->addMonths((int) filter_var($duration, FILTER_SANITIZE_NUMBER_INT)); // Tính end_date
+            $end_date = (clone $start_date)->addMonths((int) filter_var($months_duration, FILTER_SANITIZE_NUMBER_INT)); // Tính end_date
 
             Residence::create([
                 'stu_user_id' => $student->id,
                 'room_id' => Arr::random($rooms),
                 'start_date' => $start_date,
-                'duration' => $duration,
+                'months_duration' => $months_duration,
                 'end_date' => $end_date,
                 'check_out_date' => null,
                 'status' => $status,

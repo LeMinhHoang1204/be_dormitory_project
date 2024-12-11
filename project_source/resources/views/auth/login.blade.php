@@ -121,14 +121,14 @@
                 </div>
             {{--Remember me & Change password--}}
                 <div class="d-flex justify-content-between align-items-center mt-4" style="width: 82%; margin: 0 auto;">
-                    <div class="remember-me">
-                        <label for="remember_me" class="inline-flex items-center p_dont">
-                            <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                            <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                        </label>
-                    </div>
+{{--                    <div class="remember-me">--}}
+{{--                        <label for="remember_me" class="inline-flex items-center p_dont">--}}
+{{--                            <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">--}}
+{{--                            <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>--}}
+{{--                        </label>--}}
+{{--                    </div>--}}
                     <div class="change-password">
-                        <a href="{{ route('password.request') }}" class="change"><u>Change Password</u></a>
+                        <a href="{{ route('password.request') }}" class="change"><u>Forget Password</u></a>
                     </div>
                 </div>
 

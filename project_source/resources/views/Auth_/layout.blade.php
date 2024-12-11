@@ -46,7 +46,7 @@
 
 
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('profile.show') }}">Account</a>
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Account</a>
 
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();

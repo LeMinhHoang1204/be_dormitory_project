@@ -4,7 +4,7 @@
     <title>Student Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('./css/student/user_profile.php.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/student/acitivities.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/avatar.css') }}" type="text/css">
 </head>
@@ -59,7 +59,7 @@
                     function previewImage(event) {
                         var reader = new FileReader();
                         reader.onload = function () {
-                            var output = document.getElementById('user_profile.php-image');
+                            var output = document.getElementById('profile-image');
                             output.src = reader.result;
                         };
                         reader.readAsDataURL(event.target.files[0]);
@@ -140,7 +140,7 @@
                     }
                 </script>
 
-                <a href="{{ route('profile.edit') }}" class="blue-btn">Edit Profile</a>
+{{--                <a href="{{ route('profile.edit') }}" class="blue-btn">Edit Profile</a>--}}
             </div>
         </div>
     @endif

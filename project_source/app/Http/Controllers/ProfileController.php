@@ -12,9 +12,9 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's user_profile.php form.
+     * Display the user's profile form.
      */
-    public function show(Request $request): View
+    public function edit(Request $request): View
     {
         return view('profile.edit', [
             'user' => $request->user(),
@@ -22,7 +22,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's user_profile.php information.
+     * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -79,6 +79,6 @@ class ProfileController extends Controller
             $user->save();
         }
 
-        return redirect()->route('user_profile.php.show')->with('success', 'Profile image updated successfully!');
+        return redirect()->route('user_profile.show')->with('success', 'Profile image updated successfully!');
     }
 }

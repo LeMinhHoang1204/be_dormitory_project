@@ -136,10 +136,10 @@
         @endif
 
         <li class="menu-item">
-            @if (auth()->check() && auth()->user()->role === 'accountant')
+            @if (auth()->check() && auth()->user()->role === 'student')
             <a href="/students/my_profile">
                 @else
-                    <a href="/students/my_profile">
+                    <a href="/user/my_profile">
                         @endif
                     <span class="icon">👤</span>
                 <span class="text">Profile</span>

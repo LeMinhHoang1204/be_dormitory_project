@@ -4,7 +4,7 @@
     <title>My Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('./css/student/user_profile.php.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/avatar.css') }}" type="text/css">
 </head>
@@ -56,7 +56,7 @@
                 function previewImage(event) {
                     var reader = new FileReader();
                     reader.onload = function () {
-                        var output = document.getElementById('user_profile.php-image');
+                        var output = document.getElementById('profile-image');
                         output.src = reader.result;
                     };
                     reader.readAsDataURL(event.target.files[0]);
@@ -109,7 +109,7 @@
                     <p><strong>Phone:</strong> {{ auth()->user()->phone ?? 'Not provided' }}</p>
                 </div>
                 <div class="info-right">
-                    <p><strong>Registration Date:</strong> {{ \Carbon\Carbon::parse(user()->created_at)->format('d M, Y') }}</p>
+                    <p><strong>Registration Date:</strong> {{ \Carbon\Carbon::parse(auth()->user()->created_at)->format('d M, Y') }}</p>
 {{--                    <p><strong>Gender:</strong> {{ ucfirst($student->gender) }}</p>--}}
                     <p><strong>Status:</strong> {{ auth()->user()->status ? 'Active' : 'Inactive' }}</p>
                     <p><strong>Role:</strong>{{ auth()->user()->role }}</p>
@@ -132,7 +132,7 @@
                     }
                 </script>
 
-                <a href="{{ route('user_profile.php.edit') }}" class="blue-btn">Edit Profile</a>
+{{--                <a href="{{ route('user_profile.php.edit') }}" class="blue-btn">Edit Profile</a>--}}
             </div>
         </div>
     @endif

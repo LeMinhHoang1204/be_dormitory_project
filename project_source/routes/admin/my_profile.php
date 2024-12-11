@@ -5,7 +5,7 @@ use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/user/my_profile', [ProfileController::class, 'myProfile'])->name('user_profile.show');
     Route::post('/profile/update-image', [ProfileController::class, 'updateImage'])->name('profile.update-image');
 
 //    Route::prefix('/students')->group(function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Residence;
+use App\Models\Room;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Student;
@@ -98,9 +99,15 @@ class StudentController extends Controller
         return redirect()->route('student.checkout')->with('message', 'Request sent');
     }
 
+//    public function showRegisterRoomList()
+//    {
+//        $rooms = Room::paginate(6);
+//        return view('Reg_room.reg_room', compact('rooms'));
+//    }
     public function showRegisterRoomList()
     {
-        return view('Reg_room.reg_room');
+        $rooms = Room::with('hasRoomAssets.asset')->paginate(9);
+        return view('Reg_room.reg_room', compact('rooms'));
     }
 
     public function showRegisterRoomForm($room)

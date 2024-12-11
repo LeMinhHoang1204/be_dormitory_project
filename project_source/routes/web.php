@@ -57,7 +57,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
 });
 
-require __DIR__ . '/api/activity.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';
 require __DIR__ . '/admin/building-room-residence.php';
@@ -67,5 +66,3 @@ require __DIR__ . '/admin/asset.php';
 require __DIR__ . '/admin/invoice.php';
 require __DIR__ . '/admin/request.php';
 
-require __DIR__ . '/api/building-room-residence.php';
-require __DIR__ . '/api/notification.php';

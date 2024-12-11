@@ -84,7 +84,7 @@ class ResidenceController extends Controller
             return redirect()->back()->with('error', 'No room information found.');
         }
 
-        return view('student.room', compact('residence'));
+        return view('user_student.student.room', compact('residence'));
     }
 
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\DetailInvoiceController;
 use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::middleware('auth')->group(function () {
 
     // invoices

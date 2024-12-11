@@ -1,12 +1,17 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\ActivityController;
 
+=======
+>>>>>>> 812896848d5104ae2950ce59e8ba440171df4f4c
 
 Route::get('/', function () {
     return view('home');
@@ -21,7 +26,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
@@ -52,6 +56,12 @@ Route::get('/home', function () {
 });
 
 
+
+// Payment
+Route::resource('/payment', InvoiceController::class)->names('invoice');
+
+//Payment detail
+Route::get('student_payment/detail_payment/{id}', [InvoiceController::class, 'showDetail'])->name('student_payment.detail_payment');
 
 
 // Display roomInfor

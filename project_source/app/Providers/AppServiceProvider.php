@@ -2,13 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\Building;
-use App\Models\Notification;
-use App\Policies\NotificationPolicy;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::guessPolicyNamesUsing(function (string $modelClass) {
             return class_exists($policy = $modelClass . 'Policy') ? $policy : null;
         });
-//        Gate::policy(Notification::class, NotificationPolicy::class);
+        // pagination
+        Paginator::useBootstrap();
     }
 }

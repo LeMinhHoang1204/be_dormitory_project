@@ -16,11 +16,7 @@
     <div class="regisster">
         <h1 class="title">Room Registration</h1>
 
-<<<<<<< HEAD
-{{--            Residence certificate: TODO: link mở phiếu xác nhận chưa trú (DONE)--}}
-=======
         {{--            Residence certificate: TODO: link đi đến phiếu xác nhận chưa trú (DONE) --}}
->>>>>>> 932774eb28714833597b5e7b60593566052ffc64
 
         <div class="res-certifi">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 22 24" fill="none">

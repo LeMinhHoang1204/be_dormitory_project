@@ -31,13 +31,22 @@ class Activity extends Model
 
     public function hasParticipants()
     {
-        return $this->hasMany(RegistrationActivity::class, 'activity_id', 'id');
+        return $this->hasMany(RegistrationActivity::class, 'activity_id', 'id')
+            ->with('participant');
     }
-
     protected $dates = [
         'start_date', 'end_date', 'register_end_date',
     ];
 
-
+//    public function participants()
+//    {
+//        return $this->belongsToMany(User::class, 'registration_activities', 'activity_id', 'participant_id');
+//    }
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'registration_activities', 'activity_id', 'participant_id')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
 
 }

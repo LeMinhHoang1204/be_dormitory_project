@@ -11,7 +11,6 @@ class StoreActivityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Kiểm tra vai trò người dùng trực tiếp mà không sử dụng hasRole
         return auth()->check() && (
                 auth()->user()->role === 'admin' ||
                 auth()->user()->role === 'building manager'

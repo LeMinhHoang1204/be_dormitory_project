@@ -51,8 +51,9 @@ class ActivityPolicy
      */
     public function delete(User $user, Activity $activity): bool
     {
-        return $user->role === 'admin' || $user->role === 'building manager';
+        return $user->role === 'admin' || $user->id === $activity->creator_id;
     }
+
         /**
      * Determine whether the user can restore the model.
      */

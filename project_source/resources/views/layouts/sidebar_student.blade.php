@@ -36,7 +36,7 @@
 {{--        Paymaent and Request about room for Student--}}
         @if (auth()->check() && auth()->user()->role === 'student')
         <li class="menu-item has-submenu">
-            <a href="#">
+            <a >
                 <span class="icon">🛏️</span>
                 <span class="text">Room</span>
             </a>
@@ -49,11 +49,15 @@
                 <li><a href="/student/checkout">Check-out</a></li>
             </ul>
         </li>
-            <li class="menu-item">
-                <a href="/activities">
+            <li class="menu-item has-submenu">
+                <a>
                     <span class="icon">🏃‍♂️</span>
                     <span class="text">Activites</span>
                 </a>
+                <ul class="submenu">
+                    <li><a href="{{ url('/activities') }}">Activity List</a></li>
+                    <li><a href="{{ url('/my-activities') }}">My activity</a></li>
+                </ul>
             </li>
         <li class="menu-item">
             <a href="#">
@@ -70,11 +74,15 @@
                     <span class="text">Building</span>
                 </a>
             </li>
-            <li class="menu-item">
-                <a href="/admin/activities">
+            <li class="menu-item has-submenu">
+                <a>
                     <span class="icon">🏃‍♂️</span>
                     <span class="text">Activites</span>
                 </a>
+                <ul class="submenu">
+                    <li><a href="{{ url('/admin/activities') }}">Activity List</a></li>
+                    <li><a href="{{ url('/admin/my-activities') }}">My activity</a></li>
+                </ul>
             </li>
 
         @endif
@@ -91,11 +99,15 @@
                     <span class="text">Request</span>
                 </a>
             </li>
-            <li class="menu-item">
-                <a href="/admin/activities">
+            <li class="menu-item has-submenu">
+                <a>
                     <span class="icon">🏃‍♂️</span>
                     <span class="text">Activites</span>
                 </a>
+                <ul class="submenu">
+                    <li><a href="{{ url('/admin/activities') }}">Activity List</a></li>
+                    <li><a href="{{ url('/admin/my-activities') }}">My activity</a></li>
+                </ul>
             </li>
             <li class="menu-item has-submenu">
                 <a href="">
@@ -122,39 +134,13 @@
                 </a>
             </li>
         @endif
-        <li class="menu-item">
-            <a href="#">
-                <span class="icon">⚙️</span>
-                <span class="text">Account</span>
-            </a>
-        </li>
+{{--        <li class="menu-item">--}}
+{{--            <a href="#">--}}
+{{--                <span class="icon">⚙️</span>--}}
+{{--                <span class="text">Account</span>--}}
+{{--            </a>--}}
+{{--        </li>--}}
     </ul>
 
 </div>
 
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".menu-item.has-submenu").forEach(item => {
-            item.addEventListener("mouseenter", () => {
-                const submenu = item.querySelector(".submenu");
-                if (submenu) submenu.style.display = "block";
-                let nextItem = item.nextElementSibling;
-                while (nextItem) {
-                    nextItem.style.transform = "translateY(300%)";
-                    nextItem = nextItem.nextElementSibling;
-                }
-            });
-            item.addEventListener("mouseleave", () => {
-                const submenu = item.querySelector(".submenu");
-                if (submenu) submenu.style.display = "none";
-                let nextItem = item.nextElementSibling;
-                while (nextItem) {
-                    nextItem.style.transform = "translateY(0)";
-                    nextItem = nextItem.nextElementSibling;
-                }
-            });
-        });
-    });
-</script>

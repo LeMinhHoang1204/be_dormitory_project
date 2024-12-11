@@ -76,6 +76,7 @@ class   AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Gate::define('update', [ActivityPolicy::class, 'update']);
+        Gate::define('store-registration-activity', [RegistrationActivityPolicy::class, 'store']);
 
     }
 }

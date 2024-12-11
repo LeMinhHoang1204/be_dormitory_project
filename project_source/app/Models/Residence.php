@@ -26,9 +26,9 @@ class Residence extends Model
     ];
 
     // Quan hệ với Student
-    public function user()
+    public function student()
     {
-        return $this->belongsTo(User::class, 'stu_user_id', 'id');
+        return $this->belongsTo(Student::class, 'stu_user_id', 'id');
     }
 
     // Quan hệ với Room

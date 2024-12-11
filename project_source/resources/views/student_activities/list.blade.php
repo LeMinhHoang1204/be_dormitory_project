@@ -2,6 +2,9 @@
 
 <head>
     <title>Activities List</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
@@ -10,11 +13,11 @@
     <script src="{{ asset('./filterpanel.js') }}"></script>
 
     {{--    <link rel="stylesheet" href="{{ asset('./css/reg_room.css') }}" type="text/css">--}}
-<style>
-    .extension{
-        max-width: 60%;
-    }
-</style>
+    <style>
+        .extension{
+            max-width: 66%;
+        }
+    </style>
 </head>
 
 @section('content')
@@ -65,145 +68,217 @@
             </svg>
         </div>
 
-            {{--    Hien thi panel filter lọc --}}
-            <div class="overlay hidden" onclick="toggleFilter()"></div>
-            <div id="filter-panel" class="filter-panel hidden">
-                {{--        <div class="filter-sections"> --}}
-                <div class="filter-section">
-                    <h3>My status</h3>
-                    <label><input type="checkbox" /> Registed</label>
-                    <label><input type="checkbox" /> Joined</label>
-                    <label><input type="checkbox" /> Not registered</label>
-                </div>
-
-{{--                <div class="filter-section floor-number-container">--}}
-{{--                    <h3>Floor number</h3>--}}
-{{--                    <input type="number" placeholder="Floor 1" min="1" />--}}
-{{--                </div>--}}
-                <div class="filter-section month-container">
-                    <h3>Month</h3>
-                    <select style="    border: 2px dashed #c2baff;">
-                        <option value="" disabled selected>Select Month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                    <h3></h3>
-                    <h3></h3>
-                    <h3></h3>
-                        <h3>Year</h3>
-                        <select style="    border: 2px dashed #c2baff;">
-                            <option value="" disabled selected>Select Year</option>
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                        </select>
-                </div>
-                <div class="filter-section">
-                    <h3>Start Date</h3>
-                    <input type="date" name="start_date" placeholder="Start Date" />
-                    <h3></h3>
-                    <h3></h3>
-                    <h3></h3>
-                    <h3>End Date</h3>
-                    <input type="date" name="end_date" placeholder="End Date" />
-                </div>
-                <div class="filter-section">
-                    <h3>Participants</h3>
-                    <label><input type="checkbox" /> &lt;<10</label>
-                    <label><input type="checkbox" /> &lt; 10-50</label>
-                    <label><input type="checkbox" /> &lt; 50-100</label>
-                    <label><input type="checkbox" /> &lt; >100</label>
-                </div>
-                <div class="filter-section">
-                    <h3>Title</h3>
-                    <label><input type="checkbox" /> Satuday Volunteer</label>
-                    <label><input type="checkbox" /> Volunteer Receptionist</label>
-                    <label><input type="checkbox" /> Fire Drill</label>
-                    <label><input type="checkbox" /> Bloob Donation</label>
-                    <label><input type="checkbox" /> Another</label>
-                </div>
-                {{--        </div> --}}
-                {{--        <div class="apply-button"  onclick="closeFilter(event)"> --}}
-                {{--            <button>Apply</button> --}}
-                {{--        </div> --}}
-                <button id="apply-filter" class="apply-button">Apply</button>
-
+        {{--    Hien thi panel filter lọc --}}
+        <div class="overlay hidden" onclick="toggleFilter()"></div>
+        <form id="filter-form" class="filter-panel hidden" action="{{ route('activities.index') }}" method="GET">
+            <div class="filter-section">
+                <h3>My status</h3>
+                <label><input type="checkbox" name="registered[]" value="Registered" /> Registered</label>
+                <label><input type="checkbox" name="registered[]" value="Joined" /> Joined</label>
+                <label><input type="checkbox" name="registered[]" value="Cancelled" /> Cancelled</label>
+                <label><input type="checkbox" name="registered[]" value="Not registered" /> Not registered</label>
             </div>
-            <table class="table">
-                <thead class="thead">
+            <div class="filter-section">
+                <h3>Activities status</h3>
+                <label><input type="checkbox" name="status[]" value="Pending" /> Pending</label>
+                <label><input type="checkbox" name="status[]" value="Ongoing" /> On going</label>
+                <label><input type="checkbox" name="status[]" value="Done" /> Done</label>
+            </div>
+            <div class="filter-section">
+                <h3>Max_Participants</h3>
+                <label><input type="checkbox" name="max_participants[]" value="<10" /> <10</label>
+                <label><input type="checkbox" name="max_participants[]" value="10-50" /> 10-50</label>
+                <label><input type="checkbox" name="max_participants[]" value="50-100" /> 50-100</label>
+                <label><input type="checkbox" name="max_participants[]" value=">100" /> >100</label>
+            </div>
+            <div class="filter-section">
+                <h3>Creator</h3>
+                <select name="creator" style="border: 2px dashed #c2baff;">
+                    <option value="" disabled selected>Select Creator</option>
+                    <option value="None">None</option>
+                @foreach($creators as $creator)
+                        <option value="{{ $creator->id }}" @if(request('creator') == $creator->id) selected @endif>
+                            {{ $creator->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <h3></h3>
+                <h3>Slot</h3>
+                <label><input type="checkbox" name="full[]" value="Notfull" /> Available</label>
+                <label><input type="checkbox" name="full[]" value="Full" /> Full</label>
+            </div>
+            <div class="filter-section month-container">
+                <h3>Month</h3>
+                <select name="month"  style="    border: 2px dashed #c2baff;">
+                    <option value="" disabled selected>Select Month</option>
+                    <option value="None">None</option>
+                    <option value="1" @if(request('month') == 1) selected @endif>January</option>
+                    <option value="2" @if(request('month') == 2) selected @endif>February</option>
+                    <option value="3" @if(request('month') == 3) selected @endif>March</option>
+                    <option value="4" @if(request('month') == 4) selected @endif>April</option>
+                    <option value="5" @if(request('month') == 5) selected @endif>May</option>
+                    <option value="6" @if(request('month') == 6) selected @endif>June</option>
+                    <option value="7" @if(request('month') == 7) selected @endif>July</option>
+                    <option value="8" @if(request('month') == 8) selected @endif>August</option>
+                    <option value="9" @if(request('month') == 9) selected @endif>September</option>
+                    <option value="10" @if(request('month') == 10) selected @endif>October</option>
+                    <option value="11" @if(request('month') == 11) selected @endif>November</option>
+                    <option value="12" @if(request('month') == 12) selected @endif>December</option>
+                </select>
+                                <h3></h3>
+                                <h3></h3>
+                                <h3></h3>
+                <h3>Year</h3>
+                <select name="year" style="border: 2px dashed #c2baff;">
+                    <option value="" disabled selected>Select Year</option>
+                    <option value="None">None</option>
+                    <option value="2020" @if(request('year') == 2020) selected @endif>2020</option>
+                    <option value="2021" @if(request('year') == 2021) selected @endif>2021</option>
+                    <option value="2022" @if(request('year') == 2022) selected @endif>2022</option>
+                    <option value="2023" @if(request('year') == 2023) selected @endif>2023</option>
+                    <option value="2024" @if(request('year') == 2024) selected @endif>2024</option>
+                    <option value="2025" @if(request('year') == 2025) selected @endif>2025</option>
+                    <option value="2026" @if(request('year') == 2026) selected @endif>2026</option>
+                </select>
+            </div>
+            <div class="filter-section">
+                <h3>Start Date</h3>
+                <input type="date" name="start_date" placeholder="Start Date" value="{{ request('start_date') }}" />
+                <h3></h3>
+                <h3></h3>
+                <h3></h3>
+                <h3>End Date</h3>
+                <input type="date" name="end_date" placeholder="End Date" value="{{ request('end_date') }}" />
+            </div>
+
+
+            <button id="apply-filter" class="blue-btn" type="submit">Apply</button>
+        </form>
+
+<script>
+    document.getElementById('apply-filter').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const registered = [];
+        document.querySelectorAll('input[type="checkbox"][name="registered[]"]:checked').forEach(function(checkbox) {
+            registered.push(checkbox.value);
+        });
+
+        const status = [];
+        document.querySelectorAll('input[type="checkbox"][name="status[]"]:checked').forEach(function(checkbox) {
+            status.push(checkbox.value);
+        });
+
+        const month = document.querySelector('select[name="month"]').value;
+        const year = document.querySelector('select[name="year"]').value;
+        const startDate = document.querySelector('input[name="start_date"]').value;
+        const endDate = document.querySelector('input[name="end_date"]').value;
+        const participants = [];
+        document.querySelectorAll('input[type="checkbox"][name="participants[]"]:checked').forEach(function(checkbox) {
+            participants.push(checkbox.value);
+        });
+        const title = [];
+        document.querySelectorAll('input[type="checkbox"][name="title[]"]:checked').forEach(function(checkbox) {
+            title.push(checkbox.value);
+        });
+
+        // Tạo URL với các tham số lọc
+        let filterParams = `?status=${status.join(',')}&month=${month}&year=${year}&start_date=${startDate}&end_date=${endDate}&participants=${participants.join(',')}&title=${title.join(',')}`;
+
+        // Chuyển hướng người dùng đến URL có các tham số lọc
+        window.location.href = `{{ route('activities.index') }}${filterParams}`;
+    });
+
+    });
+</script>
+
+{{--        List--}}
+        <table class="table">
+            <thead class="thead">
+            <tr>
+                <th>No.</th>
+                <th>Title</th>
+                <th>Creator</th>
+                <th>Participants</th>
+                <th>Start Date</th>
+                <th>Regis_expiration</th>
+                <th> Status</th>
+                <th>Registered</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($activities as $index => $activity)
                 <tr>
-                    <th>No.</th>
-                    <th>Title</th>
-                    <th>Creator</th>
-                    <th>Participants</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Regis_expiration</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($activities as $index => $activity)
-                    <tr>
-                        <td>{{ $activity->id }}</td>
-                        <td>{{ $activity->title }}</td>
-                        <td>{{ $activity->creator->name }}</td>
-                        <td>{{ $activity->registered_participants }}/{{ $activity->max_participants }}</td>
-                        <td>{{ $activity->start_date }}</td>
-                        <td>{{ $activity->end_date }}</td>
-                        <td>{{ $activity->register_end_date }}</td>
-                        <td>
-                            <div class="dropdown">
-                                <i class="fa-solid fa-ellipsis-vertical" onclick="toggleDropdown(event)"></i>
-                                <!-- Menu dropdown -->
-                                <div class="dropdown-content">
-                                    <a href="{{ route('admin_activities.show', ['id' => $activity->id]) }}" class="more">
-                                        More
-                                    </a>
-                                    <a href="#" class="register">
+                    <td>{{ $activity->id }}</td>
+                    <td>{{ $activity->title }}</td>
+                    <td>{{ $activity->creator->name }}</td>
+                    <td>{{ $activity->registered_participants }}/{{ $activity->max_participants }}</td>
+                    <td>{{ $activity->start_date }}</td>
+                    <td>{{ $activity->register_end_date }}</td>
+                    <td>{{ $activity->status }}</td>
+                    <td>
+                        @php
+                            $status = $activity->hasParticipants->first()
+                                      ? $activity->hasParticipants->first()->status
+                                      : 'Not Registered';
+                        @endphp
+                        {{ $status }}
+                    </td>
+
+
+                    <td>
+                        <div class="dropdown">
+                            <i class="fa-solid fa-ellipsis-vertical" onclick="toggleDropdown(event)"></i>
+                            <!-- Menu dropdown -->
+                            <div class="dropdown-content">
+                                <a href="{{ route('admin_activities.show', ['id' => $activity->id]) }}" class="more">
+                                    More
+                                </a>
+
+                                <form action="{{ route('student_activities.register', ['activity' => $activity->id]) }}" method="POST">
+                                    @csrf
+                                    <button class="register">
                                         <i class="fa-solid fa-check"></i> Register
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('activities.cancel', $activity->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a href="#" class="delete" onclick="this.closest('form').submit()">
+                                        <i class="fa-solid fa-trash"></i> Cancel
                                     </a>
-                                    <a href="#" class="delete">
-                                        <i class="fa-solid fa-trash"></i> Delete
-                                    </a>
-                                </div>
+                                </form>
+
                             </div>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
 
-
+{{--        Xử lý Pagination--}}
         <div class="pagination">
             @if ($activities->onFirstPage())
                 <span class="gap">Previous</span>
             @else
-                <a href="{{ $activities->previousPageUrl() }}" class="previous">Previous</a>
+                <!-- Sử dụng fullUrlWithQuery để giữ tham số lọc khi chuyển trang -->
+                <a href="{{ request()->fullUrlWithQuery(['page' => $activities->currentPage() - 1]) }}" class="previous">Previous</a>
             @endif
 
             @foreach ($activities->getUrlRange(1, $activities->lastPage()) as $page => $url)
                 @if ($page == $activities->currentPage())
                     <span class="pagination-page current">{{ $page }}</span>
                 @else
-                    <a href="{{ $url }}" class="pagination-page">{{ $page }}</a>
+                    <!-- Sử dụng fullUrlWithQuery để giữ tham số lọc khi chuyển trang -->
+                    <a href="{{ request()->fullUrlWithQuery(['page' => $page]) }}" class="pagination-page">{{ $page }}</a>
                 @endif
             @endforeach
 
             @if ($activities->hasMorePages())
-                <a href="{{ $activities->nextPageUrl() }}" class="next">Next</a>
+                <a href="{{ request()->fullUrlWithQuery(['page' => $activities->currentPage() + 1]) }}" class="next">Next</a>
             @else
                 <span class="gap">Next</span>
             @endif
@@ -247,40 +322,5 @@
             }
 
         </script>
-    </div>
-    <div class="overlay2 hidden" onclick="toggleDetail()"></div>
-    <div class="detail hidden">
-        <div class="bluefont"><h3>Detail Activities</h3></div>
-
-        <div class="popup-details">
-                <div class="info-left">
-                    <p><strong>Title:</strong>{{ $activity->title }}</p>
-                    <p><strong>Max Participants:</strong> {{ $activity->max_participants }}</p>
-                    <p><strong>Registered Participants:</strong> {{ $activity->registered_participants }}</p>
-                    <p><strong>Registration Expiry Date:</strong> {{ \Carbon\Carbon::parse($activity->register_end_date)->format('d M, Y') }}</p>
-                    <p><strong>Start Date:</strong>{{ \Carbon\Carbon::parse($activity->start_date)->format('d M, Y') }}</p>
-
-                </div>
-                <div class="info-right">
-                    <p><strong>Activity id:</strong>  #ACT_{{ $activity->id }}</p>
-                    <p><strong>Create Date:</strong> {{ \Carbon\Carbon::parse($activity->created_at)->format('d M, Y') }}</p>
-                    <p><strong>Ticket price (VND):</strong> {{ number_format($activity->ticket_price, 0, '.', ',') }}</p>
-                    <p><strong>Bonus point:</strong> {{ $activity->bonus_point }}</p>
-                    <p><strong>End Date:</strong> {{ \Carbon\Carbon::parse($activity->end_date)->format('d M, Y') }}</p>
-                </div>
-        </div>
-
-        <!-- About Section -->
-        <div class="popup-about">
-            <h3>About this activity:</h3>
-            <p>Sit tenetur temporibus accusamus. Vel voluptatibus harum et vero quod laboriosam ipsam. Occaecati dolores labore earum consequatur debitis perferendis adipisci beatae.</p>
-        </div>
-
-        <!-- Buttons -->
-        <div class="popup-buttons">
-            <button class="red-btn">Cancel</button>
-            <button class="blue-btn">Register</button>
-        </div>
-
     </div>
 @endsection

@@ -819,3 +819,11 @@ margin-top: 30px;
         width: 90%;
     }
 }
+
+/*sửa cho sidebar mờ đi khi mở Residence certificate*/
+.modal-dialog {
+    z-index: 1050;
+}
+#sidebar {
+    z-index: 1000!important;
+}

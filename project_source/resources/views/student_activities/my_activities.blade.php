@@ -5,39 +5,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
-
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
 
     <script src="{{ asset('./filterpanel.js') }}"></script>
     <style>
         .extension{
-            max-width: 65%;
+            max-width: 66%;
         }
     </style>
 </head>
 
 @section('content')
     @include('layouts.sidebar_student')
-    @if (auth()->check() && in_array(auth()->user()->role, ['admin', 'building manager']))
     <div class="extension">
-        <h3 class="heading">Manage Activities </h3>
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-error">
-                {{ session('error') }}
-            </div>
-        @endif
-        <div class="action-bar">
-{{--            <button class="blue-btn">Create</button>--}}
-            @can('create', App\Models\Activity::class)
-                <button class="blue-btn" onclick="window.location.href='{{ route('activities.create') }}'">Create</button>
-            @endcan
-
-            <div class="filter-sgv" onclick="toggleFilter()">
+        <h3 class="heading">My Activities</h3>
+        <div class="filter-sgv" onclick="toggleFilter()">
             <svg xmlns="http://www.w3.org/2000/svg" width="67" height="66" viewBox="0 0 67 66" fill="none">
                 <g filter="url(#filter0_d_1132_2655)">
                     <g filter="url(#filter1_d_1132_2655)">
@@ -80,11 +62,16 @@
                 </defs>
             </svg>
         </div>
-        </div>
+
         {{--    Hien thi panel filter lọc --}}
         <div class="overlay hidden" onclick="toggleFilter()"></div>
-        <form id="filter-form" class="filter-panel hidden" action="{{ route('admin.activities.index') }}" method="GET">
-            {{--        <div class="filter-sections"> --}}
+        <form id="filter-form" class="filter-panel hidden" action="{{ url()->current() }}" method="GET">
+            <div class="filter-section">
+                <h3>My status</h3>
+                <label><input type="checkbox" name="registered[]" value="Registered" /> Registered</label>
+                <label><input type="checkbox" name="registered[]" value="Joined" /> Joined</label>
+                <label><input type="checkbox" name="registered[]" value="Cancelled" /> Cancelled</label>
+            </div>
             <div class="filter-section">
                 <h3>Activities status</h3>
                 <label><input type="checkbox" name="status[]" value="Pending" /> Pending</label>
@@ -92,11 +79,17 @@
                 <label><input type="checkbox" name="status[]" value="Done" /> Done</label>
             </div>
             <div class="filter-section">
+                <h3>Max_Participants</h3>
+                <label><input type="checkbox" name="max_participants[]" value="<10" /> <10</label>
+                <label><input type="checkbox" name="max_participants[]" value="10-50" /> 10-50</label>
+                <label><input type="checkbox" name="max_participants[]" value="50-100" /> 50-100</label>
+                <label><input type="checkbox" name="max_participants[]" value=">100" /> >100</label>
+            </div>
+            <div class="filter-section">
                 <h3>Creator</h3>
                 <select name="creator" style="border: 2px dashed #c2baff;">
                     <option value="" disabled selected>Select Creator</option>
-                    <option value="None">None</option>
-                @foreach($creators as $creator)
+                    @foreach($creators as $creator)
                         <option value="{{ $creator->id }}" @if(request('creator') == $creator->id) selected @endif>
                             {{ $creator->name }}
                         </option>
@@ -109,7 +102,7 @@
             </div>
             <div class="filter-section month-container">
                 <h3>Month</h3>
-                <select name="month"  style="    border: 2px dashed #c2baff;">
+                <select name="month" style="border: 2px dashed #c2baff;">
                     <option value="" disabled selected>Select Month</option>
                     <option value="None">None</option>
                     <option value="1" @if(request('month') == 1) selected @endif>January</option>
@@ -127,7 +120,6 @@
                 </select>
                 <h3></h3>
                 <h3></h3>
-                <h3></h3>
                 <h3>Year</h3>
                 <select name="year" style="border: 2px dashed #c2baff;">
                     <option value="" disabled selected>Select Year</option>
@@ -137,29 +129,17 @@
                     <option value="2022" @if(request('year') == 2022) selected @endif>2022</option>
                     <option value="2023" @if(request('year') == 2023) selected @endif>2023</option>
                     <option value="2024" @if(request('year') == 2024) selected @endif>2024</option>
-                    <option value="2025" @if(request('year') == 2025) selected @endif>2025</option>
-                    <option value="2026" @if(request('year') == 2026) selected @endif>2026</option>
                 </select>
             </div>
             <div class="filter-section">
                 <h3>Start Date</h3>
-                <input type="date" name="start_date" placeholder="Start Date" />
-                <h3></h3>
+                <input type="date" name="start_date" value="{{ request('start_date') }}" />
                 <h3></h3>
                 <h3></h3>
                 <h3>End Date</h3>
-                <input type="date" name="end_date" placeholder="End Date" />
+                <input type="date" name="end_date" value="{{ request('end_date') }}" />
             </div>
-            <div class="filter-section">
-                <h3>Max_Participants</h3>
-                <label><input type="checkbox" name="max_participants[]" value="<10" /> <10</label>
-                <label><input type="checkbox" name="max_participants[]" value="10-50" /> 10-50</label>
-                <label><input type="checkbox" name="max_participants[]" value="50-100" /> 50-100</label>
-                <label><input type="checkbox" name="max_participants[]" value=">100" /> >100</label>
-            </div>
-
-            <button id="apply-filter" class="apply-button" >Apply</button>
-
+                <button type="submit" class="blue-btn">Apply</button>
         </form>
 
         <script>
@@ -193,7 +173,7 @@
                 let filterParams = `?status=${status.join(',')}&month=${month}&year=${year}&start_date=${startDate}&end_date=${endDate}&participants=${participants.join(',')}&title=${title.join(',')}`;
 
                 // Chuyển hướng người dùng đến URL có các tham số lọc
-                window.location.href = `{{ route('activities.index') }}${filterParams}`;
+{{--                window.location.href = `{{ route('activities.index') }}${filterParams}`;--}}
             });
 
             });
@@ -206,9 +186,9 @@
                 <th>Creator</th>
                 <th>Participants</th>
                 <th>Start Date</th>
-                <th>End Date</th>
-                <th>Reg_expiration</th>
-                <th>Status</th>
+                <th>Regis_expiration</th>
+                <th> Status</th>
+                <th>Registered</th>
                 <th></th>
             </tr>
             </thead>
@@ -220,34 +200,39 @@
                     <td>{{ $activity->creator->name }}</td>
                     <td>{{ $activity->registered_participants }}/{{ $activity->max_participants }}</td>
                     <td>{{ $activity->start_date }}</td>
-                    <td>{{ $activity->end_date }}</td>
                     <td>{{ $activity->register_end_date }}</td>
                     <td>{{ $activity->status }}</td>
+                    <td>
+                        @php
+                            $status = $activity->hasParticipants->first()
+                                      ? $activity->hasParticipants->first()->status
+                                      : 'Not Registered';
+                        @endphp
+                        {{ $status }}
+                    </td>
+
+
                     <td>
                         <div class="dropdown">
                             <i class="fa-solid fa-ellipsis-vertical" onclick="toggleDropdown(event)"></i>
                             <!-- Menu dropdown -->
                             <div class="dropdown-content">
-{{--                                <a href="#" class="more"  data-id="{{ $activity->id }}" onclick="toggleDetail(this)">--}}
-{{--                                    More--}}
-{{--                                </a>--}}
                                 <a href="{{ route('admin_activities.show', ['id' => $activity->id]) }}" class="more">
                                     More
                                 </a>
 
-                                <a href="{{ route('activities.edit', $activity->id) }}" class="register">
-                                    <i class="fa-solid fa-pen-nib"></i> Edit
-                                </a>
+                                <form action="{{ route('student_activities.register', ['activity' => $activity->id]) }}" method="POST">
+                                    @csrf
+                                    <button class="register">
+                                        <i class="fa-solid fa-check"></i> Register
+                                    </button>
+                                </form>
 
-
-                                {{--                                <a href="#" class="delete">--}}
-{{--                                    <i class="fa-solid fa-trash"></i> Delete--}}
-{{--                                </a>--}}
-                                <form action="{{ route('activities.destroy', $activity->id) }}" method="POST" id="delete-form-{{ $activity->id }}" onsubmit="return confirm('Are you sure you want to delete this activity?')">
+                                <form action="{{ route('activities.cancel', $activity->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <a href="#" class="delete" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $activity->id }}').submit();">
-                                        <i class="fa-solid fa-trash"></i> Delete
+                                    <a href="#" class="delete" onclick="this.closest('form').submit()">
+                                        <i class="fa-solid fa-trash"></i> Cancel
                                     </a>
                                 </form>
 
@@ -260,71 +245,22 @@
         </table>
 
         {{--        Xử lý Pagination--}}
-{{--        <div class="pagination">--}}
-{{--            @if ($activities->onFirstPage())--}}
-{{--                <span class="gap">Previous</span>--}}
-{{--            @else--}}
-{{--                <!-- Sử dụng fullUrlWithQuery để giữ tham số lọc khi chuyển trang -->--}}
-{{--                <a href="{{ request()->fullUrlWithQuery(['page' => $activities->currentPage() - 1]) }}" class="previous">Previous</a>--}}
-{{--            @endif--}}
-
-{{--            @foreach ($activities->getUrlRange(1, $activities->lastPage()) as $page => $url)--}}
-{{--                @if ($page == $activities->currentPage())--}}
-{{--                    <span class="pagination-page current">{{ $page }}</span>--}}
-{{--                @else--}}
-{{--                    <!-- Sử dụng fullUrlWithQuery để giữ tham số lọc khi chuyển trang -->--}}
-{{--                    <a href="{{ request()->fullUrlWithQuery(['page' => $page]) }}" class="pagination-page">{{ $page }}</a>--}}
-{{--                @endif--}}
-{{--            @endforeach--}}
-
-{{--            @if ($activities->hasMorePages())--}}
-{{--                <a href="{{ request()->fullUrlWithQuery(['page' => $activities->currentPage() + 1]) }}" class="next">Next</a>--}}
-{{--            @else--}}
-{{--                <span class="gap">Next</span>--}}
-{{--            @endif--}}
-{{--        </div>--}}
-
-{{--        <p>{{ $activities->currentPage() }} / {{ $activities->lastPage() }}</p>--}}
         <div class="pagination">
             @if ($activities->onFirstPage())
                 <span class="gap">Previous</span>
             @else
+                <!-- Sử dụng fullUrlWithQuery để giữ tham số lọc khi chuyển trang -->
                 <a href="{{ request()->fullUrlWithQuery(['page' => $activities->currentPage() - 1]) }}" class="previous">Previous</a>
             @endif
 
-            @php
-                $currentPage = $activities->currentPage();
-                $lastPage = $activities->lastPage();
-            @endphp
-
-                <!-- Nếu số trang ít hơn hoặc bằng 5, hiển thị tất cả các trang -->
-            @if ($lastPage <= 5)
-                @for ($i = 1; $i <= $lastPage; $i++)
-                    @if ($i == $currentPage)
-                        <span class="pagination-page current">{{ $i }}</span>
-                    @else
-                        <a href="{{ request()->fullUrlWithQuery(['page' => $i]) }}" class="pagination-page">{{ $i }}</a>
-                    @endif
-                @endfor
-            @else
-                @if ($currentPage > 3)
-                    <a href="{{ request()->fullUrlWithQuery(['page' => 1]) }}" class="pagination-page">1</a>
-                    <span class="ellipsis">...</span>
+            @foreach ($activities->getUrlRange(1, $activities->lastPage()) as $page => $url)
+                @if ($page == $activities->currentPage())
+                    <span class="pagination-page current">{{ $page }}</span>
+                @else
+                    <!-- Sử dụng fullUrlWithQuery để giữ tham số lọc khi chuyển trang -->
+                    <a href="{{ request()->fullUrlWithQuery(['page' => $page]) }}" class="pagination-page">{{ $page }}</a>
                 @endif
-
-                @for ($i = max(1, $currentPage - 1); $i <= min($lastPage, $currentPage + 1); $i++)
-                    @if ($i == $currentPage)
-                        <span class="pagination-page current">{{ $i }}</span>
-                    @else
-                        <a href="{{ request()->fullUrlWithQuery(['page' => $i]) }}" class="pagination-page">{{ $i }}</a>
-                    @endif
-                @endfor
-
-                @if ($currentPage < $lastPage - 2)
-                    <span class="ellipsis">...</span>
-                    <a href="{{ request()->fullUrlWithQuery(['page' => $lastPage]) }}" class="pagination-page">{{ $lastPage }}</a>
-                @endif
-            @endif
+            @endforeach
 
             @if ($activities->hasMorePages())
                 <a href="{{ request()->fullUrlWithQuery(['page' => $activities->currentPage() + 1]) }}" class="next">Next</a>
@@ -333,7 +269,7 @@
             @endif
         </div>
 
-        <p style="text-align: right; margin-top: -20px">{{ $activities->currentPage() }} / {{ $activities->lastPage() }}</p>
+        <p>{{ $activities->currentPage() }} / {{ $activities->lastPage() }}</p>
 
         <script>
             // Toggle dropdown menu khi nhấn vào icon ba chấm cột Action
@@ -372,21 +308,4 @@
 
         </script>
     </div>
-
-    @endif
-    @if (auth()->check() && in_array(auth()->user()->role, ['student', 'accountant']))
-        <div class="extension">
-
-        <div>
-           <p style="color: var(--Close, #FF2F5C);
-                    font-family: Poppins;
-                    font-size: 16px;
-                    font-style: italic;
-                    font-weight: 400;
-                    line-height: normal;">
-               You are not admin!
-           </p>
-        </div>
-    </div>
-    @endif
-        @endsection
+@endsection

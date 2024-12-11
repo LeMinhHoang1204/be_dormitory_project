@@ -109,3 +109,33 @@ a.grey-btn:hover {
     transform: scale(1.05);
     transition: all 0.2s ease-in-out;
 }
+
+a.blue-btn:hover {
+    color: #fff;
+    text-decoration: none;
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* Định dạng thông báo thành công (Success) */
+.alert-success {
+    background-color: #d4edda; /* Màu xanh lá */
+    color: #155724; /* Màu chữ xanh đậm */
+    border: 1px solid #c3e6cb; /* Viền màu xanh nhạt */
+    font-family: 'Poppins', sans-serif; /* Font Poppins */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Định dạng thông báo lỗi (Error) */
+.alert-error {
+    background-color: #f8d7da; /* Màu đỏ nhạt */
+    color: #721c24; /* Màu chữ đỏ đậm */
+    border: 1px solid #f5c6cb; /* Viền màu đỏ nhạt */
+    font-family: 'Poppins', sans-serif; /* Font Poppins */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}

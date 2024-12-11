@@ -17,21 +17,33 @@ class ActivityFactory extends Factory
      */
     public function definition(): array
     {
-        $end_date = $this->faker->dateTimeBetween('+1 month', '+2 months');
+
+        $max_participants = $this->faker->numberBetween(5, 100);
+        $is_full = $this->faker->boolean(40);
+        if ($is_full) {
+            $registered_participants = $max_participants;
+        } else {
+            $registered_participants = $this->faker->numberBetween(0, $max_participants);
+        }
+        $start_date = $this->faker->dateTimeBetween('2024-06-30', '2025-2-01');
+        $end_date = (clone $start_date)->modify('+' . $this->faker->numberBetween(5, 50) . ' days');
+        $register_end_date = $this->faker->dateTimeBetween($start_date->modify('-30 days'), $start_date->modify('-5 days'));
         return [
             'creator_id' => $this->faker->randomElement(
                 User::whereIn('role', ['admin', 'building manager'])->pluck('id')->toArray()
             ),
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->optional()->text(200),
-            'start_date' => $this->faker->dateTimeBetween('now', '+1 month'),
+            'start_date' => $start_date,
             'end_date' => $end_date,
-            'register_end_date' => $this->faker->dateTimeBetween('now', '+1 month'),
-            'max_participants' => $this->faker->numberBetween(10, 100),
-            'registered_participants' => $this->faker->numberBetween(0, 100),
+            'register_end_date' => $register_end_date,
+            'max_participants' => $max_participants,
+            'registered_participants' => $registered_participants,
             'ticket_price' => $this->faker->randomFloat(2, 10, 100),
             'bonus_point' => $this->faker->numberBetween(0, 10),
-            'status' => $end_date ? 'Done' : $this->faker->randomElement(['Pending', 'Ongoing']),
+            'status' => now()->greaterThan($end_date)
+                ? 'Done'
+                : (now()->between($start_date, $end_date) ? 'Ongoing' : 'Pending'),
             'note' => $this->faker->optional()->text(200),
         ];
     }

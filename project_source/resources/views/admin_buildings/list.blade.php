@@ -2,6 +2,8 @@
 
 <head>
     <title>Building List</title>
+    <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
@@ -11,7 +13,7 @@
     <div class="buildinglist">
         <h3 class="heading">Buildings List</h3>
 
-        <a href="{{ route('buildings.create') }}" class="btn-custom">
+        <a href="{{ route('buildings.create') }}" class="blue-btn">
             {{ __('Create') }}
         </a>
 
@@ -64,7 +66,7 @@
                     <td>
                         <div class="btn">
                                 <span class="btn-edit">
-                                    <a href="{{ route('buildings.edit', $building->id) }}" >
+                                    <a href="{{ route('buildings.edit', $building->id) }}"  >
                                         Edit
                                     </a>
                                 </span>
@@ -72,7 +74,7 @@
                             <form action="{{ route('buildings.destroy', $building->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this building?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-delete">
+                                <button type="submit" class="red-btn">
                                     Delete
                                 </button>
                             </form>
@@ -112,29 +114,6 @@
         text-align: center;
     }
 
-    .btn-custom {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 110px;
-        height: 45px;
-        background-color: #2F6BFF;
-        color: white;
-        border-radius: 10px;
-        border: none;
-        text-align: center;
-        font-size: 18px;
-        /*text-decoration: none;*/
-        /*cursor: pointer;*/
-        transition: background-color 0.3s ease;
-        font-family: Poppins;
-    }
-
-    .btn-custom:hover {
-        background-color: #2568cc; /* Hiệu ứng hover */
-        color: white;
-        text-decoration: none; /* Đảm bảo không có gạch chân khi hover */
-    }
 
     .table {
         width: 100%;

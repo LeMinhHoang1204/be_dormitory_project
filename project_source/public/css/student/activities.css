@@ -90,7 +90,12 @@ popup-details p{
 }
 /* Buttons */
 .popup-buttons {
-    text-align: right;
+     contain-align: right;
+        display: flex;
+        justify-content: space-between;  /* Tạo khoảng cách giữa 2 nút */
+        gap: 15px;  /* Khoảng cách giữa các nút */
+        align-items: center;  /* Căn giữa các nút theo chiều dọc */
+
 }
 
 .popup-buttons .btn {
@@ -294,8 +299,13 @@ popup-details p{
 
 /* Style cho mục "Register" */
 .register {
+    width: 160px;
+    height: 40px;
+    background: #FFFFFF;
     font-weight: 600;
     color: #28a745; /* Màu xanh cho Register */
+    border: none;
+    text-align: left;
 }
 
 /* Đổi màu khi hover vào "Register" */

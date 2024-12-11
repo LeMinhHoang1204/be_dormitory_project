@@ -9,14 +9,6 @@
     <script src="{{ asset('./filterpanel.js') }}"></script>
 
     {{--    <link rel="stylesheet" href="{{ asset('./css/reg_room.css') }}" type="text/css">--}}
-    <style>
-        .extension{
-            max-width: 45%;
-            padding-left: 40px;
-            padding-right: 40px;
-
-        }
-    </style>
 </head>
 
 @section('content')
@@ -28,9 +20,15 @@
                     {{ session('success') }}
                 </div>
             @endif
-
-            <div class="bluefont"><h3>Detail Activities</h3></div>
-
+                @if (session('error'))
+                    <div class="alert alert-error">
+                        {{ session('error') }}
+                    </div>
+                @endif
+            <div class="bluefont" style="border: #4a5568 0.2px solid"><h3>Detail Activities</h3></div>
+                <div class="student-list">
+                <a href="{{ route('activity.participants', ['activity' => $activity->id]) }}">List of registered students</a>
+                </div>
             <div class="popup-details">
                 <div class="info-left">
                     <p><strong>Title:</strong>{{ $activity->title }}</p>
@@ -38,6 +36,11 @@
                     <p><strong>Registered Participants:</strong> {{ $activity->registered_participants }}/{{ $activity->max_participants }}</p>
                     <p><strong>Registration Expiry Date:</strong> {{ \Carbon\Carbon::parse($activity->register_end_date)->format('d M, Y') }}</p>
                     <p><strong>Start Date:</strong>{{ \Carbon\Carbon::parse($activity->start_date)->format('d M, Y') }}</p>
+                    @if (auth()->check() && auth()->user()->role === 'student')
+                        <p><strong>Your status:</strong>
+                            {{ $activity->hasParticipants->where('participant_id', auth()->id())->first()->status ?? 'Not Registered' }}
+                        </p>
+                    @endif
                 </div>
                 <div class="info-right">
                     <p><strong>Activity id:</strong>  #ACT_{{ $activity->id }}</p>
@@ -45,7 +48,7 @@
                     <p><strong>Ticket price (VND):</strong> {{ number_format($activity->ticket_price, 0, '.', ',') }}</p>
                     <p><strong>Bonus point:</strong> {{ $activity->bonus_point }}</p>
                     <p><strong>End Date:</strong> {{ \Carbon\Carbon::parse($activity->end_date)->format('d M, Y') }}</p>
-                    <p><strong>Status:</strong> {{ $activity->status }}</p>
+                    <p><strong>Activity's status:</strong> {{ $activity->status }}</p>
                 </div>
             </div>
 
@@ -60,7 +63,7 @@
             @if (auth()->check() && in_array(auth()->user()->role, ['admin', 'building manager']))
                 <!-- Buttons -->
                 <div class="popup-buttons">
-                    <a href="javascript:void(0);" class="grey-btn" onclick="goBack()">Back</a>
+                    <a href="javascript:void(0);" class="grey-btn" onclick="goBack()">< Back</a>
 
                     <script>
                         function goBack() {
@@ -84,15 +87,18 @@
 
             @if (auth()->check() && auth()->user()->role === 'student')
                 <div class="popup-buttons">
-{{--                    @if(Auth::check() && !in_array(Auth::user()->id, $activity->students->pluck('id')->toArray()))--}}
-{{--                        <form action="{{ route('activities.register', $activity->id) }}" method="POST">--}}
-{{--                            @csrf--}}
-{{--                            <button type="submit" class="blue-btn">Register</button>--}}
-{{--                        </form>--}}
-{{--                    @else--}}
-{{--                    @endif--}}
-                    <a href="javascript:void(0);" class="grey-btn" onclick="window.history.back()">Cancel</a>
-                    <button type="submit" class="blue-btn">Register</button>
+
+                    <a href="javascript:void(0);" class="grey-btn" onclick="goBack()">< Back</a>
+
+                    <script>
+                        function goBack() {
+                            window.location.href = "{{ route('activities.index') }}";
+                        }
+                    </script>
+                    <form action="{{ route('student_activities.register', ['activity' => $activity->id]) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="blue-btn"> Register</button>
+                    </form>
 
                 </div>
             @endif
@@ -101,6 +107,16 @@
 
     @if (auth()->check() && in_array(auth()->user()->role, [ 'accountant']))
         <div class="extension">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-error">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div>
                 <p style="color: var(--Close, #FF2F5C);
                     font-family: Poppins;
@@ -108,7 +124,7 @@
                     font-style: italic;
                     font-weight: 400;
                     line-height: normal;">
-                    You are not admin!
+                    You can not access this page!
                 </p>
             </div>
         </div>
@@ -116,3 +132,34 @@
 
 
 @endsection
+<style>
+    .bluefont {
+        margin-bottom: 15px!important;
+    }
+    .extension{
+        position: relative;
+        max-width: 45%;
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    .student-list {
+        /*position: absolute;*/
+        /*top: 100px;*/
+        /*right: 250px;*/
+        color: #2F6BFF;
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+        font-size: 13.5px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: 14px; /* 107.692% */
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-skip-ink: none;
+        text-decoration-thickness: auto;
+        text-underline-offset: auto;
+        text-underline-position: from-font;
+        margin-bottom: 25px!important;
+
+    }
+</style>

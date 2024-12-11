@@ -5,10 +5,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
-
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+    <script>function toggleFilter() {
+            const filterPanel = document.querySelector(".filter-panel");
+            const overlay = document.querySelector(".overlay");
 
-    <script src="{{ asset('./filterpanel.js') }}"></script>
+            if (filterPanel && overlay) {
+                const isActive = filterPanel.classList.toggle("active");
+                overlay.classList.toggle("active", isActive);
+            }
+        }
+        document.querySelector(".overlay").addEventListener("click", () => {
+            const filterPanel = document.querySelector(".filter-panel");
+            const overlay = document.querySelector(".overlay");
+
+            if (filterPanel && overlay) {
+                filterPanel.classList.remove("active");
+                overlay.classList.remove("active");
+            }
+        });
+        document.querySelector(".filter-sgv").addEventListener("click", toggleFilter);
+
+    </script>
     <style>
         .extension{
             max-width: 65%;

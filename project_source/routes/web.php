@@ -5,13 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
 use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\ActivityController;
 
-=======
->>>>>>> 812896848d5104ae2950ce59e8ba440171df4f4c
 
 Route::get('/', function () {
     return view('home');

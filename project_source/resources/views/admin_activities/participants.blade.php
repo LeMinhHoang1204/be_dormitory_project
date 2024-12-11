@@ -5,17 +5,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
-
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+    <script>
+        function toggleFilter() {
+            const filterPanel = document.querySelector(".filter-panel");
+            const overlay = document.querySelector(".overlay");
 
-    <script src="{{ asset('./filterpanel.js') }}"></script>
-    <style>
+            if (filterPanel && overlay) {
+                const isActive = filterPanel.classList.toggle("active");
+                overlay.classList.toggle("active", isActive);
+            }
+        }
+        document.querySelector(".overlay").addEventListener("click", () => {
+            const filterPanel = document.querySelector(".filter-panel");
+            const overlay = document.querySelector(".overlay");
+
+            if (filterPanel && overlay) {
+                filterPanel.classList.remove("active");
+                overlay.classList.remove("active");
+            }
+        });
+        document.querySelector(".filter-sgv").addEventListener("click", toggleFilter);
+    </script>    <style>
         .extension{
             max-width: 50%;
         }
     </style>
 </head>
-
 @section('content')
     @include('layouts.sidebar_student')
     @if (auth()->check() && in_array(auth()->user()->role, ['admin', 'building manager']))
@@ -68,26 +84,6 @@
                 </div>
             </div>
 {{--                Hien thi panel filter lọc--}}
-{{--            <div class="overlay hidden" onclick="toggleFilter()"></div>--}}
-{{--            <form id="filter-form" class="filter-panel hidden" action="{{ route('activity.participants', ['activity' => $activity->id]) }}" method="GET">--}}
-{{--                <div class="filter-section">--}}
-{{--                    <h3>Student status</h3>--}}
-{{--                    <label><input type="checkbox" name="status[]" value="Registered" /> Registered</label>--}}
-{{--                    <label><input type="checkbox" name="status[]" value="Joined" /> Joined</label>--}}
-{{--                    <label><input type="checkbox" name="status[]" value="Cancelled" /> Cancelled</label>--}}
-{{--                </div>--}}
-{{--                <div class="filter-section">--}}
-{{--                    <h3>Regis_Date</h3>--}}
-{{--                    <input type="date" name="start_date" placeholder="Start Date" />--}}
-{{--                </div>--}}
-{{--                <div class="filter-section">--}}
-{{--                    <h3>Building</h3>--}}
-{{--                    <input type="text" name="building" placeholder="Building Name" /> <!-- Thêm trường lọc Building -->--}}
-{{--                </div>--}}
-
-{{--                <button id="apply-filter" class="apply-button" >Apply</button>--}}
-
-{{--            </form>--}}
             <div class="overlay hidden" onclick="toggleFilter()"></div>
             <form id="filter-form" class="filter-panel hidden" action="{{ route('activity.participants', ['activity' => $activity->id]) }}" method="GET">
                 <div class="filter-section">

@@ -5,10 +5,6 @@
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
-
-    <script src="{{ asset('./filterpanel.js') }}"></script>
-
-    {{--    <link rel="stylesheet" href="{{ asset('./css/reg_room.css') }}" type="text/css">--}}
 </head>
 
 @section('content')

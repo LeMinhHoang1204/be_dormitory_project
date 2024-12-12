@@ -32,6 +32,7 @@ class StudentController extends Controller
         return redirect('/flights');
     }
 
+//    TODO: FIX THIS
     public function showRoomRenewalForm()
     {
         $residence = Auth::user()->residence()
@@ -39,10 +40,10 @@ class StudentController extends Controller
             ->first();
 
         if (!$residence) {
-            return view('student.extension')->with('no_residence', true);
+            return view('user_student.student.extension')->with('no_residence', true);
         }
 
-        return view('student.extension', compact('residence'));
+        return view('user_student.student.extension', compact('residence'));
     }
 
     public function createRenewalRequest(Request $request)
@@ -87,7 +88,7 @@ class StudentController extends Controller
         }
 
         // Trả về trang checkout với thông tin sinh viên và phòng
-        return view('student.checkout', compact('student', 'residence'));
+        return view('user_student.student.checkout', compact('student', 'residence'));
     }
 
     public function leaveRequest()
@@ -155,7 +156,7 @@ class StudentController extends Controller
     public function updateProfileImage(Request $request)
     {
         $request->validate([
-            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
         ]);
 
         $user = auth()->user();

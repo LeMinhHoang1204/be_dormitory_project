@@ -325,30 +325,6 @@ class ActivityController extends Controller
         return view('admin_activities.show', compact('activity'));
     }
 
-//    public function participants(Activity $activity)
-//    {
-//        $participants = $activity->participants()->with([
-//            'student.residence' => function ($query) {
-//                $query->whereIn('status', ['Paid', 'Checked in','Registered'])
-//                ->with(['room.building' => function ($query) {
-//                    $query->select('id', 'build_name'); // Lấy tên tòa nhà
-//                }]);
-//            },
-//            'student.residence.room' => function ($query) {
-//                $query->select('id', 'name'); // Lấy tên phòng của residence
-//            }
-//        ])
-//            ->select('users.id', 'users.name')
-//            ->paginate(10);
-//
-//        // Kiểm tra nếu không có participants
-//        if ($participants->isEmpty()) {
-//            return redirect()->back()->with('error', 'No participants found for this activity.');
-//        }
-//
-//        // Trả về view với danh sách người tham gia và thông tin hoạt động
-//        return view('admin_activities.participants', compact('participants', 'activity'));
-//    }
     public function participants(Activity $activity)
     {
         $query = $activity->participants()->with([

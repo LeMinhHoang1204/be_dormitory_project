@@ -90,7 +90,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    document.getElementById('user_profile.php-image').src = '/storage/' + data.imagePath;
+                    document.getElementById('profile-image').src = '/storage/' + data.imagePath;
 
                     document.getElementById('save-avatar').style.display = 'none';
                     alert('Profile image updated successfully!');
@@ -140,7 +140,7 @@
                     }
                 </script>
 
-{{--                <a href="{{ route('profile.edit') }}" class="blue-btn">Edit Profile</a>--}}
+                <a href="{{ route('profile.edit') }}" class="blue-btn">Edit Profile ></a>
             </div>
         </div>
     @endif

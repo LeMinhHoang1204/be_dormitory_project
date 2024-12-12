@@ -132,7 +132,7 @@
                     }
                 </script>
 
-{{--                <a href="{{ route('user_profile.php.edit') }}" class="blue-btn">Edit Profile</a>--}}
+                <a href="{{ route('profile.edit') }}" class="blue-btn">Edit Profile ></a>
             </div>
         </div>
     @endif

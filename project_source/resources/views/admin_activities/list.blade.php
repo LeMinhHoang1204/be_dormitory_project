@@ -233,7 +233,7 @@
             <tbody>
             @foreach($activities as $index => $activity)
                 <tr>
-                    <td>{{ $activity->id }}</td>
+                    <td>{{ ($activities->currentPage() - 1) * $activities->perPage() + $loop->iteration }}</td>
                     <td>{{ $activity->title }}</td>
                     <td>{{ $activity->creator->name }}</td>
                     <td>{{ $activity->registered_participants }}/{{ $activity->max_participants }}</td>

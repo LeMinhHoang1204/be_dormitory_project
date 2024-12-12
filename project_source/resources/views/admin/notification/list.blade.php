@@ -1,4 +1,3 @@
-{{--@extends('Auth_.index')--}}
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
@@ -23,7 +22,11 @@
         toastr.success(JSON.stringify(data.email) + ' has joined our website');
     });
 </script>
-
+<style>
+    .extension{
+        max-width: 70%;
+    }
+</style>
 <x-app-layout>
     <head>
         <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">

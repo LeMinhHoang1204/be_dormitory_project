@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
     return view('home');
@@ -68,3 +69,4 @@ require __DIR__ . '/admin/activity.php';
 require __DIR__ . '/admin/asset.php';
 require __DIR__ . '/admin/invoice.php';
 require __DIR__ . '/admin/request.php';
+require __DIR__ . '/admin/my_profile.php';

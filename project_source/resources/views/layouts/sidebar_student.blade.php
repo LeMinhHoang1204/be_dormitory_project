@@ -27,7 +27,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="notifications">
+            <a href="/notifications">
                 <span class="icon">🔔</span>
                 <span class="text">Notifications</span>
             </a>
@@ -36,23 +36,32 @@
 {{--        Payment and Request about room for Student--}}
         @if (auth()->check() && auth()->user()->role === 'student')
         <li class="menu-item has-submenu">
-            <a href="#">
+            <a >
                 <span class="icon">🛏️</span>
                 <span class="text">Room</span>
             </a>
             <ul class="submenu">
                 <li><a href="{{ url('/register_room') }}">Register</a></li>
-                <li><a href="/student/repair-request">Repair</a></li>
+
+                <li><a href="{{ url('/my-room') }}">My room</a></li>
+
+                <li><a href="{{ url('/students/register-room') }}">Register</a></li>
+
+                <li><a href="/students/repair-request">Repair</a></li>
                 <li><a href="#">Change</a></li>
                 <li><a href="/students/renew">Extension</a></li>
                 <li><a href="/students/checkout">Check-out</a></li>
             </ul>
         </li>
-            <li class="menu-item">
-                <a href="#">
+            <li class="menu-item has-submenu">
+                <a>
                     <span class="icon">🏃‍♂️</span>
                     <span class="text">Activites</span>
                 </a>
+                <ul class="submenu">
+                    <li><a href="{{ url('/activities') }}">Activity List</a></li>
+                    <li><a href="{{ url('/my-activities') }}">My activity</a></li>
+                </ul>
             </li>
         <li class="menu-item">
             <a href="{{ url('/payment') }}">
@@ -69,11 +78,15 @@
                     <span class="text">Building</span>
                 </a>
             </li>
-            <li class="menu-item">
-                <a href="#">
+            <li class="menu-item has-submenu">
+                <a>
                     <span class="icon">🏃‍♂️</span>
                     <span class="text">Activites</span>
                 </a>
+                <ul class="submenu">
+                    <li><a href="{{ url('/admin/activities') }}">Activity List</a></li>
+                    <li><a href="{{ url('/admin/my-activities') }}">My activity</a></li>
+                </ul>
             </li>
 
         @endif
@@ -89,6 +102,16 @@
                     <span class="icon">📑</span>
                     <span class="text">Request</span>
                 </a>
+            </li>
+            <li class="menu-item has-submenu">
+                <a>
+                    <span class="icon">🏃‍♂️</span>
+                    <span class="text">Activites</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="{{ url('/admin/activities') }}">Activity List</a></li>
+                    <li><a href="{{ url('/admin/my-activities') }}">My activity</a></li>
+                </ul>
             </li>
             <li class="menu-item has-submenu">
                 <a href="">
@@ -115,39 +138,18 @@
                 </a>
             </li>
         @endif
+
         <li class="menu-item">
-            <a href="#">
-                <span class="icon">⚙️</span>
-                <span class="text">Account</span>
+            @if (auth()->check() && auth()->user()->role === 'student')
+            <a href="/students/my_profile">
+                @else
+                    <a href="/user/my_profile">
+                        @endif
+                    <span class="icon">👤</span>
+                <span class="text">Profile</span>
             </a>
         </li>
     </ul>
 
 </div>
 
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".menu-item.has-submenu").forEach(item => {
-            item.addEventListener("mouseenter", () => {
-                const submenu = item.querySelector(".submenu");
-                if (submenu) submenu.style.display = "block";
-                let nextItem = item.nextElementSibling;
-                while (nextItem) {
-                    nextItem.style.transform = "translateY(300%)";
-                    nextItem = nextItem.nextElementSibling;
-                }
-            });
-            item.addEventListener("mouseleave", () => {
-                const submenu = item.querySelector(".submenu");
-                if (submenu) submenu.style.display = "none";
-                let nextItem = item.nextElementSibling;
-                while (nextItem) {
-                    nextItem.style.transform = "translateY(0)";
-                    nextItem = nextItem.nextElementSibling;
-                }
-            });
-        });
-    });
-</script>

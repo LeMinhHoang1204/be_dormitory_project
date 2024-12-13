@@ -2,20 +2,19 @@
     position: fixed;
     top: 80px;
     left: 0;
-    width: 80px;
+    width: 70px;
     height: 100%;
     background: #fff;
     border-right: 1px solid #ddd;
-    overflow: hidden;
     transition: width 0.3s ease;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    /*border-radius: 20px;*/
     z-index: 2000;
+    overflow: visible;
 
 }
 
 #sidebar:hover {
-    width: 250px;
+    width: 235px;
 }
 
 #sidebar .logo {
@@ -24,27 +23,32 @@
     padding: 15px;
 }
 
+/* Logo text ban đầu ẩn */
 #sidebar .logo .text {
     margin-left: 10px;
-    display: none;
-
+    display: block;
+    opacity: 0;  /* Ban đầu opacity là 0 */
+    visibility: hidden;  /* Ẩn văn bản */
     color: var(--Gray-600, #1C1C1C);
-
-    /* Medium/Subtitle */
-    font-family: Poppins;
+    font-family: "Poppins", sans-serif;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
     line-height: 22px; /* 122.222% */
+    transition: opacity 0.1s ease, visibility 0s 0.5s;
 }
+
+/* Khi hover vào sidebar, văn bản sẽ hiển thị sau 0.05 giây */
+#sidebar:hover .logo .text {
+    opacity: 1;
+    visibility: visible!important;
+    transition-delay: 0.05s;
+}
+
 
 #sidebar .logo .icon {
     font-size: 40px;
 }
-#sidebar:hover .logo .text {
-    display: block;
-}
-
 #sidebar .search {
     display: none;
     margin: 10px 15px;
@@ -61,7 +65,7 @@
 #sidebar .menu {
     list-style: none;
     padding: 5px;
-    margin: 0px;
+    margin: 0;
 
 }
 
@@ -70,6 +74,7 @@
     display: flex;
     align-items: self-start;
     position: relative;
+    border-bottom: #f1f1f1 0.1px solid; ;
 }
 
 #sidebar .menu-item .icon {
@@ -79,7 +84,7 @@
 
 #sidebar .menu-item .text {
     display: none;
-    font-family: Poppins;
+    font-family: "Poppins", sans-serif;
 
 }
 
@@ -96,16 +101,17 @@
 /* Mặc định, submenu ẩn đi */
 #sidebar .menu-item.has-submenu .submenu {
     display: none;
-    padding-left: 20px;
     background: #FFF;
     border-radius: 8px;
-    box-shadow: 0px 1px 10px 0px rgba(209, 201, 235, 0.05);
+    box-shadow: 0 1px 10px 0 rgba(209, 201, 235, 0.05);
     transition: all 0.3s ease;
     position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
+    left: 70%;
+    top: 0;
+    width: 80%;
     z-index: 10;
+    padding-left: 0!important;
+    text-align: center;
 }
 
  /*Hiển thị submenu khi hover vào menu-item*/
@@ -113,7 +119,9 @@
     display: block;
     background: #FBF8FF;
     border-radius: 8px;
-    box-shadow: 0px 1px 10px 0px rgba(209, 201, 235, 0.05);
+    box-shadow: 0 1px 10px 0 rgba(209, 201, 235, 0.05);
+    border-right: #dddddd 0.5px solid;
+
 }
 
 /* Menu item khi hover */
@@ -124,17 +132,20 @@
 #sidebar .menu-item:hover {
     background: #FBF8FF; /* Màu nền cho menu-item khi hover */
     border-radius: 8px;
+    border-bottom: #dddddd 0.5px solid; ;
+
 }
 /* Các item trong submenu */
 #sidebar .menu-item .submenu a {
     padding: 15px;
     display: block;
-    margin-left: 35px;
-    font-size: 14px;
+    font-size: 15px;
     color: var(--Gray-600, #1C1C1C);
     font-family: 'Inter', sans-serif;
     font-weight: 400;
     text-decoration: none;
+    border-bottom: #dddddd 0.5px solid;
+    align-items: start;
 }
 
 /* Hover trên các item trong submenu */
@@ -142,6 +153,11 @@
     background: #E8D8F9;
     border-radius: 8px;
 }
+#sidebar .menu-item a:hover{
+    color: var(--Gray-600, #1C1C1C);
+    text-decoration: none;
+
+}
 #sidebar .menu-item.has-submenu:hover ~ .menu-item {
-    transition: transform 0.1s ease;
+    transition: transform 0.01s ease;
 }

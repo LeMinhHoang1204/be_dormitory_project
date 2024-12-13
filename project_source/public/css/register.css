@@ -543,4 +543,280 @@ body {
     background-color: #1d4ed8;
 }
 
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 25px 0;
+    padding: 0;
+}
 
+.pagination a,
+.pagination span {
+    text-decoration: none;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination a:hover,
+.pagination a:focus {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination .current {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination .disabled {
+    background-color: #f5f5f5;
+    color: #ccc;
+    pointer-events: none;
+}
+
+.pagination .gap {
+    pointer-events: none;
+    padding: 8px 16px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+.pagination .previous,
+.pagination .next {
+    font-weight: bold;
+}
+
+.pagination .previous:hover,
+.pagination .next:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination a:hover {
+    transform: scale(1.1);
+}
+
+/* confirm register modal */
+#confirm-register-modal .register-popup-content {
+    max-width: 500px;
+    padding: 40px;
+}
+
+#confirm-register-modal .popup-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+#confirm-register-modal .popup-header h2 {
+    font-size: 1.75rem;
+    color: #0e3b9c;
+    font-weight: 600;
+}
+
+#confirm-register-modal .popup-body {
+    text-align: center;
+    padding: 0;
+}
+
+#confirm-register-modal p {
+    font-size: 1.1rem;
+    color: #4b5563;
+    margin-bottom: 32px;
+    line-height: 1.5;
+}
+
+#confirm-register-modal .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    grid-column: unset;
+    margin-top: 0;
+}
+
+#confirm-register-modal .btn {
+    min-width: 140px;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+#confirm-register-modal .btn-secondary {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+#confirm-register-modal .btn-secondary:hover {
+    background-color: #e2e8f0;
+    color: #475569;
+    transform: translateY(-1px);
+}
+
+#confirm-register-modal .btn-primary {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+}
+
+#confirm-register-modal .btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1),
+        0 2px 4px -1px rgba(37, 99, 235, 0.06);
+}
+
+/* Add these styles to the register popup section */
+#register-popup .form-group div {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+#register-popup .label-text {
+    font-weight: 600;
+    color: #0e3b9c;
+    min-width: 100px;
+    display: inline-block;
+}
+
+#register-popup .room-detail {
+    color: #4b5563;
+    flex: 1;
+}
+
+#register-popup .floor-number::after {
+    content: " floor";
+}
+
+#register-popup .member-number::after {
+    content: " people";
+}
+
+#register-popup .form-group label:first-of-type {
+    margin-top: 25px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 20px;
+}
+
+#register-popup label {
+    display: block;
+    margin-top: 15px;
+    color: #0e3b9c;
+    font-weight: 600;
+}
+
+#register-popup .form-control {
+    margin-top: 5px;
+}
+
+
+#register-popup .register-popup-content {
+    max-width: 800px;
+    padding: 20px;
+}
+
+#register-popup .popup-header {
+    margin-bottom: 16px;
+}
+
+#register-popup .popup-header h2 {
+    color: #0e3b9c;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+#register-popup .form-group {
+    background: white;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+}
+
+#register-popup .form-group div {
+    margin-bottom: 8px;
+    padding: 4px 0;
+    border: none;
+}
+
+#register-popup .label-text {
+    color: #0e3b9c;
+    font-size: 15px;
+    font-weight: 600;
+    min-width: 120px;
+}
+
+#register-popup .room-detail {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 450;
+}
+
+#register-popup label {
+    display: block;
+    color: #0e3b9c;
+    font-size: 15px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+#register-popup .form-control {
+    width: 100%;
+    padding: 6px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 450;
+    color: #475569;
+    background-color: white;
+    appearance: none;
+    transition: all 0.2s ease;
+}
+
+#register-popup .form-control:hover {
+    border-color: #2563eb;
+    background-color: #f8fafc;
+}
+
+#register-popup .form-control:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+#register-popup .btn-secondary {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+#register-popup .btn-secondary:hover {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+
+#register-popup .btn-primary {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+}
+
+#register-popup .btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+}

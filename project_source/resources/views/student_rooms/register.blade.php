@@ -24,7 +24,8 @@
 
                 {{-- Search bar --}}
                 <div class="search-bar">
-                    <input type="text" placeholder="Search rooms..." class="search-input" onkeyup="handleSearch(event)">
+                    <input type="text" placeholder="Search rooms..." class="search-input" onkeyup="handleSearchKeyup(event)"
+                        autocomplete="off" aria-label="Search rooms">
                 </div>
             </div>
         </div>
@@ -34,7 +35,9 @@
 
         <div class="grid-container" id="room-list">
             @foreach ($rooms as $room)
-                <div class="room-item" onclick="redirectToRoomInfo({{ $room->id }})">
+                <div class="room-item" onclick="redirectToRoomInfo({{ $room->id }})"
+                    data-floor="{{ $room->floor_number }}" data-type="{{ $room->type }}"
+                    data-capacity="{{ $room->member_number }}">
                     <img src="/img/room.png">
                     <div class="form-group">
                         <div class="roomname">{{ $room->name }}</div>
@@ -57,10 +60,55 @@
 
 
 
-    {{-- Pagination --}}
-    <div class="d-flex justify-content-center">
-        {{ $rooms->links() }}
+    <!-- Pagination -->
+    <div class="pagination">
+        @if ($rooms->onFirstPage())
+            <span class="gap">Previous</span>
+        @else
+            <a href="{{ $rooms->previousPageUrl() }}" class="previous">Previous</a>
+        @endif
+
+        @php
+            $currentPage = $rooms->currentPage();
+            $lastPage = $rooms->lastPage();
+        @endphp
+
+        <!-- Nếu số trang ít hơn hoặc bằng 5, hiển thị tất cả các trang -->
+        @if ($lastPage <= 5)
+            @for ($i = 1; $i <= $lastPage; $i++)
+                @if ($i == $currentPage)
+                    <span class="pagination-page current">{{ $i }}</span>
+                @else
+                    <a href="{{ $rooms->url($i) }}" class="pagination-page">{{ $i }}</a>
+                @endif
+            @endfor
+        @else
+            @if ($currentPage > 3)
+                <a href="{{ $rooms->url(1) }}" class="pagination-page">1</a>
+                <span class="ellipsis">...</span>
+            @endif
+
+            @for ($i = max(1, $currentPage - 1); $i <= min($lastPage, $currentPage + 1); $i++)
+                @if ($i == $currentPage)
+                    <span class="pagination-page current">{{ $i }}</span>
+                @else
+                    <a href="{{ $rooms->url($i) }}" class="pagination-page">{{ $i }}</a>
+                @endif
+            @endfor
+
+            @if ($currentPage < $lastPage - 2)
+                <span class="ellipsis">...</span>
+                <a href="{{ $rooms->url($lastPage) }}" class="pagination-page">{{ $lastPage }}</a>
+            @endif
+        @endif
+
+        @if ($rooms->hasMorePages())
+            <a href="{{ $rooms->nextPageUrl() }}" class="next">Next</a>
+        @else
+            <span class="gap">Next</span>
+        @endif
     </div>
+
 @endsection
 
 <!-- Modal Filter Popup -->
@@ -220,9 +268,23 @@
     </div>
 </div>
 
-<!-- Modal Register Popup -->
-<!-- Existing code... -->
+<!-- Modal Confirm Register -->
+<div id="confirm-register-modal" class="register-popup">
+    <div class="register-popup-content">
+        <div class="popup-header">
+            <h2>Confirm Registration</h2>
+        </div>
+        <div class="popup-body">
+            <p>Are you sure you want to register for this room?</p>
+            <div class="button-group mt-4">
+                <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="proceedToRegistration()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Modal Register Popup -->
 <div id="register-popup" class="register-popup">
     <div class="register-popup-content">
         <div class="popup-header">
@@ -234,12 +296,26 @@
                 <input type="hidden" id="room-id-input" name="room_id">
 
                 <div class="form-group">
-
-
-                    <div><span>Room: </span>{{ $room->name }}</div>
                     <div>
-                        <span>Price: </span>
-                        <span>{{ $room->unit_price }}₫/month</span>
+                        <span class="label-text">Room: </span>
+
+                        <span class="room-detail">{{ $room->name }}</span>
+                    </div>
+                    <div>
+                        <span class="label-text">Price: </span>
+                        <span class="room-detail">{{ $room->unit_price }}</span>
+                    </div>
+                    <div>
+                        <span class="label-text">Floor: </span>
+                        <span class="room-detail">{{ $room->floor_number }}</span>
+                    </div>
+                    <div>
+                        <span class="label-text">Type: </span>
+                        <span class="room-detail room-type">{{ $room->type }}</span>
+                    </div>
+                    <div>
+                        <span class="label-text">Capacity: </span>
+                        <span class="room-detail">{{ $room->member_number }}</span>
                     </div>
 
                     <label>Check-in Date:</label>
@@ -250,12 +326,11 @@
                         <option value="6">6 months</option>
                         <option value="12">12 months</option>
                     </select>
-
                 </div>
 
-                <div class="form-group mt-4">
+                <div class="button-group mt-4">
                     <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm Registration</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
                 </div>
             </form>
         </div>

@@ -1,0 +1,48 @@
+
+.table {
+    width: 100%;
+    /*border-collapse: collapse; !* Đảm bảo bảng không có khoảng cách giữa các ô *!*/
+    margin: 30px 0;
+    font-size: 16px;
+    text-align: left;
+    border-radius: 20px; /* Áp dụng bo góc */
+    overflow: visible;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.thead {
+    background-color: #007bff; /* Màu nền tiêu đề */
+    background: var(--table_row, #ECEFFF);
+    color: var(--h1, #0E3B9C);
+    border-radius: 20px 20px 0 0; /* Bo góc phần trên */
+}
+
+.thead th {
+    padding: 12px 15px;
+}
+
+.table tbody tr {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+    border-radius: 20px 20px 0px 0px;
+    overflow: hidden;
+
+}
+
+.table tbody tr:nth-of-type(even) {
+    background-color: #f1f1f1;
+}
+
+.table tbody tr:last-child {
+    border-radius: 0 0 20px 20px; /* Bo góc phần dưới */
+    overflow: hidden;
+}
+
+.table tbody tr:hover {
+    background-color: #ddd;
+}
+
+.table td {
+    padding: 12px 15px;
+}
+

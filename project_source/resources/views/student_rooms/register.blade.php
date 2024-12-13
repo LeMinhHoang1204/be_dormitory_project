@@ -46,7 +46,8 @@
                         <div class="type-group">
                             <span class="detail-item">2 Bed</span>
                             <span class="detail-item">Modern Furniture</span>
-                            <button class="change-button" onclick="toggleConfirm()">Register</button>
+                            <button class="change-button"
+                                onclick="handleRegisterClick(event, {{ $room->id }})">Register</button>
                         </div>
                     </div>
                 </div>
@@ -62,26 +63,204 @@
     </div>
 @endsection
 
-<!-- Filter Popup -->
+<!-- Modal Filter Popup -->
 <div id="filter-popup" class="filter-popup">
-    <div class="popup-content">
-        <span class="close" onclick="toggleFilterPopup()">&times;</span>
-        <h2>Filter Options</h2>
-        <!-- Thêm các tùy chọn lọc ở đây -->
-        <div class="filter-options">
+    <div class="filter-popup-content">
+        <div class="filter-container">
+            <!-- Room Status -->
             <div class="filter-group">
-                <label>Price Range</label>
-                <div class="price-inputs">
-                    <input type="number" placeholder="Min">
-                    <input type="number" placeholder="Max">
+                <h3>Room Status</h3>
+                <div class="checkbox-list">
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Vacancy</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Full</span>
+                    </label>
                 </div>
             </div>
-            <!-- Thêm các tùy chọn lọc khác -->
+
+            <!-- Building Type -->
+            <div class="filter-group">
+                <h3>Building Type</h3>
+                <div class="checkbox-list">
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Male</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Female</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Floor Number -->
+            <div class="filter-group">
+                <h3>Floor Number</h3>
+                <div class="select-wrapper">
+                    <select class="floor-select">
+                        <option value="">Choose a floor</option>
+                        <option value="1">Floor 1</option>
+                        <option value="2">Floor 2</option>
+                        <option value="3">Floor 3</option>
+                        <option value="4">Floor 4</option>
+                        <option value="5">Floor 5</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Room Type -->
+            <div class="filter-group">
+                <h3>Room Type</h3>
+                <div class="checkbox-list">
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">1 person</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">2 people</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">4 people</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">6 people</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">8 people</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Price -->
+            <div class="filter-group">
+                <h3>Price</h3>
+                <div class="checkbox-list">
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">
+                            < 500.000 VND</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">
+                            < 1.000.000 VND</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">
+                            < 2.000.000 VND</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">
+                            < 3.000.000 VND</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Facilities -->
+            <div class="filter-group">
+                <h3>Facilities</h3>
+                <div class="checkbox-list">
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Fridge</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Washing machine</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Air-Conditioner</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Water heater</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Study desk</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary cancel-btn" onclick="closePopup()">Cancel</button>
+                <button class="btn btn-primary apply-btn">Apply</button>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Modal Register Popup -->
+<!-- Existing code... -->
 
+<div id="register-popup" class="register-popup">
+    <div class="register-popup-content">
+        <div class="popup-header">
+            <h2>Room Registration</h2>
+        </div>
+        <div class="popup-body">
+            <form action="/register-room" method="POST">
+                @csrf
+                <input type="hidden" id="room-id-input" name="room_id">
+
+                <div class="form-group">
+
+
+                    <div><span>Room: </span>{{ $room->name }}</div>
+                    <div>
+                        <span>Price: </span>
+                        <span>{{ $room->unit_price }}₫/month</span>
+                    </div>
+
+                    <label>Check-in Date:</label>
+                    <input type="date" name="check_in_date" class="form-control" required>
+
+                    <label>Duration (months):</label>
+                    <select name="duration" class="form-control" required>
+                        <option value="6">6 months</option>
+                        <option value="12">12 months</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm Registration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 <script src="{{ asset('./javascript/register.js') }}"></script>

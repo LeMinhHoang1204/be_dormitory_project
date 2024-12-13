@@ -1,73 +1,54 @@
-const roomsData = [
-    {
-        roomId: 1,
-        name: "A101",
-        price: 800000.0,
-        img: "room.png",
-    },
-    {
-        roomId: 2,
-        name: "A102",
-        price: 700000.0,
-        img: "room.png",
-    },
-    {
-        roomId: 3,
-        name: "A103",
-        price: 600000.0,
-        img: "room.png",
-    },
-    {
-        roomId: 4,
-        name: "A104",
-        price: 500000.0,
-        img: "room.png",
-    },
-    {
-        roomId: 5,
-        name: "A105",
-        price: 400000.0,
-        img: "room.png",
-    },
-    {
-        roomId: 6,
-        name: "A106",
-        price: 300000.0,
-        img: "room.png",
-    },
-];
-
 // Creat room
 function createRoom(room) {
+    const assets = room.has_room_assets.map(asset => `
+        <span class="detail-item">${asset.asset.name}: ${asset.quantity}</span>
+    `).join("");
+
     return `
-        <div class="room-item" data-room-id="${room.roomId}" data-room-name="${room.name}" data-room-price="${room.price}" data-room-img="${room.img}">
-            <a href="/roomInfor/${room.roomId}">
-                <img src="/img/${room.img}" alt="${room.name}">
-            </a>
+        <div class="room-item"
+            data-room-id="${room.id}" data-room-name="${room.name}" data-room-price="${room.unit_price}"
+            data-room-building="${room.building_id}" data-room-type="${room.type}" data-room-floor="${room.floor_number}"
+            data-room-capacity="${room.member_number}">
+            <img src="/img/room.png" alt="${room.name}">
             <div class="form-group">
                 <div class="roomname">Room ${room.name}</div>
                 <div id="room-price">
-                    <span class="price">${room.price}</span>
+                    <span class="price">${room.unit_price}</span>
                     <span class="per-month">/month</span>
                 </div>
                 <div class="room-info">Phòng được thiết kế mới mẻ với đầy đủ các vật dụng cần thiết</div>
                 <div class="type-group">
-                    <span class="detail-item">2 Bed</span>
-                    <span class="detail-item">Modern Furniture</span>
-                    <button class="change-button" onclick="toggleConfirm()">Register</button>
+                    ${assets}
+                </div>
+                <div class="type-group">
+                <button class="change-button" onclick="toggleConfirm()">Register</button>
                 </div>
             </div>
         </div>
     `;
 }
 
+async function fetchRooms() {
+    try {
+        const response = await fetch("/students/rooms"); // Đường dẫn API trả về danh sách phòng
+        if (!response.ok) throw new Error("Failed to fetch rooms data");
+        const data = await response.json(); // Chuyển đổi dữ liệu JSON
+        return data;
+    } catch (error) {
+        console.error("Error fetching rooms:", error);
+        return [];
+    }
+}
+
 // Display rooms
-function displayRoom() {
+async function displayRoom() {
     const roomList = document.getElementById("room-list");
+    const roomsData = await fetchRooms(); // Lấy dữ liệu từ database thông qua API
     roomList.innerHTML = roomsData.map(createRoom).join("");
 
     const roomItems = document.querySelectorAll(".room-item");
     roomItems.forEach((item) => {
+<<<<<<< HEAD
         const roomData = {
             roomId: item.dataset.roomId,
             roomName: item.dataset.roomName,
@@ -77,12 +58,97 @@ function displayRoom() {
 
         // Lưu data room vào localStorage khi click vào bất kỳ phần nào của room-item
         localStorage.setItem("selectedRoom", JSON.stringify(roomData));
+=======
+        item.addEventListener("click", function () {
+            const roomId = this.dataset.roomId;
+            const roomName = this.dataset.roomName;
+            const roomPrice = this.dataset.roomPrice;
+            const building = this.dataset.roomBuilding;
+            const roomFloor = this.dataset.roomFloor;
+            const roomType = this.dataset.roomType;
+            const roomCapacity = this.dataset.roomCapacity;
+
+
+            // Luu data room-item vao localStorage
+            localStorage.setItem(
+                "selectedRoom",
+                JSON.stringify({ roomId, roomName, roomPrice, building, roomFloor, roomType, roomCapacity })
+            );
+
+            // window.location.href = `/roomInfor/${roomId}`;
+        });
+>>>>>>> c2624dc9a06ee3e8fdabd4de7c85c7b6ef12ab7b
     });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        const response = await fetch("/students/current-student-user"); // Adjust the endpoint as needed
+        if (!response.ok) throw new Error("Failed to fetch user data");
+        const userData = await response.json();
+        localStorage.setItem("currentUser", JSON.stringify(userData));
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+    }
     displayRoom();
 });
+
+// Sự kiện khi nhấn vào nút "Yes"
+document.addEventListener("DOMContentLoaded", function () {
+    // Sự kiện khi nhấn vào nút "Yes"
+    document.querySelector(".confirm-regis .yes-btn").addEventListener("click", function() {
+        // Lấy dữ liệu từ phần tử đã chọn (ví dụ: room-item)
+
+        const selectedRoom = JSON.parse(localStorage.getItem("selectedRoom"));
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+        if (selectedRoom) {
+            const roomData = {
+                dormId: currentUser.userId,
+                roomId: selectedRoom.roomId,
+                studentId: currentUser.studentId,
+                fullName: currentUser.name,
+                buildingId: selectedRoom.building,
+                floor: selectedRoom.roomFloor,
+                price: selectedRoom.roomPrice,
+                capacity: selectedRoom.roomCapacity,
+                gender: currentUser.gender,
+                roomType: selectedRoom.roomType,
+            };
+
+
+            populateRoomInfo(roomData);
+        }
+        showConfirmInfoContainer();
+    });
+});
+
+function populateRoomInfo(data) {
+    document.getElementById("dorm-id").value = data.dormId || "";
+    document.getElementById("room-id").value = data.roomId || "";
+    document.getElementById("student-id").value = data.studentId || "";
+    document.getElementById("full-name").value = data.fullName || "";
+    document.getElementById("building-id").value = data.buildingId || "";
+    document.getElementById("floor").value = data.floor || "";
+    document.getElementById("price").value = data.price || "";
+    document.getElementById("capacity").value = data.capacity || "";
+    document.getElementById("gender").value = data.gender || "";
+    document.getElementById("room-type").value = data.roomType || "";
+}
+
+function showConfirmInfoContainer() {
+    const confirmPanel = document.querySelector(".confirm-regis");
+    const confirmInfoContainer = document.querySelector(
+        ".confirm-info-container"
+    );
+    const overlay2 = document.querySelector(".overlay2");
+
+    if (confirmPanel && confirmInfoContainer && overlay2) {
+        confirmPanel.classList.remove("active"); // Ẩn confirm-regis
+        confirmInfoContainer.classList.add("active"); // Hiển thị popup confirm-info-container
+        overlay2.classList.add("active"); // Hiển thị overlay
+    }
+}
 
 // Hàm bật/tắt filter panel
 function toggleFilter() {
@@ -96,15 +162,16 @@ function toggleFilter() {
 }
 
 // Đóng filter panel và overlay khi nhấn ra ngoài
-document.querySelector(".overlay").addEventListener("click", () => {
-    const filterPanel = document.querySelector(".filter-panel");
-    const overlay = document.querySelector(".overlay");
-
-    if (filterPanel && overlay) {
-        filterPanel.classList.remove("active");
+const overlay = document.querySelector(".overlay");
+if (overlay) {
+    overlay.addEventListener("click", () => {
+        const filterPanel = document.querySelector(".filter-panel");
+        if (filterPanel) {
+            filterPanel.classList.remove("active");
+        }
         overlay.classList.remove("active");
-    }
-});
+    });
+}
 
 // Nhấn mở filter panel
 document.querySelector(".filter-sgv").addEventListener("click", toggleFilter);
@@ -149,9 +216,7 @@ function closeConfirm() {
 document.querySelector(".overlay2").addEventListener("click", closeConfirm);
 
 // Sự kiện khi nhấn vào nút "No" (để đóng cả overlay và confirm panel)
-document
-    .querySelector(".confirm-regis .no-btn")
-    .addEventListener("click", closeConfirm);
+document.querySelector(".confirm-regis .no-btn").addEventListener("click", closeConfirm);
 
 // Nhấn mở confirm panel
 document
@@ -162,76 +227,12 @@ document
         }
     });
 
-// document.querySelector('.yes-btn').addEventListener('click', showSuccessPanel);
-//
-// // Hiện success panel sau khi nhấn "Yes" trong confirm-regis
-// function showSuccessPanel() {
-//     const confirmPanel = document.querySelector('.confirm-regis');
-//     const successPanel = document.querySelector('.success-panel');
-//     const overlay2 = document.querySelector('.overlay2');
-//
-//     if (confirmPanel && successPanel && overlay2) {
-//         confirmPanel.classList.remove('active');
-//         successPanel.classList.add('active');
-//         overlay2.classList.add('active'); // Ensure overlay2 remains active
-//     }
-// }
-//
-// // Đóng tất cả các panel và overlay khi nhấn "Continue" hoặc overlay
-// function closeAllPanels() {
-//     const confirmPanel = document.querySelector('.confirm-regis');
-//     const successPanel = document.querySelector('.success-panel');
-//     const overlay2 = document.querySelector('.overlay2');
-//
-//     if (confirmPanel && successPanel && overlay2) {
-//         confirmPanel.classList.remove('active');
-//         successPanel.classList.remove('active');
-//         overlay2.classList.remove('active');
-//     }
-// }
-//
-// // Sự kiện khi nhấn vào nút "Yes" (để hiển thị success panel)
-// document.querySelector('.confirm-regis .yes-btn').addEventListener('click', showSuccessPanel);
-//
-// // Sự kiện khi nhấn vào overlay hoặc nút "Continue" (để đóng tất cả các panel)
-// document.querySelector('.overlay2').addEventListener('click', closeAllPanels);
-// document.querySelector('.success-panel .continue-btn').addEventListener('click', closeAllPanels);
-
-
-// Hiển thị confirm-info-container khi nhấn "Yes" trong confirm-regis
-function showConfirmInfoContainer() {
-    const confirmPanel = document.querySelector(".confirm-regis");
-    const confirmInfoContainer = document.querySelector(
-        ".confirm-info-container"
-    );
-    const overlay2 = document.querySelector(".overlay2");
-
-    if (confirmPanel && confirmInfoContainer && overlay2) {
-        confirmPanel.classList.remove("active"); // Ẩn confirm-regis
-        confirmInfoContainer.classList.add("active"); // Hiển thị popup confirm-info-container
-        overlay2.classList.add("active"); // Hiển thị overlay
-    }
-}
-
-// Hiển thị success-panel khi nhấn "Confirm" trong confirm-info-container
-function showSuccessPanel() {
-    const confirmInfoContainer = document.querySelector(
-        ".confirm-info-container"
-    );
-    const successPanel = document.querySelector(".success-panel");
-    const overlay2 = document.querySelector(".overlay2");
-
-    if (confirmInfoContainer && successPanel && overlay2) {
-        confirmInfoContainer.classList.remove("active"); // Ẩn confirm-info-container
-        successPanel.classList.add("active"); // Hiển thị success-panel
-        overlay2.classList.add("active"); // Overlay vẫn hiển thị
-    }
-}
-
 // Hiển thị success-panel khi nhấn "Confirm" trong confirm-info-container
 function showSuccessPanel() {
     // Lưu trạng thái form đã được gửi vào sessionStorage
     sessionStorage.setItem("formSubmitted", "true");
+
+    console.log(2);
 
     const confirmInfoContainer = document.querySelector(
         ".confirm-info-container"
@@ -266,14 +267,10 @@ function closeAllPanels() {
     }
 }
 
-// Sự kiện khi nhấn vào nút "Yes"
-document
-    .querySelector(".confirm-regis .yes-btn")
-    .addEventListener("click", showConfirmInfoContainer);
+
 
 // Sự kiện khi nhấn vào nút "Confirm"
-document
-    .querySelector('.confirm-info-container button[type="submit"]')
+document.querySelector('.confirm-info-container button[type="submit"]')
     .addEventListener("click", function (event) {
         event.preventDefault();
         console.log("Submit prevented");
@@ -282,49 +279,9 @@ document
 
 // Sự kiện khi nhấn vào overlay hoặc "Continue"
 document.querySelector(".overlay2").addEventListener("click", closeAllPanels);
-document
-    .querySelector(".success-panel .continue-btn")
+document.querySelector(".success-panel .continue-btn")
     .addEventListener("click", closeAllPanels);
 
-// Hàm để điền dữ liệu vào form ROOM APPLICATION
-document.addEventListener("DOMContentLoaded", function () {
-    const inforData = {
-        dormId: "A01333",
-        id: "A101",
-        studentId: "22520000",
-        fullName: "Lê Minh Hoàng",
-        buildingId: "A",
-        floor: "1",
-        price: "1.000.000 VND/month",
-        capacity: "0/2",
-        // startDate: "2024-10-01",
-        gender: "Male",
-        roomType: "Male",
-        // duration: "6",
-    };
-    // Hàm để điền dữ liệu vào form ROOM APPLICATION
-    function populateRoomInfo(data) {
-        console.log("Populating data..."); // Debug
-        document.getElementById("dorm-id").value = data.dormId || "";
-        document.getElementById("room-id").value = data.id || "";
-        document.getElementById("student-id").value = data.studentId || "";
-        document.getElementById("full-name").value = data.fullName || "";
-        document.getElementById("building-id").value = data.buildingId || "";
-        document.getElementById("floor").value = data.floor || "";
-        document.getElementById("price").value = data.price || "";
-        document.getElementById("capacity").value = data.capacity || "";
-        document.getElementById("start-date").value = data.startDate || "";
-        document.getElementById("gender").value = data.gender || "";
-        document.getElementById("room-type").value = data.roomType || "";
-        document.getElementById("duration").value = data.duration || "";
-    }
-
-    // Gọi hàm để điền dữ liệu vào form
-    populateRoomInfo(inforData);
-});
-
-// Hiển thị danh sách phòng khi tải trang
-document.addEventListener("DOMContentLoaded", displayRoom);
 
 document.addEventListener("DOMContentLoaded", function () {
     const roomItems = document.querySelectorAll(".room-item");

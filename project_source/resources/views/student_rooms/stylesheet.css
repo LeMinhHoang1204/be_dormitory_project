@@ -1,0 +1,225 @@
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.5;
+}
+
+.page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.page-title {
+    text-align: center;
+    color: #1a73e8;
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.filter-container {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.filter-group {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+.filter-group:hover {
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.filter-group h3 {
+    color: #1a73e8;
+    font-size: 15px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkbox-item {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.checkbox-item:hover {
+    transform: translateX(4px);
+}
+
+.checkbox-item input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    margin-right: 12px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.checkbox-item:hover .checkmark {
+    border-color: #1a73e8;
+}
+
+.checkbox-item input[type="checkbox"]:checked + .checkmark {
+    background-color: #1a73e8;
+    border-color: #1a73e8;
+}
+
+.checkbox-item input[type="checkbox"]:checked + .checkmark::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.label-text {
+    color: #4a4a4a;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+
+.floor-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4a4a4a;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.select-wrapper::after {
+    content: '▼';
+    font-size: 12px;
+    color: #4a4a4a;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+.select-wrapper:hover::after {
+    color: #1557b0;
+}
+
+.floor-select::-ms-expand {
+    display: none;
+}
+
+.floor-select:focus {
+    outline: none;
+    border-color: #1a73e8;
+}
+
+.floor-select:hover {
+    border-color: #1a73e8;
+}
+
+.button-group {
+    grid-column: 3;
+    border-top: none;
+    padding-top: 0;
+    align-items: flex-end;
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.apply-btn {
+    background-color: #1a73e8;
+    color: white;
+}
+
+.apply-btn:hover {
+    background-color: #1557b0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+}
+
+.cancel-btn {
+    background-color: #f1f3f4;
+    color: #4a4a4a;
+}
+
+.cancel-btn:hover {
+    background-color: #e8eaed;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .filter-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .button-group {
+        grid-column: auto;
+        flex-direction: column;
+    }
+}

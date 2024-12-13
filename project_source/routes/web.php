@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
@@ -7,6 +8,10 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    return view('home');
+});
+
+Route::get('/home', function () {
     return view('home');
 });
 
@@ -23,15 +28,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
 });
-Route::get('/student/extension', [RoomController::class, 'showRoomExtensionForm'])->middleware('auth');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('student/checkout', [RoomController::class, 'showCheckOutPage'])->name('student.checkout');
-
-    //     Xử lý yêu cầu Leave
-    Route::post('student/leave-request', [RoomController::class, 'leaveRequest'])->name('student.leave');
-});
-Route::get('/student/leave', [RoomController::class, 'leave'])->name('student.leave');
 
 Route::middleware(['auth'])->group(function () {
     // Route trang yêu cầu sửa chữa
@@ -40,22 +36,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/student/repair-request', [RoomController::class, 'storeRepairRequest'])->name('repair-request.store');
 });
 
-Route::get('/regis-test', function () {
-    return view('/Reg_room/reg_room');
-});
 
-Route::get('/home', function () {
-    return view('home');
-});
-
-// Payment
+// TODO: PAYMENT
 Route::resource('/payment', InvoiceController::class)->names('invoice');
 
-//Payment detail
+
 Route::get('student_payment/detail_payment/{id}', [InvoiceController::class, 'showDetail'])->name('student_payment.detail_payment');
-
-
-
 
 
 
@@ -69,22 +55,16 @@ Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomIn
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-//Xem trang thông tin phòng hiện tại của tôi
+// Xem trang thông tin phòng hiện tại của tôi
 Route::middleware('auth')->group(function () {
     Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
 });
 
 require __DIR__ . '/auth.php';
-require __DIR__ . '/api/building-room-residence.php';
-require __DIR__ . '/api/notification.php';
+require __DIR__ . '/admin/notification.php';
+require __DIR__ . '/admin/building-room-residence.php';
+require __DIR__ . '/admin/student.php';
+require __DIR__ . '/admin/activity.php';
+require __DIR__ . '/admin/asset.php';
+require __DIR__ . '/admin/invoice.php';
+require __DIR__ . '/admin/request.php';

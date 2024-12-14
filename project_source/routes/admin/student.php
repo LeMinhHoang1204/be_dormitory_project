@@ -36,5 +36,9 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/leave', [StudentController::class, 'leaveRequest'])->name('students.leave');
 
+        Route::get('/my_profile', [StudentController::class, 'showProfile'])->name('student.profile');
+//        Route::get('/student/user_profile.php/edit', [StudentController::class, 'editProfile'])->name('student.user_profile.php.edit');
+        Route::post('/upload-user_profile.php-image', [StudentController::class, 'updateProfileImage'])->name('user_profile.php.update-image');
+
     });
 });

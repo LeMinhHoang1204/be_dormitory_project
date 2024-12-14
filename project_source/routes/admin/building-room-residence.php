@@ -22,7 +22,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/buildings/edit/{building}', [BuildingController::class, 'update'])->name('buildings.update')->can('update', \App\Models\Building::class);
 
-    Route::delete('/buildings/delete/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy')->can('delete', \App\Models\Building::class);
+//    Route::delete('/buildings/delete/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy')->can('delete', \App\Models\Building::class);
+    Route::delete('/buildings/delete/{building}', [BuildingController::class, 'destroy'])
+        ->name('buildings.destroy')
+        ->middleware('can:delete,building');
 
     // rooms
     Route::prefix('/buildings/{building}/rooms')->group(function () {

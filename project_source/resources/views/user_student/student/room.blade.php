@@ -10,19 +10,18 @@
     @include('layouts.sidebar_student') <!-- Sidebar giống với extension -->
 
     <div class="extension">
-        <h3 class="heading">Your Room Information</h3>
+        <h3 class="heading">My Room Information</h3>
 
         @if(session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
             </div>
         @endif
-
         <!-- Thông tin phòng -->
         <div class="current-room-info">
             <h5 class="section-title">Room Details</h5>
             <p><strong>Room Name:</strong> {{ $residence->room->name ?? 'N/A' }}</p>
-            <p><strong>Building:</strong> {{ $residence->room->building->name ?? 'N/A' }}</p>
+            <p><strong>Building:</strong> {{ $residence->room->building->build_name ?? 'N/A' }}</p>
             <p><strong>Start Date:</strong> {{ $residence->start_date->format('d/m/Y') }}</p>
             <p><strong>End Date:</strong> {{ $residence->end_date->format('d/m/Y') }}</p>
             <p><strong>Status:</strong> {{ $residence->status }}</p>

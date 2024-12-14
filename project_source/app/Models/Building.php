@@ -19,7 +19,8 @@ class Building extends Model
         'type',
         'floor_numbers',
         'room_numbers',
-        'student_count'
+        'student_count',
+        'build_name',
     ];
 
     // employee relationship

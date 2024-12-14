@@ -78,7 +78,7 @@
                     <td>{{ $room->unit_price }}</td>
                     <td>{{ $room->member_count }}</td>
                     <td>{{ ucfirst($room->status) }}</td>
-                    {{-- format readable for time--}}
+                     format readable for time
                     <td>{{ $room->updated_at->diffForHumans() }}</td>
                     <td>
                         <div class="btn" >
@@ -89,7 +89,7 @@
                                     </a>
                             </span>
 
-                            {{--<span>--}}
+                            <span>
                             <!-- Delete Button -->
                             @can('delete', $room)
                                 <span class="btn-delete
@@ -100,7 +100,7 @@
                                     Delete
                                 </button>
                             </form>
-                            {{--                                </span>--}}
+                                                            </span>
                             @endcan
                         </div>
                     </td>
@@ -168,7 +168,7 @@
         }
     </style>
 
-    {{--    save position   --}}
+        save position
     <script>
         window.addEventListener('beforeunload', function () {
             localStorage.setItem('scrollPosition', window.scrollY);

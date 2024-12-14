@@ -32,7 +32,7 @@ class RoomController extends Controller
             $rooms = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10);
         }
 
-        return view('admin_rooms.list', compact('building', 'rooms'));
+        return view('admin.admin_rooms.list', compact('building', 'rooms'));
     }
 
     /**
@@ -40,8 +40,10 @@ class RoomController extends Controller
      */
     public function create(Building $building)
     {
+        $room = Room::where('building_id', $building->id)->latest()->first(); // Example logic
+        $rooms = $building->hasRooms()->where('building_id', $building->id)->paginate(10);
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin_rooms.create', compact('building', 'distinctRoomTypes'));
+        return view('admin.admin_rooms.create', compact('building', 'distinctRoomTypes', 'rooms','room'));
     }
 
     /**
@@ -59,7 +61,7 @@ class RoomController extends Controller
         ]);
 
         Room::create($validatedData);
-        return redirect(route('rooms.index', ['building' => $building]));
+        return redirect(route('buildings.show', ['building' => $building]))->with('success', 'Room created successfully!');
     }
 
     /**
@@ -76,7 +78,7 @@ class RoomController extends Controller
     public function edit(Building $building, Room $room)
     {
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes'));
+        return view('admin.admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes'));
     }
 
     /**
@@ -95,16 +97,17 @@ class RoomController extends Controller
 
         $room->update($validatedData);
 
-        return redirect(route('rooms.index', ['building' => $building]));
+        return redirect(route('buildings.show', ['building' => $building]))->with('success', 'Room updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Room $room)
+    public function destroy($buildingId, $roomId)
     {
+        $room = Room::findOrFail($roomId);
         $room->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Room deleted successfully');
     }
 
     private function getAllRoomType()

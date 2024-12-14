@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Residence;
+use App\Models\Room;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -30,6 +32,7 @@ class StudentController extends Controller
         return redirect('/flights');
     }
 
+//    TODO: FIX THIS
     public function showRoomRenewalForm()
     {
         $residence = Auth::user()->residence()
@@ -37,10 +40,10 @@ class StudentController extends Controller
             ->first();
 
         if (!$residence) {
-            return view('student.extension')->with('no_residence', true);
+            return view('user_student.student.extension')->with('no_residence', true);
         }
 
-        return view('student.extension', compact('residence'));
+        return view('user_student.student.extension', compact('residence'));
     }
 
     public function createRenewalRequest(Request $request)
@@ -85,7 +88,7 @@ class StudentController extends Controller
         }
 
         // Trả về trang checkout với thông tin sinh viên và phòng
-        return view('student.checkout', compact('student', 'residence'));
+        return view('user_student.student.checkout', compact('student', 'residence'));
     }
 
     public function leaveRequest()
@@ -98,9 +101,15 @@ class StudentController extends Controller
         return redirect()->route('student.checkout')->with('message', 'Request sent');
     }
 
+//    public function showRegisterRoomList()
+//    {
+//        $rooms = Room::paginate(6);
+//        return view('Reg_room.reg_room', compact('rooms'));
+//    }
     public function showRegisterRoomList()
     {
-        return view('Reg_room.reg_room');
+        $rooms = Room::with('hasRoomAssets.asset')->paginate(9);
+        return view('Reg_room.reg_room', compact('rooms'));
     }
 
     public function showRegisterRoomForm($room)
@@ -110,7 +119,7 @@ class StudentController extends Controller
 
         // Kiểm tra nếu không có thông tin sinh viên
         if (!$student) {
-            return view('student.register-room', ['message' => 'You do not have a student profile.']);
+            return view('student.register-room', ['message' => 'You do not have a student user_profile.php.']);
         }
 
         // Lấy thông tin phòng của sinh viên
@@ -125,6 +134,43 @@ class StudentController extends Controller
 
         // Trả về trang đăng ký phòng với thông tin sinh viên và phòng
         return view('student.register-room', compact('student', 'room'));
+    }
+    public function showProfile()
+    {
+        $user = auth()->user();
+        $currentResidence = Residence::where('stu_user_id', auth()->id())
+            ->where('status', 'Checked in', 'Paid')
+            ->with('room')
+            ->first();
+        if (!$user) {
+            return redirect()->route('login')->with('message', 'Please log in first.');
+        }
+
+        if ($user->student) {
+            $student = $user->student;
+            return view('user_profile.student', compact('student'));
+        } else {
+            return redirect()->back()->with('message', 'Student user_profile.php not found');
+        }
+    }
+    public function updateProfileImage(Request $request)
+    {
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
+        ]);
+
+        $user = auth()->user();
+
+        if ($user->profile_image_path && Storage::disk('public')->exists($user->profile_image_path)) {
+            Storage::disk('public')->delete($user->profile_image_path);
+        }
+
+        $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+
+        $user->profile_image_path = $imagePath;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully.!');
     }
 
     public function getCurrentUser()

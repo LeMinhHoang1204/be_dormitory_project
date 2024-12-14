@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Update your account's user_profile.php information and email address.") }}
         </p>
     </header>
 
@@ -83,7 +83,7 @@
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
-            @if (session('status') === 'profile-updated')
+            @if (session('status') === 'user_profile.php-updated')
                 <p
                     x-data="{ show: true }"
                     x-show="show"

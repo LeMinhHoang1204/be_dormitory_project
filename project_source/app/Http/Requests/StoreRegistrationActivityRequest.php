@@ -11,7 +11,11 @@ class StoreRegistrationActivityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check() && (
+                auth()->user()->role === 'admin' ||
+        auth()->user()->role === 'student' ||
+        auth()->user()->role === 'building manager'
+            );
     }
 
     /**

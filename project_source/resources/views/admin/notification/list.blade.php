@@ -1,6 +1,7 @@
-{{--@extends('Auth_.index')--}}
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -21,21 +22,28 @@
         toastr.success(JSON.stringify(data.email) + ' has joined our website');
     });
 </script>
-
+<style>
+    .extension{
+        max-width: 70%;
+    }
+</style>
 <x-app-layout>
     <head>
         <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">
     </head>
+    @include('layouts.sidebar_student')
 
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-blue-700 leading-tight">
-            {{ __('Notification') }}
-        </h2>
-    </x-slot>
+{{--    <x-slot name="header">--}}
+{{--        <h2 class="font-semibold text-xl text-blue-700 leading-tight">--}}
+{{--            {{ __('Notification') }}--}}
+{{--        </h2>--}}
+{{--    </x-slot>--}}
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="notification-frame">
+{{--    <div class="py-12">--}}
+{{--        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">--}}
+    <div class="extension">
+            <div class="bluefont"><h3>Notifications</h3></div>
+        {{--            <div class="notification-frame">--}}
                 <!-- Nút Create chỉ hiển thị cho người dùng có quyền admin hoặc building-manager -->
                 @if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->role === 'building manager'))
                     <div class="text-left">
@@ -98,29 +106,29 @@
                     </div>
                 </form>
 
-    <script>
-        function togglePanel() {
+        <script>
+            function togglePanel() {
             const panel = document.getElementById('filterPanel');
             panel.classList.toggle('hidden');
-        }
+            }
 
-        function closePanel(event) {
+            function closePanel(event) {
             const panel = document.getElementById('filterPanel');
             if (event.target === panel) {
                 panel.classList.add('hidden');
             }
-        }
+            }
 
-        function applyFilters() {
+            function applyFilters() {
             // Thực hiện hành động khi nhấn nút Apply (tùy chỉnh theo logic của bạn)
             togglePanel(); // Đóng panel sau khi nhấn Apply
-        }
-    </script>
+            }
+        </script>
 
 
 
     <!-- Notification list -->
-                <div class="notifications-container">
+{{--                <div class="notifications-container">--}}
                     @foreach ($notifications as $notification)
                         <div class="notification-item">
                             <h4 class="notification-title">
@@ -156,8 +164,8 @@
                             @endcan
                         </div>
                     @endforeach
-                </div>
-            </div>
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
-    </div>
+{{--    </div>--}}
 </x-app-layout>

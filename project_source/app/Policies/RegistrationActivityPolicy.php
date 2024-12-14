@@ -55,6 +55,10 @@ class RegistrationActivityPolicy
     {
         return false;
     }
+    public function store(User $user, RegistrationActivity $registrationActivity): bool
+    {
+        return $user->role === 'admin' || $user->role === 'building manager' || $user->role === 'student';
+    }
 
     /**
      * Determine whether the user can permanently delete the model.

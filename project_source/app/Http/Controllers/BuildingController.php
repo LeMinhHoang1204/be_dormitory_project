@@ -14,10 +14,9 @@ class BuildingController extends Controller
      */
     public function index()
     {
-        $buildings = Building::all();
-
+        $buildings = Building::paginate(10);
         $managers = $this->getAvailableManagers();
-        return view('admin_buildings.list', compact('buildings', 'managers'));
+        return view('admin.admin_buildings.list', compact('buildings', 'managers'));
     }
 
     public function updateManager(Request $request, Building $building)

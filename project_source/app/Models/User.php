@@ -58,6 +58,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'admin';
     }
 
+    public static function getSpecificUser($id)
+    {
+        return User::find($id);
+    }
+
 
 
     // student relationships

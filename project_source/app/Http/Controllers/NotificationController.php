@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationEvent;
 use App\Models\Building;
 use App\Models\Notification;
 
 use App\Models\Room;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -27,11 +30,22 @@ class NotificationController extends Controller
         if (!$user->isAdmin()) {
             $query->where(function ($q) use ($user) {
                 $q->where('sender_id', $user->id) // Lọc nếu người dùng là người gửi
-                ->orWhereHas('notification', function ($q) use ($user) {
-                    $q->where('user_id', $user->id); // Lọc nếu người dùng là người nhận
-                });
+                ->orWhereHas('object', function ($q) use ($user) {
+                    $q->where(function ($q) use ($user) {
+                        $q->where('object_type', 'App\Models\User')
+                          ->where('object_id', $user->id); // So sánh object_id với user_id
+
+                    })->orWhere(function ($q) use ($user) {
+                        $q->where('object_type', 'App\Models\Room')
+                              ->where('object_id', $user->residence()->where('status', 'Checked in')->first()->room->id); // So sánh object_id với residence->room->name
+
+                    })->orWhere(function ($q) use ($user) {
+                        $q->where('object_type', 'App\Models\Building')
+                          ->where('object_id', $user->residence()->where('status', 'Checked in')->first()->room->building->id); // So sánh object_id với residence->room->building->build_name
+                    });
             });
-        }
+        });
+}
 
         // Lọc theo ngày tạo gần đây hoặc xa nhất
         if ($request->has('sort_date') && !empty($request->sort_date)) {
@@ -90,15 +104,28 @@ class NotificationController extends Controller
             'title' => 'required|string',
             'type' => 'required|string',
             'content' => 'required|string',
-            'object_id' => 'required|integer',
         ]);
 
         if ($validatedData['type'] === 'individual') {
             $validatedData['object_type'] = 'App\Models\User';
+            $validatedData['object_id'] = $request->user_object_id;
+        }
+        elseif ($validatedData['type'] === 'group' and $request->group === 'building') {
+            $validatedData['object_type'] = 'App\Models\Building';
+            $validatedData['object_id'] = $request->building_object_id;
+        }
+        elseif ($validatedData['type'] === 'group' and $request->group === 'room') {
+            $validatedData['object_type'] = 'App\Models\Room';
+            $validatedData['object_id'] = $request->room_object_id;
         }
 
 //        dd($request->all());
         Notification::create($validatedData); // Sử dụng dữ liệu đã xác thực
+
+
+        $sender = User::getSpecificUser($validatedData['sender_id']);
+//        broadcast(new NotificationEvent($sender))->toOthers();
+        event(new NotificationEvent($sender->name, $validatedData['object_id'])); // Gửi thông báo đến kênh
 
         return redirect(route('notifications.index', absolute: false));
     }
@@ -161,10 +188,15 @@ class NotificationController extends Controller
         return response()->json($buildings);
     }
 
-    public function getAllRoom(Building $building)
+    public function getAllRoom(int $building)
     {
-        echo(100) ;
-        $rooms = Room::where('building_id', $building->id)->get();
+        $rooms = Room::where('building_id', $building)->get();
         return response()->json($rooms);
+    }
+
+    public function getAllUser()
+    {
+        $users = User::where('id', '!=', auth()->id())->get();
+        return response()->json($users);
     }
 }

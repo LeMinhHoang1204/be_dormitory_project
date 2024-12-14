@@ -139,6 +139,8 @@
                             </p>
                             <p class="notification-content">{{ $notification->content }}</p>
 
+                            @can('update', $notification)
+                                <a href="{{ route('notifications.show', $notification->id) }}" class="btn-view">View</a>
                             <!-- Action Buttons -->
                             <div class="btn">
                                 <!-- Edit Button -->
@@ -159,6 +161,7 @@
                                     </form>
 {{--                                </span>--}}
                             </div>
+                            @endcan
                         </div>
                     @endforeach
 {{--                </div>--}}

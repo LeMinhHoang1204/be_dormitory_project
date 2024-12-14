@@ -13,15 +13,22 @@ window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: '93fd8aeba9d1b2cd6e0a',  // Thay bằng PUSHER_APP_KEY từ file .env của bạn
-    cluster: 'ap1',               // Thay bằng PUSHER_APP_CLUSTER từ file .env của bạn
-    forceTLS: true
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    wsHost: import.meta.env.VITE_PUSHER_HOST,
+    wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
+    wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
+    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
+    cluster:import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    encrypted: true,
+    authEndpoint: '/broadcasting/auth',
+    auth: {
+        headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    }
 });
 
-window.Echo.channel('be-dormitory-channel')
-    .listen('.user-login', (data) => {
-        console.log('User login event received:', data);
-        toastr.success(`${data.email} has joined our website`);
-    });
+
 
 

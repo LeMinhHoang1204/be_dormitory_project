@@ -51,6 +51,8 @@ Route::get('/register_room', [RoomController::class, 'showListRoom']);
 
 Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
 
+Route::post('/register-room', [ResidenceController::class, 'store'])->name('register.room');
+
 
 
 
@@ -61,6 +63,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';

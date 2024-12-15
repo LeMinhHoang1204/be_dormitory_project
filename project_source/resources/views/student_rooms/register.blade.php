@@ -35,8 +35,17 @@
             </div>
         </div>
 
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <div class="grid-container" id="room-list">
             @foreach ($rooms as $room)
@@ -311,46 +320,53 @@
             <h2>Room Registration</h2>
         </div>
         <div class="popup-body">
-            <form action="/register-room" method="POST">
+            <form action="{{ route('register.room') }}" method="POST" id="registration-form">
                 @csrf
                 <input type="hidden" id="room-id-input" name="room_id">
 
                 <div class="form-group">
-                    <div>
-                        <span class="label-text">Room: </span>
+                    <div class="room-info-display">
+                        <div class="info-item">
+                            <span class="label-text">Room: </span>
+                            <span class="room-detail" id="display-room-name"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label-text">Price: </span>
+                            <span class="room-detail" id="display-room-price"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label-text">Floor number: </span>
+                            <span class="room-detail" id="display-floor-number"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label-text">Type: </span>
+                            <span class="room-detail" id="display-room-type"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label-text">Capacity: </span>
+                            <span class="room-detail" id="display-room-capacity"></span>
+                        </div>
+                    </div>
 
-                        <span class="room-detail">{{ $room->name }}</span>
-                    </div>
-                    <div>
-                        <span class="label-text">Price: </span>
-                        <span class="room-detail">{{ $room->unit_price }}₫/month</span>
-                    </div>
-                    <div>
-                        <span class="label-text">Floor number: </span>
-                        <span class="room-detail">{{ $room->floor_number }}</span>
-                    </div>
-                    <div>
-                        <span class="label-text">Type: </span>
-                        <span class="room-detail room-type">{{ $room->type }}</span>
-                    </div>
-                    <div>
-                        <span class="label-text">Capacity: </span>
-                        <span class="room-detail">{{ $room->member_number }}</span>
+                    <div class="form-field">
+                        <label>Check-in Date:</label>
+                        <input type="date" name="check_in_date" class="form-control" required>
                     </div>
 
-                    <label>Check-in Date:</label>
-                    <input type="date" name="check_in_date" class="form-control" required>
-
-                    <label>Duration (months):</label>
-                    <select name="duration" class="form-control" required>
-                        <option value="6">6 months</option>
-                        <option value="12">12 months</option>
-                    </select>
+                    <div class="form-field">
+                        <label>Duration (months):</label>
+                        <select name="duration" class="form-control" required>
+                            <option value="3">3 months</option>
+                            <option value="6">6 months</option>
+                            <option value="9">9 months</option>
+                            <option value="12">12 months</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="button-group mt-4">
                     <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm</button>
+                    <button type="submit" class="btn btn-primary">Agree</button>
                 </div>
             </form>
         </div>

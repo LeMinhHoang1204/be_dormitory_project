@@ -65,12 +65,24 @@ function handleRegisterClick(event, roomId) {
     // Prevent event bubbling
     event.stopPropagation();
 
-    // Store the selected room ID
-    selectedRoomId = roomId;
+    // Lấy thông tin phòng từ room-item
+    const roomItem = event.target.closest('.room-item');
+    const roomName = roomItem.querySelector('.roomname').textContent;
+    const roomPrice = roomItem.querySelector('.price').textContent;
+    const floorNumber = roomItem.dataset.floor;
+    const roomType = roomItem.dataset.type;
+    const capacity = roomItem.dataset.capacity;
 
-    // Show confirmation modal
-    const confirmModal = document.getElementById("confirm-register-modal");
-    confirmModal.style.display = "flex";
+    // Cập nhật thông tin trong form
+    document.getElementById('room-id-input').value = roomId;
+    document.getElementById('display-room-name').textContent = roomName;
+    document.getElementById('display-room-price').textContent = roomPrice + '₫/month';
+    document.getElementById('display-floor-number').textContent = floorNumber;
+    document.getElementById('display-room-type').textContent = roomType;
+    document.getElementById('display-room-capacity').textContent = capacity;
+
+    // Hiển thị modal đăng ký
+    document.getElementById('register-popup').style.display = 'block';
 }
 
 function closeConfirmModal() {
@@ -92,3 +104,30 @@ function proceedToRegistration() {
         updateRegisterPopupDetails(selectedRoomId);
     }
 }
+
+// Thêm event listener cho form submit
+document.getElementById('registration-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Submit form bằng AJAX
+    fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Registration successful!');
+            window.location.reload();
+        } else {
+            alert(data.message || 'Registration failed. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+});

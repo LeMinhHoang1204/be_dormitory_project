@@ -20,7 +20,7 @@
                         <p>ID Room: {{ $room->id }}</p>
                         <p>Floor Number: {{ $room->floor_number }}</p>
                         <p>Price: {{ $room->unit_price }} VND/month</p>
-                        <p>Member number: {{ $room->menber_number }}</p>
+                        <p>Member number: {{ $room->member_number }}</p>
                         <x-register-button />
                     </div>
                     <div class="room-image">

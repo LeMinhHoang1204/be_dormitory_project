@@ -13,6 +13,12 @@
     });
 </script>
 
+<script>
+    @if (session('success'))
+    toastr.success("{{ session('success') }}");
+    @endif
+</script>
+
 {{--<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>--}}
 {{--<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>--}}
 {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">--}}
@@ -64,6 +70,12 @@
         .toast-success {
             color: #ffffff !important; /* Màu chữ cho thông báo thành công */
             background-color: #28a745 !important; /* Màu nền */
+            font-family: "Poppins", sans-serif !important; /* Font chữ */
+        }
+
+        .toast-info {
+            color: #ffffff !important; /* Màu chữ cho thông báo thông tin */
+            background-color: #17a2b8 !important; /* Màu nền */
             font-family: "Poppins", sans-serif !important; /* Font chữ */
         }
 
@@ -137,4 +149,16 @@
         @endif
     </div>
 @endsection
+
+@if (session('notification'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const notification = @json(session('notification'));
+            // Display the notification
+            toastr.info(
+                `${notification.message} `
+            );
+        });
+    </script>
+@endif
 

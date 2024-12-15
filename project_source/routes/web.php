@@ -29,9 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
-});
+
 
 Route::middleware(['auth'])->group(function () {
     // Route trang yêu cầu sửa chữa

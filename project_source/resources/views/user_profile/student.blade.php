@@ -120,7 +120,7 @@
                     <p><strong>Gender:</strong> {{ ucfirst($student->gender) }}</p>
                     <p><strong>University Name:</strong> {{ $student->uni_name }}</p>
                     <p><strong>Status:</strong> {{ auth()->user()->status ? 'Active' : 'Inactive' }}</p>
-                    <p><strong>Room:</strong> {{ $currentResidence?->room?->name ?? 'Not assigned' }}</p>
+                    <p><strong>Room:</strong> {{ $residence?->room?->name ?? 'Not assigned' }}</p>
                 </div>
             </div>
 

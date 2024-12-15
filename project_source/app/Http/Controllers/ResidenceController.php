@@ -78,19 +78,20 @@ class ResidenceController extends Controller
         $student = $user->student;
 
         if (!$student) {
-            return redirect()->route('dashboard', ['id' => $student->id])->with('error', 'You are not assigned as a student.');
+            return redirect()->route('dashboard')->with('error', 'You are not assigned as a student.');
         }
 
-        $residence = Residence::where('stu_user_id', $student->id)
+        $residence = Residence::where('stu_user_id', $user->id)
             ->with('room.building')
             ->first();
 
         if (!$residence) {
-            return redirect()->route('register_room', ['id' => $student->id])->with('error', 'No room information found. Let register a room.');
+            return redirect()->route('students.register-room.list')->with('error', 'No room information found. Let register a room.');
         }
 
         return view('user_student.student.room', compact('residence'));
     }
+
 
 
 }

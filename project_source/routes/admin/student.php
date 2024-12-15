@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\StudentController;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::middleware('auth')->group(function () {
 
 //        Route::post('/register-room/{room}', [StudentController::class, 'createNewResidence'])->name('students.register-room.create')->can('registerRoom', Student::class);
 
-        Route::get('/room', [StudentController::class, 'showMyRoom'])->name('students.room');
+        Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
 
         Route::get('/repair-request', [StudentController::class, 'showRepairRequestForm'])->name('students.repair-request');
 

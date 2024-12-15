@@ -91,7 +91,7 @@ margin-left: 2px;
             <ul class="submenu">
                 <li><a href="{{ url('/register_room') }}">Register</a></li>
 
-                <li><a href="{{ url('/my-room') }}">My room</a></li>
+                <li><a href="{{ url('/students/my-room') }}">My room</a></li>
 
                 <li><a href="{{ url('/students/register-room') }}">Register</a></li>
 

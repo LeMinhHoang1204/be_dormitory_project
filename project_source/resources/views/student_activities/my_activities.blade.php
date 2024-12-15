@@ -204,6 +204,7 @@
             <thead class="thead">
             <tr>
                 <th>No.</th>
+                <th>ID</th>
                 <th>Title</th>
                 <th>Creator</th>
                 <th>Participants</th>
@@ -217,6 +218,7 @@
             <tbody>
             @foreach($activities as $index => $activity)
                 <tr>
+                    <td>{{ ($activities->currentPage() - 1) * $activities->perPage() + $loop->iteration }}</td>
                     <td>{{ $activity->id }}</td>
                     <td>{{ $activity->title }}</td>
                     <td>{{ $activity->creator->name }}</td>

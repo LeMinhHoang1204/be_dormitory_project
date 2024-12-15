@@ -132,7 +132,7 @@ body {
 
 .detail-item {
     background: #f3f4f6;
-    padding: 3px 7px;
+    padding: 3px 5px;
     border-radius: 4px;
     font-size: 0.7rem;
     color: #61728b;
@@ -504,9 +504,6 @@ body {
     margin: 0;
 }
 
-.close-btn {
-    /* Remove entirely since both normal and hover states are display:none */
-}
 
 .popup-body .form-group {
     margin-bottom: 20px;

@@ -135,6 +135,7 @@ class StudentController extends Controller
         // Trả về trang đăng ký phòng với thông tin sinh viên và phòng
         return view('student.register-room', compact('student', 'room'));
     }
+
     public function showProfile()
     {
         $user = auth()->user();
@@ -209,7 +210,7 @@ class StudentController extends Controller
 
         \App\Models\Invoice::create([
             'sender_id' => '1',
-            'object_type' => 'User',
+            'object_type' => 'App\Models\User',
             'object_id' => $validatedData['dormId'],
             'send_date' => now(),
             'due_date' => now()->addDays(7),
@@ -217,6 +218,23 @@ class StudentController extends Controller
             'total' => $validatedData['duration'] * $validatedData['price'],
         ]);
 
-        return view('dashboard');
+        // Store notification data in session
+        session()->flash('notification', [
+            'message' => 'You had a new room invoice!',
+//            'details' => [
+//                'type' => 'Room',
+//            ],
+        ]);
+
+        return redirect()->route('dashboard');
+    }
+
+    public function getLatestResidence($userId)
+    {
+        $residence = Residence::where('stu_user_id', $userId)
+            ->where('status', '!=', 'Checked out')
+            ->first();
+
+        return response()->json(['residence' => $residence]);
     }
 }

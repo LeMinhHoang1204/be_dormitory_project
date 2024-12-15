@@ -4,15 +4,30 @@
     <title>Building List</title>
     <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        .extension{
+            max-width: 55%;
+        }
+    </style>
 </head>
 
 @section('content')
     @include('layouts.sidebar_student')
 
-    <div class="buildinglist">
+    <div class="extension">
         <h3 class="heading">Buildings List</h3>
-
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+        @endif
         <a href="{{ route('buildings.create') }}" class="blue-btn">
             {{ __('Create') }}
         </a>
@@ -20,19 +35,23 @@
         <table class="table">
             <thead class="thead">
             <tr>
+                <th>No.</th>
+                <th>Id</th>
                 <th>Building</th>
                 <th>Manager</th>
                 <th>Type</th>
-                <th>Floor Numbers</th>
-                <th>Room Numbers</th>
+                <th>Floor </th>
+                <th>Room </th>
                 <th>Student Count</th>
-                <th>Grant</th>
-                <th>Action</th>
+{{--                <th>Grant</th>--}}
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            @forelse($buildings as $building)
-                <tr onclick="window.location='{{ route('buildings.show', $building->id) }}'" style="cursor: pointer;">
+            @forelse($buildings  as $index => $building)
+                 <tr>
+                     <td>{{ ($buildings->currentPage() - 1) * $buildings->perPage() + $loop->iteration }}</td>
+                     <td>{{ $building->id }}</td>
                     <td>{{ $building->build_name }}</td>
                     <td>{{ $building->managedBy->user->name ?? 'N/A' }}</td>
                     <td>{{ ucfirst($building->type) }}</td>
@@ -40,47 +59,40 @@
                     <td>{{ $building->room_numbers }}</td>
                     <td>{{ $building->student_count }}</td>
                     <td>
-                        <form action="{{ route('buildings.updateManager', $building->id) }}" method="POST" onclick="event.stopPropagation();">
-                            @csrf
-                            @method('PUT')
-                            <select name="manager_id" class="form-control">
-                                @if($building->manager_id)
-                                    <option value="{{$building->managedBy->id}}" selected>{{$building->managedBy->user->name}}</option>
-                                @else
-                                    <option value="">-- Select Manager --</option>
-                                @endif
+                        <div class="dropdown">
+                            <i class="fa-solid fa-ellipsis-vertical" onclick="toggleDropdown(event)"></i>
+                            <div class="dropdown-content">
+                                <a href="{{ route('buildings.show', $building->id) }}" class="more">
+                                    More
+                                </a>
+                                <a href="{{ route('buildings.edit', $building->id) }}" class="register">
+                                    <i class="fa-solid fa-pen-nib"></i> Edit
+                                </a>
+                                <a href="{{ route('buildings.destroy', $building->id) }}" class="delete" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $building->id }}').submit();">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </a>
 
-                                @foreach($managers as $manager)
-                                    <option value="{{ $manager->id }}" {{ $building->manager_id == $manager->id ? 'selected' : '' }}>
-                                        {{ $manager->user->name }}
-                                    </option>
-                                @endforeach
+                                <form id="delete-form-{{ $building->id }}" action="{{ route('buildings.destroy', $building->id) }}" method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
 
-                                @if($building->manager_id)
-                                    <option value="">-- Delete current manager --</option>
-                                @endif
-                            </select>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </form>
-                    </td>
-                    <td>
-                        <div class="btn">
-                                <span class="btn-edit">
-                                    <a href="{{ route('buildings.edit', $building->id) }}"  >
-                                        Edit
-                                    </a>
-                                </span>
 
-                            <form action="{{ route('buildings.destroy', $building->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this building?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="red-btn">
-                                    Delete
-                                </button>
-                            </form>
+                            </div>
                         </div>
                     </td>
-                </tr>
+                 </tr>
+
+{{--                            <form action="{{ route('buildings.destroy', $building->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this building?');">--}}
+{{--                                @csrf--}}
+{{--                                @method('DELETE')--}}
+{{--                                <button type="submit" class="red-btn">--}}
+{{--                                    Delete--}}
+{{--                                </button>--}}
+{{--                            </form>--}}
+{{--                        </div>--}}
+{{--                    </td>--}}
+{{--                </tr>--}}
             @empty
                 <tr>
                     <td colspan="8" class="text-center">No buildings found</td>
@@ -88,217 +100,69 @@
             @endforelse
             </tbody>
         </table>
+        <div class="pagination">
+            @if ($buildings->onFirstPage())
+                <span class="gap">Previous</span>
+            @else
+                <!-- Giữ tham số lọc khi chuyển trang -->
+                <a href="{{ request()->fullUrlWithQuery(['page' => $buildings->currentPage() - 1]) }}" class="previous">Previous</a>
+            @endif
+
+            @foreach ($buildings->getUrlRange(1, $buildings->lastPage()) as $page => $url)
+                @if ($page == $buildings->currentPage())
+                    <span class="pagination-page current">{{ $page }}</span>
+                @else
+                    <!-- Giữ tham số lọc khi chuyển trang -->
+                    <a href="{{ request()->fullUrlWithQuery(['page' => $page]) }}" class="pagination-page">{{ $page }}</a>
+                @endif
+            @endforeach
+
+            @if ($buildings->hasMorePages())
+                <a href="{{ request()->fullUrlWithQuery(['page' => $buildings->currentPage() + 1]) }}" class="next">Next</a>
+            @else
+                <span class="gap">Next</span>
+            @endif
+        </div>
+
+        <p>{{ $buildings->currentPage() }} / {{ $buildings->lastPage() }}</p>
+
     </div>
+    <script>
+        function toggleDropdown(event) {
+            var dropdown = event.target.closest('.dropdown');
+            var dropdownContent = dropdown.querySelector('.dropdown-content');
+
+            // Đóng tất cả các dropdown khác
+            var allDropdowns = document.querySelectorAll('.dropdown-content');
+            allDropdowns.forEach(function(content) {
+                if (content !== dropdownContent) {
+                    content.style.display = 'none';
+                }
+            });
+
+            // Toggle trạng thái hiển thị của dropdown hiện tại
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        }
+
+        // Đóng dropdown khi nhấn ngoài menu
+        window.onclick = function(event) {
+            if (!event.target.matches('.fa-ellipsis-vertical')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === "block") {
+                        openDropdown.style.display = "none";
+                    }
+                }
+            }
+        }
+
+    </script>
 @endsection
 
-<style>
-    body {
-        background-color: #f9fafc;
-        font-family: "Poppins", sans-serif;
-    }
-
-    .buildinglist {
-        max-width: 70%;
-        margin: 40px auto;
-        padding: 30px;
-        background-color: #f9f9f9;
-        box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 20px;
-    }
-
-    .heading {
-        font-family: Inter;
-        color: #0e3b9c;
-        font-size: 36px;
-        font-weight: 700;
-        text-align: center;
-    }
 
 
-    .table {
-        width: 100%;
-        margin-top: 20px;
-        color: #ECEFFF;
-        border-collapse: collapse;
-        border-radius: 20px;
-    }
-
-    .table thead {
-        background-color: #ECEFFF;
-        border-radius: 20px 20px 0px 0px;
-    }
-
-    th, td {
-        padding: 0.75rem;
-        vertical-align: top;
-        border-top: 1px solid #dee2e6;
-    }
-
-    tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 20px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        background-color: #fff;
-        line-height: 1.4;
-    }
-</style>
-
-
-
-{{--<x-app-layout>--}}
-
-{{--    <head>--}}
-{{--        <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">--}}
-{{--    </head>--}}
-{{--    @include('layouts.sidebar_student')--}}
-
-{{--    <x-slot name="header">--}}
-{{--        <h2 class="font-semibold text-xl text-blue-700 leading-tight">--}}
-{{--            {{ __('Buildings List') }}--}}
-{{--        </h2>--}}
-{{--    </x-slot>--}}
-
-{{--    <div class="container">--}}
-{{--        <h1 class="text-center my-4">Buildings List</h1>--}}
-{{--        --}}{{--Create--}}
-{{--        <x-primary-button>--}}
-{{--            <a href="{{ route('buildings.create') }}" style="color: white; text-decoration: none;">--}}
-{{--                {{ __('Create') }}--}}
-{{--            </a>--}}
-{{--        </x-primary-button>--}}
-
-{{--        <table class="table table-bordered table-striped mt-4">--}}
-{{--            <thead class="thead-dark">--}}
-{{--            <tr>--}}
-{{--                <th>ID</th>--}}
-{{--                <th>Manager</th>--}}
-{{--                <th>Type</th>--}}
-{{--                <th>Floor Numbers</th>--}}
-{{--                <th>Room Numbers</th>--}}
-{{--                <th>Student Count</th>--}}
-{{--                <th>Grant</th>--}}
-{{--                <th>Action</th>--}}
-{{--            </tr>--}}
-{{--            </thead>--}}
-{{--            <tbody>--}}
-{{--            @forelse($buildings as $building)--}}
-{{--                <tr onclick="window.location='{{ route('buildings.show', $building->id) }}'" style="cursor: pointer;">--}}
-{{--                    <td>{{ $building->id }}</td>--}}
-{{--                    <td>{{ $building->managed->user->name ?? 'N/A' }}</td>--}}
-{{--                    <td>{{ ucfirst($building->type) }}</td>--}}
-{{--                    <td>{{ $building->floor_numbers }}</td>--}}
-{{--                    <td>{{ $building->room_numbers }}</td>--}}
-{{--                    <td>{{ $building->student_count }}</td>--}}
-{{--                    <td>--}}
-{{--                        <form action="{{ route('buildings.updateManager', $building->id) }}" method="POST" onclick="event.stopPropagation();">--}}
-{{--                            @csrf--}}
-{{--                            @method('PUT')--}}
-{{--                            <select name="manager_id" class="form-control">--}}
-{{--                                @if($building->manager_id)--}}
-{{--                                    <option value="{{$building->managed->id}}" selected>{{$building->managed->user->name}}</option>--}}
-{{--                                @else--}}
-{{--                                    <option value="">-- Select Manager --</option>--}}
-{{--                                @endif--}}
-
-{{--                                @foreach($managers as $manager)--}}
-{{--                                    <option value="{{ $manager->id }}" {{ $building->manager_id == $manager->id ? 'selected' : '' }}>--}}
-{{--                                        {{ $manager->user->name }}--}}
-{{--                                    </option>--}}
-{{--                                @endforeach--}}
-
-{{--                                @if($building->manager_id)--}}
-{{--                                    <option value="">-- Delete current manager --</option>--}}
-{{--                                @endif--}}
-{{--                            </select>--}}
-{{--                            <button type="submit" class="btn btn-primary">Save</button>--}}
-{{--                        </form>--}}
-{{--                    </td>--}}
-{{--                    <td>--}}
-{{--                        <div class="btn" >--}}
-{{--                            <!-- Edit Button -->--}}
-{{--                            <span class="btn-edit">--}}
-{{--                                    <a href="{{ route('buildings.edit', $building->id) }}" >--}}
-{{--                                        Edit--}}
-{{--                                    </a>--}}
-{{--                            </span>--}}
-
-{{--                            --}}{{--<span>--}}
-{{--                            <!-- Delete Button -->--}}
-{{--                            <form action="{{ route('buildings.destroy', $building->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this building?');">--}}
-{{--                                @csrf--}}
-{{--                                @method('DELETE')--}}
-{{--                                <button type="submit" class="btn-delete">--}}
-{{--                                    Delete--}}
-{{--                                </button>--}}
-{{--                            </form>--}}
-{{--                            --}}{{--                                </span>--}}
-{{--                        </div>--}}
-{{--                    </td>--}}
-{{--                </tr>--}}
-{{--            @empty--}}
-{{--                <tr>--}}
-{{--                    <td colspan="6" class="text-center">No buildings found</td>--}}
-{{--                </tr>--}}
-{{--            @endforelse--}}
-{{--            </tbody>--}}
-{{--        </table>--}}
-{{--    </div>--}}
-
-{{--    <style>--}}
-{{--        .container {--}}
-{{--            max-width: 1200px;--}}
-{{--            margin: 0 auto;--}}
-{{--            padding: 20px;--}}
-{{--        }--}}
-
-{{--        .text-center {--}}
-{{--            text-align: center;--}}
-{{--        }--}}
-
-{{--        .my-4 {--}}
-{{--            margin-top: 1.5rem;--}}
-{{--            margin-bottom: 1.5rem;--}}
-{{--        }--}}
-
-{{--        .table {--}}
-{{--            width: 100%;--}}
-{{--            margin-bottom: 1rem;--}}
-{{--            color: #212529;--}}
-{{--            border-collapse: collapse;--}}
-{{--        }--}}
-
-{{--        .table-bordered {--}}
-{{--            border: 1px solid #dee2e6;--}}
-{{--        }--}}
-
-{{--        .table-striped tbody tr:nth-of-type(odd) {--}}
-{{--            background-color: rgba(0, 0, 0, 0.05);--}}
-{{--        }--}}
-
-{{--        .thead-dark th {--}}
-{{--            color: #fff;--}}
-{{--            background-color: #343a40;--}}
-{{--            border-color: #454d55;--}}
-{{--        }--}}
-
-{{--        th, td {--}}
-{{--            padding: 0.75rem;--}}
-{{--            vertical-align: top;--}}
-{{--            border-top: 1px solid #dee2e6;--}}
-{{--        }--}}
-
-{{--        th {--}}
-{{--            text-align: inherit;--}}
-{{--        }--}}
-
-{{--        tr:hover {--}}
-{{--            background-color: #f1f1f1;--}}
-{{--        }--}}
-{{--    </style>--}}
-{{--</x-app-layout>--}}

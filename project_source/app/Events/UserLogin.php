@@ -30,7 +30,7 @@ class UserLogin implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new Channel('be-dormitory-channel');
+        return new Channel('be-dormitory-channel2');
     }
 
     /**

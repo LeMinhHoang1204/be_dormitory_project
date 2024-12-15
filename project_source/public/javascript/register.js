@@ -22,7 +22,7 @@ function closePopup() {
 // Button Register
 function handleSearchKeyup(event) {
     // Nếu nhấn Enter
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
         performSearch(event.target.value);
         event.target.blur(); // Thoát khỏi input
         return;
@@ -34,21 +34,23 @@ function handleSearchKeyup(event) {
 
 function performSearch(searchValue) {
     const searchTerm = searchValue.toLowerCase();
-    const roomItems = document.querySelectorAll('.room-item');
+    const roomItems = document.querySelectorAll(".room-item");
 
     // Tim kiem room theo name
-    roomItems.forEach(room => {
-        const roomName = room.querySelector('.roomname').textContent.toLowerCase();
+    roomItems.forEach((room) => {
+        const roomName = room
+            .querySelector(".roomname")
+            .textContent.toLowerCase();
         if (roomName.includes(searchTerm)) {
-            room.style.display = 'block';
+            room.style.display = "block";
         } else {
-            room.style.display = 'none';
+            room.style.display = "none";
         }
     });
 
-    if (searchTerm === '') {
-        roomItems.forEach(room => {
-            room.style.display = 'block';
+    if (searchTerm === "") {
+        roomItems.forEach((room) => {
+            room.style.display = "block";
         });
     }
 }

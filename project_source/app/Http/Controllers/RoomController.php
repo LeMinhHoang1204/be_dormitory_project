@@ -194,7 +194,7 @@ class RoomController extends Controller
 
     public function showListRoom()
     {
-        $rooms = Room::orderBy('id', 'asc')->paginate(6);
+        $rooms = Room::with(['hasRoomAssets.asset'])->orderBy('id', 'asc')->paginate(6);
         return view('student_rooms.register', ['rooms' => $rooms]);
     }
 

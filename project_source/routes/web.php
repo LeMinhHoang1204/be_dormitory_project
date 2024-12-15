@@ -5,6 +5,8 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ActivityController;
 
@@ -45,8 +47,10 @@ Route::resource('/payment', InvoiceController::class)->names('invoice');
 Route::get('student_payment/detail_payment/{id}', [InvoiceController::class, 'showDetail'])->name('student_payment.detail_payment');
 
 
-
-// TODO: DISPLAY ROOM
+// Display roomInfor
+Route::middleware('auth')->group(function () {
+    Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
+});
 
 Route::get('/register_room', [RoomController::class, 'showListRoom']);
 
@@ -60,6 +64,7 @@ Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomIn
 Route::middleware('auth')->group(function () {
     Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
 });
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';

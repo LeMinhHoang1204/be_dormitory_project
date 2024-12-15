@@ -17,8 +17,9 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/notifications/delete/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy')->can('delete', 'notification');
 
-    Route::get('/admin/getAllBuilding', [NotificationController::class, 'getAllBuilding'])->name('notifications.getAllBuilding');
+    Route::get('/admin/getAllBuildings', [NotificationController::class, 'getAllBuilding'])->name('notifications.getAllBuilding')->can('create', \App\Models\Notification::class);;
 
-    Route::get('/admin/getAllRoom/{building_id}', [NotificationController::class, 'getAllRoom'])->name('notifications.getAllRoom');
+    Route::get('/admin/getAllRooms/{building_id}', [NotificationController::class, 'getAllRoom'])->name('notifications.getAllRoom')->can('create', \App\Models\Notification::class);;
 
+    Route::get('/admin/getAllUsers', [NotificationController::class, 'getAllUser'])->name('notifications.getAllUser')->can('create', \App\Models\Notification::class);;
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
@@ -13,7 +14,35 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::orderBy('id', 'asc')->paginate(8);
+        $user = Auth::user();
+        $invoices = Invoice::query();
+
+        if ($user->role == 'student') {
+            $invoices->where(function ($q) use ($user) {
+                $q->where('sender_id', $user->id) // Lọc nếu người dùng là người gửi
+                ->orWhereHas('object', function ($q) use ($user) {
+                    $q->where(function ($q) use ($user) {
+                        $q->where('object_type', 'App\Models\User')
+                            ->where('object_id', $user->id); // So sánh object_id với user_id
+
+                    })->orWhere(function ($q) use ($user) {
+                        $residence = $user->residence()->where('status', 'Checked in')->first();
+                        if ($residence && $residence->room) {
+                            $q->where('object_type', 'App\Models\Room')
+                                ->where('object_id', $residence->room->id); // So sánh object_id với residence->room->name
+                        }
+                    })->orWhere(function ($q) use ($user) {
+                        $residence = $user->residence()->where('status', 'Checked in')->first();
+                        if ($residence && $residence->room && $residence->room->building) {
+                            $q->where('object_type', 'App\Models\Building')
+                                ->where('object_id', $residence->room->building->id); // So sánh object_id với residence->room->building->build_name
+                        }
+                    });
+                });
+            });
+        }
+
+        $invoices = $invoices->orderBy('id', 'desc')->paginate(8);
         return view('student_payment.payment', ['invoices' => $invoices]);
     }
 

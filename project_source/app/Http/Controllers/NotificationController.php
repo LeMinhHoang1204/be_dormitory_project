@@ -36,16 +36,21 @@ class NotificationController extends Controller
                           ->where('object_id', $user->id); // So sánh object_id với user_id
 
                     })->orWhere(function ($q) use ($user) {
-                        $q->where('object_type', 'App\Models\Room')
-                              ->where('object_id', $user->residence()->where('status', 'Checked in')->first()->room->id); // So sánh object_id với residence->room->name
-
+                        $residence = $user->residence()->where('status', 'Checked in')->first();
+                        if ($residence && $residence->room) {
+                            $q->where('object_type', 'App\Models\Room')
+                                ->where('object_id', $user->residence()->where('status', 'Checked in')->first()->room->id); // So sánh object_id với residence->room->name
+                        }
                     })->orWhere(function ($q) use ($user) {
-                        $q->where('object_type', 'App\Models\Building')
-                          ->where('object_id', $user->residence()->where('status', 'Checked in')->first()->room->building->id); // So sánh object_id với residence->room->building->build_name
+                        $residence = $user->residence()->where('status', 'Checked in')->first();
+                        if ($residence && $residence->room && $residence->room->building) {
+                            $q->where('object_type', 'App\Models\Building')
+                                ->where('object_id', $user->residence()->where('status', 'Checked in')->first()->room->building->id); // So sánh object_id với residence->room->building->build_name
+                        }
                     });
+                });
             });
-        });
-}
+        }
 
         // Lọc theo ngày tạo gần đây hoặc xa nhất
         if ($request->has('sort_date') && !empty($request->sort_date)) {
@@ -121,7 +126,6 @@ class NotificationController extends Controller
 
 //        dd($request->all());
         Notification::create($validatedData); // Sử dụng dữ liệu đã xác thực
-
 
         $sender = User::getSpecificUser($validatedData['sender_id']);
 //        broadcast(new NotificationEvent($sender))->toOthers();

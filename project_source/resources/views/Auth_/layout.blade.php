@@ -31,29 +31,33 @@
             <div class="col-md-3">
                 <ul class="ul d-flex justify-content-between align-items-center navbar">
                     @auth
-                        <!-- Hiển thị tên người dùng nếu đã đăng nhập -->
+
                         <li class="dropdown">
+                            <img src="{{
+            auth()->user()->profile_image_path && file_exists(storage_path('app/public/' . auth()->user()->profile_image_path))
+            ? asset('storage/' . auth()->user()->profile_image_path)
+            : asset('images/avatar.png')  }}"
+                                 alt="User Avatar"
+                                 class="rounded-circle mr-2"
+                                 style="width: 25px; height: 25px; object-fit: cover">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
 
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Account</a>
 
-                                <!-- Đảm bảo có form đăng xuất khi nhấn vào Logout -->
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">Log Out</a>
+                                    document.getElementById('logout-form').submit();">Log Out</a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
                             </div>
-
                         </li>
                     @else
-                        <!-- Hiển thị Login và Sign up nếu chưa đăng nhập -->
                         <li><a href="{{ route('login') }}">Login</a></li>
                         <li><a href="{{ route('register') }}" class="border">Sign up</a></li>
                     @endauth

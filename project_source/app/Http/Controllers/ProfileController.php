@@ -57,4 +57,28 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    public function myProfile(){
+        return view('user_profile.admin_buildingmanager_accountant');
+    }
+    public function updateImage(Request $request)
+    {
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('profile_image')) {
+            if ($user->profile_image_path && Storage::exists('public/' . $user->profile_image_path)) {
+                Storage::delete('public/' . $user->profile_image_path);
+            }
+
+            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+
+            $user->profile_image_path = $imagePath;
+            $user->save();
+        }
+
+        return redirect()->route('user_profile.show')->with('success', 'Profile image updated successfully!');
+    }
 }

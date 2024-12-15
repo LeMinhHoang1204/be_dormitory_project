@@ -134,7 +134,7 @@ body {
     align-items: center;
     width: fit-content;
 /*margin-inside: 10px;*/
-    gap: 20px ;
+    gap: 5px ;
 
 }
 .change-button{
@@ -144,7 +144,7 @@ body {
 .detail-item {
     background-color: #f0f0f0;
     border-radius: 5px;
-    padding: 10px 5px;
+    padding: 5px 5px;
     text-align: center;
     heigh: 21px;
 }
@@ -158,7 +158,7 @@ body {
     justify-items: stretch;
     border-radius: 20px;
     width: 1090px;
-    height: 855px;
+    height: fit-content;
     padding: 10px;
     text-align: center;
     flex-shrink: 0;
@@ -172,8 +172,8 @@ body {
     background-color: #fff;
     border: 1px solid var(--Stroke_Box, #cbd4f3);
     border-radius: 20px;
-    width: 340px; /* Fixed width */
-    height: 420px; /* Fixed height */
+    width: 340px;
+    /*height: 420px; */
     flex-shrink: 0;
     box-shadow: 0px 6px 4px 0px var(--table_row, #ecefff);
 }
@@ -818,4 +818,74 @@ margin-top: 30px;
     .confirm-info-container {
         width: 90%;
     }
+}
+
+/*sửa cho sidebar mờ đi khi mở Residence certificate*/
+.modal-dialog {
+    z-index: 1050;
+}
+#sidebar {
+    z-index: 1000!important;
+}
+
+/* CSS cho phân trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 25px 0;
+    padding: 0;
+}
+
+.pagination a,
+.pagination span {
+    text-decoration: none;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination a:hover,
+.pagination a:focus {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination .current {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination .disabled {
+    background-color: #f5f5f5;
+    color: #ccc;
+    pointer-events: none;
+}
+
+.pagination .gap {
+    pointer-events: none;
+    padding: 8px 16px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+.pagination .previous, .pagination .next {
+    font-weight: bold;
+}
+
+.pagination .previous:hover,
+.pagination .next:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination a:hover {
+    transform: scale(1.1);
 }

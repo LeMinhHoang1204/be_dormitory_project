@@ -13,7 +13,8 @@ class RequestController extends Controller
      */
     public function index()
     {
-        //
+        $requests = Request::paginate(10);
+        return view('admin_building_manager_requests.list', compact('requests'));
     }
 
     /**
@@ -21,13 +22,13 @@ class RequestController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequestRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -51,7 +52,7 @@ class RequestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequestRequest $request, Request $request)
+    public function update(Request $requestAPI, Request $request)
     {
         //
     }
@@ -63,4 +64,12 @@ class RequestController extends Controller
     {
         //
     }
+
+    public function accept(Request $request)
+    {
+        $request->update(['status' => 'Accepted'], ['resolve_date' => now()]);
+        return redirect()->back();
+    }
+
+
 }

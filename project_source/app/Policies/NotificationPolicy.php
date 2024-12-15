@@ -15,7 +15,7 @@ class NotificationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin';
+        return true;
     }
 
     /**
@@ -31,7 +31,7 @@ class NotificationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role == 'admin' || $user->role == 'building-manager' || $user->role == 'accountant';
+        return $user->role == 'admin' || $user->role == 'building manager' || $user->role == 'accountant';
     }
 
     /**

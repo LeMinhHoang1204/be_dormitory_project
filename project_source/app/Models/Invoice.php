@@ -11,11 +11,17 @@ class Invoice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'customer_id',
-        'invoice_date',
+        'sender_id',
+        'object_type',
+        'object_id',
+        'send_date',
         'due_date',
+        'paid_date',
+        'type',
         'total',
         'status',
+        'payment_method',
+        'note',
     ];
 
     // user relationship

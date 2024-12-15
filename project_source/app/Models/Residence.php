@@ -22,13 +22,13 @@ class Residence extends Model
         'check_out_date',
         'status',
         'note',
-        'duration',
+        'months_months_duration',
     ];
 
     // Quan hệ với Student
-    public function user()
+    public function student()
     {
-        return $this->belongsTo(User::class, 'stu_user_id', 'id');
+        return $this->belongsTo(Student::class, 'stu_user_id', 'id');
     }
 
     // Quan hệ với Room
@@ -43,22 +43,22 @@ class Residence extends Model
         parent::boot();
 
         static::creating(function ($residence) {
-            if ($residence->start_date && $residence->duration) {
-                $residence->end_date = self::calculateEndDate($residence->start_date, $residence->duration);
+            if ($residence->start_date && $residence->months_duration) {
+                $residence->end_date = self::calculateEndDate($residence->start_date, $residence->months_duration);
             }
         });
 
         static::updating(function ($residence) {
-            if ($residence->start_date && $residence->duration) {
-                $residence->end_date = self::calculateEndDate($residence->start_date, $residence->duration);
+            if ($residence->start_date && $residence->months_duration) {
+                $residence->end_date = self::calculateEndDate($residence->start_date, $residence->months_duration);
             }
         });
     }
 
     /**
-     * Tính toán end_date dựa trên start_date và duration.
+     * Tính toán end_date dựa trên start_date và months_duration.
      */
-    private static function calculateEndDate($startDate, $duration)
+    public static function calculateEndDate($startDate, $months_duration)
     {
         $months = [
             '3 months' => 3,
@@ -67,10 +67,11 @@ class Residence extends Model
             '12 months' => 12,
         ];
 
-        $monthsToAdd = $months[$duration] ?? 0;
+        $monthsToAdd = $months[$months_duration] ?? 0;
 
         return Carbon::parse($startDate)->addMonths($monthsToAdd);
     }
+
     public function getStartDateAttribute($value)
     {
         return $value ? Carbon::parse($value) : null;

@@ -58,6 +58,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'admin';
     }
 
+    public static function getSpecificUser($id)
+    {
+        return User::find($id);
+    }
+
 
 
     // student relationships
@@ -95,9 +100,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // object notification relationship
-    public function notification(): MorphOne
+    public function notification(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
-        return $this->morphOne(Notification::class, 'object');
+        return $this->morphMany(Notification::class, 'object');
     }
 
 
@@ -151,6 +156,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(RegistrationActivity::class, 'participant_id', 'id');
     }
 
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class, 'registration_activities', 'participant_id', 'activity_id')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
 
 
     // violation relationships

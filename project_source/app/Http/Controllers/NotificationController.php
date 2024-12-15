@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationEvent;
+use App\Models\Building;
 use App\Models\Notification;
 
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -20,16 +25,27 @@ class NotificationController extends Controller
         $user = auth()->user(); // Lấy người dùng hiện tại
 
         // Khởi tạo query để lọc dữ liệu
-        $query = Notification::with('object.user');
+        $query = Notification::with('object');
 
         if (!$user->isAdmin()) {
             $query->where(function ($q) use ($user) {
                 $q->where('sender_id', $user->id) // Lọc nếu người dùng là người gửi
                 ->orWhereHas('object', function ($q) use ($user) {
-                    $q->where('user_id', $user->id); // Lọc nếu người dùng là người nhận
-                });
+                    $q->where(function ($q) use ($user) {
+                        $q->where('object_type', 'App\Models\User')
+                          ->where('object_id', $user->id); // So sánh object_id với user_id
+
+                    })->orWhere(function ($q) use ($user) {
+                        $q->where('object_type', 'App\Models\Room')
+                              ->where('object_id', $user->residence()->where('status', 'Checked in')->first()->room->id); // So sánh object_id với residence->room->name
+
+                    })->orWhere(function ($q) use ($user) {
+                        $q->where('object_type', 'App\Models\Building')
+                          ->where('object_id', $user->residence()->where('status', 'Checked in')->first()->room->building->id); // So sánh object_id với residence->room->building->build_name
+                    });
             });
-        }
+        });
+}
 
         // Lọc theo ngày tạo gần đây hoặc xa nhất
         if ($request->has('sort_date') && !empty($request->sort_date)) {
@@ -53,14 +69,15 @@ class NotificationController extends Controller
 
         // Lọc theo người đăng thông báo
         if ($request->has('posted_by') && is_array($request->posted_by)) {
-            $query->whereHas('sender', function ($q) use ($request) {
+            $query->whereHas('senderNotification', function ($q) use ($request) {
                 $q->whereIn('role', $request->posted_by); // Giả sử "role" là trường để xác định vai trò của người gửi
             });
         }
 
         // Lấy danh sách thông báo sau khi áp dụng bộ lọc
         $notifications = $query->latest()->get();
-        return view('/notification/list', compact('notifications'));
+
+        return view('admin/notification/list', compact('notifications'));
     }
 
 
@@ -69,7 +86,7 @@ class NotificationController extends Controller
      */
     public function create(Request $request)
     {
-        return view('notification/create');
+        return view('admin/notification/create');
     }
 
     /**
@@ -87,11 +104,28 @@ class NotificationController extends Controller
             'title' => 'required|string',
             'type' => 'required|string',
             'content' => 'required|string',
-            'object_id' => 'required|integer',
         ]);
+
+        if ($validatedData['type'] === 'individual') {
+            $validatedData['object_type'] = 'App\Models\User';
+            $validatedData['object_id'] = $request->user_object_id;
+        }
+        elseif ($validatedData['type'] === 'group' and $request->group === 'building') {
+            $validatedData['object_type'] = 'App\Models\Building';
+            $validatedData['object_id'] = $request->building_object_id;
+        }
+        elseif ($validatedData['type'] === 'group' and $request->group === 'room') {
+            $validatedData['object_type'] = 'App\Models\Room';
+            $validatedData['object_id'] = $request->room_object_id;
+        }
 
 //        dd($request->all());
         Notification::create($validatedData); // Sử dụng dữ liệu đã xác thực
+
+
+        $sender = User::getSpecificUser($validatedData['sender_id']);
+//        broadcast(new NotificationEvent($sender))->toOthers();
+        event(new NotificationEvent($sender->name, $validatedData['object_id'])); // Gửi thông báo đến kênh
 
         return redirect(route('notifications.index', absolute: false));
     }
@@ -109,7 +143,7 @@ class NotificationController extends Controller
      */
     public function edit(Notification $notification)
     {
-        return view('notification.edit', compact('notification'));
+        return view('admin/notification/edit', compact('notification'));
     }
 
     /**
@@ -146,5 +180,23 @@ class NotificationController extends Controller
 
         // Chuyển hướng về danh sách thông báo với thông báo thành công
         return redirect(route('notifications.index', absolute: false));
+    }
+
+    public function getAllBuilding()
+    {
+        $buildings = Building::all();
+        return response()->json($buildings);
+    }
+
+    public function getAllRoom(int $building)
+    {
+        $rooms = Room::where('building_id', $building)->get();
+        return response()->json($rooms);
+    }
+
+    public function getAllUser()
+    {
+        $users = User::where('id', '!=', auth()->id())->get();
+        return response()->json($users);
     }
 }

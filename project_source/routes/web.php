@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
@@ -7,7 +8,6 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
@@ -39,10 +39,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/student/repair-request', [RoomController::class, 'storeRepairRequest'])->name('repair-request.store');
 });
 
-// Payment
+
+// TODO: PAYMENT
 Route::resource('/payment', InvoiceController::class)->names('invoice');
 
-//Payment detail
+
 Route::get('student_payment/detail_payment/{id}', [InvoiceController::class, 'showDetail'])->name('student_payment.detail_payment');
 
 
@@ -51,9 +52,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
 
-Route::get('/roomInfor/{id}', [RoomController::class, 'showRoom']);
+Route::get('/register_room', [RoomController::class, 'showListRoom']);
 
-//Xem trang thông tin phòng hiện tại của tôi
+Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
+
+
+
+
+
+// Xem trang thông tin phòng hiện tại của tôi
 Route::middleware('auth')->group(function () {
     Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
 });
@@ -68,5 +75,3 @@ require __DIR__ . '/admin/asset.php';
 require __DIR__ . '/admin/invoice.php';
 require __DIR__ . '/admin/request.php';
 require __DIR__ . '/admin/my_profile.php';
-
-

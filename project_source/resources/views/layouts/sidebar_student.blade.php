@@ -89,8 +89,12 @@ margin-left: 2px;
                 <span class="text">Room</span>
             </a>
             <ul class="submenu">
+                <li><a href="{{ url('/register_room') }}">Register</a></li>
+
                 <li><a href="{{ url('/my-room') }}">My room</a></li>
+
                 <li><a href="{{ url('/students/register-room') }}">Register</a></li>
+
                 <li><a href="/students/repair-request">Repair</a></li>
                 <li><a href="#">Change</a></li>
                 <li><a href="/students/renew">Extension</a></li>

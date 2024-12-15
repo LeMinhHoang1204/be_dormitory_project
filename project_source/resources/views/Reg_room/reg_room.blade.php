@@ -321,7 +321,6 @@
         <h1 class="title">Room Registration</h1>
 
         {{--            Residence certificate: TODO: link đi đến phiếu xác nhận chưa trú (DONE) --}}
-
         <div class="res-certifi">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 22 24" fill="none">
                 <path
@@ -487,10 +486,6 @@
             <label><input type="checkbox" /> Water heater</label>
             <label><input type="checkbox" /> Study desk</label>
         </div>
-        {{--        </div> --}}
-        {{--        <div class="apply-button"  onclick="closeFilter(event)"> --}}
-        {{--            <button>Apply</button> --}}
-        {{--        </div> --}}
         <button id="apply-filter" class="apply-button">Apply</button>
 
     </div>
@@ -579,9 +574,9 @@
             <span class="gap">Next</span>
         @endif
     </div>
-
     <p style="text-align: center; margin-top: -10px">{{ $rooms->currentPage() }} / {{ $rooms->lastPage() }}</p>
 
+    
     {{--    Confirm bạn có chắc chắn muốn đăng ký phòng này? --}}
     {{--    <div class="overlay2 hidden" onclick="toggleConfirm()"></div> --}}
     <div class="confirm-regis hidden">

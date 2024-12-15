@@ -40,11 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/student/repair-request', [RoomController::class, 'storeRepairRequest'])->name('repair-request.store');
 });
 
-// Payment
-Route::resource('/payment', InvoiceController::class)->names('invoice');
 
-//Payment detail
-Route::get('student_payment/detail_payment/{id}', [InvoiceController::class, 'showDetail'])->name('student_payment.detail_payment');
 
 
 // Display roomInfor

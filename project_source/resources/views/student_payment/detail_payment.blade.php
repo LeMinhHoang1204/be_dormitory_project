@@ -67,18 +67,26 @@
             </div>
             <div class="button-group">
                 <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#reportModal">Report</button>
-                <form action="{{ url('/vnpay_payment') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="total" value="{{ $invoice->total }}">
-                    <button class="btn btn-primary" id="confirmButton" type="submit" name="redirect">Confirm</button>
-                </form>
-            </div>
+{{--                <form action="{{ url('/vnpay_payment') }}" method="POST">--}}
+{{--                    @csrf--}}
+{{--                    <input type="hidden" name="total" value="{{ $invoice->total }}">--}}
+{{--                </form>--}}
+                <button class="btn btn-primary" id="confirmButton" data-bs-toggle="modal" data-bs-target="#confirmModal">Confirm</button>            </div>
         </div>
+        <!-- Display the uploaded image -->
+        @if($invoice->evidence_image)
+            <div class="uploaded-image mt-5">
+                <h3>Uploaded Evidence Image</h3>
+                <img src="{{ asset('storage/' . $invoice->evidence_image) }}" alt="Uploaded Image" style="max-width: 100%; height: auto;">
+            </div>
+        @endif
     </div>
 
     <div id="successNotification" class="alert alert-success" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1000;">
         Send Successful
     </div>
+
+
 @endsection
 
 <!-- Report Modal -->
@@ -109,6 +117,36 @@
     </div>
 </div>
 
+<!-- Confirm Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirm Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('image.upload', $invoice->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="confirmDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="confirmDescription" name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmEvidenceUpload" class="form-label">Upload Evidence</label>
+                            <input class="form-control" type="file" id="confirmEvidenceUpload" accept="image/*" name="image" required>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="sendConfirm">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
     $('#sendReport').click(function() {
@@ -120,5 +158,20 @@
 });
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('#sendConfirm').click(function() {
+            $('#successNotification').fadeIn().delay(1000).fadeOut();
+
+            // Hide modal
+            $('#confirmModal').modal('hide');
+        });
+    });
+</script>
+
 
 <script src="{{ asset('javascript/payment.js') }}"></script>
+
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif

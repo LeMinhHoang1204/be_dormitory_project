@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\StudentController;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
@@ -39,8 +41,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/leave', [StudentController::class, 'leaveRequest'])->name('students.leave');
 
         Route::get('/my_profile', [StudentController::class, 'showProfile'])->name('student.profile');
-//        Route::get('/student/user_profile.php/edit', [StudentController::class, 'editProfile'])->name('student.user_profile.php.edit');
+        //        Route::get('/student/user_profile.php/edit', [StudentController::class, 'editProfile'])->name('student.user_profile.php.edit');
         Route::post('/upload-user_profile.php-image', [StudentController::class, 'updateProfileImage'])->name('user_profile.php.update-image');
 
+        // Payment
+        Route::get('/payment', [InvoiceController::class, 'index'])->name('invoice');
+
+        //Payment detail
+        Route::get('student_payment/detail_payment/{id}', [InvoiceController::class, 'showDetail'])->name('student_payment.detail_payment');
+
+        Route::post('student_payment/detail_payment/{id}', [ImageController::class, 'upload'])->name('image.upload');
     });
 });

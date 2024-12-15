@@ -18,6 +18,8 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/register-room', [StudentController::class, 'createNewResidence'])->name('students.register-room.create');
 
+        Route::get('/latest-residence/{userId}', [StudentController::class, 'getLatestResidence'])->name('students.latest-residence');
+
 //        Route::get('/register-room/{room}', [StudentController::class, 'showRegisterRoomForm'])->name('students.register-room.show')->can('registerRoom', Student::class);
 
 //        Route::post('/register-room/{room}', [StudentController::class, 'createNewResidence'])->name('students.register-room.create')->can('registerRoom', Student::class);

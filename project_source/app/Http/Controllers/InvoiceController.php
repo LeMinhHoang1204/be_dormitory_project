@@ -13,7 +13,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::orderBy('id', 'asc')->paginate(8);
+        $invoices = Invoice::orderBy('id', 'desc')->paginate(8);
         return view('student_payment.payment', ['invoices' => $invoices]);
     }
 

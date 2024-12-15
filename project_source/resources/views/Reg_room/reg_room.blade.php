@@ -6,6 +6,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <style>
+        .toast-warning {
+            color: #ffffff !important; /* Text color for warning notification */
+            background-color: #ffc107 !important; /* Background color */
+            font-family: "Poppins", sans-serif !important; /* Font family */
+            border-left: 5px solid #ff9800 !important; /* Left border color */
+        }
+    </style>
+
     <script>
         // fix show room + pagination (DONE)
         // Creat room
@@ -114,15 +127,22 @@
         });
 
         // Sự kiện khi nhấn vào nút "Yes"
-        document.addEventListener("DOMContentLoaded", function () {
-            // Sự kiện khi nhấn vào nút "Yes"
-            document.querySelector(".confirm-regis .yes-btn").addEventListener("click", function() {
-                // Lấy dữ liệu từ phần tử đã chọn (ví dụ: room-item)
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".confirm-regis .yes-btn").addEventListener("click", async function() {
+            const selectedRoom = JSON.parse(localStorage.getItem("selectedRoom"));
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-                const selectedRoom = JSON.parse(localStorage.getItem("selectedRoom"));
-                const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (selectedRoom) {
+                try {
+                    const response = await fetch(`/students/latest-residence/${currentUser.userId}`);
+                    const data = await response.json();
+                    console.log(data);
+                    if (data.residence && data.residence.status !== 'Checked out') {
+                        closeConfirm();
+                        toastr.warning('You already have a registered room.');
+                        return;
+                    }
 
-                if (selectedRoom) {
                     const roomData = {
                         dormId: currentUser.userId,
                         roomId: selectedRoom.roomId,
@@ -136,50 +156,53 @@
                         roomType: selectedRoom.roomType,
                     };
 
-
                     populateRoomInfo(roomData);
+                    showConfirmInfoContainer();
+                } catch (error) {
+                    console.error('Error fetching residence data:', error);
+                    toastr.error('Failed to check residence status.');
                 }
-                showConfirmInfoContainer();
-            });
+            }
         });
+    });
 
-        function populateRoomInfo(data) {
-            document.getElementById("dorm-id").value = data.dormId || "";
-            document.getElementById("room-id").value = data.roomId || "";
-            document.getElementById("student-id").value = data.studentId || "";
-            document.getElementById("full-name").value = data.fullName || "";
-            document.getElementById("building-id").value = data.buildingId || "";
-            document.getElementById("floor").value = data.floor || "";
-            document.getElementById("price").value = data.price || "";
-            document.getElementById("capacity").value = data.capacity || "";
-            document.getElementById("gender").value = data.gender || "";
-            document.getElementById("room-type").value = data.roomType || "";
+    function populateRoomInfo(data) {
+        document.getElementById("dorm-id").value = data.dormId || "";
+        document.getElementById("room-id").value = data.roomId || "";
+        document.getElementById("student-id").value = data.studentId || "";
+        document.getElementById("full-name").value = data.fullName || "";
+        document.getElementById("building-id").value = data.buildingId || "";
+        document.getElementById("floor").value = data.floor || "";
+        document.getElementById("price").value = data.price || "";
+        document.getElementById("capacity").value = data.capacity || "";
+        document.getElementById("gender").value = data.gender || "";
+        document.getElementById("room-type").value = data.roomType || "";
+    }
+
+    function showConfirmInfoContainer() {
+        const confirmPanel = document.querySelector(".confirm-regis");
+        const confirmInfoContainer = document.querySelector(
+            ".confirm-info-container"
+        );
+        const overlay2 = document.querySelector(".overlay2");
+
+        if (confirmPanel && confirmInfoContainer && overlay2) {
+            confirmPanel.classList.remove("active"); // Ẩn confirm-regis
+            confirmInfoContainer.classList.add("active"); // Hiển thị popup confirm-info-container
+            overlay2.classList.add("active"); // Hiển thị overlay
         }
+    }
 
-        function showConfirmInfoContainer() {
-            const confirmPanel = document.querySelector(".confirm-regis");
-            const confirmInfoContainer = document.querySelector(
-                ".confirm-info-container"
-            );
-            const overlay2 = document.querySelector(".overlay2");
+    // Hàm bật/tắt filter panel
+    function toggleFilter() {
+        const filterPanel = document.querySelector(".filter-panel");
+        const overlay = document.querySelector(".overlay");
 
-            if (confirmPanel && confirmInfoContainer && overlay2) {
-                confirmPanel.classList.remove("active"); // Ẩn confirm-regis
-                confirmInfoContainer.classList.add("active"); // Hiển thị popup confirm-info-container
-                overlay2.classList.add("active"); // Hiển thị overlay
-            }
+        if (filterPanel && overlay) {
+            const isActive = filterPanel.classList.toggle("active");
+            overlay.classList.toggle("active", isActive);
         }
-
-        // Hàm bật/tắt filter panel
-        function toggleFilter() {
-            const filterPanel = document.querySelector(".filter-panel");
-            const overlay = document.querySelector(".overlay");
-
-            if (filterPanel && overlay) {
-                const isActive = filterPanel.classList.toggle("active");
-                overlay.classList.toggle("active", isActive);
-            }
-        }
+    }
 
         // Đóng filter panel và overlay khi nhấn ra ngoài
         const overlay = document.querySelector(".overlay");
@@ -686,3 +709,5 @@
 
     <div class="overlay2"></div>
 @endsection
+
+

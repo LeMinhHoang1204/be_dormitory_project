@@ -41,7 +41,7 @@
                         <tr>
                             <td>{{ $invoice->type }}</td>
                             <td>2</td>
-                            <td>${{ $invoice->total }}</td>
+                            <td>{{ $invoice->total }}</td>
                         </tr>
                         {{-- <tr>
                             <td>Product B</td>
@@ -50,7 +50,7 @@
                         </tr> --}}
                     </tbody>
                 </table>
-                <h4 class="text-end">Total: <strong>$55.00</strong></h4>
+                <h4 class="text-end">Total: <strong>{{ $invoice->total }}</strong></h4>
             </div>
             <div class="card-footer d-flex justify-content-between align-items-center">
                 <div class="payment-information">
@@ -67,7 +67,11 @@
             </div>
             <div class="button-group">
                 <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#reportModal">Report</button>
-                <button class="btn btn-primary" id="confirmButton">Confirm</button>
+                <form action="{{ url('/vnpay_payment') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="total" value="{{ $invoice->total }}">
+                    <button class="btn btn-primary" id="confirmButton" type="submit" name="redirect">Confirm</button>
+                </form>
             </div>
         </div>
     </div>

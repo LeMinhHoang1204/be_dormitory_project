@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
@@ -58,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
 });
 
+Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';

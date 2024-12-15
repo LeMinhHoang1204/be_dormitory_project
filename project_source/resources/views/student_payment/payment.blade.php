@@ -25,8 +25,8 @@
                     <th scope="col">Type</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Send Date</th>
+                    <th scope="col">Pay Date</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Created At</th>
                     <th scope="col">Note</th>
                     <th scope="col">Task</th>
                 </tr>
@@ -37,12 +37,11 @@
                         <td scope="row">{{ $invoice->id }}</td>
                         <td>{{ $invoice->type }}</td>
                         <td>{{ $invoice->total }}</td>
-                        <td>{{ $invoice->send_date }}</td>
+                        <td>{{ $invoice->due_date }}</td>
+                        <td>{{ $invoice->paid_date }}</td>
                         <td>{{ $invoice->status }}</td>
-                        <td>{{ $invoice->created_at }}</td>
                         <td>{{ $invoice->note }}</td>
                         <td><a href="{{ route('student_payment.detail_payment', $invoice->id) }}" class="btn-task">Check</a></td>
-
                     </tr>
                 @endforeach
             </tbody>

@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
 
-Route::get('/register_room', [RoomController::class, 'showListRoom']);
+Route::get('/register_room', [RoomController::class, 'showListRoom'])->name('register_room');
 
 Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
 

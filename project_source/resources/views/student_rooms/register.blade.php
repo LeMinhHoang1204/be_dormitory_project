@@ -4,6 +4,7 @@
     <title>Room Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
 
     {{-- WEBSITE: tabler icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
@@ -36,7 +37,16 @@
         </div>
 
 
-
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-error" style="max-width: 100%;  margin-bottom: 20px; margin-top: 30px">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <div class="grid-container" id="room-list">
             @foreach ($rooms as $room)

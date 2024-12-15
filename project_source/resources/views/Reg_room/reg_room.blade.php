@@ -318,6 +318,7 @@
 @section('content')
     @include('layouts.sidebar_student')
     <div class="regisster">
+
         <h1 class="title">Room Registration</h1>
 
         {{--            Residence certificate: TODO: link đi đến phiếu xác nhận chưa trú (DONE) --}}
@@ -444,7 +445,16 @@
         </div>
     </div>
 
-
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-error" style="max-width: 50%; margin-left: 430px; margin-bottom: -40px; margin-top: 20px">
+            {{ session('error') }}
+        </div>
+    @endif
     {{--    Hien thi panel filter lọc --}}
     <div class="overlay hidden" onclick="toggleFilter()"></div>
     <div id="filter-panel" class="filter-panel hidden">
@@ -576,7 +586,7 @@
     </div>
     <p style="text-align: center; margin-top: -10px">{{ $rooms->currentPage() }} / {{ $rooms->lastPage() }}</p>
 
-    
+
     {{--    Confirm bạn có chắc chắn muốn đăng ký phòng này? --}}
     {{--    <div class="overlay2 hidden" onclick="toggleConfirm()"></div> --}}
     <div class="confirm-regis hidden">

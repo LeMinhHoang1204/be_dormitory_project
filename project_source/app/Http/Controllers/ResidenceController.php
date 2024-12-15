@@ -70,21 +70,27 @@ class ResidenceController extends Controller
 
     public function myRoom()
     {
-        $student = auth()->user()->student;
-
-        if (!$student) {
-            return redirect()->back()->with('error', 'You are not assigned as a student.');
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please log in first.');
         }
 
-        $residence = Residence::where('stu_user_id', $student->id)->with('room')->first()
-        ->with('room.building')
-        ->first();
+        $user = auth()->user();
+        $student = $user->student;
+
+        if (!$student) {
+            return redirect()->route('dashboard', ['id' => $student->id])->with('error', 'You are not assigned as a student.');
+        }
+
+        $residence = Residence::where('stu_user_id', $student->id)
+            ->with('room.building')
+            ->first();
 
         if (!$residence) {
-            return redirect()->back()->with('error', 'No room information found.');
+            return redirect()->route('register_room', ['id' => $student->id])->with('error', 'No room information found. Let register a room.');
         }
 
         return view('user_student.student.room', compact('residence'));
     }
+
 
 }

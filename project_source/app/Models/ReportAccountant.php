@@ -25,9 +25,19 @@ class ReportAccountant extends Model
         'updated_at' => 'datetime',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    public function buildings()
+    {
+        return $this->belongsTo(Building::class, 'building_id');
     }
 
     public function room()

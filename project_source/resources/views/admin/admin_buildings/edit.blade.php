@@ -17,7 +17,9 @@
         <form action="{{ route('buildings.update', $building->id) }}" method="POST">
             @csrf
 {{--            @method('PUT')--}}
+
             <div class="form-container">
+
                 <div class="form-group">
                     <label for="floor_numbers">Floor numbers:</label>
                     <input

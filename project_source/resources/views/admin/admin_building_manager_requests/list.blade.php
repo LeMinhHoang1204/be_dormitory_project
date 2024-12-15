@@ -3,12 +3,20 @@
 <head>
     <title>Request List</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/table.css') }}" type="text/css">
+<style>
+    .extension{
+        max-width: 67%;
+    }
+</style>
 </head>
 
 @section('content')
     @include('layouts.sidebar_student')
 
-    <div class="requestlist">
+    <div class="extension">
         <h3 class="heading">Requests List</h3>
 
         <table class="table">
@@ -58,49 +66,3 @@
     </div>
 @endsection
 
-<style>
-    body {
-        background-color: #f9fafc;
-        font-family: "Poppins", sans-serif;
-    }
-
-    .requestlist {
-        max-width: 70%;
-        margin: 40px auto;
-        padding: 30px;
-        background-color: #f9f9f9;
-        box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 20px;
-    }
-
-    .heading {
-        font-family: Inter;
-        color: #0e3b9c;
-        font-size: 36px;
-        font-weight: 700;
-        text-align: center;
-    }
-
-    .table {
-        width: 100%;
-        margin-top: 20px;
-        color: #ECEFFF;
-        border-collapse: collapse;
-        border-radius: 20px;
-    }
-
-    .table thead {
-        background-color: #ECEFFF;
-        border-radius: 20px 20px 0px 0px;
-    }
-
-    th, td {
-        padding: 0.75rem;
-        vertical-align: top;
-        border-top: 1px solid #dee2e6;
-    }
-
-    tr:hover {
-        background-color: #f1f1f1;
-    }
-</style>

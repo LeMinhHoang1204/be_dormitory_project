@@ -21,9 +21,9 @@ Route::middleware('auth')->group(function () {
 
         Route::delete('/delete/{request}', [RequestController::class, 'destroy'])->name('requests.destroy')->can('delete', 'request');
 
-        Route::put('/{request}', [RequestController::class, 'accept'])->name('requests.accept')->can('confirmRequest', 'request');
+        Route::put('/{request}/accept', [RequestController::class, 'accept'])->name('requests.accept')->can('confirmRequest', 'request');
 
-        Route::put('/{request}', [RequestController::class, 'decline'])->name('requests.decline')->can('confirmRequest', 'request');
+        Route::put('/{request}/decline', [RequestController::class, 'decline'])->name('requests.decline')->can('confirmRequest', 'request');
 
     });
 

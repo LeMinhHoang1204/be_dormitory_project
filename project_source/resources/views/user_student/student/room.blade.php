@@ -10,6 +10,16 @@
     @include('layouts.sidebar_student') <!-- Sidebar giống với extension -->
 
     <div class="extension">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+        @endif
         <h3 class="heading">My Room Information</h3>
 
         @if(session('error'))

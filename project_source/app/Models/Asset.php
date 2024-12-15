@@ -19,7 +19,7 @@ class Asset extends Model
         'note'
     ];
 
-    public function RoomAssets()
+    public function RoomAssets(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(RoomAsset::class, 'asset_id', 'id');
     }

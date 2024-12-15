@@ -17,7 +17,7 @@ class ResidenceController extends Controller
     public function index(Building $building, Room $room)
     {
         $residences = Residence::where('room_id', $room->id)->get();
-        return view('admin_residences.list', compact('residences', 'building', 'room'));
+        return view('admin.admin_residences.list', compact('residences', 'building', 'room'));
     }
 
     /**

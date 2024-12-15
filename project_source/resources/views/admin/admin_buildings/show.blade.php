@@ -68,10 +68,13 @@
                             <i class="fa-solid fa-ellipsis-vertical" onclick="toggleDropdown(event)"></i>
                             <div class="dropdown-content">
                                 <a href="{{ route('rooms.edit', ['building' => $building->id, 'room' => $room->id]) }}">
-                                    <i class="fa-solid fa-pen-nib"></i> Edit
+                                    <i class="fa-solid fa-pen-nib" style="margin-right:5px "></i> Edit
+                                </a>
+                                <a href="{{ route('residences.index', ['building' => $building->id, 'room' => $room->id]) }}">
+                                    <i class="fa-solid fa-person-booth" style="margin-right:5px "></i> Residences
                                 </a>
                                 <a href="{{ route('rooms.destroy', ['building' => $building->id, 'room' => $room->id]) }}" class="delete" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $room->id }}').submit();">
-                                    <i class="fa-solid fa-trash"></i> Delete
+                                    <i class="fa-solid fa-trash" style="margin-right:5px "></i> Delete
                                 </a>
 
                                 <form id="delete-form-{{ $room->id }}" action="{{ route('rooms.destroy', ['building' => $building->id, 'room' => $room->id]) }}" method="POST" style="display: none;">

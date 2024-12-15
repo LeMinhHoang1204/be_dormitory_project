@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asset;
+use App\Models\RoomAsset;
+
 use App\Models\Building;
 use App\Models\Residence;
 use App\Models\Student;
@@ -13,6 +16,7 @@ use App\Http\Requests\UpdateRoomRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class RoomController extends Controller
@@ -40,28 +44,84 @@ class RoomController extends Controller
      */
     public function create(Building $building)
     {
-        $room = Room::where('building_id', $building->id)->latest()->first(); // Example logic
+                $nextId = DB::select("SHOW TABLE STATUS LIKE 'rooms'")[0]->Auto_increment;
+
+        // Query for the latest room in the building
+        $room = Room::where('building_id', $building->id)->latest()->first();
+
+        if (!$room) {
+            $room = (object) [
+                'id' => $nextId,  // Ensure $nextId is defined
+                'created_at' => now(),
+            ];
+        }
+        $assets = Asset::all();
         $rooms = $building->hasRooms()->where('building_id', $building->id)->paginate(10);
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin.admin_rooms.create', compact('building', 'distinctRoomTypes', 'rooms','room'));
+        return view('admin.admin_rooms.create', compact('building', 'distinctRoomTypes', 'rooms','room','assets'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Building $building)
+//    public function store(Request $request, Building $building)
+//    {
+//        // Validate data
+//        $validatedData = $request->validate([
+//            'building_id' => 'required|integer',
+//            'name' => 'required|string|unique:rooms,name',
+//            'floor_number' => 'required|integer',
+//            'type' => 'required|string',
+//            'unit_price' => 'required|integer',
+//
+//        ]);
+//
+//        Room::create($validatedData);
+//        return redirect(route('buildings.show', ['building' => $building]))->with('success', 'Room created successfully!');
+//    }
+    public function store(Request $request, $buildingId)
     {
-        // Validate data
-        $validatedData = $request->validate([
-            'building_id' => 'required|integer',
-            'name' => 'required|string',
-            'floor_number' => 'required|integer',
-            'type' => 'required|string',
-            'unit_price' => 'required|integer',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'floor_number' => 'required|integer|min:1',
+            'unit_price' => 'required|numeric|min:0',
+            'assets' => 'array', // Validate assets as an array
+            'assets_quantity' => 'array', // Validate quantities
+        ]);
+        // Kiểm tra nếu tên phòng đã tồn tại
+        $existingRoom = Room::where('building_id', $buildingId)
+            ->where('name', $validated['name'])
+            ->first();
+
+        if ($existingRoom) {
+            return back()->withErrors(['name' => 'Room name already exists. Please choose another name.'])
+                ->withInput(); // Quay lại và hiển thị lỗi
+        }
+        // Tạo phòng mới
+        $room = Room::create([
+            'name' => $validated['name'],
+            'floor_number' => $validated['floor_number'],
+            'unit_price' => $validated['unit_price'],
+            'building_id' => $buildingId,
         ]);
 
-        Room::create($validatedData);
-        return redirect(route('buildings.show', ['building' => $building]))->with('success', 'Room created successfully!');
+        // Lưu thông tin tài sản kèm phòng
+        if ($request->has('assets')) {
+            foreach ($validated['assets'] as $assetId) {
+                $quantity = $validated['assets_quantity'][$assetId] ?? 0;
+                if ($quantity > 0) {
+                    RoomAsset::create([
+                        'room_id' => $room->id,
+                        'asset_id' => $assetId,
+                        'quantity' => $quantity,
+                        'issue_date' => now(),
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('buildings.show', $buildingId)
+            ->with('success', 'Room created successfully.');
     }
 
     /**
@@ -77,8 +137,11 @@ class RoomController extends Controller
      */
     public function edit(Building $building, Room $room)
     {
+        $room->load('hasRoomAssets.asset');
+        $availableAssets = Asset::all(); // Lấy toàn bộ tài sản
+        $assets = Asset::all();
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin.admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes'));
+        return view('admin.admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes','availableAssets','assets'));
     }
 
     /**
@@ -93,10 +156,40 @@ class RoomController extends Controller
             'type' => 'required|string',
             'unit_price' => 'required|numeric',
             'status' => 'required|integer',
+            'assets.*' => 'nullable|integer|min:0',
+            'new_assets.*' => 'nullable|exists:assets,id',
+            'new_quantities.*' => 'nullable|integer|min:1',
         ]);
 
         $room->update($validatedData);
+        // 1. Cập nhật tài sản hiện có
+        if ($request->has('assets')) {
+            foreach ($request->input('assets') as $assetId => $quantity) {
+                $roomAsset = RoomAsset::where('room_id', $room->id)
+                    ->where('asset_id', $assetId)
+                    ->first();
+                if ($roomAsset) {
+                    $roomAsset->quantity = $quantity;
+                    $roomAsset->save();
+                }
+            }
+        }
 
+        // 2. Thêm tài sản mới
+        if ($request->has('new_assets')) {
+            foreach ($request->input('new_assets') as $index => $assetId) {
+                $quantity = $request->input('new_quantities')[$index];
+                if ($assetId && $quantity) {
+                    RoomAsset::create([
+                        'room_id' => $room->id,
+                        'asset_id' => $assetId,
+                        'quantity' => $quantity,
+                        'status' => 'In use',
+                        'issue_date' => now(),
+                    ]);
+                }
+            }
+        }
         return redirect(route('buildings.show', ['building' => $building]))->with('success', 'Room updated successfully');
     }
 

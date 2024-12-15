@@ -65,7 +65,6 @@ class BuildingController extends Controller
         $roomTypes = ['2', '4', '6', '8', '10'];
         $floorNumbers = $building->floor_numbers;
         $roomNumbers = $building->room_numbers;
-        // Loop over the floors
         for ($i = 1; $i <= $floorNumbers; $i++) {
             $roomsPerFloor = $roomNumbers / $floorNumbers;
 
@@ -98,9 +97,14 @@ class BuildingController extends Controller
      */
     public function show(Building $building)
     {
-        $rooms = $building->hasRooms()->where('building_id', $building->id)->paginate(10);
+        $rooms = $building->hasRooms()
+            ->where('building_id', $building->id)
+            ->orderBy('floor_number', 'asc') // Sắp xếp theo số tầng tăng dần
+            ->paginate(10);
+
         return view('admin.admin_buildings.show', compact('building', 'rooms'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

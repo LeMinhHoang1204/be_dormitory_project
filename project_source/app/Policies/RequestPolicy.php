@@ -13,7 +13,7 @@ class RequestPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin';
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**
@@ -22,6 +22,7 @@ class RequestPolicy
     public function view(User $user, Request $request): bool
     {
         return $user->role === 'admin'
+            ||$user->role === 'building manager'
             || $user->id === $request->sender_id
             || $user->id === $request->receiver_id;
     }

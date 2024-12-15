@@ -14,7 +14,7 @@ class RequestController extends Controller
     public function index()
     {
         $requests = Request::paginate(10);
-        return view('admin_building_manager_requests.list', compact('requests'));
+        return view('admin.admin_building_manager_requests.list', compact('requests'));
     }
 
     /**

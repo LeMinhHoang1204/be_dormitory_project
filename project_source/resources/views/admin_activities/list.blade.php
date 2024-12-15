@@ -277,32 +277,6 @@
             </tbody>
         </table>
 
-        {{--        Xử lý Pagination--}}
-{{--        <div class="pagination">--}}
-{{--            @if ($activities->onFirstPage())--}}
-{{--                <span class="gap">Previous</span>--}}
-{{--            @else--}}
-{{--                <!-- Sử dụng fullUrlWithQuery để giữ tham số lọc khi chuyển trang -->--}}
-{{--                <a href="{{ request()->fullUrlWithQuery(['page' => $activities->currentPage() - 1]) }}" class="previous">Previous</a>--}}
-{{--            @endif--}}
-
-{{--            @foreach ($activities->getUrlRange(1, $activities->lastPage()) as $page => $url)--}}
-{{--                @if ($page == $activities->currentPage())--}}
-{{--                    <span class="pagination-page current">{{ $page }}</span>--}}
-{{--                @else--}}
-{{--                    <!-- Sử dụng fullUrlWithQuery để giữ tham số lọc khi chuyển trang -->--}}
-{{--                    <a href="{{ request()->fullUrlWithQuery(['page' => $page]) }}" class="pagination-page">{{ $page }}</a>--}}
-{{--                @endif--}}
-{{--            @endforeach--}}
-
-{{--            @if ($activities->hasMorePages())--}}
-{{--                <a href="{{ request()->fullUrlWithQuery(['page' => $activities->currentPage() + 1]) }}" class="next">Next</a>--}}
-{{--            @else--}}
-{{--                <span class="gap">Next</span>--}}
-{{--            @endif--}}
-{{--        </div>--}}
-
-{{--        <p>{{ $activities->currentPage() }} / {{ $activities->lastPage() }}</p>--}}
         <div class="pagination">
             @if ($activities->onFirstPage())
                 <span class="gap">Previous</span>

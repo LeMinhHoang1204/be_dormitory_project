@@ -143,7 +143,7 @@
 
     function togglePanel() {
         const popup = document.getElementById('filter-popup');
-        popup.classList.toggle('hidden'); ;
+        popup.classList.toggle('hidden');
     };
 
     function closePanel(event) {

@@ -1,17 +1,19 @@
 <script>
     const receiptInfo = [{
-        total: 10000,
-        buildings: 'All',
-        receiptsType: 'All'
+        // total: 10000,
+        // buildings: 'All',
+        // receiptsType: 'All'
+        total: {{ $reportData['total'] }},
+        {{--buildings: '{{ $reportData['buildings']->count() === \App\Models\Building::count() ? 'All' : $reportData['buildings']->implode(', ') }}',--}}
+        buildings: {!! json_encode(collect($reportData['totalByBuilding'])->keys()->toArray()) !!},
+        receiptsType: '{{ $reportData['receiptsType']->implode(', ') }}'
     }];
 
     function createReceiptInfo(receipt) {
         return `
-      <p class="receipt-total">Total: ${receipt.total}</p>
+      <p class="receipt-total">Total: ${receipt.total} Invoices</p>
       <p class="receipt-building">Building: ${receipt.buildings} </p>
       <p class="receipt-type">Type: ${receipt.receiptsType} </p>
-      <p>Room:</p>
-      <p>Dorm Stu ID:</p>
       <p>Date:</p>
     `;
     }
@@ -26,29 +28,29 @@
 
     // Dummy data for charts
     const receiptTypeData = {
-        labels: ['Room', 'Water', 'Electricity', 'Other'],
+        labels: {!! json_encode($reportData['totalByReceiptType']->keys()->toArray()) !!},
         datasets: [{
             label: 'Total',
-            data: [40, 20, 30, 10],
-            backgroundColor: ['#3498db', '#1abc9c', '#e74c3c', '#f1c40f']
+            data: {!! json_encode($reportData['totalByReceiptType']->values()->toArray()) !!},
+            backgroundColor: ['#3498db', '#1abc9c', '#e74c3c', '#f1c40f', '#9b59b6']
         }]
-    };
+    }
 
     const receiptOfMonthData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: {!! json_encode($reportData['totalByMonth']->keys()->toArray()) !!},
         datasets: [{
             label: 'Receipts',
-            data: [750, 500, 1000, 250, 600, 400],
+            data: {!! json_encode($reportData['totalByMonth']->values()->toArray()) !!},
             borderColor: '#3498db',
             fill: false
         }]
     };
 
     const receiptPerBuildingData = {
-        labels: ['Building A', 'Building B', 'Building C', 'Building D', 'Building E'],
+        labels: {!! json_encode(collect($reportData['totalByBuilding'])->keys()->toArray()) !!},
         datasets: [{
             label: 'Receipts',
-            data: [4500, 3000, 4000, 3500, 5000],
+            data: {!! json_encode(collect($reportData['totalByBuilding'])->values()->toArray()) !!},
             backgroundColor: '#3498db'
         }]
     };
@@ -190,7 +192,10 @@
                     <div class="form-group">
                         <label for="building">Building:</label>
                         <select id="building" name="building">
-                            <option value="">Select...</option>
+                            <option value="">All</option>
+                            @foreach($reportData['buildings'] as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
@@ -204,24 +209,29 @@
                         <input type="text" id="room" name="room">
                     </div>
                     <div class="form-group">
-                        <label for="name">Name:</label>
+                        <label for="name">Student Name:</label>
                         <input type="text" id="name" name="name">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="receiptType">Receipt type:</label>
-                        <select id="receiptType" name="receiptType">
-                            <option value="">Select...</option>
+                        <label for="school">School:</label>
+                        <select id="school" name="school">
+                            <option value="">All</option>
+                            @foreach($reportData['schools'] as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Gender:</label>
                         <div class="radio-group">
-                            <input type="radio" id="male" name="gender" value="male" checked>
+                            <input type="radio" id="male" name="gender" value="male">
                             <label for="male">Male</label>
                             <input type="radio" id="female" name="gender" value="female">
                             <label for="female">Female</label>
+                            <input type="radio" id="all" name="gender" value="all" checked>
+                            <label for="all">All</label>
                         </div>
                     </div>
                 </div>
@@ -229,22 +239,26 @@
                     <div class="form-group">
                         <label for="receiptStatus">Receipt status:</label>
                         <select id="receiptStatus" name="receiptStatus">
-                            <option value="">Select...</option>
+                            <option value="">All</option>
+                            @foreach($reportData['receiptStatus'] as $status)
+                                <option value="{{ $status }}">{{ $status }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="dob">DOB:</label>
-                        <input type="date" id="dob" name="dob">
+                        <label for="receiptType">Receipt type:</label>
+                        <select id="receiptType" name="receiptType">
+                            <option value="">All</option>
+                            @foreach($reportData['receiptsType'] as $type)
+                                <option value="{{ $type }}">{{ $type }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="receiptDate">Receipt date:</label>
                         <input type="date" id="receiptDate" name="receiptDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="school">School:</label>
-                        <input type="text" id="school" name="school">
                     </div>
                 </div>
                 <div class="form-actions">

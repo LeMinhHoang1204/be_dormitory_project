@@ -60,16 +60,8 @@ class Residence extends Model
      */
     public static function calculateEndDate($startDate, $months_duration)
     {
-        $months = [
-            '3 months' => 3,
-            '6 months' => 6,
-            '9 months' => 9,
-            '12 months' => 12,
-        ];
-
-        $monthsToAdd = $months[$months_duration] ?? 0;
-
-        return Carbon::parse($startDate)->addMonths($monthsToAdd);
+        $int_months_duration = (int)$months_duration;
+        return Carbon::parse($startDate)->addMonths($int_months_duration);
     }
 
     public function getStartDateAttribute($value)

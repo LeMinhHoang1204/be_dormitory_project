@@ -21,6 +21,7 @@ class Invoice extends Model
         'total',
         'status',
         'payment_method',
+        'evidence_image',
         'note',
     ];
 

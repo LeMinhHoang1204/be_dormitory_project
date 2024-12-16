@@ -31,7 +31,7 @@
             </div>
                 <div class="profile-image">
                     <img src="{{ $student->user->profile_image_path && file_exists(storage_path('app/public/' . $student->user->profile_image_path))
-                                ? asset('storage/' . auth()->user()->profile_image_path)
+                                ? asset('storage/' . $student->user->profile_image_path)
                                 : asset('images/avatar.png')  }}"
                      alt="User Avatar"
                      class="profile-img">

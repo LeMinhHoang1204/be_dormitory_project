@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->enum('payment_method', ['Cash', 'Bank Transfer'])->nullable();
             $table->string('note', 200)->nullable();
+            $table->string('evidence_image', 200)->nullable();
             $table->timestamps();
 
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');

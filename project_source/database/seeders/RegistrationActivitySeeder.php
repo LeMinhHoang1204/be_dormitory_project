@@ -26,7 +26,7 @@ class RegistrationActivitySeeder extends Seeder
                 $status = $currentDate->lessThan($activity->start_date)
                     ? 'Registered'
                     : 'Joined';
-                if ($currentDate->lessThan($activity->start_date) && $participants[$i - 1]->has_cancelled) {
+                if ($currentDate->lessThan($activity->end_date) && $participants[$i - 1]->has_cancelled) {
                     $status = 'Cancelled';
                 }
                 RegistrationActivity::factory()->state([

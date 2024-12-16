@@ -105,7 +105,7 @@
     }
 
 </script>
-                <div class="student-details">
+            <div class="student-details">
                 <div class="info-left">
                     <p><strong>Name:</strong> {{ auth()->user()->name }}</p>
                     <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
@@ -121,7 +121,6 @@
                     <p><strong>University Name:</strong> {{ $student->uni_name }}</p>
                     <p><strong>Status:</strong> {{ auth()->user()->status ? 'Active' : 'Inactive' }}</p>
                     <p><strong>Room:</strong> {{ $currentResidence?->room?->name ?? 'Not assigned' }}</p>
-                    {{--                    <p><strong>Profile Image:</strong> <img src="{{ asset('storage/' . auth()->user()->profile_image_path) }}" alt="Profile Image" style="width: 100px; height: 100px; border-radius: 50%"></p>--}}
                 </div>
             </div>
 

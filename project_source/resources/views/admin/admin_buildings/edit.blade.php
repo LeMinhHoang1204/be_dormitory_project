@@ -1,137 +1,140 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-blue-700 leading-tight">
-            {{ __('Update Building') }}
-        </h2>
-    </x-slot>
+@extends('Auth_.index')
+<head>
+    <title>Update Building</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+</head>
+@section('content')
+    @include('layouts.sidebar_student')
 
-    <div class="container">
-        <h1 class="text-center my-4">Update Building</h1>
-
-        <x-primary-button>
-            <a href="{{ route('rooms.create2', ['building' => $building->id]) }}" style="color: white; text-decoration: none;">
-                {{ __('Add room') }}
-            </a>
-        </x-primary-button>
-
+    <div class="extension">
+        <div class="bluefont"><h3>Update Building</h3></div>
+        <p><strong>Building ID:</strong> #_{{ $building->id }}</p>
+        <p><strong>Create Date:</strong> {{ \Carbon\Carbon::parse($building->created_at)->format('d M, Y') }}</p>
 
         <form action="{{ route('buildings.update', $building->id) }}" method="POST">
             @csrf
+{{--            @method('PUT')--}}
 
-            <div class="mb-4">
-                <label for="manager_id" class="block text-gray-700 font-bold mb-2">Manager:</label>
-                <select id="manager_id" name="manager_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    @if($building->manager_id)
-                        <option value="{{$building->managed->id}}" selected>{{$building->managed->user->name}}</option>
-                    @else
+            <div class="form-container">
+
+                <div class="form-group">
+                    <label for="floor_numbers">Floor numbers:</label>
+                    <input
+                        type="number"
+                        id="floor_numbers"
+                        name="floor_numbers"
+                        value="{{ old('floor_numbers', $building->floor_numbers) }}"
+                        min="1"
+                        required>
+                    @error('floor_numbers')
+                    <div class="error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="room_numbers">Room numbers:</label>
+                    <input
+                        type="number"
+                        id="room_numbers"
+                        name="room_numbers"
+                        value="{{ old('room_numbers', $building->room_numbers) }}"
+                        min="1"
+                        required>
+                    @error('room_numbers')
+                    <div class="error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="manager_id" class="block text-gray-700 font-bold mb-2">Manager:</label>
+                    <select id="manager_id" name="manager_id" class="option">
                         <option value="">-- Select Manager --</option>
-                    @endif
+                        @foreach($managers as $manager)
+                            <option value="{{ $manager->id }}" {{ $building->manager_id == $manager->id ? 'selected' : '' }}>
+                                {{ $manager->user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-
-                    @foreach($managers as $manager)
-                        <option value="{{ $manager->id }}">{{ $manager->user->name }}</option>
-                    @endforeach
-
-                    @if($building->manager_id)
-                        <option value="">Delete current manager</option>
-                    @endif
-                </select>
-            </div>
-
-            <div class="mb-4">
-                <label for="type" class="block text-gray-700 font-bold mb-2">Type:</label>
-                <div class="flex items-center">
-                    <input type="radio" id="type_male" name="type" value="male" {{ $building->type == 'male' ? 'checked' : '' }} required
-                           class="mr-2 leading-tight">
-                    <label for="type_male" class="mr-4">Male</label>
-                    <input type="radio" id="type_female" name="type" value="female" {{ $building->type == 'female' ? 'checked' : '' }} required
-                           class="mr-2 leading-tight ml-4">
-                    <label for="type_female">Female</label>
+                <div class="form-group">
+                    <label for="type">Type:</label>
+                    <select name="type" id="type" required>
+                        <option value="male" {{ $building->type == 'male' ? 'selected' : '' }}>Male</option>
+                        <option value="female" {{ $building->type == 'female' ? 'selected' : '' }}>Female</option>
+                    </select>
+                    @error('type')
+                    <div class="error">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
+            <div class="form-actions">
+                <a href="javascript:void(0);" class="grey-btn" onclick="goBack()"> < Back</a>
 
-            <div class="mb-4">
-                <label for="floor_numbers" class="block text-gray-700 font-bold mb-2">Floor Numbers:</label>
-                <input type="number" id="floor_numbers" name="floor_numbers" required value="{{$building->floor_numbers}}"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <a href="{{ route('rooms.create', ['building' => $building->id]) }}" class="blue-btn">
+                         {{ __('Add room') }}
+                </a>
+                <button type="submit" class="blue-btn" >Update</button>
+                <script>
+                    function goBack() {
+                        window.location.href = "{{ route('buildings.index') }}";
+                    }
+                </script>
             </div>
-
-            <div class="mb-4">
-                <label for="room_numbers" class="block text-gray-700 font-bold mb-2">Room Numbers:</label>
-                <input type="number" id="room_numbers" name="room_numbers" required value="{{$building->room_numbers}}"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
-
-            <x-primary-button class="ms-4" type="submit">
-                {{ __('Update Building') }}
-            </x-primary-button>
         </form>
+
     </div>
 
     <style>
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
 
-        .text-center {
-            text-align: center;
+        .form-group {
+            margin-bottom: 15px;
+            flex: 0 0 30%;
+            flex-direction: row;
+            align-items: center;
         }
 
-        .my-4 {
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
+        .form-group label {
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #0E3B9C;
+            font-family: Poppins;
         }
 
-        .shadow {
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .border {
-            border: 1px solid #ccc;
-        }
-
-        .rounded {
-            border-radius: 0.25rem;
-        }
-
-        .w-full {
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
             width: 100%;
+            padding: 10px;
+            font-size: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            transition: border 0.3s ease;
         }
 
-        .py-2 {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #4a90e2;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
         }
 
-        .px-3 {
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-        }
-
-        .text-gray-700 {
-            color: #4a5568;
-        }
-
-        .leading-tight {
-            line-height: 1.25;
-        }
-
-        .focus\:outline-none {
-            outline: 0;
-        }
-
-        .focus\:shadow-outline {
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-        }
-
-        .mb-4 {
-            margin-bottom: 1rem;
-        }
-
-        .font-bold {
-            font-weight: 700;
+        .form-actions .grey-btn,
+        .form-actions .blue-btn {
+            margin-left: 10px;
         }
     </style>
-</x-app-layout>
+@endsection

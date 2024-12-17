@@ -1,834 +1,669 @@
 body {
-    background-color: #f9fafc;
+    background-color: #f8f9fa;
     font-family: "Poppins", sans-serif;
-    color: #3c3c3c;
-}
-
-.container-fluid.layout {
-    background-color: #fff;
-    padding: 10px 0;
-}
-
-.ul {
-    list-style: none;
-}
-.ul li a {
-    color: #0e3b9c;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.regisster {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: space-around;
-    justify-items: stretch;
-    width: 1090px;
-    height: 140px;
-    text-align: center;
-    /*border: 1px solid;*/
-    overflow: auto;
-    margin: 60px auto 0 auto; /* Ensures it appears below the title */
-    padding: 10px;
-    position: relative; /* Đặt relative để tiêu đề được định vị tuyệt đối */
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.5;
 }
 
 .title {
     color: #0e3b9c;
-    font-family: Inter;
-    font-size: 47px;
-    font-weight: 700;
-    line-height: 66px;
-    position: absolute; /* Đặt tiêu đề tuyệt đối trong khung .regisster */
-    top: 0;
-    left: 0;
-    margin: 10px; /* Xóa margin để căn chỉnh sát mép trái */
-    /*border: 1px solid;*/
-}
-
-.modal-body img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 1rem;
-}
-/* Bo góc cho modal */
-.modal-content {
-    border-radius: 15px; /* Điều chỉnh giá trị này để bo góc theo ý muốn */
-}
-
-/* Thêm bóng cho modal */
-.modal-dialog {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-/* Thêm viền cho hình ảnh */
-.modal-body img {
-    border: 2px solid #005D4D; /* Màu viền */
-    border-radius: 10px; /* Bo góc cho hình ảnh */
-}
-
-.res-certifi svg{
-    position: absolute; /* Đặt tiêu đề tuyệt đối trong khung .regisster */
-    bottom: 0;
-    left: 0;
-}
-.res-certifi {
-    width: 247px;
-    height: 28px;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
     flex-shrink: 0;
-    position: absolute; /* Đặt tiêu đề tuyệt đối trong khung .regisster */
-    bottom: 0;
-    left: 0;
-    margin: 10px; /* Xóa margin để căn chỉnh sát mép trái */
-    /*border: 1px solid;*/
 }
 
-.ul-res-certifi {
-    /* display: flex; */
-    width: 212px;
-    height: 26px;
-    flex-direction: column;
-    justify-content: center;
-    flex-shrink: 0;
-    color: #005d4d;
-    font-family: Poppins;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-    text-decoration-line: underline;
-    position: absolute; /* Đặt tiêu đề tuyệt đối trong khung .regisster */
-    right: 0;
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 20px 0px;
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
-.filter-button {
-    background-color: #e3e9ef;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-
-}
-
-.search-input {
-    border: 1px solid #ccc;
-    padding: 8px;
-    border-radius: 8px;
-    width: 250px;
-}
-
-.room-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-}
-
-
-.per-month {
-    font-size: 12px;
-    color: #888;
-}
-.type-group {
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: fit-content;
-/*margin-inside: 10px;*/
-    gap: 5px ;
-
-}
-.change-button{
-    position: relative;
-    right: -20px;
-}
-.detail-item {
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    padding: 5px 5px;
-    text-align: center;
-    heigh: 21px;
+    margin: 40px auto 20px auto;
+    max-width: 1200px;
 }
 
-.rooms {
+.header-controls {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: space-around;
-    gap: 15px 20px; /*15px khoảng cách dọc, 20px khoảng cách ngang */
-    justify-items: stretch;
-    border-radius: 20px;
-    width: 1090px;
-    height: fit-content;
-    padding: 10px;
-    text-align: center;
-    flex-shrink: 0;
-    margin: 60px auto 0 auto; /* Ensures it appears below the title */
-    position: relative; /* Adjusts position relative to parent */
+    align-items: center;
+    gap: 12px;
 }
 
 .room-item {
-    flex-grow: 1;
-    flex-basis: 340px;
-    background-color: #fff;
-    border: 1px solid var(--Stroke_Box, #cbd4f3);
-    border-radius: 20px;
-    width: 340px;
-    /*height: 420px; */
-    flex-shrink: 0;
-    box-shadow: 0px 6px 4px 0px var(--table_row, #ecefff);
-}
-
-.form-group {
-    width: 305px;
-    height: 213px;
-    flex-shrink: 0;
-    margin: 20px 10px 20px 10px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    /*border: 1px solid;*/
+    cursor: pointer;
+}
+
+.room-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.room-item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+
+.room-item-group {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.roomname {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2563eb;
+}
+
+#room-price {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ff2441;
+}
+
+.per-month {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.room-info {
+    color: #6b7280;
+    margin: 4px 0;
+    line-height: 1.4;
+    padding-bottom: 12px;
+}
+
+.type-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 0px;
+    flex: 1;
 }
 
 .detail-item {
-    color: var(--text_ph, #001738);
-    font-family: Roboto;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-}
-.room-description {
-    font-size: 14px;
-    color: #666;
-}
-.room-item img {
-    width: 100%;
-    border-radius: 20px 20px 0px 0px;
-}
-
-.form-group {
-    width: 305px;
-    height: 213px;
-    flex-shrink: 0;
-    /* margin: 175px 15px 32px 20px; */
-}
-.roomname {
-    text-align: left;
-    width: auto;
-    color: #1d5cef;
-    font-family: Roboto;
-    font-size: 25px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    align-items: start;
-    justify-items: start;
-}
-#room-price {
-    text-align: left;
-
-    width: auto;
-    color: var(--text_ph, #001738);
-    font-family: Roboto;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
-.room-info {
-    display: flex;
-    width: 296px;
-    height: 28px;
-    flex-direction: column;
-    justify-content: center;
-    flex-shrink: 0;
-    text-align: justify;
-
-    color: var(--text_ph, #001738);
-    font-family: Roboto;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
-.type-group button {
-    display: flex;
-    width: 105px;
-    height: 42px;
-    flex-shrink: 0;
-    padding: 10px 0px ;
+    background: #f3f4f6;
+    padding: 3px 5px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    color: #61728b;
+    white-space: nowrap;
+    border: 1px solid #e5e7eb;
+    display: inline-flex;
     align-items: center;
-    /*gap: 10px;*/
-    border-radius: 10px;
-    border: none;
+    gap: 2px;
+}
+
+.detail-item i {
+    font-size: 0.8rem;
+}
+
+.change-button {
+    margin-left: auto;
+    background: #2563eb;
     color: white;
-    background: var(--Complete, #2f6bff);
-    text-align: center;
-    justify-content: center;
-}
-
-.tags {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.tag {
-    background-color: #e3e9ef;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 12px;
-}
-
-/*
-.status-button {
-  background-color: #2f6bff;
-  color: #fff;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.status-button.full {
-  background-color: #ff6b6b;
-} */
-
-/*.pagination {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    gap: 10px;*/
-/*}*/
-
-/*.page-link {*/
-/*    color: #333;*/
-/*    padding: 8px 12px;*/
-/*    text-decoration: none;*/
-/*    border-radius: 5px;*/
-/*}*/
-
-/*.page-link.active {*/
-/*    background-color: #2f6bff;*/
-/*    color: #fff;*/
-/*}*/
-
-/*.dots {*/
-/*    color: #888;*/
-/*}*/
-
-
-
-.filter-sgv {
-    position: absolute; /* Đặt tiêu đề tuyệt đối trong khung */
-    bottom: 0px;
-    right: 400px;
-    cursor: pointer;
-    transition: transform 0.2s, filter 0.2s;
-}
-
-.filter-sgv:hover {
-    transform: scale(1.001); /* Phóng to nhẹ khi hover */
-    filter: drop-shadow(0px 8px 6px rgba(0, 0, 0, 0.3)); /* Tạo shadow đậm hơn khi hover */
-}
-
-/* Thay đổi màu sắc của đường SVG khi hover */
-/*.filter-sgv svg path {*/
-/*    !*fill: #757575; !* Màu mặc định của SVG *!*!*/
-/*    transition: fill 0.2s;*/
-/*}*/
-
-/*.filter-sgv:hover svg path {*/
-/*    fill: #4A90E2; !* Màu mới khi hover *!*/
-/*}*/
-
-.notification-container {
-    width: 368px;
-    height: 66px;
-    position: absolute; /* Đặt tiêu đề tuyệt đối trong khung */
-    bottom: 0;
-    right: 0;
-    /*border: 1px solid;*/
-margin: auto 10px auto auto;
-}
-
-.search-input-container {
-    position: absolute;
-    width: 360px;
-    height: 56px;
-    flex-shrink: 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-
-}
-
-#searchInput {
-    color: var(--pH, #757575);
-    font-family: Poppins;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
     border: none;
-    outline: none; /* Không có viền mặc định khi focus */
-    /*position: absolute;*/
-
-}
-.search-icon {
-    cursor: pointer;
-    fill: #757575;
-    position: absolute;
-    left: 44px;
-    width: 19px;
-    height: 19px;
-    flex-shrink: 0;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    padding: 8px 16px;
 }
 
-
-
-#notifications {
-    padding-top: 10px;
-    font-size: 14px;
+.change-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
 }
 
-.notification {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-.hidden {
-    display: none;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 4000;
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
-
-/*{{--    Hien thi panel filter--}}*/
-.filter-panel {
-    position: fixed;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 5000;
-    background: var(--Pop-up, #F3F5FF);
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-    max-width: 1000px;
-    display: none;
+/* filter button */
+.filter-container {
+    background: white;
+    padding: 24px;
+    border-radius: 24px;
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px 40px;
+    gap: 16px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-
-.overlay.active,
-.filter-panel.active {
-    display: grid; /* Show when active */
-}
-
-.filter-section {
-    /*background-color: #f8faff;*/
-    width: 211px;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-    border-radius: 16px;
-    border: 1px solid var(--white-07, rgba(255, 255, 255, 0.70));
-    background: var(--white-07, rgba(255, 255, 255, 0.70));
-    backdrop-filter: blur(4px);
-}
-
-
-.filter-section input[type="checkbox"]{
-    color: var(--Gray-700, #616161);
-    font-variant-numeric: lining-nums tabular-nums;
-    font-family: Poppins;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 24px */
-}
-.filter-section input[type="number"] {
-    margin-right: 10px;
-}
-
-
-.floor-number-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.floor-number-container input[type="number"] {
+.filter-popup {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
     width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    border: 2px dashed #c2baff;
-    border-radius: 5px;
-    margin-top: 5px;
-}
-
-.apply-button {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-top: auto;
-    margin-right: auto;
-    background-color: #007bff; /* Màu xanh */
-    color: #fff;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    transition: background-color 0.3s ease;
-
-    font-family: Poppins;
-    font-style: normal;
-    line-height: normal;
-}
-
-.apply-button:hover {
-    background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
-}
-
-
-.filter-panel h3{
-    color: var(--Complete, #2F6BFF);
-    font-family: Poppins;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 22.4px; /* 112% */
-}
-
-
-/*{{--    Register room successfully!--}}*/
-.success-panel {
-    display: flex;
-    position: fixed;
-    top: 45%; /* Căn từ trên 45% */
-    left: 50%; /* Căn từ trái 50% */
-    transform: translate(-50%, -50%); /* Dịch chuyển về giữa */
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    width: 692px;
-    height: 491px;
-    flex-shrink: 0;
-    padding: 30px;
-    text-align: center;
-    margin: 50px auto 20px auto; /* Có thể bỏ margin này để tránh lệch */
-    border-radius: 30px;
-    background: #FFF;
-    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-
-.success-panel.hidden {
-    display: none;
-}
-.success-icon {
-    margin-bottom: 30px;
-margin-top: 30px;
-}
-
-.success-panel h2 {
-    margin-bottom: 20px;
-    color: var(--h1, #0E3B9C);
-    text-align: center;
-    font-family: Poppins;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-}
-
-.success-panel p {
-    color: var(--black-100, #000);
-    text-align: center;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-    margin-bottom: 50px;
-}
-
-.success-panel button {
-    background-color: #2F6BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    width: fit-content;
-    position: relative;
-    left: 45%;
-}
-
-.success-panel button:hover {
-    background-color: #2558d1;
-}
-
-.confirm-regis {
-    display: flex;
-    position: fixed;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    flex-direction: column;
-    align-items: center;
-    width: 692px;
-    height: 300px;
-    flex-shrink: 0;
-    padding: 30px;
-    text-align: center;
-    margin: 50px auto 20px auto;
-    border-radius: 30px;
-    background: #FFF;
-    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
     justify-content: center;
-    display: none;
-}
-.hidden {
-    display: none;
+    align-items: center;
 }
 
-.overlay2 {
+.filter-popup.show {
+    display: flex;
+}
+
+.filter-popup-content {
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    width: 95%;
+    max-width: 1000px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.filter-group {
+    margin-bottom: 0;
+    padding: 16px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+}
+
+.filter-group:hover {
+    background: #f8fafc;
+    border-color: #e5e7eb;
+    transform: translateY(-2px);
+}
+
+.filter-group h3 {
+    color: #0e3b9c;
+    font-size: 15px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.025em;
+}
+
+.checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkbox-item {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.checkbox-item:hover {
+    background-color: #f1f5f9;
+    transform: none;
+}
+
+.checkbox-item input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cbd5e1;
+    border-radius: 6px;
+    margin-right: 12px;
+    position: relative;
+    background-color: white;
+    transition: all 0.2s ease;
+}
+
+.checkbox-item input[type="checkbox"]:checked + .checkmark {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.checkbox-item input[type="checkbox"]:checked + .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-item:hover .checkmark {
+    border-color: #2563eb;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.floor-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 450;
+    color: #475569;
+    background-color: white;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.floor-select:hover {
+    border-color: #2563eb;
+    background-color: #f8fafc;
+}
+
+.floor-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.select-wrapper::after {
+    content: "";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #64748b;
+    pointer-events: none;
+}
+
+.button-group {
+    grid-column: 3;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.btn {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.apply-btn,
+.cancel-btn {
+    background-color: transparent;
+    color: inherit;
+}
+
+@media (max-width: 768px) {
+    .filter-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 24px;
+    }
+
+    .button-group {
+        grid-column: 1;
+        margin-top: 16px;
+    }
+}
+/* end filter */
+
+@media (max-width: 1024px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-input {
+    padding: 8px 16px;
+    border: 2px solid #cbd4f3;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    outline: none;
+    width: 300px;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+.search-input:hover {
+    border-color: #2563eb;
+}
+
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 0 20px;
+        margin: 40px 20px 20px 20px;
+    }
+
+    .grid-container {
+        padding: 20px;
+    }
+}
+
+.filter-icon {
+    background: white;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid #cbd4f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    height: 42px;
+    width: 42px;
+}
+
+.filter-icon i {
+    font-size: 20px;
+    color: #757575;
+}
+
+.filter-icon:hover {
+    background: #f3f4f6;
+    border-color: #2563eb;
+}
+
+/* Register popup styling */
+.register-popup {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    display: none;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    padding: 20px;
 }
 
-
-.confirm-regis,
-.success-panel,
-.confirm-info-container {
-    display: none; /* Initially hidden */
-}
-
-.overlay2.active,
-.confirm-info-container.active,
-.confirm-regis.active,
-.success-panel.active {
-    display: grid; /* Show when active */
-}
-
-.confirm-regis h2 {
-    margin-bottom: 30px;
-    margin-top: 50px;
-    color: var(--h1, #0E3B9C);
-    font-family: Poppins;
-    font-size: 30px;
-    font-weight: 600;
-    line-height: normal;
-}
-
-.button-container {
+.register-popup.show {
     display: flex;
-    gap: 40px; /* Khoảng cách giữa các nút */
-    justify-content: center; /* Đặt các nút nằm ở bên phải */
-    width: 100%;
 }
 
-.confirm-regis button {
-    background-color: #2F6BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    height: 50px;
-    width: 120px;
-}
-
-
-.confirm-regis .no-btn {
-    background-color: #d14a4a !important; /* Sử dụng !important để đảm bảo tính ưu tiên */
-}
-
-.confirm-regis button:hover {
-    background-color: #2558d1;
-}
-.overlay2.active,
-.confirm-regis.active {
-    display: grid; /* Show when active */
-}
-
-/* Container for the confirmation form */
-.confirm-info-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-
-    background-color: #fff;
-    padding: 25px;
-    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-    font-family: 'Arial', sans-serif;
-    margin: 50px auto 20px auto;
-
-
-}
-
-/* Header section */
-.confirm-info-header h2 {
-    text-align: center;
-    justify-self: center;
-
-    /*color: #007bff;*/
-    /*font-size: 28px;*/
-    margin-bottom: 30px;
-    border-radius: 20px;
-    background: #2F6BFF;
-    display: flex;
-    width: 350px;
-    height: 50px;
-    flex-direction: column;
-    flex-shrink: 0;
-    color: #FFF;
-    font-family: Poppins;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-}
-
-/* Body section */
-.confirm-info-body {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px; /* Khoảng cách giữa hai cột */
-}
-
-/* Left and right columns */
-.left-column,
-.right-column {
-    width: 48%; /* Chia đều hai cột */
-}
-
-/* Common field styles */
-.confirm-info-field {
-    margin-bottom: 20px; /* Khoảng cách giữa các trường */
-}
-
-.confirm-info-field label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #555;
-}
-
-.confirm-info-field input,
-.confirm-info-field select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box; /* Đảm bảo padding không làm ảnh hưởng kích thước */
-}
-
-.confirm-info-field input[readonly],
-.confirm-info-field select[readonly] {
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-/* Style for date field */
-#start-date {
-    font-size: 14px;
-}
-
-/* Specific field styles */
-.confirm-info-field input#price,
-.confirm-info-field input#capacity,
-.confirm-info-field input#room-id,
-.confirm-info-field input#student-id,
-.confirm-info-field input#full-name {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-/* Footer button styles */
-.confirm-info-footer button {
-    color: #FFF;
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    color: white;
-    border: 1px;
-    border-radius: 15px;
-    background: #2F6BFF;    font-size: 20px;
-    cursor: pointer;
-    height: 50px;
-    width: 120px;
+.register-popup-content {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     position: relative;
-    left: 43%;
-    margin-top: 25px;
+    margin: auto;
+    margin-top: 80px;
 }
 
-.confirm-info-footer button:hover {
-    background-color: #0056b3;
+
+.register-popup-content h2 {
+    color: #0e3b9c;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    text-align: left;
+    padding-bottom: 12px;
 }
 
-/* Mobile responsiveness */
-@media screen and (max-width: 768px) {
-    .confirm-info-body {
+
+
+#confirm-register-modal .register-popup-content {
+    max-width: 500px;
+    padding: 40px;
+}
+
+.room-info-display {
+    border-bottom: 1px solid #e5e7eb;
+    margin:24px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-row,
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.info-row:last-child {
+    margin-bottom: 0;
+}
+
+.info-label,
+.label-text {
+    min-width: 120px;
+    color: #0e3b9c;
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.info-value,
+.room-detail {
+    color: #475569;
+    font-size: 18px;
+    font-weight: 450;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    color: #0e3b9c;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-fields-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-field {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 450;
+    color: #475569;
+    background-color: white;
+    appearance: none;
+    transition: all 0.2s ease;
+}
+
+.form-control:hover {
+    border-color: #2563eb;
+    background-color: #f8fafc;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Button styling */
+.popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.popup-footer button {
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary,
+.btn-cancel {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover,
+.btn-cancel:hover {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+
+.btn-primary,
+.btn-confirm {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover,
+.btn-confirm:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .register-popup-content {
+        width: 95%;
+        padding: 24px;
+    }
+
+    .room-info-display {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .info-row,
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .info-label,
+    .label-text {
+        min-width: auto;
+        margin-bottom: 4px;
+    }
+
+    .popup-footer {
         flex-direction: column;
     }
 
-    .left-column,
-    .right-column {
+    .popup-footer button {
         width: 100%;
     }
+}
 
-    .confirm-info-container {
-        width: 90%;
+/* Payment Info Modal Styling */
+.payment-info {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.payment-info p {
+    color: #dc3545;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .register-popup-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .label-text {
+        width: 100px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button-group button {
+        width: 100%;
     }
 }
 
-/*sửa cho sidebar mờ đi khi mở Residence certificate*/
-.modal-dialog {
-    z-index: 1050;
-}
-#sidebar {
-    z-index: 1000!important;
-}
-
-/* CSS cho phân trang */
+/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
@@ -876,7 +711,8 @@ margin-top: 30px;
     font-size: 14px;
 }
 
-.pagination .previous, .pagination .next {
+.pagination .previous,
+.pagination .next {
     font-weight: bold;
 }
 
@@ -888,4 +724,75 @@ margin-top: 30px;
 
 .pagination a:hover {
     transform: scale(1.1);
+}
+
+/* confirm register modal */
+#confirm-register-modal .register-popup-content {
+    max-width: 500px;
+    padding: 40px;
+}
+
+#confirm-register-modal .popup-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+#confirm-register-modal .popup-header h2 {
+    font-size: 1.75rem;
+    color: #0e3b9c;
+    font-weight: 600;
+}
+
+#confirm-register-modal .popup-body {
+    text-align: center;
+    padding: 0;
+}
+
+#confirm-register-modal p {
+    font-size: 1.1rem;
+    color: #4b5563;
+    margin-bottom: 32px;
+    line-height: 1.5;
+}
+
+#confirm-register-modal .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    grid-column: unset;
+    margin-top: 0;
+}
+
+#confirm-register-modal .btn {
+    min-width: 140px;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+#confirm-register-modal .btn-secondary {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+#confirm-register-modal .btn-secondary:hover {
+    background-color: #e2e8f0;
+    color: #475569;
+    transform: translateY(-1px);
+}
+
+#confirm-register-modal .btn-primary {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+}
+
+#confirm-register-modal .btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1),
+        0 2px 4px -1px rgba(37, 99, 235, 0.06);
 }

@@ -29,9 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
-});
+
 
 Route::middleware(['auth'])->group(function () {
     // Route trang yêu cầu sửa chữa
@@ -47,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
 
-Route::get('/register_room', [RoomController::class, 'showListRoom']);
+Route::get('/register-room', [RoomController::class, 'showListRoom'])->name('register-room');
 
 Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
 

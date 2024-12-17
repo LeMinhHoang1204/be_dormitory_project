@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('room_id')->unsigned();
             $table->dateTime('start_date');
             //Thêm cột thời hạn
-            $table->enum('months_duration', ['3','6','9','12']);
+            $table->enum('months_duration', ['3', '6', '9', '12']);
             $table->dateTime('end_date');
             $table->dateTime('check_out_date')->nullable();
             $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Transfered', 'Checked out'])->default('Registered');

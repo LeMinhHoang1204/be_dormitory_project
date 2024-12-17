@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Building;
-use App\Models\Notification;
+use App\Models\Invoice;
 use App\Models\Residence;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ResidenceController extends Controller
 {
@@ -25,7 +26,7 @@ class ResidenceController extends Controller
      */
     public function create()
     {
-        return view('student_rooms.register');
+        return view('Reg_room.reg_room');
     }
 
     /**
@@ -34,22 +35,17 @@ class ResidenceController extends Controller
     public function store(Request $request)
     {
         try {
+            DB::beginTransaction();
+
             // Check login
             if (!auth()->check()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Please login to register for a room',
+                    'message' => 'Please login to register for a room'
                 ], 401);
             }
 
-            // Check user is student
             $student = auth()->user()->student;
-            if (!$student) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Only students can register for rooms',
-                ], 403);
-            }
 
             $validated = $request->validate([
                 'room_id' => 'required|exists:rooms,id',
@@ -65,7 +61,7 @@ class ResidenceController extends Controller
             if ($existingRegistration) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'You already have a room registration for this date',
+                    'message' => 'You already have a room registration for this date'
                 ], 422);
             }
 
@@ -79,7 +75,7 @@ class ResidenceController extends Controller
             if ($currentResidents >= $room->member_number) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'This room is already full',
+                    'message' => 'This room is already full'
                 ], 422);
             }
 
@@ -92,17 +88,55 @@ class ResidenceController extends Controller
                 'start_date' => $validated['check_in_date'],
                 'end_date' => $end_date,
                 'duration' => (int) $validated['duration'],
-                'status' => 'Paid',
+                'status' => 'Registered',
             ]);
+
+            if (!$residence) {
+                throw new \Exception('Failed to create residence record');
+            }
+
+            // Invoice
+            $total = $room->unit_price * (int)$validated['duration'];
+
+            try {
+                $invoice = Invoice::create([
+                    'sender_id' => auth()->id(),
+                    'object_type' => 'App\Models\Residence',
+                    'object_id' => $residence->id,
+                    'send_date' => now(),
+                    'due_date' => now()->addDays(7),
+                    'type' => 'Room',
+                    'total' => $total,
+                    'status' => 'Not Paid',
+                    'note' => 'Room registration fee for ' . $room->name,
+                ]);
+
+                if (!$invoice) {
+                    throw new \Exception('Failed to create invoice record');
+                }
+            } catch (\Exception $e) {
+                \Log::error('Invoice creation failed: ' . $e->getMessage());
+                throw new \Exception('Failed to create invoice: ' . $e->getMessage());
+            }
+
+            DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Room registration successful!',
+                'message' => 'Room registration successful! Please complete your payment.',
+                'invoice' => [
+                    'total' => $total,
+                    'due_date' => $invoice->due_date,
+                ]
             ]);
+
         } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Registration failed: ' . $e->getMessage());
+
             return response()->json([
                 'success' => false,
-                'message' => 'Registration failed: ' . $e->getMessage(),
+                'message' => 'Registration failed: ' . $e->getMessage()
             ], 422);
         }
     }
@@ -141,18 +175,23 @@ class ResidenceController extends Controller
 
     public function myRoom()
     {
-        $student = auth()->user()->student;
-
-        if (!$student) {
-            return redirect()->back()->with('error', 'You are not assigned as a student.');
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please log in first.');
         }
 
-        $residence = Residence::where('stu_user_id', $student->id)->with('room')->first()
+        $user = auth()->user();
+        $student = $user->student;
+
+        if (!$student) {
+            return redirect()->route('dashboard')->with('error', 'You are not assigned as a student.');
+        }
+
+        $residence = Residence::where('stu_user_id', $user->id)
             ->with('room.building')
             ->first();
 
         if (!$residence) {
-            return redirect()->back()->with('error', 'No room information found.');
+            return redirect()->route('students.register-room.list')->with('error', 'No room information found. Let register a room.');
         }
 
         return view('user_student.student.room', compact('residence'));

@@ -4,6 +4,8 @@
     <title>Check Out</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/checkout.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+
 </head>
 
 @section('content')
@@ -12,6 +14,11 @@
     <div class="checkout-container">
         <h3 class="heading">Check Out</h3>
 
+        @if(session('message'))
+            <div class="alert alert-success mt-3">
+                {{ session('message') }}
+            </div>
+        @endif
         <div class="student-info">
             <div class="info-left">
                 <p><strong>Full name:</strong> {{ Auth::user()->name }}</p>
@@ -32,22 +39,17 @@
             </div>
         </div>
 
-        <form action="{{ route('student.leave') }}" method="POST">
+        <form action="{{ route('students.leave') }}" method="POST">
             @csrf
             <div class="buttons">
                 <!-- Button Cancel, chuyển hướng đến trang dashboard -->
-                <a href="{{ route('dashboard') }}" class="btn-cancel">Cancel</a>
+                <a href="{{ route('dashboard') }}" class="grey-btn">Cancel</a>
 
                 <!-- Button Leave -->
-                <button type="submit" class="btn-leave">Leave</button>
+                <button type="submit" class="red-btn">Leave</button>
             </div>
         </form>
 
 
-        @if(session('message'))
-            <div class="alert alert-success mt-3">
-                {{ session('message') }}
-            </div>
-        @endif
     </div>
 @endsection

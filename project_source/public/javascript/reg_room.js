@@ -182,3 +182,15 @@ function showPaymentInfo(invoice) {
     ).toLocaleDateString();
     modal.style.display = "block";
 }
+
+function downloadPaymentInfo() {
+    // Create a link element
+    const link = document.createElement('a');
+    link.href = '/images/qrcode.png';
+    link.download = 'payment_qrcode.png';
+
+    // Append link to body, click it, and remove it
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}

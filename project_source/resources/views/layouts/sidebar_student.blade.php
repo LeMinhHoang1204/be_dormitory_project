@@ -263,7 +263,7 @@
         @endif
         @if (auth()->check() && auth()->user()->role === 'accountant')
             <li class="menu-item">
-                <a href="">
+                <a href="/accountant/payment">
                     {{--                    <span class="icon">📋</span> --}}
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor"

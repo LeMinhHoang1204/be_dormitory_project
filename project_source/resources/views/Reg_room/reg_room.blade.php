@@ -513,10 +513,6 @@
 
     </div>
 
-    {{-- Danh sach phong --}}
-{{--    <div class="rooms" id="room-list">--}}
-{{--        <div class="room-item"></div>--}}
-{{--    </div>--}}
 
     <div class="rooms" id="room-list">
         @foreach ($rooms as $room)
@@ -599,7 +595,7 @@
     </div>
     <p style="text-align: center; margin-top: -10px">{{ $rooms->currentPage() }} / {{ $rooms->lastPage() }}</p>
 
-    
+
     {{--    Confirm bạn có chắc chắn muốn đăng ký phòng này? --}}
     {{--    <div class="overlay2 hidden" onclick="toggleConfirm()"></div> --}}
     <div class="confirm-regis hidden">

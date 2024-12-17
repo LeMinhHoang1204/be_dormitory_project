@@ -1,95 +1,3 @@
-<script>
-    const receiptInfo = [{
-        // total: 10000,
-        // buildings: 'All',
-        // receiptsType: 'All'
-        total: {{ $reportData['total'] }},
-        {{--buildings: '{{ $reportData['buildings']->count() === \App\Models\Building::count() ? 'All' : $reportData['buildings']->implode(', ') }}',--}}
-        buildings: {!! json_encode(collect($reportData['totalByBuilding'])->keys()->toArray()) !!},
-        receiptsType: '{{ $reportData['receiptsType']->implode(', ') }}'
-    }];
-
-    function createReceiptInfo(receipt) {
-        return `
-      <p class="receipt-total">Total: ${receipt.total} Invoices</p>
-      <p class="receipt-building">Building: ${receipt.buildings} </p>
-      <p class="receipt-type">Type: ${receipt.receiptsType} </p>
-      <p>Date:</p>
-    `;
-    }
-
-    function displayReceiptInfo() {
-        const receipt = document.getElementById('receipt-info');
-        receipt.innerHTML = receiptInfo.map(createReceiptInfo).join('');
-    }
-
-    document.addEventListener('DOMContentLoaded', displayReceiptInfo);
-
-
-    // Dummy data for charts
-    const receiptTypeData = {
-        labels: {!! json_encode($reportData['totalByReceiptType']->keys()->toArray()) !!},
-        datasets: [{
-            label: 'Total',
-            data: {!! json_encode($reportData['totalByReceiptType']->values()->toArray()) !!},
-            backgroundColor: ['#3498db', '#1abc9c', '#e74c3c', '#f1c40f', '#9b59b6']
-        }]
-    }
-
-    const receiptOfMonthData = {
-        labels: {!! json_encode($reportData['totalByMonth']->keys()->toArray()) !!},
-        datasets: [{
-            label: 'Receipts',
-            data: {!! json_encode($reportData['totalByMonth']->values()->toArray()) !!},
-            borderColor: '#3498db',
-            fill: false
-        }]
-    };
-
-    const receiptPerBuildingData = {
-        labels: {!! json_encode(collect($reportData['totalByBuilding'])->keys()->toArray()) !!},
-        datasets: [{
-            label: 'Receipts',
-            data: {!! json_encode(collect($reportData['totalByBuilding'])->values()->toArray()) !!},
-            backgroundColor: '#3498db'
-        }]
-    };
-
-
-
-    // Chart.js initializations
-    document.addEventListener('DOMContentLoaded', () => {
-        new Chart(document.getElementById('receipt-type-chart'), {
-            type: 'pie',
-            data: receiptTypeData
-        })});
-
-    document.addEventListener('DOMContentLoaded', () => {
-        new Chart(document.getElementById('receipt-of-month-chart'), {
-            type: 'line',
-            data: receiptOfMonthData
-        })});
-
-    document.addEventListener('DOMContentLoaded', () => {
-        new Chart(document.getElementById('receipt-per-building-chart'), {
-            type: 'bar',
-            data: receiptPerBuildingData
-        })});
-
-
-    function togglePanel() {
-        const popup = document.getElementById('filter-popup');
-        popup.classList.toggle('hidden'); ;
-    };
-
-    function closePanel(event) {
-        const popup = document.getElementById('filter-popup');
-        if (event.target === popup) {
-            popup.classList.add('hidden');
-        }
-    }
-</script>
-
 @extends('Auth_.index')
 
 
@@ -97,8 +5,152 @@
     {{--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">--}}
     <script src={{ asset('https://cdn.jsdelivr.net/npm/chart.js') }}></script>
     <link rel="stylesheet" href="{{ asset('css/Report/Report.css') }}" type="text/css">
-    <script src="{{ asset('report_accountant.js') }}?v={{ time() }}"></script>
+{{--    <script src="{{ asset('report_accountant.js') }}?v={{ time() }}"></script>--}}
 
+    <script>
+        const receiptInfo = [{
+            total: {{ $reportData['total'] }},
+            buildings: {!! json_encode(collect($reportData['totalByBuilding'])->keys()->toArray()) !!},
+            receiptsType: {!! json_encode(collect($reportData['totalByReceiptType'])->keys()->toArray()) !!}
+        }];
+
+        function createReceiptInfo(receipt) {
+            return `
+      <p class="receipt-total">Total: ${receipt.total} Invoices</p>
+      <p class="receipt-building">Building: ${receipt.buildings} </p>
+      <p class="receipt-type">Type: ${receipt.receiptsType} </p>
+      <p>Date:</p>
+    `;
+        }
+
+        function displayReceiptInfo() {
+            const receipt = document.getElementById('receipt-info');
+            receipt.innerHTML = receiptInfo.map(createReceiptInfo).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', displayReceiptInfo);
+
+
+        // Dummy data for charts
+        const receiptTypeData = {
+            labels: {!! json_encode($reportData['totalByReceiptType']->keys()->toArray()) !!},
+            datasets: [{
+                label: 'Total',
+                data: {!! json_encode($reportData['totalByReceiptType']->values()->toArray()) !!},
+                backgroundColor: ['#3498db', '#1abc9c', '#e74c3c', '#f1c40f', '#9b59b6']
+            }]
+        }
+
+        const receiptOfMonthData = {
+            labels: {!! json_encode($reportData['totalByMonth']->keys()->toArray()) !!},
+            datasets: [{
+                label: 'Receipts',
+                data: {!! json_encode($reportData['totalByMonth']->values()->toArray()) !!},
+                borderColor: '#3498db',
+                fill: false
+            }]
+        };
+
+        const receiptPerBuildingData = {
+            labels: {!! json_encode(collect($reportData['totalByBuilding'])->keys()->toArray()) !!},
+            datasets: [{
+                label: 'Receipts',
+                data: {!! json_encode(collect($reportData['totalByBuilding'])->values()->toArray()) !!},
+                backgroundColor: '#3498db'
+            }]
+        };
+
+
+
+        // Chart.js initializations
+        document.addEventListener('DOMContentLoaded', () => {
+            new Chart(document.getElementById('receipt-type-chart'), {
+                type: 'pie',
+                data: receiptTypeData
+            })});
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new Chart(document.getElementById('receipt-of-month-chart'), {
+                type: 'line',
+                data: receiptOfMonthData
+            })});
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new Chart(document.getElementById('receipt-per-building-chart'), {
+                type: 'bar',
+                data: receiptPerBuildingData
+            })});
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('filterButton').addEventListener('click', function() {
+                const buildings = [];
+                document.getElementById('building').value.split(',').forEach(building => {
+                    buildings.push(building.trim());
+                });
+                const floors = [];
+                document.getElementById('floor').value.split(',').forEach(floor => {
+                    floors.push(floor.trim());
+                });
+                const school = document.getElementById('school').value;
+                const gender = document.querySelector('input[name="gender"]:checked').value;
+                const receiptStatus = [];
+                document.querySelectorAll('input[name="receiptStatus"]:checked').forEach(status => {
+                    receiptStatus.push(status.value);
+                });
+                const receiptType = [];
+                document.querySelectorAll('input[name="receiptType"]:checked').forEach(type => {
+                    receiptType.push(type.value);
+                });
+                const sendDate = document.getElementById('sendDate').value;
+                const dueDate = document.getElementById('dueDate').value;
+
+                const data = {
+                    // Add the data you want to send to the controller
+                    building: buildings,
+                    floor: floors,
+                    school: school,
+                    gender: gender,
+                    receiptStatus: receiptStatus,
+                    receiptType: receiptType,
+                    sendDate: sendDate,
+                    dueDate: dueDate
+                };
+
+                fetch('{{ route('report_accountant.fetch') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                {{--let params = `?building=${buildings}&floor=${floors}&school=${school}&gender=${gender}&receiptStatus=${receiptStatus.join(', ')}&receiptType=${receiptType.join(', ')}&sendDate=${sendDate}&dueDate=${dueDate}`;--}}
+
+                {{--window.location.href = `{{ route('report_accountant.index') }}${params}`;--}}
+            });
+        });
+
+        function togglePanel() {
+            const popup = document.getElementById('filter-popup');
+            popup.classList.toggle('hidden'); ;
+        };
+
+        function closePanel(event) {
+            const popup = document.getElementById('filter-popup');
+            if (event.target === popup) {
+                popup.classList.add('hidden');
+            }
+        }
+    </script>
 </head>
 
 @section('content')
@@ -191,33 +243,33 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="building">Building:</label>
-                        <select id="building" name="building">
-                            <option value="">All</option>
+                        <input type="text" id="building" name="building" list="building-list">
+                        <datalist id="building-list">
                             @foreach($reportData['buildings'] as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
+                                <option value="{{ $name }}"></option>
                             @endforeach
-                        </select>
+                        </datalist>
                     </div>
                     <div class="form-group">
-                        <label for="dormStudentId">Dorm Student ID:</label>
-                        <input type="text" id="dormStudentId" name="dormStudentId">
+                        <label for="floor">Floor:</label>
+                        <input type="text" id="floor" name="floor" placeholder="1-10">
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="room">Room:</label>
-                        <input type="text" id="room" name="room">
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Student Name:</label>
-                        <input type="text" id="name" name="name">
-                    </div>
-                </div>
+{{--                <div class="form-row">--}}
+{{--                    <div class="form-group">--}}
+{{--                        <label for="room">Room:</label>--}}
+{{--                        <input type="text" id="room" name="room">--}}
+{{--                    </div>--}}
+{{--                    <div class="form-group">--}}
+{{--                        <label for="name">Student Name:</label>--}}
+{{--                        <input type="text" id="name" name="name">--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="form-row">
                     <div class="form-group">
                         <label for="school">School:</label>
                         <select id="school" name="school">
-                            <option value="">All</option>
+                            <option value="all">All</option>
                             @foreach($reportData['schools'] as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
                             @endforeach
@@ -238,31 +290,31 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="receiptStatus">Receipt status:</label>
-                        <select id="receiptStatus" name="receiptStatus">
-                            <option value="">All</option>
-                            @foreach($reportData['receiptStatus'] as $status)
-                                <option value="{{ $status }}">{{ $status }}</option>
-                            @endforeach
-                        </select>
+                        <br>
+                        @foreach($reportData['receiptStatus'] as $status)
+                            <p><input type="checkbox" name="receiptStatus" value="{{ $status }}"> {{ $status }}</p>
+                        @endforeach
                     </div>
                     <div class="form-group">
                         <label for="receiptType">Receipt type:</label>
-                        <select id="receiptType" name="receiptType">
-                            <option value="">All</option>
-                            @foreach($reportData['receiptsType'] as $type)
-                                <option value="{{ $type }}">{{ $type }}</option>
-                            @endforeach
-                        </select>
+                        <br>
+                        @foreach($reportData['receiptsType'] as $type)
+                            <p><input type="checkbox" name="receiptType" value="{{ $type }}"> {{ $type }}</p>
+                        @endforeach
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="receiptDate">Receipt date:</label>
-                        <input type="date" id="receiptDate" name="receiptDate">
+                        <label for="sendDate">Send date:</label>
+                        <input type="date" id="sendDate" name="sendDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Receipt date:</label>
+                        <input type="date" id="dueDate" name="dueDate">
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button type="submit">Apply Filter</button>
+                    <button type="submit" id="filterButton">Apply Filter</button>
                 </div>
             </form>
         </div>

@@ -1,17 +1,17 @@
 <script>
     const receiptInfo = [{
-        total: 10000,
-        buildings: 'All',
-        receiptsType: 'All'
+        dormStuId: {{ $reportData['id'] }},
+        room: '{{ $reportData['room'] }}',
+        total: {{ $reportData['total'] }},
+        receiptsType: {!! json_encode(collect($reportData['totalByReceiptType'])->keys()->toArray()) !!},
     }];
 
     function createReceiptInfo(receipt) {
         return `
+    <p>Dorm Stu ID: ${receipt.dormStuId}</p>
+    <p>Room: ${receipt.room}</p>
     <p class="receipt-total">Total: ${receipt.total}</p>
-    <p class="receipt-building">Building: ${receipt.buildings} </p>
     <p class="receipt-type">Type: ${receipt.receiptsType} </p>
-    <p>Room:</p>
-    <p>Dorm Stu ID:</p>
     <p>Date:</p>
   `;
     }
@@ -23,51 +23,107 @@
 
     document.addEventListener('DOMContentLoaded', displayReceiptInfo);
 
+    const receiptTypeData = {
+        labels: {!! json_encode(collect($reportData['totalByReceiptType'])->keys()->toArray()) !!},
+        datasets: [{
+            label: 'Total',
+            data: {!! json_encode(collect($reportData['totalByReceiptType'])->values()->toArray()) !!},
+            backgroundColor: ['#3498db', '#1abc9c', '#e74c3c', '#f1c40f']
+        }]
+    };
+    document.addEventListener('DOMContentLoaded', () => {
+        new Chart(document.getElementById('receipt-type-chart'), {
+            type: 'pie',
+            data: receiptTypeData,
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                let total = tooltipItem.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let value = tooltipItem.raw; // Giá trị của phần hiện tại
+                                let percentage = ((value / total) * 100).toFixed(1); // Tính phần trăm
+                                return `${tooltipItem.label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        })});
 
-    // Data for the combined chart
+{{--    const type = {!! json_encode(array_keys($reportData['totalTypePerMonth'])) !!}--}}
+
+    {{--const receiptData = {--}}
+    {{--    labels: {!! json_encode(array_values(array_keys($reportData['totalTypePerMonth']))) !!}, // Months--}}
+    {{--    datasets: [--}}
+    {{--        {--}}
+    {{--            type: 'line',--}}
+    {{--            label: type[0],--}}
+    {{--            data: [200, 300, 400, 350, 450, 500],--}}
+    {{--            borderColor: '#3498db',--}}
+    {{--            borderWidth: 2,--}}
+    {{--            fill: false,--}}
+    {{--        },--}}
+    {{--        {--}}
+    {{--            type: 'line',--}}
+    {{--            label: 'Electricity',--}}
+    {{--            data: [150, 200, 250, 300, 200, 400],--}}
+    {{--            borderColor: '#1abc9c',--}}
+    {{--            borderWidth: 2,--}}
+    {{--            fill: false,--}}
+    {{--        },--}}
+    {{--        {--}}
+    {{--            type: 'line',--}}
+    {{--            label: 'Water',--}}
+    {{--            data: [100, 120, 180, 200, 160, 300],--}}
+    {{--            borderColor: '#f1c40f',--}}
+    {{--            borderWidth: 2,--}}
+    {{--            fill: false,--}}
+    {{--        },--}}
+    {{--        {--}}
+    {{--            type: 'line',--}}
+    {{--            label: 'Other',--}}
+    {{--            data: [80, 100, 120, 150, 130, 170],--}}
+    {{--            borderColor: '#e74c3c',--}}
+    {{--            borderWidth: 2,--}}
+    {{--            fill: false,--}}
+    {{--        },--}}
+    {{--        {--}}
+    {{--            type: 'bar',--}}
+    {{--            label: 'Total Cost',--}}
+    {{--            data: [], // This will be calculated--}}
+    {{--            backgroundColor: 'rgba(52, 152, 219, 0.5)',--}}
+    {{--            borderWidth: 1,--}}
+    {{--        },--}}
+    {{--    ],--}}
+    {{--};--}}
+
+    const totalTypePerMonth = {!! json_encode($reportData['totalTypePerMonth']) !!};
+
+    // Labels cho 12 tháng
+    const labels = Array.from({ length: 12 }, (_, i) => `Month ${i + 1}`);
+
+    // Tạo datasets từ totalTypePerMonth
+    const datasets = Object.keys(totalTypePerMonth).map((type, index) => {
+        return {
+            label: type, // Tên của loại (type1, type2, ...)
+            data: totalTypePerMonth[type], // Dữ liệu của loại
+            borderColor: getColor(index), // Hàm lấy màu sắc
+            borderWidth: 2,
+            fill: false
+        };
+    });
+
+    // Hàm để gán màu sắc cho các loại
+    function getColor(index) {
+        const colors = ['#3498db', '#1abc9c', '#f1c40f', '#e74c3c', '#9b59b6'];
+        return colors[index % colors.length];
+    }
+
+    // Dữ liệu của biểu đồ
     const receiptData = {
-        labels: ['1', '2', '3', '4', '5', '6'], // Months
-        datasets: [
-            {
-                type: 'line',
-                label: 'Room',
-                data: [200, 300, 400, 350, 450, 500],
-                borderColor: '#3498db',
-                borderWidth: 2,
-                fill: false,
-            },
-            {
-                type: 'line',
-                label: 'Electricity',
-                data: [150, 200, 250, 300, 200, 400],
-                borderColor: '#1abc9c',
-                borderWidth: 2,
-                fill: false,
-            },
-            {
-                type: 'line',
-                label: 'Water',
-                data: [100, 120, 180, 200, 160, 300],
-                borderColor: '#f1c40f',
-                borderWidth: 2,
-                fill: false,
-            },
-            {
-                type: 'line',
-                label: 'Other',
-                data: [80, 100, 120, 150, 130, 170],
-                borderColor: '#e74c3c',
-                borderWidth: 2,
-                fill: false,
-            },
-            {
-                type: 'bar',
-                label: 'Total Cost',
-                data: [], // This will be calculated
-                backgroundColor: 'rgba(52, 152, 219, 0.5)',
-                borderWidth: 1,
-            },
-        ],
+        labels: labels,
+        datasets: datasets
     };
 
     // Calculate total cost for each month
@@ -108,33 +164,7 @@
         },
     };
 
-    const receiptTypeData = {
-        labels: ['Room', 'Water', 'Electricity', 'Other'],
-        datasets: [{
-            label: 'Total',
-            data: [40, 20, 30, 10],
-            backgroundColor: ['#3498db', '#1abc9c', '#e74c3c', '#f1c40f']
-        }]
-    };
-    document.addEventListener('DOMContentLoaded', () => {
-        new Chart(document.getElementById('receipt-type-chart'), {
-            type: 'pie',
-            data: receiptTypeData,
-            options: {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                let total = tooltipItem.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                                let value = tooltipItem.raw; // Giá trị của phần hiện tại
-                                let percentage = ((value / total) * 100).toFixed(1); // Tính phần trăm
-                                return `${tooltipItem.label}: ${value} (${percentage}%)`;
-                            }
-                        }
-                    }
-                }
-            }
-        })});
+
 
     // Render the chart
     // const ctx = document.getElementById('combined-chart').getContext('2d');
@@ -162,7 +192,6 @@
     {{--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">--}}
     <script src={{ asset('https://cdn.jsdelivr.net/npm/chart.js') }}></script>
     <link rel="stylesheet" href="{{ asset('css/Report/Report.css') }}" type="text/css">
-    <script src="{{ asset('report_accountant.js') }}?v={{ time() }}"></script>
 
 </head>
 
@@ -249,17 +278,21 @@
         <div class="popup-content">
             <h2>Filter</h2>
             <form>
-                <div class="form-group-stu">
-                    <label for="receiptType">Receipt type:</label>
-                    <select id="receiptType" name="receiptType">
-                        <option value="">Select...</option>
-                    </select>
-                </div>
-                <div class="form-group-stu">
-                    <label for="receiptStatus">Receipt status:</label>
-                    <select id="receiptStatus" name="receiptStatus">
-                        <option value="">Select...</option>
-                    </select>
+                <div class="form-group-row">
+                    <div class="form-group-stu">
+                        <label for="receiptType">Receipt type:</label>
+                        <br>
+                        @foreach($reportData['receiptsType'] as $type)
+                            <p><input type="checkbox" name="receiptType" value="{{ $type }}"> {{ $type }}</p>
+                        @endforeach
+                    </div>
+                    <div class="form-group-stu">
+                        <label for="receiptStatus">Receipt status:</label>
+                        <br>
+                        @foreach($reportData['receiptStatus'] as $status)
+                            <p><input type="checkbox" name="receiptStatus" value="{{ $status }}"> {{ $status }}</p>
+                        @endforeach
+                    </div>
                 </div>
                 <div class="form-group-stu">
                     <label for="receiptDate">Receipt date:</label>

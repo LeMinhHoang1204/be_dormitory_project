@@ -223,7 +223,12 @@ h2 {
     margin-right: 15px;
     /*width: 230px;*/
 }
-
+.form-group-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
 .form-group-stu {
     flex: 1;
     /* margin-right: 15px; */
@@ -266,6 +271,17 @@ select {
 .form-actions {
     text-align: right;
     margin-top: 20px;
+}
+
+input[type="checkbox"] {
+    margin: 5px 0px;
+    /*margin-left: 5px;*/
+    display: inline-block;
+    /*width: 10%;*/
+}
+
+.form-group p {
+    margin:0;
 }
 
 .form-actions button {

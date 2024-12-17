@@ -796,3 +796,102 @@ body {
     box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1),
         0 2px 4px -1px rgba(37, 99, 235, 0.06);
 }
+
+/* Payment Info Modal Styles */
+.payment-info {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.payment-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.payment-alert i {
+    color: #856404;
+    font-size: 24px;
+}
+
+.payment-alert p {
+    margin: 0;
+    color: #856404;
+}
+
+.payment-details {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.bank-details {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.bank-details h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #495057;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row .label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.info-row .value {
+    font-weight: 600;
+    color: #212529;
+}
+
+.payment-note {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #e7f3ff;
+    border: 1px solid #b8daff;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.payment-note i {
+    color: #004085;
+    font-size: 24px;
+}
+
+.payment-note p {
+    margin: 0;
+    color: #004085;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.button-group button {
+    padding: 8px 20px;
+}

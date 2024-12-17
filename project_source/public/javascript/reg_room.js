@@ -17,6 +17,10 @@ function closePopup() {
     if (confirmModal) {
         confirmModal.style.display = "none";
     }
+    const paymentInfoModal = document.getElementById("payment-info-modal");
+    if (paymentInfoModal) {
+        paymentInfoModal.style.display = "none";
+    }
 }
 
 // Button Register
@@ -92,19 +96,16 @@ function closeConfirmModal() {
 
 function proceedToRegistration() {
     if (selectedRoomId) {
-        // Show register popup
+
         const registerPopup = document.getElementById("register-popup");
         registerPopup.style.display = "flex";
-
-        // Set the room ID in the hidden input
         document.getElementById("room-id-input").value = selectedRoomId;
 
-        // Get room details and update the popup
         updateRegisterPopupDetails(selectedRoomId);
     }
 }
 
-// Thêm function để hiển thị modal thông tin thanh toán
+// Hiển thị modal thông tin thanh toán
 function showPaymentInfo(amount, dueDate) {
     const modal = document.getElementById("payment-info-modal");
     document.getElementById("payment-amount").textContent =
@@ -113,10 +114,6 @@ function showPaymentInfo(amount, dueDate) {
         dueDate
     ).toLocaleDateString();
     modal.style.display = "block";
-}
-
-function closePaymentModal() {
-    document.getElementById("payment-info-modal").style.display = "none";
 }
 
 function handleFormSubmit(event) {

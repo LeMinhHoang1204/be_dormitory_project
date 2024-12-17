@@ -344,7 +344,7 @@
                             </div>
                             <div class="info-item">
                                 <span class="label-text">Member number: </span>
-                                <span class="room-detail" id="display-room-member-number">2</span>
+                                <span class="room-detail" id="display-room-member-number"></span>
                             </div>
                         </div>
                     </div>
@@ -389,19 +389,53 @@
         </div>
         <div class="popup-body">
             <div class="payment-info">
-                <p>Please complete your payment within 7 days.</p>
-                <div class="info-item">
-                    <span class="label">Total Amount:</span>
-                    <span class="value" id="payment-amount"></span>
+                <div class="payment-alert">
+                    <i class="ti ti-alert-circle"></i>
+                    <p>Please complete your payment within <strong>7 days</strong> to confirm your registration</p>
                 </div>
-                <div class="info-item">
-                    <span class="label">Due Date:</span>
-                    <span class="value" id="payment-due-date"></span>
+
+                <div class="payment-details">
+                    <div class="info-row">
+                        <span class="label">Total Amount:</span>
+                        <span class="value" id="payment-amount"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Due Date:</span>
+                        <span class="value" id="payment-due-date"></span>
+                    </div>
                 </div>
-                <!-- Add more payment instructions as needed -->
+
+                <div class="bank-details">
+                    <h3>Bank Transfer Information</h3>
+                    <div class="bank-info">
+                        <div class="info-row">
+                            <span class="label">Bank Name:</span>
+                            <span class="value">VietcomBank</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Account Number:</span>
+                            <span class="value">1234567890</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Account Holder:</span>
+                            <span class="value">DORMITORY MANAGEMENT</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Transfer Description:</span>
+                            <span class="value">ROOM_[Room Number]_[Student ID]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-note">
+                    <i class="ti ti-info-circle"></i>
+                    <p>After completing the payment, please keep your transfer receipt for verification purposes.</p>
+                </div>
             </div>
+
             <div class="button-group mt-4">
-                <button type="button" class="btn btn-primary" onclick="closePaymentModal()">OK</button>
+                <button type="button" class="btn btn-secondary" onclick="closePopup()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="downloadPaymentInfo()">Download Info</button>
             </div>
         </div>
     </div>

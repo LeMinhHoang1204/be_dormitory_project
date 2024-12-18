@@ -215,6 +215,7 @@ class StudentController extends Controller
 
     public function registerRoom(Request $request)
     {
+        echo($request);exit;
         $currentRoom = Room::where('id', $request->roomId)->first();
         if($currentRoom->member_count >= $currentRoom->type){
             session()->flash('notification', [

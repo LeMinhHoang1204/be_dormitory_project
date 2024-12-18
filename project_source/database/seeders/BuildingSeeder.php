@@ -18,7 +18,7 @@ class BuildingSeeder extends Seeder
 
         // Tạo 10 tòa nhà
         for ($i = 0; $i < 10; $i++) {
-            $floorNumbers = rand(3, 11);
+            $floorNumbers = rand(3, 7);
             $roomNumbers = $floorNumbers * 10; // (10 phòng mỗi tầng)
             Building::create([
                 'build_name' => $this->generateRandomBuildingName(),

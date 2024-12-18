@@ -41,7 +41,8 @@ class Employee extends Model
 
     // employee relationships
     public function managedBy(){
-        return $this->belongsTo(User::class, 'manager_id', 'id');
+        return $this->belongsTo(User::class, 'manager_id', 'id')
+            ;
     }
 
     // building relationship

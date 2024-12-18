@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Building;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,20 +18,55 @@ class ViolationFactory extends Factory
      */
     public function definition(): array
     {
+        $isGeneralViolation = fake()->boolean(30);
+
+        $creator = null;
+        $receiver = null;
+
+        if ($isGeneralViolation) {
+            $creator = User::whereIn('role', ['admin', 'building manager'])->inRandomOrder()->first();
+            $receiver = User::where('role', 'student')
+                ->whereHas('latestResidence')
+                ->inRandomOrder()
+                ->first();
+        } else {
+            $creator = User::where('role', 'building manager')
+                ->whereHas('employee.manageBuilding')
+                ->inRandomOrder()
+                ->first();
+
+            if ($creator) {
+                $building = Building::where('manager_id', $creator->id)->first();
+
+                if ($building) {
+                    $receiver = User::where('role', 'student')
+                        ->whereHas('latestResidence.room', function ($query) use ($building) {
+                            $query->where('building_id', $building->id);
+                        })
+                        ->inRandomOrder()
+                        ->first();
+                }
+            }
+        }
+
+        if (!$creator || !$receiver) {
+            $creator = User::where('role', 'admin')->inRandomOrder()->first();
+            $receiver = User::where('role', 'student')->inRandomOrder()->first();
+        }
+
         return [
-            'creator_id' => $this->faker->randomElement(
-                User::whereIn('role', ['admin', 'building manager'])->pluck('id')->toArray()
-            ),
-            'receiver_id' => $this->faker->randomElement(
-                User::where('role', 'student')->pluck('id')->toArray()
-            ),
-            'type' => $this->faker->randomElement(['Warning', 'Violation']),
-            'title' => $this->faker->sentence(3),
-            'description' => $this->faker->optional()->text(200),
-            'occurred_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
-            'status' => $this->faker->randomElement(['Approved', 'Complained']),
-            'minus_point' => $this->faker->numberBetween(1, 10),
-            'note' => $this->faker->optional()->text(200),
+            'creator_id' => $creator->id,
+            'receiver_id' => $receiver->id,
+            'type' => fake()->randomElement(['Warning', 'Violation']),
+            'title' => fake()->sentence(3),
+            'description' => fake()->optional()->sentence(),
+            'occurred_at' => fake()->dateTimeThisYear(),
+            'status' => fake()->randomElement(['Approved', 'Complained']),
+            'minus_point' => fake()->numberBetween(1, 5),
+            'note' => fake()->optional()->sentence(),
         ];
     }
+
+
+
 }

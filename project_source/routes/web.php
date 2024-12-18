@@ -69,3 +69,4 @@ require __DIR__ . '/admin/asset.php';
 require __DIR__ . '/admin/invoice.php';
 require __DIR__ . '/admin/request.php';
 require __DIR__ . '/admin/my_profile.php';
+require __DIR__ . '/violation.php';

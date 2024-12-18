@@ -40,12 +40,12 @@
     <div class="extension">
         <h3 class="heading">Manage Activities </h3>
         @if (session('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success"  style="margin-bottom: -20px; margin-top: 5px">
                 {{ session('success') }}
             </div>
         @endif
         @if (session('error'))
-            <div class="alert alert-error">
+            <div class="alert alert-error" style="margin-bottom: -20px; margin-top: 5px">
                 {{ session('error') }}
             </div>
         @endif
@@ -211,7 +211,7 @@
                 let filterParams = `?status=${status.join(',')}&month=${month}&year=${year}&start_date=${startDate}&end_date=${endDate}&participants=${participants.join(',')}&title=${title.join(',')}`;
 
                 // Chuyển hướng người dùng đến URL có các tham số lọc
-                window.location.href = `{{ route('activities.index') }}${filterParams}`;
+                {{--window.location.href = `{{ route('activities.index') }}${filterParams}`;--}}
             });
 
             });

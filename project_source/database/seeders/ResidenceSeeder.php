@@ -24,7 +24,7 @@ class ResidenceSeeder extends Seeder
 //            \App\Models\Residence::factory()->state(['stu_id' => $student->id])->create();
 //        });
 
-        $students = Student::orderBy('id', 'asc')->limit(300)->get();
+        $students = Student::orderBy('id', 'asc')->limit(1000)->get();
 
         // Lấy tất cả phòng có sẵn
         $rooms = Room::pluck('id')->toArray();

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
-use App\Models\Building;
-use App\Models\Room;
 use App\Models\RoomAsset;
+
+use App\Models\Building;
+use App\Models\Residence;
+use App\Models\Room;
 use App\Models\Student;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -36,21 +38,21 @@ class RoomController extends Controller
      */
     public function create(Building $building)
     {
-        $nextId = DB::select("SHOW TABLE STATUS LIKE 'rooms'")[0]->Auto_increment;
+                $nextId = DB::select("SHOW TABLE STATUS LIKE 'rooms'")[0]->Auto_increment;
 
         // Query for the latest room in the building
         $room = Room::where('building_id', $building->id)->latest()->first();
 
         if (!$room) {
             $room = (object) [
-                'id' => $nextId, // Ensure $nextId is defined
+                'id' => $nextId,  // Ensure $nextId is defined
                 'created_at' => now(),
             ];
         }
         $assets = Asset::all();
         $rooms = $building->hasRooms()->where('building_id', $building->id)->paginate(10);
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin.admin_rooms.create', compact('building', 'distinctRoomTypes', 'rooms', 'room', 'assets'));
+        return view('admin.admin_rooms.create', compact('building', 'distinctRoomTypes', 'rooms','room','assets'));
     }
 
     /**
@@ -133,7 +135,7 @@ class RoomController extends Controller
         $availableAssets = Asset::all(); // Lấy toàn bộ tài sản
         $assets = Asset::all();
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin.admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes', 'availableAssets', 'assets'));
+        return view('admin.admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes','availableAssets','assets'));
     }
 
     /**
@@ -200,11 +202,12 @@ class RoomController extends Controller
         return Room::distinct('type')->orderBy('type', 'asc')->get('type');
     }
 
+
     // Xử lý yêu cầu sửa chữa
     public function repairRequest()
     {
         if (auth()->check() && auth()->user()->role !== 'student') {
-            return redirect()->route('home'); // Chuyển hướng nếu không phải sinh viên
+            return redirect()->route('home');  // Chuyển hướng nếu không phải sinh viên
         }
 
         // Lấy thông tin người dùng đang đăng nhập
@@ -288,7 +291,7 @@ class RoomController extends Controller
     public function showListRoom()
     {
         $rooms = Room::with(['hasRoomAssets.asset'])->orderBy('id', 'asc')->paginate(6);
-        return view('Reg_room.reg_room', ['rooms' => $rooms]);
+        return view('student_rooms.register', ['rooms' => $rooms]);
     }
 
 }

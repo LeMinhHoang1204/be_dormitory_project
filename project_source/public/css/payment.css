@@ -1,3 +1,4 @@
+
 h1 {
     color: #0E3B9C;
     margin-bottom: 20px;
@@ -10,7 +11,7 @@ h1 {
 .table th {
     background-color: #ecefff;
     color: #0e3b9c;
-}
+}   
 
 .table td {
     vertical-align: middle;
@@ -40,114 +41,4 @@ h1 {
     /* display: -webkit-flex;
     -webkit-justify-content: center; */
 
-}
-
-.btn-task {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.btn-task:hover {
-    background-color: #6fa7e4;
-}
-
-.dropdown-menu {
-    min-width: 120px;
-}
-
-.dropdown-item {
-    padding: 8px 15px;
-    cursor: pointer;
-}
-
-.dropdown-item:hover {
-    background-color: #f8f9fa;
-}
-
-.swal2-input, .swal2-textarea {
-    margin: 10px auto;
-    width: 80%;
-}
-
-.swal2-textarea {
-    height: 100px;
-}
-
-.btn-task {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn-task:hover {
-    background-color: #0056b3;
-    color: white;
-}
-
-.dropdown-item:hover {
-    background-color: #f8f9fa;
-    cursor: pointer;
-}
-
-/* Custom styles for SweetAlert dialogs */
-.custom-popup-class {
-    font-family: 'Arial', sans-serif;
-    border-radius: 10px;
-}
-
-.custom-title-class {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 1rem;
-}
-
-.custom-content-class {
-    font-size: 1rem;
-    color: #555;
-}
-
-.custom-confirm-btn,
-.custom-cancel-btn {
-    padding: 0.5rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 5px;
-    text-transform: uppercase;
-}
-
-.custom-input-class {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 0.5rem;
-    font-size: 1rem;
-}
-
-.custom-form {
-    text-align: left;
-    padding: 1rem;
-}
-
-.custom-form .form-label {
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 0.5rem;
-}
-
-.custom-input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: border-color 0.2s;
-}
-
-.custom-input:focus {
-    border-color: #3085d6;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(48, 133, 214, 0.2);
 }

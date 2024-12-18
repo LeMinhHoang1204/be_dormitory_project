@@ -1,22 +1,28 @@
 :root {
-    --primary: #2563eb;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --border: #e2e8f0;
-    --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    --radius: 16px;
+    --text: #001738;
+    --title: #1d267d;
+    --bgr: #f9f9f9;
+    --table_row: #ecefff;
+    --stroke: #cbd4f3;
+    --placeholder: #a2a2a2;
+    --box: #ffffff;
+    --hover: #ef5a6f;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     font-family: "Poppins", sans-serif;
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    min-height: 100vh;
+    margin: 0 8rem;
+    background-color: var(--bgr);
     cursor: default;
-
 }
 
 .signup-btn {
@@ -26,13 +32,12 @@ body {
     border-radius: 5px;
 }
 
-.roominfor-main {
+main {
     background-color: #fff;
-    padding: 15px;
-    margin: auto 0;
+    padding: 20px;
+    margin: 20px 0;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
 }
 
 .room-info h1 {
@@ -59,18 +64,18 @@ body {
     border-radius: 10px;
 }
 
-.change-button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.room-meta {
+    width: 50%;
+    text-align: left;
 }
 
-.change-button:hover {
-    background-color: #0056b3;
+.change-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .room-description,
@@ -124,269 +129,4 @@ body {
         margin: 15px 0;
         font-size: 12px;
     }
-}
-
-.roominfor-container {
-    max-width: 1200px;
-    padding: 3rem 2rem;
-    margin: 0 auto;
-}
-
-.room-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.room-header h1 {
-    margin: 0;
-    color: #2c3e50;
-}
-
-.card {
-    border: none;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-}
-
-.room-image-main img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.room-meta {
-    padding: 2.5rem 3rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.room-meta h2 {
-    color: #2c3e50;
-    margin-bottom: 1.5rem;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
-.info-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem;
-    background-color: var(--bg-secondary);
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    border: 1px solid var(--border);
-}
-
-.info-item:hover {
-    background-color: #ffffff;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.info-item i {
-    font-size: 1.4rem;
-    color: #0d6efd;
-    padding-top: 0.2rem;
-}
-
-.info-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-}
-
-.info-content label {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.3rem;
-}
-
-.info-content span {
-    font-size: 1.15rem;
-    color: var(--text-primary);
-}
-
-.photo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-}
-
-.photo-item {
-    aspect-ratio: 1;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.photo-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.photo-item img:hover {
-    transform: scale(1.05);
-}
-
-.facilities-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-}
-
-.facility-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1.25rem;
-    background-color: var(--bg-secondary);
-    border-radius: 12px;
-    transition: transform 0.2s ease;
-    border: 1px solid var(--border);
-}
-
-.facility-item:hover {
-    transform: translateY(-2px);
-    background-color: #e9ecef;
-}
-
-.facility-item i {
-    color: #3498db;
-    font-size: 1.2rem;
-}
-
-h3 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
-}
-
-h3 i {
-    color: #3498db;
-    margin-right: 0.5rem;
-}
-
-.badge {
-    padding: 0.75rem 1.25rem;
-    font-weight: 500;
-    border-radius: 8px;
-}
-
-@media (max-width: 768px) {
-    .room-image-main img {
-        border-radius: 15px 15px 0 0;
-    }
-
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .room-meta {
-        padding: 1rem;
-    }
-}
-
-/* Room Details Card Styling */
-.room-details.card {
-    border: none;
-    box-shadow: var(--shadow);
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: #fff;
-    margin: 2rem 0;
-    width: 100%;
-}
-
-.room-details-container {
-    display: flex;
-    flex-direction: row;
-    min-height: 500px;
-    width: 100%;
-}
-
-/* Left side - Image section */
-.room-image-section {
-    flex: 1;
-    position: relative;
-    background: #f8f9fa;
-}
-
-.room-image-main {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-}
-
-.room-image-main img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.room-image-main:hover img {
-    transform: none;
-}
-
-/* Right side - Information section */
-.room-info-section {
-    flex: 1;
-    background: var(--bg-primary);
-    border-left: 1px solid var(--border);
-}
-
-.room-meta .card-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 2.5rem;
-    line-height: 1.2;
-    position: relative;
-    padding-bottom: 1rem;
-}
-
-.room-meta .card-title::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 4px;
-    background: #0d6efd;
-    border-radius: 4px;
-}
-
-/* Register button container */
-.mt-4 {
-    margin-top: auto;
-    padding-top: 2rem;
-}
-
-/* Import registration styles */
-@import url('../css/reg_room.css');
-
-/* Add any additional styles specific to roomInfor page */
-.change-button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.change-button:hover {
-    background-color: #0056b3;
 }

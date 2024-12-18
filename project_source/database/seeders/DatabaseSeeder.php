@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => 'Nam Student',
+            'name' => 'Nguyễn Nam Student',
             'email' => 'bonny.nii23@gmail.com', // Set a known email
             'password' => Hash::make('12345678'), // Use a secure password
             'email_verified_at' => now(),
@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => 'Nam Admin',
+            'name' => 'Nguyễn Nam Admin',
             'email' => '22520921@gm.uit.edu.vn', // Set a known email
             'password' => Hash::make('12345678'), // Use a secure password
             'email_verified_at' => now(),
@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => 'Nam Accountant',
+            'name' => 'Nguyễn Nam Accountant',
             'email' => 'duckyabso.y24@gmail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),

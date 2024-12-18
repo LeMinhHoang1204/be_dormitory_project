@@ -105,11 +105,7 @@ class StudentController extends Controller
         return redirect()->route('students.checkout')->with('message', 'Request sent');
     }
 
-//    public function showRegisterRoomList()
-//    {
-//        $rooms = Room::paginate(6);
-//        return view('Reg_room.reg_room', compact('rooms'));
-//    }
+
     public function showRegisterRoomList()
     {
         $rooms = Room::with('hasRoomAssets.asset')
@@ -236,6 +232,7 @@ class StudentController extends Controller
         ]);
 
         $end_date = Residence::calculateEndDate($validatedData['startDate'], $validatedData['duration']);
+
 
         \App\Models\Residence::create([
             'stu_user_id' => $validatedData['dormId'],

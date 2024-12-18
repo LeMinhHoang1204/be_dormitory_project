@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Residence extends Model
 {
@@ -68,7 +68,7 @@ class Residence extends Model
      */
     public static function calculateEndDate($startDate, $months_duration)
     {
-        $int_months_duration = (int)$months_duration;
+        $int_months_duration = (int) $months_duration;
         return Carbon::parse($startDate)->addMonths($int_months_duration);
     }
 

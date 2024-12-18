@@ -20,32 +20,12 @@ class EmployeeSeeder extends Seeder
         $users = User::whereIn('role', ['building manager'])->get();
 
         // Duyệt qua từng User và tạo một Employee cho mỗi User
-//        $users->each(function ($user) {
-//            Employee::factory()->state([
-//                'user_id' => $user->id,
-//                'manager_id' => User::where('role', 'admin')->inRandomOrder()->first()->id ?? null, // Lấy admin ngẫu nhiên làm manager
-//                'type' => $user->role, // Đặt type theo role của User
-//            ])->create();
-//        });
-
-        //        TODO:  (DONE)
         $users->each(function ($user) {
-            $unicitiId = rand(1000, 9999);
-            Employee::create([
+            Employee::factory()->state([
                 'user_id' => $user->id,
-                // (không gán thì tên nhân viên tạo lại ngẫu nhiên chứ ko lấy tên từ user, không phân biệt được)
-                'citizen_id' => $unicitiId, // Gán ngẫu nhiên
-                'manager_id' => User::where('role', 'admin')->inRandomOrder()->first()->id ?? null,
-                'type' => $user->role,
-                'dob' => now(),
-                'gender' => Arr::random(['male', 'female']),
-//                'room_id' => 1,
-            ]);
+                'manager_id' => User::where('role', 'admin')->inRandomOrder()->first()->id ?? null, // Lấy admin ngẫu nhiên làm manager
+                'type' => $user->role, // Đặt type theo role của User
+            ])->create();
         });
-        //            $admins = User::where('role', 'admin')->get();
-//            foreach ($admins as $admin) {
-//                // Gán admin làm manager cho employee thông qua admin_employee
-//                $employee->admins()->attach($admin->id);
-//            }
     }
 }

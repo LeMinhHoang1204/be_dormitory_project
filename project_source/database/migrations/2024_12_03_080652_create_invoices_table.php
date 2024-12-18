@@ -19,7 +19,7 @@ return new class extends Migration
             $table->dateTime('due_date');
             $table->dateTime('paid_date')->nullable();
             $table->enum('type', ['Room', 'Electricity', 'Water', 'Fixing', 'Cleaning']);
-            $table->enum('status', ['Not Paid', 'Paid', 'Overdue', 'Transferred Room'])->default('Not Paid');
+            $table->enum('status', ['Not Paid', 'Paid', 'Overdue', 'Transferred Room', 'Refunding', 'Refunded'])->default('Not Paid');
             $table->decimal('total', 10, 2);
             $table->enum('payment_method', ['Cash', 'Bank Transfer'])->nullable();
             $table->string('note', 200)->nullable();

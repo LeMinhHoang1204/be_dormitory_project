@@ -1,5 +1,17 @@
 @extends('Auth_.index')
 
+@if (session('notification'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const notification = @json(session('notification'));
+            // Display the notification
+            toastr.info(
+                `${notification.message} `
+            );
+        });
+    </script>
+@endif
+
 <head>
     <title>Room Registration</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">

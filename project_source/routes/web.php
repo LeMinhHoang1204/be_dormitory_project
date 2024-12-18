@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -9,6 +8,7 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
@@ -91,3 +91,5 @@ require __DIR__ . '/admin/asset.php';
 require __DIR__ . '/admin/invoice.php';
 require __DIR__ . '/admin/request.php';
 require __DIR__ . '/admin/my_profile.php';
+require __DIR__ . '/admin/manager.php';
+require __DIR__ . '/admin/accountant.php';

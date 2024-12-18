@@ -94,44 +94,45 @@
                 const school = document.getElementById('school').value;
                 const gender = document.querySelector('input[name="gender"]:checked').value;
                 const receiptStatus = [];
-                document.querySelectorAll('input[name="receiptStatus"]:checked').forEach(status => {
+                document.querySelectorAll('input[name="receiptStatus[]"]:checked').forEach(status => {
                     receiptStatus.push(status.value);
                 });
                 const receiptType = [];
-                document.querySelectorAll('input[name="receiptType"]:checked').forEach(type => {
+                document.querySelectorAll('input[name="receiptType[]"]:checked').forEach(type => {
                     receiptType.push(type.value);
                 });
                 const sendDate = document.getElementById('sendDate').value;
                 const dueDate = document.getElementById('dueDate').value;
 
-                const data = {
-                    // Add the data you want to send to the controller
-                    building: buildings,
-                    floor: floors,
-                    school: school,
-                    gender: gender,
-                    receiptStatus: receiptStatus,
-                    receiptType: receiptType,
-                    sendDate: sendDate,
-                    dueDate: dueDate
-                };
+                {{--const data = {--}}
+                {{--    // Add the data you want to send to the controller--}}
+                {{--    buildings: buildings,--}}
+                {{--    floors: floors,--}}
+                {{--    school: school,--}}
+                {{--    gender: gender,--}}
+                {{--    receiptStatus: receiptStatus,--}}
+                {{--    receiptType: receiptType,--}}
+                {{--    sendDate: sendDate,--}}
+                {{--    dueDate: dueDate--}}
+                {{--};--}}
 
-                fetch('{{ route('report_accountant.fetch') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify(data)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle the response data
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                {{--fetch('{{ route('report_accountant.fetch') }}', {--}}
+                {{--    method: 'POST',--}}
+                {{--    headers: {--}}
+                {{--        'Content-Type': 'application/json',--}}
+                {{--        'X-CSRF-TOKEN': '{{ csrf_token() }}'--}}
+                {{--    },--}}
+                {{--    body: JSON.stringify(data)--}}
+                {{--})--}}
+                {{--    .then(response => response.json())--}}
+                {{--    .then(data => {--}}
+                {{--        // Handle the response data--}}
+                {{--        alert('success');--}}
+                {{--        console.log(data);--}}
+                {{--    })--}}
+                {{--    .catch(error => {--}}
+                {{--        console.error('Error:', error);--}}
+                {{--    });--}}
 
                 {{--let params = `?building=${buildings}&floor=${floors}&school=${school}&gender=${gender}&receiptStatus=${receiptStatus.join(', ')}&receiptType=${receiptType.join(', ')}&sendDate=${sendDate}&dueDate=${dueDate}`;--}}
 
@@ -239,13 +240,13 @@
     <div id="filter-popup" class="popup hidden" onclick="closePanel(event)">
         <div class="popup-content">
             <h2>Filter</h2>
-            <form>
+            <form action="{{ route('report_accountant.index') }}" method="GET">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="building">Building:</label>
                         <input type="text" id="building" name="building" list="building-list">
                         <datalist id="building-list">
-                            @foreach($reportData['buildings'] as $id => $name)
+                            @foreach($reportData['buildings'] as $name)
                                 <option value="{{ $name }}"></option>
                             @endforeach
                         </datalist>
@@ -299,7 +300,7 @@
                         <label for="receiptType">Receipt type:</label>
                         <br>
                         @foreach($reportData['receiptsType'] as $type)
-                            <p><input type="checkbox" name="receiptType" value="{{ $type }}"> {{ $type }}</p>
+                            <p><input type="checkbox" name="receiptType[]" value="{{ $type }}"> {{ $type }}</p>
                         @endforeach
                     </div>
                 </div>

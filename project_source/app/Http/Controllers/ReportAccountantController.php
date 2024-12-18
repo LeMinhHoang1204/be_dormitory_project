@@ -7,22 +7,47 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\ReportAccountant;
 use App\Models\Invoice;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use function PHPUnit\Framework\isEmpty;
 
 class ReportAccountantController extends Controller
 {
     public function index(Request $request)
     {
-        //For filer
-        $total = Invoice::count('total');
+//        echo($request);
+//        echo($request->building);
+//        echo($request->receiptType);
+//        $type = '';
+//       if ($request->has('receiptType')) {
+//            $type = implode('', (array) $request->receiptType);
+//        }
+//        echo($type);
+//
+//        exit;
 
-        $buildings = Building::pluck('build_name','id')->unique();
+//        $Auth = Auth()->user();
+//        if ($Auth->role == 'student') {
+//            return redirect()->route('report_student.studentIndex');
+//        }
+
+        //For filer
+        $total = 0;
+        $query = $this->queryJoined();
+        foreach ($query as $q) {
+            $this->queryCondition($request, $q);
+
+            $total += $q->select(DB::raw('count(invoices.id) as total'))->first()->total;
+        }
+
+
+        $buildings = Building::pluck('build_name')->unique();
 
         $receiptStatus = Invoice::pluck('status')->unique();
 
         $receiptsType = Invoice::pluck('type')->unique();
 
-        $schools = Student::pluck('uni_name', 'uni_id')->unique();
+        $schools = Student::pluck('uni_name')->unique();
 
         $totalByReceiptType = $this->getTotalByReceiptType($request);
 
@@ -30,7 +55,7 @@ class ReportAccountantController extends Controller
 
         $totalByBuilding = $this->getTotalByBuilding($request);
 
-
+//        echo($request->floor); exit;
 
         $reportData = [
             'total' => $total,
@@ -47,169 +72,151 @@ class ReportAccountantController extends Controller
         return view('Report.report_accountant', compact('reportData'));
     }
 
-    public function getTotalByReceiptType(Request $request)
+
+    public function queryJoined()
     {
-        $query = Invoice::select('type', DB::raw('SUM(total) as total_amount'))
-            ->groupBy('type');
-
-        if ($request->has('buildings') && !empty($request->buildings)) {
-            $query->whereIn('building_id', $request->buildings);
-        }
-        if ($request->has('floors') && !empty($request->floors)) {
-            $query->whereIn('floor_id', $request->floors);
-        }
-        if ($request->has('schools') && !empty($request->schools) && $request->schools != 'All') {
-            $query->whereIn('school_id', $request->schools);
-        }
-        if ($request->has('statuses') && !empty($request->statuses)) {
-            $query->whereIn('status', $request->statuses);
-        }
-        if ($request->has('types') && !empty($request->types)) {
-            $query->whereIn('type', $request->types);
-        }
-
-        return $query->pluck('total_amount', 'type');
-    }
-
-
-    public function getTotalByMonth(Request $request)
-    {
-        $query = Invoice::select(DB::raw('MONTH(send_date) as month'), DB::raw('SUM(total) as total_amount'))
-            ->groupBy(DB::raw('MONTH(send_date)'));
-
-        if ($request->has('buildings') && !empty($request->buildings)) {
-            $query->whereIn('building_id', $request->buildings);
-        }
-        if ($request->has('floors') && !empty($request->floors)) {
-            $query->whereIn('floor_id', $request->floors);
-        }
-        if ($request->has('schools') && !empty($request->schools) && $request->schools != 'All') {
-            $query->whereIn('school_id', $request->schools);
-        }
-        if ($request->has('statuses') && !empty($request->statuses)) {
-            $query->whereIn('status', $request->statuses);
-        }
-        if ($request->has('types') && !empty($request->types)) {
-            $query->whereIn('type', $request->types);
-        }
-
-        return $query->pluck('total_amount', 'month');
-    }
-
-    public function getTotalByBuilding(Request $request)
-    {
-        function mergeAndSumArrays($array1, $array2)
-        {
-            $result = $array1;
-
-            foreach ($array2 as $key => $value) {
-                if (isset($result[$key])) {
-                    $result[$key] += $value; // Cộng total nếu key đã tồn tại
-                } else {
-                    $result[$key] = $value; // Thêm key mới nếu chưa tồn tại
-                }
-            }
-            return $result;
-        }
-
-        // Truy vấn cho `App\Models\User`
-        $userTotals = Invoice::leftJoin('users', function ($join) {
+        $queryUser = Invoice::leftJoin('users', function ($join) {
             $join->on('invoices.object_id', '=', 'users.id')
                 ->where('invoices.object_type', '=', 'App\Models\User');
         })
             ->join('students', 'users.id', '=', 'students.user_id')
             ->join('residences', 'students.id', '=', 'residences.stu_user_id')
             ->join('rooms', 'residences.room_id', '=', 'rooms.id')
-            ->join('buildings', 'rooms.building_id', '=', 'buildings.id')
-            ->select('buildings.build_name', DB::raw('SUM(invoices.total) as total_amount'))
-            ->groupBy('buildings.build_name');
+            ->join('buildings', 'rooms.building_id', '=', 'buildings.id');
 
-        if ($request->has('buildings') && !empty($request->buildings)) {
-            $userTotals->whereIn('building_id', $request->buildings);
-        }
-        if ($request->has('floors') && !empty($request->floors)) {
-            $userTotals->whereIn('floor_id', $request->floors);
-        }
-        if ($request->has('schools') && !empty($request->schools) && $request->schools != 'All') {
-            $userTotals->whereIn('school_id', $request->schools);
-        }
-        if ($request->has('statuses') && !empty($request->statuses)) {
-            $userTotals->whereIn('status', $request->statuses);
-        }
-        if ($request->has('types') && !empty($request->types)) {
-            $userTotals->whereIn('type', $request->types);
-        }
-
-        $userTotals = $userTotals->pluck('total_amount', 'buildings.build_name')->toArray();
-
-        // Thêm kết quả vào tổng
-        $totalByBuilding = $userTotals;
-
-        // Truy vấn cho `App\Models\Room`
-        $roomTotals = Invoice::leftJoin('rooms', function ($join) {
+        $queryRoom = Invoice::join('rooms', function ($join) {
             $join->on('invoices.object_id', '=', 'rooms.id')
+                ->join('buildings', 'rooms.building_id', '=', 'buildings.id')
                 ->where('invoices.object_type', '=', 'App\Models\Room');
         })
-            ->join('buildings', 'rooms.building_id', '=', 'buildings.id')
-            ->select('buildings.build_name', DB::raw('SUM(invoices.total) as total_amount'))
-            ->groupBy('buildings.build_name');
+            ->join('residences', 'rooms.id', '=', 'residences.room_id')
+            ->join('students', 'residences.stu_user_id', '=', 'students.id')
+            ->join('users', 'students.user_id', '=', 'users.id');
 
-        if ($request->has('buildings') && !empty($request->buildings)) {
-            $roomTotals->whereIn('building_id', $request->buildings);
-        }
-        if ($request->has('floors') && !empty($request->floors)) {
-            $roomTotals->whereIn('floor_id', $request->floors);
-        }
-        if ($request->has('schools') && !empty($request->schools) && $request->schools != 'All') {
-            $roomTotals->whereIn('school_id', $request->schools);
-        }
-        if ($request->has('statuses') && !empty($request->statuses)) {
-            $roomTotals->whereIn('status', $request->statuses);
-        }
-        if ($request->has('types') && !empty($request->types)) {
-            $roomTotals->whereIn('type', $request->types);
-        }
-
-        $roomTotals = $roomTotals->pluck('total_amount', 'buildings.build_name')->toArray();
-
-        // Thêm kết quả vào tổng
-        $totalByBuilding = mergeAndSumArrays($totalByBuilding, $roomTotals);
-
-        // Truy vấn cho `App\Models\Building`
-        $buildingTotals = Invoice::leftJoin('buildings', function ($join) {
+        $queryBuilding = Invoice::join('buildings', function ($join) {
             $join->on('invoices.object_id', '=', 'buildings.id')
                 ->where('invoices.object_type', '=', 'App\Models\Building');
         })
-            ->select('buildings.build_name', DB::raw('SUM(invoices.total) as total_amount'))
-            ->groupBy('buildings.build_name');
+            ->join('rooms', 'buildings.id', '=', 'rooms.building_id')
+            ->join('residences', 'rooms.id', '=', 'residences.room_id')
+            ->join('students', 'residences.stu_user_id', '=', 'students.id')
+            ->join('users', 'students.user_id', '=', 'users.id');
 
-        if ($request->has('buildings') && !empty($request->buildings)) {
-            $totalByBuilding->whereIn('building_id', $request->buildings);
+        return [$queryUser, $queryRoom, $queryBuilding];
+    }
+
+    public function queryCondition (Request $request, $query)
+    {
+
+
+        if ($request->has('building') && !empty($request->building)) {
+            if (is_string($request->building)) {
+                // Nếu là chuỗi, chuyển thành mảng
+                $buildings = explode(',', $request->building);
+                $buildings = array_map('trim', $buildings);
+            } elseif (is_array($request->building)) {
+                // Nếu đã là mảng, sử dụng trực tiếp
+                $buildings = $request->building;
+            } else {
+                // Trường hợp không hợp lệ
+                $buildings = [];
+            }
+            $query->whereIn('buildings.build_name', $buildings);
         }
-        if ($request->has('floors') && !empty($request->floors)) {
-            $totalByBuilding->whereIn('floor_id', $request->floors);
+        if ($request->has('floor') && !empty($request->floor)) {
+          if (is_string($request->floor)) {
+                // Nếu là chuỗi, chuyển thành mảng
+                $floors = explode(',', $request->floor);
+                $floors = array_map('trim', $floors);
+            } elseif (is_array($request->floor)) {
+                // Nếu đã là mảng, sử dụng trực tiếp
+                $floors = $request->floor;
+            } else {
+                // Trường hợp không hợp lệ
+                $floors = [];
+            }
+            $query->whereIn('rooms.floor_number', $floors);
         }
-        if ($request->has('schools') && !empty($request->schools) && $request->schools != 'All') {
-            $totalByBuilding->whereIn('school_id', $request->schools);
+        if ($request->has('school') && $request->input('school') != 'all') {
+            $query->whereIn('students.uni_name', (array) $request->input('school'));
         }
-        if ($request->has('statuses') && !empty($request->statuses)) {
-            $totalByBuilding->whereIn('status', $request->statuses);
+        if($request->has('gender') && $request->input('gender') != 'all') {
+            $query->where('buildings.type', (array) $request->input('gender'));
         }
-        if ($request->has('types') && !empty($request->types)) {
-            $totalByBuilding->whereIn('type', $request->types);
+        if ($request->has('receiptStatus') && !empty($request->receiptStatus)) {
+            $query->whereIn('invoices.status', (array) $request->receiptStatus);
+        }
+        if ($request->has('receiptType') && !empty($request->receiptType)) {
+            $query->whereIn('invoices.type', (array) $request->receiptType);
+        }
+    }
+
+    public function getTotalByReceiptType(Request $request)
+    {
+        $queries = $this->queryJoined();
+
+        foreach ($queries as $query) {
+            $query->select('invoices.type', DB::raw('SUM(total) as total_amount'))
+                ->groupBy('invoices.type');
+            $this->queryCondition($request, $query);
+        }
+        $result = [];
+        foreach ($queries as $query) {
+            $result = $this->mergeAndSumArrays($query->pluck('total_amount', 'invoices.type')->toArray(), $result);
         }
 
-        $buildingTotals = $buildingTotals->pluck('total_amount', 'buildings.build_name')->toArray();
+        return $result;
+    }
 
-        // Thêm kết quả vào tổng
-        $totalByBuilding = mergeAndSumArrays($totalByBuilding, $buildingTotals);
+    public function getTotalByMonth(Request $request)
+    {
+        $queries = $this->queryJoined();
 
+        foreach ($queries as $query) {
+            $query->select(DB::raw('MONTH(send_date) as month'), DB::raw('SUM(total) as total_amount'))
+                ->groupBy(DB::raw('MONTH(send_date)'));
+            $this->queryCondition($request, $query);
+        }
+        $result = [];
+        foreach ($queries as $query) {
+            $result = $this->mergeAndSumArrays($query->pluck('total_amount', 'month')->toArray(), $result);
+        }
+
+        return $result;
+    }
+    public function mergeAndSumArrays($array1, $array2)
+    {
+        $result = $array1;
+
+        foreach ($array2 as $key => $value) {
+            if (isset($result[$key])) {
+                $result[$key] += $value; // Cộng total nếu key đã tồn tại
+            } else {
+                $result[$key] = $value; // Thêm key mới nếu chưa tồn tại
+            }
+        }
+        return collect($result);
+    }
+    public function getTotalByBuilding(Request $request)
+    {
+        $queries = $this->queryJoined();
+
+        foreach ($queries as $query) {
+            $query->select('buildings.build_name', DB::raw('SUM(total) as total_amount'))
+                ->groupBy('buildings.build_name');
+            $this->queryCondition($request, $query);
+        }
+
+        $result = [];
+        foreach ($queries as $query) {
+            $result = $this->mergeAndSumArrays($query->pluck('total_amount', 'build_name')->toArray(), $result);
+        }
         // Loại bỏ các key rỗng
-        $totalByBuilding = array_filter($totalByBuilding, function($key) {
+        $result = array_filter($result->toArray(), function($key) {
             return $key !== '';
         }, ARRAY_FILTER_USE_KEY);
 
-        return $totalByBuilding;
+        return $result;
     }
 
     public function studentIndex(Request $request)
@@ -230,31 +237,13 @@ class ReportAccountantController extends Controller
             ->join('students', 'residences.stu_user_id', '=', 'students.id')
             ->where('students.user_id', $id);
 
-        $total = $queryUser->count('invoices.id') + $queryRoom->count('invoices.id');
+        $total = $queryUser->count() + $queryRoom->count();
 
         $room = $queryRoom->select('rooms.name');
         if (!$room->exists()) {
             $room = '';
         } else {
             $room = $room->first()->name;
-        }
-
-        function mergeAndSumArrays($array1, $array2)
-        {
-            if (empty($array1) && empty($array2)) {
-                return [];
-            }
-
-            $result = $array1;
-
-            foreach ($array2 as $key => $value) {
-                if (isset($result[$key])) {
-                    $result[$key] += $value; // Cộng total nếu key đã tồn tại
-                } else {
-                    $result[$key] = $value; // Thêm key mới nếu chưa tồn tại
-                }
-            }
-            return $result;
         }
 
         $receiptsTypeUser = $queryUser->select('type', DB::raw('SUM(total) as total_amount'))
@@ -264,7 +253,7 @@ class ReportAccountantController extends Controller
             ->groupBy('invoices.type')
             ->pluck('total_amount', 'type')->toArray();
 
-        $totalByReceiptType = mergeAndSumArrays($receiptsTypeUser, $receiptsTypeRoom);
+        $totalByReceiptType = $this->mergeAndSumArrays($receiptsTypeUser, $receiptsTypeRoom);
 
 //        $totalTypePerMonth = $queryUser->select(DB::raw('MONTH(send_date) as month'), 'type', DB::raw('SUM(total) as total_amount'))
 //            ->groupBy(DB::raw('MONTH(send_date)'), 'type')
@@ -276,16 +265,22 @@ class ReportAccountantController extends Controller
             ->groupBy(DB::raw('MONTH(send_date)'), 'type')
             ->get();
 
+//        echo($queryResult); exit;
+
         $totalTypePerMonth = [];
         foreach ($queryResult as $row) {
             $type = $row->type;
             $month = $row->month;
-            $total = $row->total_amount;
+            $total_amount = $row->total_amount;
 
             if (!isset($totalTypePerMonth[$type])) {
-                $totalTypePerMonth[$type] = array_fill(1, 12, 0);
+                $totalTypePerMonth[$type] = array_fill(0, 12, 0);
             }
-            $totalTypePerMonth[$type][$month] = $total;
+            if(isset($totalTypePerMonth[$type][$month])) {
+                $total_invoice = $totalTypePerMonth[$type][$month] + $total_amount;
+            } else {
+                $total_invoice = $total_amount;
+            }
         }
 
 

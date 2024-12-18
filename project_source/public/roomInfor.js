@@ -1,6 +1,3 @@
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const roomData = JSON.parse(localStorage.getItem("selectedRoom"));
 

@@ -105,7 +105,7 @@
                 <ul class="submenu">
                     <li><a href="{{ url('/students/my-room') }}">My room</a></li>
 
-                    <li><a href="{{ url('/students/register-room') }}">Register</a></li>
+                    <li><a href="{{ url('/students/room-registration') }}">Register</a></li>
 
                     <li><a href="/students/repair-request">Repair</a></li>
                     <li><a href="#">Change</a></li>
@@ -192,6 +192,7 @@
                     <li><a href="{{ url('/admin/my-activities') }}">My activity</a></li>
                 </ul>
             </li>
+
         @endif
         @if (auth()->check() && auth()->user()->role === 'building manager')
             <li class="menu-item">
@@ -272,8 +273,8 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="">
-{{--                    <span class="icon">📋</span>--}}
+                <a href="/accountant/payment">
+                    {{--                    <span class="icon">📋</span> --}}
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor"
                             class="size-6"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->

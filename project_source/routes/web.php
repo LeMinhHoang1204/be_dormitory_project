@@ -45,11 +45,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
 
-Route::get('/register-room', [RoomController::class, 'showListRoom'])->name('register-room');
+Route::get('/room-registration', [RoomController::class, 'showListRoom'])->name('register-room');
 
 Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
 
-Route::post('/register-room', [ResidenceController::class, 'store'])->name('register.room');
+Route::post('/room-registration', [ResidenceController::class, 'store'])->name('register.room');
 
 // Route::get('/payment', function () {
 //     return view('student_payment.payment');

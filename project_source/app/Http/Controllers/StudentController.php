@@ -233,6 +233,7 @@ class StudentController extends Controller
 
         $end_date = Residence::calculateEndDate($validatedData['startDate'], $validatedData['duration']);
 
+
         \App\Models\Residence::create([
             'stu_user_id' => $validatedData['dormId'],
             'room_id' => $validatedData['roomId'],

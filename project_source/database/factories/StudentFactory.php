@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Room>
@@ -18,10 +19,10 @@ class StudentFactory extends Factory
     {
         return [
             'uni_id' => $this->faker->unique()->numberBetween(1000, 9999),
-            'uni_name' => $this->faker->name(),
+            'uni_name' => Arr::random(['DHQGHN', 'DHQGTPHCM', 'BKHN','BKHCM','KTQD','FTU','UEH', 'YHN','YTPHCM']),
             'dob' => $this->faker->dateTimeBetween('-25 years', '-18 years'),
             'gender' => $this->faker->randomElement(['male', 'female']),
-            'training_point' => 100, // Hoặc sử dụng mặc định trong migration
+            'training_point' => 100,
         ];
     }
 }

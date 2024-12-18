@@ -13,7 +13,7 @@ class RequestPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin' || $user->role === 'building manager';
+        return $user->role === 'admin' || $user->role === 'building manager' || $user->role === 'accountant';
     }
 
     /**
@@ -67,8 +67,20 @@ class RequestPolicy
         return false;
     }
 
+    public function viewAcceptRejectTransferCheckInReq(User $user): bool
+    {
+        return $user->role === 'admin' || $user->role === 'building manager';
+    }
+
     public function confirmRequest(User $user, Request $request): bool
     {
-        return $user->role === 'admin'|| $user->role === 'building_manager';
+        return $user->role === 'admin'|| $user->role === 'building manager';
+    }
+
+
+
+    public function resolveRequest(User $user, Request $request): bool
+    {
+        return $user->role === 'admin'|| $user->role === 'building manager' || $user->role === 'accountant';
     }
 }

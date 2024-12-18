@@ -38,13 +38,14 @@ class RoomSeeder extends Seeder
                     // Tạo tên phòng theo quy tắc: Tên tòa (ví dụ A5) + số tầng + số thứ tự phòng
                     $floorNumber = $i < 10 ? $i : str_pad($i, 2, '0', STR_PAD_LEFT); // Chỉ thêm số 0 nếu tầng >= 10
                     $roomName = $building->build_name . '.' . $floorNumber . $roomNumber;
-                    $unitPrice = rand(5000, 10000) * 100;
+                    $unitPrice = rand(5, 30) * 100000;
                     Room::create([
                         'name' => $roomName,
                         'floor_number' => $i,
                         'building_id' => $building->id,
                         'type' => ['2', '4', '6', '8', '10'][array_rand(['2', '4', '6', '8', '10'])],
                         'unit_price' => $unitPrice,
+                        'status' => 1,
                     ]);
                 }
             }

@@ -83,7 +83,7 @@ class RegistrationActivityController extends Controller
             $activitiesQuery->where('creator_id', $request->creator);
         }
 
-        // Lọc theo số lượng người tham gia (max_participants)
+        // Lọc theo số l    ượng người tham gia (max_participants)
         if ($request->has('max_participants') && !empty($request->max_participants)) {
             foreach ($request->max_participants as $value) {
                 if ($value == '<10') {

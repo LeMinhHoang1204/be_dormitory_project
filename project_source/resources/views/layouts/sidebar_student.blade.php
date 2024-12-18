@@ -3,17 +3,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <style>
-.icon svg {
-width: 40px;
-height: 40px;
-margin-left: 2px;
-}
-.menu-item svg{
-    width: 27px;
-    height: 27px;
-    margin-left: 2px;
-    color: #2f6bff;
-}
+    .icon svg {
+        width: 40px;
+        height: 40px;
+        margin-left: 2px;
+    }
+
+    .menu-item svg {
+        width: 27px;
+        height: 27px;
+        margin-left: 2px;
+        color: #2f6bff;
+    }
 </style>
 <div id="sidebar" class="sidebar">
     <div class="logo" style=" color: #0e3b9c">

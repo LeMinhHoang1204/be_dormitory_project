@@ -119,7 +119,7 @@ class InvoiceController extends Controller
 
         (new ImageController)->saveToInvoice($request, $id);
 
-        return redirect()->route('invoice');
+        return redirect()->route('showAllInvoices');
     }
 
     public function accountantConfirmInvoice(Request $request, Invoice $invoice)
@@ -146,6 +146,7 @@ class InvoiceController extends Controller
         (new ImageController)->saveToInvoice($request, $invoice->id);
 
         if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room') {
+
             $residence = Residence::where('stu_user_id', $invoice->object_id)->where('status', 'Registered')->orderBy('start_date', 'desc')->first();
             $residence->update([
                 'status' => 'Paid',

@@ -113,13 +113,12 @@ class StudentController extends Controller
     public function showRegisterRoomList()
     {
         $rooms = Room::with('hasRoomAssets.asset')
-        ->where('status', '=',1)
-        ->whereColumn('member_count', '<', 'type')
-        ->whereHas('building', function ($query) {
-            $query->where('type', auth()->user()->student->gender);
-        })
-        ->paginate(9);
-
+            ->where('status', 1)
+            ->whereColumn('member_count' , '<', 'type')
+            ->whereHas('building', function ($query) {
+                $query->where('type', auth()->user()->student->gender);
+            })
+            ->paginate(9);
 
         return view('Reg_room.reg_room', compact('rooms'));
     }
@@ -214,7 +213,7 @@ class StudentController extends Controller
             'studentId' => $user->student->id,
             'name' => $user->name,
             'gender' => $user->student->gender,
-            'residenceStatus' => $residence->status,
+            'residenceStatus' => $residence ? $residence->status : null,
         ]);
     }
 

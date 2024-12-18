@@ -80,33 +80,60 @@
     //         }
     //     }
     //
-    //     // Display rooms
-    //     async function displayRoom() {
-    //         const roomList = document.getElementById("room-list");
-    //         const roomsData = await fetchRooms(); // Lấy dữ liệu từ database thông qua API
-    //         roomList.innerHTML = roomsData.map(createRoom).join("");
-    //         const roomItems = document.querySelectorAll(".room-item");
-    //         roomItems.forEach((item) => {
-    //             item.addEventListener("click", function () {
-    //                 const roomId = this.dataset.roomId;
-    //                 const roomName = this.dataset.roomName;
-    //                 const roomPrice = this.dataset.roomPrice;
-    //                 const building = this.dataset.roomBuilding;
-    //                 const roomFloor = this.dataset.roomFloor;
-    //                 const roomType = this.dataset.roomType;
-    //                 const roomCapacity = this.dataset.roomCapacity;
-    //
-    //
-    //                 // Luu data room-item vao localStorage
-    //                 localStorage.setItem(
-    //                     "selectedRoom",
-    //                     JSON.stringify({ roomId, roomName, roomPrice, building, roomFloor, roomType, roomCapacity })
-    //                 );
-    //
-    //                 // window.location.href = `/roomInfor/${roomId}`;
-    //             });
-    //         });
-    //     }
+        // Display rooms
+        // async function displayRoom() {
+        //     const roomList = document.getElementById("room-list");
+        //     const roomsData = await fetchRooms(); // Lấy dữ liệu từ database thông qua API
+        //     roomList.innerHTML = roomsData.map(createRoom).join("");
+        //     const roomItems = document.querySelectorAll(".room-item");
+        //     roomItems.forEach((item) => {
+        //         item.addEventListener("click", function () {
+        //             const roomId = this.dataset.roomId;
+        //             const roomName = this.dataset.roomName;
+        //             const roomPrice = this.dataset.roomPrice;
+        //             const building = this.dataset.roomBuilding;
+        //             const roomFloor = this.dataset.roomFloor;
+        //             const roomType = this.dataset.roomType;
+        //             const roomCapacity = this.dataset.roomCapacity;
+        //
+        //
+        //             // Luu data room-item vao localStorage
+        //             localStorage.setItem(
+        //                 "selectedRoom",
+        //                 JSON.stringify({ roomId, roomName, roomPrice, building, roomFloor, roomType, roomCapacity })
+        //             );
+        //
+        //             // window.location.href = `/roomInfor/${roomId}`;
+        //         });
+        //     });
+        // }
+
+        async function getSelectedRoom() {
+            // const roomList = document.getElementById("room-list");
+            // const roomsData = await fetchRooms(); // Lấy dữ liệu từ database thông qua API
+            // roomList.innerHTML = roomsData.map(createRoom).join("");
+            const roomItems = document.querySelectorAll(".room-item");
+            roomItems.forEach((item) => {
+                item.addEventListener("click", function () {
+                    const roomId = this.dataset.roomId;
+                    const roomName = this.dataset.roomName;
+                    const roomPrice = this.dataset.roomPrice;
+                    const building = this.dataset.roomBuilding;
+                    const roomFloor = this.dataset.roomFloor;
+                    const roomType = this.dataset.roomType;
+                    const roomCapacity = this.dataset.roomCapacity;
+
+
+                    // Luu data room-item vao localStorage
+                    localStorage.setItem(
+                        "selectedRoom",
+                        JSON.stringify({ roomId, roomName, roomPrice, building, roomFloor, roomType, roomCapacity })
+                    );
+
+                    // window.location.href = `/roomInfor/${roomId}`;
+                });
+            });
+        }
 
         document.addEventListener("DOMContentLoaded", async function () {
             try {
@@ -120,7 +147,7 @@
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
-            // displayRoom();
+            getSelectedRoom();
         });
 
 
@@ -129,7 +156,6 @@
         document.querySelector(".confirm-regis .yes-btn").addEventListener("click", async function() {
             const selectedRoom = JSON.parse(localStorage.getItem("selectedRoom"));
             const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
             if (selectedRoom) {
                 try {
                     const response = await fetch(`/students/room-registration/latest-residence/${currentUser.userId}`);
@@ -524,7 +550,6 @@
 {{--    <div class="rooms" id="room-list">--}}
 {{--        <div class="room-item"></div>--}}
 {{--    </div>--}}
-
     <div class="rooms" id="room-list">
         @foreach ($rooms as $room)
             <div class="room-item"

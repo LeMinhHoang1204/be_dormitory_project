@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/detail/{invoice}', [InvoiceController::class, 'showDetail'])->name('detailInvoice')->can('view', 'invoice');
 
-            Route::post('/detail/confirm/{id}', [InvoiceController::class, 'studentConfirmInvoice'])->name('studentConfirmInvoice')->can('view', 'invoice');
+            Route::post('/detail/confirm/{id}', [InvoiceController::class, 'studentConfirmInvoice'])->name('studentConfirmInvoice');
 
             Route::get('/detail/report/{id}', [InvoiceController::class, 'reportInvoice'])->name('reportInvoice')->can('view', 'invoice');
 

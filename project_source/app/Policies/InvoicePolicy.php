@@ -4,10 +4,13 @@ namespace App\Policies;
 
 use App\Models\Invoice;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
 
 class InvoicePolicy
 {
+    use HandlesAuthorization;
     /**
      * Determine whether the user can view any models.
      */
@@ -21,12 +24,13 @@ class InvoicePolicy
      */
     public function view(User $user, Invoice $invoice): bool
     {
-        return $user->role === 'admin'
-            || $user->role === 'accountant'
-            || $user->residence->building_id === $invoice->object_id
-            || $user->residence->room_id === $invoice->object_id
-            || $user->residence->stu_user_id === $invoice->object_id;
+            $residence = $user->residence()->orderBy('start_date', 'desc')->first();
 
+            return $user->role === 'admin'
+            || $user->role === 'accountant'
+            || $residence->room->building_id === $invoice->object_id
+            || $residence->room_id === $invoice->object_id
+            || $user->id === $invoice->object_id;
     }
 
     /**

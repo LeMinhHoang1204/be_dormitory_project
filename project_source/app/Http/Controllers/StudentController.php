@@ -112,7 +112,14 @@ class StudentController extends Controller
 //    }
     public function showRegisterRoomList()
     {
-        $rooms = Room::with('hasRoomAssets.asset')->paginate(9);
+        $rooms = Room::with('hasRoomAssets.asset')
+            ->where('status', 1)
+            ->whereColumn('member_count' , '<', 'type')
+            ->whereHas('building', function ($query) {
+                $query->where('type', auth()->user()->student->gender);
+            })
+            ->paginate(9);
+
         return view('Reg_room.reg_room', compact('rooms'));
     }
 
@@ -178,20 +185,47 @@ class StudentController extends Controller
         return redirect()->back()->with('success', 'Profile updated successfully.!');
     }
 
+    public function fetchRoomsForStudent()
+    {
+        $rooms = Room::with(['hasRoomAssets' => function ($query) {
+            $query->select('id', 'room_id', 'asset_id', 'quantity');
+        }, 'hasRoomAssets.asset' => function ($query) {
+            $query->select('id', 'name');
+        }])->get();
+
+        return response()->json($rooms);
+    }
+
+    public function getRoomDataforStudent(Room $room)
+    {
+        $room = Room::find($room->id);
+        return response()->json($room);
+    }
+
     public function getCurrentUser()
     {
         $user = Auth::user();
+
+        $residence = Residence::where('stu_user_id', $user->id)->orderBy('start_date', 'desc')->first();
 
         return response()->json([
             'userId' => $user->id,
             'studentId' => $user->student->id,
             'name' => $user->name,
             'gender' => $user->student->gender,
+            'residenceStatus' => $residence ? $residence->status : null,
         ]);
     }
 
-    public function createNewResidence(Request $request)
+    public function registerRoom(Request $request)
     {
+        $currentRoom = Room::where('id', $request->roomId)->first();
+        if($currentRoom->member_count >= $currentRoom->type){
+            session()->flash('notification', [
+                'message' => 'Room is full!',
+            ]);
+            return redirect()->back();
+        }
 
         $validatedData = $request->validate([
             'dormId' => 'required|integer',
@@ -202,7 +236,6 @@ class StudentController extends Controller
         ]);
 
         $end_date = Residence::calculateEndDate($validatedData['startDate'], $validatedData['duration']);
-
 
         \App\Models\Residence::create([
             'stu_user_id' => $validatedData['dormId'],
@@ -216,7 +249,7 @@ class StudentController extends Controller
             'sender_id' => '1',
             'object_type' => 'App\Models\User',
             'object_id' => $validatedData['dormId'],
-            'send_date' => now(),
+            'send_date' => $validatedData['startDate'],
             'due_date' => now()->addDays(7),
             'type' => 'Room',
             'total' => $validatedData['duration'] * $validatedData['price'],
@@ -235,10 +268,20 @@ class StudentController extends Controller
 
     public function getLatestResidence($userId)
     {
-        $residence = Residence::where('stu_user_id', $userId)
-            ->where('status', '!=', 'Checked out')
-            ->first();
-
+        $residence = Residence::where('stu_user_id', $userId)->orderBy('start_date', 'desc')->first();
         return response()->json(['residence' => $residence]);
+    }
+
+    public function getStudentInfo($id)
+    {
+        $student = Student::with(['user.residence' => function ($query) {
+            $query->orderBy('start_date', 'desc')->first();
+        }, 'user.residence.room'])->where('user_id', $id)->first();
+
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found.']);
+        }
+
+        return response()->json(['success' => true, 'student' => $student]);
     }
 }

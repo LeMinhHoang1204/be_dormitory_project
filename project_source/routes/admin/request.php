@@ -13,7 +13,7 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/create', [RequestController::class, 'store'])->name('requests.store')->can('create', \App\Models\Request::class);
 
-        Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show')->can('view', \App\Models\Request::class);
+        Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show')->can('view', 'request');
 
         Route::get('/edit/{request}', [RequestController::class, 'edit'])->name('requests.edit')->can('update', 'request');
 
@@ -23,8 +23,9 @@ Route::middleware('auth')->group(function () {
 
         Route::put('/{request}/accept', [RequestController::class, 'accept'])->name('requests.accept')->can('confirmRequest', 'request');
 
-        Route::put('/{request}/decline', [RequestController::class, 'decline'])->name('requests.decline')->can('confirmRequest', 'request');
+        Route::put('/{request}/reject', [RequestController::class, 'reject'])->name('requests.decline')->can('confirmRequest', 'request');
 
+        Route::post('/{request}/resolve', [RequestController::class, 'resolve'])->name('requests.resolve')->can('resolveRequest', 'request');
     });
 
 });

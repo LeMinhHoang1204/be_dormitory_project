@@ -294,22 +294,4 @@ class RoomController extends Controller
         return view('student_rooms.register', ['rooms' => $rooms]);
     }
 
-    public function fetchRoomsForStudent()
-    {
-        $rooms = Room::with(['hasRoomAssets' => function ($query) {
-            $query->select('id', 'room_id', 'asset_id', 'quantity');
-        }, 'hasRoomAssets.asset' => function ($query) {
-            $query->select('id', 'name');
-        }])->get();
-
-        return response()->json($rooms);
-    }
-
-    public function getRoomDataforStudent(Room $room)
-    {
-
-        $room = Room::find($room->id);
-        return response()->json($room);
-    }
-
 }

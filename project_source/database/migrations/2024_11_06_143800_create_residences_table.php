@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('months_duration', ['3','6','9','12']);
             $table->dateTime('end_date');
             $table->dateTime('check_out_date')->nullable();
-            $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Transfered', 'Checked out'])->default('Registered');
+            $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Rejected', 'Refunded', 'Transfered', 'Checked out'])->default('Registered');
             $table->string('note', 200)->nullable();
 
             $table->unique(['stu_user_id', 'room_id', 'start_date']);

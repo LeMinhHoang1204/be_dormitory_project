@@ -72,7 +72,7 @@ class ResidenceController extends Controller
                 ->where('end_date', '>', now())
                 ->count();
 
-            if ($currentResidents >= $room->member_number) {
+            if ($currentResidents >= $room->member_count) {
                 return response()->json([
                     'success' => false,
                     'message' => 'This room is already full'
@@ -101,7 +101,7 @@ class ResidenceController extends Controller
             try {
                 $invoice = Invoice::create([
                     'sender_id' => auth()->id(),
-                    'object_type' => 'App\Models\Residence',
+                    'object_type' => 'App\Models\User',
                     'object_id' => $residence->id,
                     'send_date' => now(),
                     'due_date' => now()->addDays(7),

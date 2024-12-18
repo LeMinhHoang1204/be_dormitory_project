@@ -81,7 +81,6 @@ function handleRegisterClick(event, roomId) {
     const roomPrice = roomItem.querySelector(".price").textContent;
     const floorNumber = roomItem.dataset.floor;
     const roomType = roomItem.dataset.type;
-    const capacity = roomItem.dataset.capacity;
     // Cập nhật thông tin trong form
     document.getElementById("room-id-input").value = roomId;
     document.getElementById("display-room-name").textContent = roomName;
@@ -89,7 +88,6 @@ function handleRegisterClick(event, roomId) {
         roomPrice + "/month";
     document.getElementById("display-floor-number").textContent = floorNumber;
     document.getElementById("display-room-type").textContent = roomType;
-    document.getElementById("display-room-capacity").textContent = capacity;
     // Hiển thị modal đăng ký
     document.getElementById("register-popup").style.display = "block";
 }

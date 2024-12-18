@@ -2,7 +2,7 @@
 
 @if (session('notification'))
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const notification = @json(session('notification'));
             // Display the notification
             toastr.info(
@@ -33,7 +33,14 @@
 
 @section('content')
     @include('layouts.sidebar_student')
-    <div class="regisster">
+    <div class="container">
+        <div class="header-container">
+            <h1 class="title">Room Registration</h1>
+            <div class="header-controls">
+                {{-- Button filter --}}
+                <div class="filter-icon" onclick="toggleFilter()">
+                    <i class="ti ti-adjustments-horizontal"></i>
+                </div>
 
                 {{-- Search bar --}}
                 <div class="search-bar">
@@ -46,8 +53,7 @@
         <div class="grid-container" id="room-list">
             @foreach ($rooms as $room)
                 <div class="room-item" onclick="redirectToRoomInfo({{ $room->id }})"
-                    data-floor="{{ $room->floor_number }}" data-type="{{ $room->type }}"
-                    data-capacity="{{ $room->member_count }}">
+                    data-floor="{{ $room->floor_number }}" data-type="{{ $room->type }}">
                     <img src="/img/room.png">
                     <div class="room-item-group">
                         <div class="roomname">{{ $room->name }}</div>
@@ -283,62 +289,6 @@
                     </label>
                 </div>
             </div>
-            <div class="confirm-info-body">
-                <div class="left-column">
-                    <div class="confirm-info-field">
-                        <label for="dorm-id">Dorm ID</label>
-                        <input type="text" id="dorm-id" name="dormId" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="full-name">Full name</label>
-                        <input type="text" id="full-name" name="fullName" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="room-id">Room ID</label>
-                        <input type="text" id="room-id" name="roomId" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="building-id">Building ID</label>
-                        <input type="text" id="building-id" name="buildingId" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="floor">Floor</label>
-                        <input type="text" id="floor" name="floor" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="start-date">Start date</label>
-                        <input type="date" id="start-date" name="startDate">
-                    </div>
-                </div>
-                <div class="right-column">
-                    <div class="confirm-info-field">
-                        <label for="student-id">Student ID</label>
-                        <input type="text" id="student-id" name="studentId" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="gender">Gender</label>
-                        <input type="text" id="gender" name="gender" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="price">Price</label>
-                        <input type="text" id="price" name="price" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="room-type">Room type</label>
-                        <input type="text" id="room-type" name="roomType" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="capacity">Current Number of Members</label>
-                        <input type="text" id="capacity" name="capacity" readonly>
-                    </div>
-                    <div class="confirm-info-field">
-                        <label for="duration">Duration</label>
-                        <select id="duration" name="duration">
-                            <option value="3">3 months</option>
-                            <option value="6">6 months</option>
-                            <option value="9">9 months</option>
-                            <option value="12">12 months</option>
-                        </select>
 
             <!-- Button -->
             <div class="button-group">
@@ -402,10 +352,6 @@
                             <div class="info-item">
                                 <span class="label-text">Capacity: </span>
                                 <span class="room-detail" id="display-room-capacity"></span>
-                            </div>
-                            <div class="info-item">
-                                <span class="label-text">Member number: </span>
-                                <span class="room-detail" id="display-room-member-number"></span>
                             </div>
                         </div>
                     </div>

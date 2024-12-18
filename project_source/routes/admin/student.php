@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\StudentController;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +39,7 @@ Route::middleware('auth')->group(function () {
 
         });
 
-        Route::get('/room', [StudentController::class, 'showMyRoom'])->name('students.room');
+        Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
 
         Route::get('/repair-request', [StudentController::class, 'showRepairRequestForm'])->name('students.repair-request');
 

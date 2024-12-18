@@ -58,6 +58,7 @@
 <head>
     <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         body {
@@ -136,7 +137,16 @@
     <div class="dashboard-container">
         <h3>{{ __('Welcome back, ') . Auth::user()->name . '!' }}</h3>
         <p>{{ __("You're logged in!") }}</p>
-{{--        <a href="#" class="btn-primary">{{ __('Go to Activities') }}</a>--}}
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+        @endif
     </div>
 @endsection
 

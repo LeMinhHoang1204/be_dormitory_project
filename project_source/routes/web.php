@@ -29,9 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
-});
+
 
 Route::middleware(['auth'])->group(function () {
     // Route trang yêu cầu sửa chữa
@@ -42,15 +40,20 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-
 // Display roomInfor
 Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
 
-Route::get('/roomInfor/{id}', [RoomController::class, 'showRoom']);
+Route::get('/register_room', [RoomController::class, 'showListRoom'])->name('register_room');
 
-//Xem trang thông tin phòng hiện tại của tôi
+Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
+
+
+
+
+
+// Xem trang thông tin phòng hiện tại của tôi
 Route::middleware('auth')->group(function () {
     Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
 });
@@ -68,5 +71,3 @@ require __DIR__ . '/admin/request.php';
 require __DIR__ . '/admin/my_profile.php';
 require __DIR__ . '/admin/manager.php';
 require __DIR__ . '/admin/accountant.php';
-
-

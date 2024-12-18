@@ -35,12 +35,12 @@ class StudentController extends Controller
 //    TODO: FIX THIS
     public function showRoomRenewalForm()
     {
-        $residence = Auth::user()->residence()
+        $residence = Residence::where('stu_user_id', auth()->id())
             ->where('status', 'Checked in')
             ->first();
 
         if (!$residence) {
-            return view('user_student.student.extension')->with('no_residence', true);
+            return view('user_student.student.room')->with('error', 'You have not checked in the room, cannot check out!');
         }
 
         return view('user_student.student.extension', compact('residence'));
@@ -54,7 +54,9 @@ class StudentController extends Controller
             'renewal-period' => 'required|integer',
             'description' => 'nullable|string',
         ]);
-
+        if (!$request->receiver_id) {
+            return redirect()->route('students.extend.form')->with('error', 'Manager ID is missing.');
+        }
         $note = "Start Date: " . $validatedData['start_date'] . ", Renewal Period: " . $validatedData['renewal-period'] . " months, Description: " . $validatedData['description'];
 
         \App\Models\Request::create([
@@ -64,27 +66,29 @@ class StudentController extends Controller
             'note' => $note,
         ]);
 
-        return view('dashboard');
+        return redirect()->route('dashboard')->with('status', 'Renewal request created successfully!');
     }
 
     public function showCheckOutForm()
     {
+        $user = auth()->user();
+
         // Lấy thông tin sinh viên từ cơ sở dữ liệu
         $student = Auth::user()->student;
 
         // Kiểm tra nếu không có thông tin sinh viên
         if (!$student) {
-            return view('student.checkout', ['message' => 'You do not have a room, register!']);
+            return view('students.register-room.list', ['message' => 'You do not have a room, register!']);
         }
 
         // Lấy thông tin phòng của sinh viên
-        $residence = Auth::user()->residence()
-            ->where('status', 'Checked in')
+        $residence = Residence::where('stu_user_id', $user->id)
+            ->with('room.building')
             ->first();
 
-        // Nếu sinh viên không có phòng, chuyển hướng hoặc hiển thị thông báo
+
         if (!$residence) {
-            return view('student.checkout', ['message' => 'No room found for this student.']);
+            return redirect()->route('students.register-room.list')->with('error', 'You do not have a room, register!');
         }
 
         // Trả về trang checkout với thông tin sinh viên và phòng
@@ -98,7 +102,7 @@ class StudentController extends Controller
         // Lưu thông tin yêu cầu checkout vào cơ sở dữ liệu hoặc gửi email thông báo
 
         // Chuyển hướng về trang checkout và hiển thị thông báo yêu cầu đã được gửi
-        return redirect()->route('student.checkout')->with('message', 'Request sent');
+        return redirect()->route('students.checkout')->with('message', 'Request sent');
     }
 
 //    public function showRegisterRoomList()
@@ -147,17 +151,17 @@ class StudentController extends Controller
     public function showProfile()
     {
         $user = auth()->user();
-        $currentResidence = Residence::where('stu_user_id', auth()->id())
-            ->where('status', 'Checked in', 'Paid')
-            ->with('room')
+        $residence = Residence::where('stu_user_id', $user->id)
+            ->with('room.building')
             ->first();
+
         if (!$user) {
             return redirect()->route('login')->with('message', 'Please log in first.');
         }
 
         if ($user->student) {
             $student = $user->student;
-            return view('user_profile.student', compact('student'));
+            return view('user_profile.student', compact('student', 'residence'));
         } else {
             return redirect()->back()->with('message', 'Student user_profile.php not found');
         }
@@ -260,7 +264,7 @@ class StudentController extends Controller
 //            ],
         ]);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('student.room')->with('success', 'Registered room successfully!.');
     }
 
     public function getLatestResidence($userId)

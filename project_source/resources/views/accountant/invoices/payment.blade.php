@@ -41,7 +41,7 @@
                         <td>{{ $invoice->paid_date }}</td>
                         <td>{{ $invoice->status }}</td>
                         <td>{{ $invoice->note }}</td>
-                        <td><a href="{{ route('detailInvoice', $invoice->id) }}" class="btn-task">Check</a></td>
+                            <td><a href="{{ route('accountantDetailInvoice', $invoice->id) }}" class="btn-task">Check</a></td>
                     </tr>
                 @endforeach
             </tbody>

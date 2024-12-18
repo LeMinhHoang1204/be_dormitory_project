@@ -15,13 +15,14 @@ return new class extends Migration
             $table->increments('id');
             $table->bigInteger('sender_id')->unsigned();
             $table->bigInteger('receiver_id')->unsigned();
-            $table->enum('type', ['Change Room', 'Renewal', 'Check out', 'Fixing', 'Suggestion', 'Complaint']);
-            $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
+            $table->enum('type', ['Change Room', 'Renewal', 'Check out', 'Refund', 'Fixing', 'Suggestion', 'Complaint']);
+            $table->enum('status', ['Pending', 'Approved', 'Rejected', 'Resolved'])->default('Pending');
 //            $table->dateTime('send_date');
 //            $table->dateTime('receive_date')->nullable();
             $table->dateTime('resolve_date')->nullable();
             $table->string('note', 200)->nullable();
             $table->bigInteger('forwarder_id')->unsigned()->nullable();
+            $table->string('evidence_image', 200)->nullable();
             $table->timestamps();
 
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');

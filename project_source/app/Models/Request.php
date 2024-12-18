@@ -17,6 +17,7 @@ class Request extends Model
         'resolve_date',
         'note',
         'forward_id',
+        'evidence_image',
     ];
 
     protected $casts = [

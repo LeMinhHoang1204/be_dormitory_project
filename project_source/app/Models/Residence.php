@@ -28,7 +28,7 @@ class Residence extends Model
     // Quan hệ với Student
     public function student()
     {
-        return $this->belongsTo(Student::class, 'stu_user_id', 'id');
+        return $this->belongsTo(User::class, 'stu_user_id', 'id');
     }
 
     // Quan hệ với Room
@@ -53,6 +53,14 @@ class Residence extends Model
                 $residence->end_date = self::calculateEndDate($residence->start_date, $residence->months_duration);
             }
         });
+
+        static::created(function ($residence) {
+            $residence->updateRoomAndBuildingCounts(1);
+        });
+
+        static::deleted(function ($residence) {
+            $residence->updateRoomAndBuildingCounts(-1);
+        });
     }
 
     /**
@@ -72,6 +80,14 @@ class Residence extends Model
     public function getEndDateAttribute($value)
     {
         return $value ? Carbon::parse($value) : null;
+    }
+
+    public function updateRoomAndBuildingCounts($count)
+    {
+        if ($this->room) {
+            $this->room->increment('member_count', $count);
+            $this->room->building->increment('student_count', $count);
+        }
     }
 
 }

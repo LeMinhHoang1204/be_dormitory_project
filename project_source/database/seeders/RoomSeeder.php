@@ -43,7 +43,7 @@ class RoomSeeder extends Seeder
                         'name' => $roomName,
                         'floor_number' => $i,
                         'building_id' => $building->id,
-                        'type' => ['2', '4', '6', '8', '10'][array_rand(['2', '4', '6', '8', '10'])],
+                        'type' => [2, 4, 6, 8, 10][array_rand([2, 4, 6, 8, 10])],
                         'unit_price' => $unitPrice,
                         'status' => 1,
                     ]);

@@ -182,7 +182,7 @@ class RequestController extends Controller
                 $newInvoice = Invoice::create([
                     'sender_id' => Auth::user()->id,
                     'object_type' => 'App\Models\User',
-                    'object_id' => 1,
+                    'object_id' => $residence->stu_user_id,
                     'send_date' => now(),
                     'due_date' => now()->addDays(7),
                     'paid_date' => now(),

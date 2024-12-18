@@ -13,7 +13,7 @@
 @section('content')
     @include('layouts.sidebar_student')
     <div class="extension">
-        <h1>Edit Violation</h1>
+        <div class="bluefont"><h3>Edit Violation</h3></div>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -78,7 +78,7 @@
                 <textarea name="note" id="note" class="form-control">{{ old('note', $violation->note) }}</textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="blue-btn">Update</button>
         </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>

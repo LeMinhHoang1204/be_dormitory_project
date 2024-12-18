@@ -59,15 +59,6 @@
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-
-                            <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
-                                @error('description')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
                             <div class="form-group">
                                 <label for="occurred_at">Occurred At *</label>
                                 <input type="datetime-local" name="occurred_at" id="occurred_at" class="form-control" required>
@@ -79,7 +70,7 @@
 
 
 
-            <div class="form-group">
+                            <div class="form-group">
                                 <label for="minus_point">Minus Point *</label>
                                 <input type="number" name="minus_point" id="minus_point" class="form-control" min="1" max="5" required>
                                 @error('minus_point')
@@ -87,13 +78,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label for="note">Note</label>
-                                <textarea name="note" id="note" class="form-control">{{ old('note') }}</textarea>
-                                @error('note')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
+
             <div class="form-group">
                 <label for="status">Status</label>
                 <p class="form-control-static">Approved</p>
@@ -102,17 +87,33 @@
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="action-buttons" >
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
+                    @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="note">Note</label>
+                    <textarea name="note" id="note" class="form-control">{{ old('note') }}</textarea>
+                    @error('note')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                </div>
+{{--            <div class="action-buttons" >--}}
 
-            <a href="javascript:void(0);" class="grey-btn" onclick="goBack()"> < Back</a>
+                <a href="javascript:void(0);" class="grey-btn" onclick="goBack()"> < Back</a>
 
-            <script>
-                function goBack() {
-                    window.history.back();
-                }
-            </script>
-            <button type="submit" class="blue-btn">Create</button>
-            </div>
+                <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
+                <button type="submit" class="blue-btn">Create</button>
+{{--            </div>--}}
             </div>
         </form>
     </div>
@@ -213,12 +214,6 @@
         .form-group input:focus,
         .form-group textarea:focus {
             border-color: #4a90e2;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
         }
 
         .form-actions .grey-btn,

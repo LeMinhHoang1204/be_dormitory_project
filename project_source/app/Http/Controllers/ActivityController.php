@@ -393,6 +393,12 @@ class ActivityController extends Controller
         $activity->start_date = Carbon::parse($activity->start_date);
         $activity->end_date = Carbon::parse($activity->end_date);
         $activity->register_end_date = Carbon::parse($activity->register_end_date);
+        $user = auth()->user();
+
+        if ($activity->creator_id !== $user->id) {
+            return redirect()->route('admin.activities.index')
+                ->with('error', 'Only creator can edit this activity.');
+        }
 
         return view('admin_activities.edit', compact('activity'));
     }
@@ -401,13 +407,11 @@ class ActivityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateActivityRequest $request, Activity $activity)
+    public function update(Request $request, Activity $activity)
     {
-
-//        $activity = Activity::findOrFail($id);
-
-        // Validate the incoming data
-        $validated = $request->validate([
+//        echo($request); exit;
+                // Validate the incoming data
+        $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable',
             'note' => 'nullable',
@@ -415,13 +419,24 @@ class ActivityController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'max_participants' => 'required|integer',
-            'ticket_price' => 'required|integer',
+            'ticket_price' => 'required',
             'bonus_point' => 'required|integer',
         ]);
-        $activity->update($validated);
-//        dd($request->all());
 
-        return redirect()->route('activities.show', ['id' => $activity->id])->with('success', 'Activity created successfully.');
+        $activity->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'note' => $request->note,
+            'register_end_date' => $request->register_end_date,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'max_participants' => $request->max_participants,
+            'ticket_price' => $request->ticket_price,
+            'bonus_point' => $request->bonus_point,
+
+        ]);
+
+        return redirect()->route('activities.show', ['id' => $activity->id])->with('success', 'Activity updated successfully.');
 
     }
 
@@ -439,7 +454,4 @@ class ActivityController extends Controller
         $activity->delete();
         return redirect()->route('admin.activities.index')->with('success', 'Activity deleted successfully.');
     }
-
-
-
 }

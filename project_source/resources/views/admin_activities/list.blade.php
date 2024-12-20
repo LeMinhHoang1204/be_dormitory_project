@@ -40,12 +40,12 @@
     <div class="extension">
         <h3 class="heading">Manage Activities </h3>
         @if (session('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success"  style="margin-bottom: -20px; margin-top: 5px">
                 {{ session('success') }}
             </div>
         @endif
         @if (session('error'))
-            <div class="alert alert-error">
+            <div class="alert alert-error" style="margin-bottom: -20px; margin-top: 5px">
                 {{ session('error') }}
             </div>
         @endif
@@ -72,18 +72,6 @@
                 </g>
                 <defs>
                     <filter id="filter0_d_1132_2655" x="0" y="0" width="67" height="66" filterUnits="userSpaceOnUse"
-                            color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                                       result="hardAlpha" />
-                        <feOffset dy="6" />
-                        <feGaussianBlur stdDeviation="2" />
-                        <feComposite in2="hardAlpha" operator="out" />
-                        <feColorMatrix type="matrix" values="0 0 0 0 0.925499 0 0 0 0 0.937916 0 0 0 0 1 0 0 0 1 0" />
-                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1132_2655" />
-                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1132_2655" result="shape" />
-                    </filter>
-                    <filter id="filter1_d_1132_2655" x="0" y="0" width="67" height="66" filterUnits="userSpaceOnUse"
                             color-interpolation-filters="sRGB">
                         <feFlood flood-opacity="0" result="BackgroundImageFix" />
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
@@ -211,7 +199,7 @@
                 let filterParams = `?status=${status.join(',')}&month=${month}&year=${year}&start_date=${startDate}&end_date=${endDate}&participants=${participants.join(',')}&title=${title.join(',')}`;
 
                 // Chuyển hướng người dùng đến URL có các tham số lọc
-                window.location.href = `{{ route('activities.index') }}${filterParams}`;
+                {{--window.location.href = `{{ route('activities.index') }}${filterParams}`;--}}
             });
 
             });

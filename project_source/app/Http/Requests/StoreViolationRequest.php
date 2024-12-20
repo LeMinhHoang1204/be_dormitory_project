@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
 
 class StoreViolationRequest extends FormRequest
 {
@@ -11,7 +12,8 @@ class StoreViolationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $user = auth()->user();
+        return $user->role === 'admin' || $user->role === 'building manager';
     }
 
     /**

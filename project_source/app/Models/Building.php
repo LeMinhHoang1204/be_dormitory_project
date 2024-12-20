@@ -24,7 +24,7 @@ class Building extends Model
     ];
 
     // employee relationship
-    public function managedBy()
+     public function managedBy()
     {
         return $this->belongsTo(Employee::class, 'manager_id', 'id');
     }

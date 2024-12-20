@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('sender_id')->unsigned();
             $table->bigInteger('receiver_id')->unsigned();
             $table->enum('type', ['Change Room', 'Renewal', 'Check out', 'Refund', 'Fixing', 'Suggestion', 'Complaint']);
-            $table->enum('status', ['Pending', 'Approved', 'Rejected', 'Resolved'])->default('Pending');
+            $table->enum('status', ['Pending', 'Accepted', 'Rejected', 'Resolved'])->default('Pending');
 //            $table->dateTime('send_date');
 //            $table->dateTime('receive_date')->nullable();
             $table->dateTime('resolve_date')->nullable();

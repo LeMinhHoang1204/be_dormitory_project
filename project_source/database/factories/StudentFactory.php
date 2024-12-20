@@ -22,7 +22,7 @@ class StudentFactory extends Factory
             'uni_name' => Arr::random(['DHQGHN', 'DHQGTPHCM', 'BKHN','BKHCM','KTQD','FTU','UEH', 'YHN','YTPHCM']),
             'dob' => $this->faker->dateTimeBetween('-25 years', '-18 years'),
             'gender' => $this->faker->randomElement(['male', 'female']),
-            'training_point' => 100,
+            'training_point' => rand(50,100),
         ];
     }
 }

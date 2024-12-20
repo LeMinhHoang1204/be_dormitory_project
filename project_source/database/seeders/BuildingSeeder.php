@@ -14,25 +14,31 @@ class BuildingSeeder extends Seeder
      */
     public function run(): void
     {
-//        Building::factory(5)->create();
-
-        // Tạo 10 tòa nhà
-        for ($i = 0; $i < 10; $i++) {
-            $floorNumbers = rand(3, 10);
-            $roomNumbers = $floorNumbers * 10; // (10 phòng mỗi tầng)
+        // Tạo 20 toà mỗi toà 20 tầng, 200 phòng
+        // Tạo 10 tòa cho nam
+        for ($i = 1; $i <= 10; $i++) {
             Building::create([
-                'build_name' => $this->generateRandomBuildingName(),
-                'manager_id' => \App\Models\User::where('role', 'admin')->inRandomOrder()->first()->id ?? null,
-                'type' => ['male', 'female'][array_rand(['male', 'female'])],
-                'floor_numbers' => $floorNumbers,
-                'room_numbers' => $roomNumbers,
+                'build_name' => 'A' . $i,
+                'type' => 'male',
+                'floor_numbers' => 20,
+                'room_numbers' => 200,
+            ]);
+        }
+
+        // Tạo 10 tòa cho nữ
+        for ($i = 1; $i <= 10; $i++) {
+            Building::create([
+                'build_name' => 'B' . $i,
+                'type' => 'female',
+                'floor_numbers' => 20,
+                'room_numbers' => 200,
             ]);
         }
     }
 
     private function generateRandomBuildingName(): string
     {
-        $letters = 'ABCDEFGH';
+        $letters = 'AB';
         $numbers = '123456789';
 
         $letter = $letters[rand(0, strlen($letters) - 1)];

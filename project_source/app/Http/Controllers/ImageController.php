@@ -11,7 +11,6 @@ class ImageController extends Controller
 {
     public function upload(Request $request, $id)
     {
-//        echo($request->image); exit;
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

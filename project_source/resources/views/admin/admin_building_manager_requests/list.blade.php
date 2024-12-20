@@ -50,7 +50,7 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="{{ route('requests.show', $request->id) }}">View Details</a>
                                     <a class="dropdown-item" href="{{ route('requests.accept', $request->id) }}">Accept</a>
-                                    <a class="dropdown-item" href="{{ route('requests.decline', $request->id) }}">Decline</a>
+                                    <a class="dropdown-item" href="{{ route('requests.reject', $request->id) }}">Reject</a>
                                 </div>
                             </div>
                         </td>

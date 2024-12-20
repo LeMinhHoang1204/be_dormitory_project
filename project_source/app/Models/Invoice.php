@@ -14,6 +14,7 @@ class Invoice extends Model
         'sender_id',
         'object_type',
         'object_id',
+        'start_date',
         'send_date',
         'due_date',
         'paid_date',

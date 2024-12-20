@@ -1051,6 +1051,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@1.74.0/icons-react/dist/index.umd.min.js"></script>
 
+    {{-- WEBSITE: toastr --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -1059,13 +1063,28 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-@section('content')
-    @include('layouts.sidebar_student')
-    <div class="container">
-        <div class="header-container">
-            <h1 class="title">Room Registration</h1>
-            <div class="header-controls">
-                {{-- Button filter --}}
+<style>
+    .toast-warning {
+        color: #ffffff !important; /* Text color for warning notification */
+        background-color: #ffc107 !important; /* Background color */
+        font-family: "Poppins", sans-serif !important; /* Font family */
+        border-left: 5px solid #ff9800 !important; /* Left border color */
+    }
+
+    .toast-info {
+        color: #ffffff !important; /* Màu chữ cho thông báo thông tin */
+        background-color: #17a2b8 !important; /* Màu nền */
+        font-family: "Poppins", sans-serif !important; /* Font chữ */
+    }
+</style>
+
+        @section('content')
+            @include('layouts.sidebar_student')
+        <div class="container">
+            <div class="header-container">
+                <h1 class="title">Room Registration</h1>
+                <div class="header-controls">
+                    {{-- Button filter --}}
                 <div class="filter-icon" onclick="toggleFilter()">
                     <i class="ti ti-adjustments-horizontal"></i>
                 </div>
@@ -1351,7 +1370,7 @@
             <h2>Room Registration</h2>
         </div>
         <div class="popup-body">
-            <form action="{{ route('register.room') }}" method="POST" id="registration-form"
+            <form action="{{ route('students.register-room.create') }}" method="POST" id="registration-form"
                   onsubmit="return handleFormSubmit(event)">
                 @csrf
                 <input type="hidden" id="room-id-input" name="room_id">
@@ -1387,7 +1406,7 @@
                     <div class="form-fields-row">
                         <div class="form-field">
                             <label>Check-in Date:</label>
-                            <input type="date" name="check_in_date" class="form-control" required>
+                            <input type="datetime-local" name="check_in_date" class="form-control" required>
                         </div>
 
                         <div class="form-field">

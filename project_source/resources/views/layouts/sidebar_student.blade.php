@@ -104,14 +104,27 @@
                 </a>
                 <ul class="submenu">
                     <li><a href="{{ url('/students/my-room') }}">My room</a></li>
-
-                    <li><a href="{{ url('/students/register-room') }}">Register</a></li>
-
-                    <li><a href="/students/repair-request">Repair</a></li>
-                    <li><a href="#">Change</a></li>
-                    <li><a href="/students/renew">Extension</a></li>
-                    <li><a href="/students/checkout">Check-out</a></li>
+                    <li><a href="{{ url('/students/room-registration') }}">Register</a></li>
+                    <li><a href="/students/requests/repair-room">Repair</a></li>
+                    <li><a href="/students/requests/change-room">Change</a></li>
+                    <li><a href="/students/requests/renew">Renew</a></li>
+                    <li><a href="/students/requests/checkout">Check out</a></li>
                 </ul>
+            </li>
+            <li class="menu-item">
+                <a href="{{ url('/students/requests') }}">
+                    {{--                <span class="icon">💳</span> --}}
+                    <span class="icon" style=" color: #0e3b9c">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path
+                                d="M10.464 8.746c.227-.18.497-.311.786-.394v2.795a2.252 2.252 0 0 1-.786-.393c-.394-.313-.546-.681-.546-1.004 0-.323.152-.691.546-1.004ZM12.75 15.662v-2.824c.347.085.664.228.921.421.427.32.579.686.579.991 0 .305-.152.671-.579.991a2.534 2.534 0 0 1-.921.42Z" />
+                            <path fill-rule="evenodd"
+                                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v.816a3.836 3.836 0 0 0-1.72.756c-.712.566-1.112 1.35-1.112 2.178 0 .829.4 1.612 1.113 2.178.502.4 1.102.647 1.719.756v2.978a2.536 2.536 0 0 1-.921-.421l-.879-.66a.75.75 0 0 0-.9 1.2l.879.66c.533.4 1.169.645 1.821.75V18a.75.75 0 0 0 1.5 0v-.81a4.124 4.124 0 0 0 1.821-.749c.745-.559 1.179-1.344 1.179-2.191 0-.847-.434-1.632-1.179-2.191a4.122 4.122 0 0 0-1.821-.75V8.354c.29.082.559.213.786.393l.415.33a.75.75 0 0 0 .933-1.175l-.415-.33a3.836 3.836 0 0 0-1.719-.755V6Z"
+                                  clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    <span class="text">Requests</span>
+                </a>
             </li>
             <li class="menu-item has-submenu">
                 <a>
@@ -126,12 +139,12 @@
                     <span class="text">Activites</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="{{ url('/activities') }}">Activity List</a></li>
-                    <li><a href="{{ url('/my-activities') }}">My activity</a></li>
+                    <li><a href="{{ url('/students/activities') }}">Activity List</a></li>
+                    <li><a href="{{ url('/students/my-activities') }}">My activity</a></li>
                 </ul>
             </li>
             <li class="menu-item">
-                <a href="{{ url('/payment') }}">
+                <a href="{{ url('/students/invoices') }}">
                     {{--                <span class="icon">💳</span> --}}
                     <span class="icon" style=" color: #0e3b9c">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -142,7 +155,7 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </span>
-                    <span class="text">Payment</span>
+                    <span class="text">Invoices</span>
                 </a>
             </li>
         @endif
@@ -213,7 +226,7 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/requests">
+                <a href="/building-manager/requests">
                     {{--                    <span class="icon">📑</span> --}}
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor"
@@ -264,7 +277,7 @@
         @endif
         @if (auth()->check() && auth()->user()->role === 'accountant')
             <li class="menu-item">
-                <a href="/requests">
+                <a href="/accountant/requests">
                     {{--                    <span class="icon">📑</span>--}}
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" class="size-6"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304l0 128c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-223.1L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6l29.7 0c33.7 0 64.9 17.7 82.3 46.6l44.9 74.7c-16.1 17.6-28.6 38.5-36.6 61.5c-1.9-1.8-3.5-3.9-4.9-6.3L232 256.9 232 480c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-128-16 0zM432 224a144 144 0 1 1 0 288 144 144 0 1 1 0-288zm0 240a24 24 0 1 0 0-48 24 24 0 1 0 0 48zm0-192c-8.8 0-16 7.2-16 16l0 80c0 8.8 7.2 16 16 16s16-7.2 16-16l0-80c0-8.8-7.2-16-16-16z"/></svg>
@@ -273,7 +286,7 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/accountant/payment">
+                <a href="/accountant/invoices">
                     {{--                    <span class="icon">📋</span> --}}
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor"

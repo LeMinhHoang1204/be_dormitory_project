@@ -21,7 +21,7 @@ class RequestFactory extends Factory
             'sender_id' => $this->faker->randomElement(User::pluck('id')->toArray()),
             'receiver_id' => $this->faker->randomElement(User::pluck('id')->toArray()),
             'type' => $this->faker->randomElement(['Change Room', 'Renewal', 'Check out', 'Fixing', 'Suggestion', 'Complaint']),
-            'status' => $this->faker->randomElement(['Pending', 'Approved', 'Rejected']),
+            'status' => $this->faker->randomElement(['Pending', 'Accepted', 'Rejected']),
             'resolve_date' =>  $this->faker->dateTimeBetween('now', '+1 month'),
             'note' => $this->faker->optional()->text(200),
             'forwarder_id' => $this->faker->optional()->randomElement(User::pluck('id')->toArray()),

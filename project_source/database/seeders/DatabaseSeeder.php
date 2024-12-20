@@ -78,6 +78,7 @@ class DatabaseSeeder extends Seeder
             ActivitySeeder::class,
             RegistrationActivitySeeder::class,
             ViolationSeeder::class,
+            ComplaintViolationSeeder::class
         ]);
 
         // test request

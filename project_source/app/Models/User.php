@@ -112,6 +112,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Residence::class, 'stu_user_id', 'id');
     }
 
+    public function latestResidence()
+    {
+        return $this->hasOne(Residence::class, 'stu_user_id', 'id')
+            ->whereNotIn('status', ['Checked out', 'Transfered'])
+            ->latest('start_date');
+    }
+
 
 
     // request relationships

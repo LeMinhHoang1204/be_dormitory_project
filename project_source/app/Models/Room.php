@@ -42,6 +42,13 @@ class Room extends Model
         return $this->hasMany(Residence::class, 'room_id', 'id');
     }
 
+    public function latestResidence()
+    {
+        return $this->hasOne(Residence::class, 'room_id', 'id')
+            ->whereNotIn('status', ['Checked out', 'Transfered'])
+            ->latest('start_date');
+    }
+
     // room asset relationship
     public function hasRoomAssets()
     {

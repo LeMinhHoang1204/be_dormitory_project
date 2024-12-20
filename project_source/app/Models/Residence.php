@@ -36,7 +36,12 @@ class Residence extends Model
     {
         return $this->belongsTo(Room::class, 'room_id', 'id');
     }
-
+    public function latestResidence()
+    {
+        return $this->hasOne(Residence::class, 'stu_user_id', 'id')
+            ->whereNotIn('status', ['Checked out', 'Transfered'])
+            ->latest('start_date');
+    }
     //tự động tính toán end_date
     protected static function boot()
     {

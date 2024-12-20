@@ -9,6 +9,7 @@ class Violation extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'creator_id',
         'receiver_id',
@@ -30,5 +31,8 @@ class Violation extends Model
     {
         return $this->belongsTo(User::class, 'receiver_id', 'id');
     }
-
+    public function complaints()
+    {
+        return $this->hasMany(ComplaintViolation::class, 'violation_id', 'id');
+    }
 }

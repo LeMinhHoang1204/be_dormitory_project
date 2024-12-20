@@ -46,4 +46,11 @@ class Student extends Model
     {
         return $this->belongsToMany(Activity::class, 'registration_activities', 'participant_id', 'activity_id');
     }
+    public function latestResidence()
+    {
+        return $this->hasOne(Residence::class, 'stu_user_id', 'id')
+            ->where('status', '!=', 'Checked out')
+            ->latest('start_date');
+    }
+
 }

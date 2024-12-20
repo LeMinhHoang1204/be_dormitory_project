@@ -127,8 +127,7 @@
                     } else {
                         const checkoutdate = document.getElementById('checkoutdate');
                         const startDate = document.getElementById('startdate');
-                        console.log(startDate.getAttribute('value'));
-                        console.log(checkoutdate.getAttribute('value') == 'null');
+
                         if(startDate.getAttribute('value') ==='null'){
                             console.log('This student has already checked in');
                             const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));

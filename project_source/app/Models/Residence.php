@@ -22,7 +22,7 @@ class Residence extends Model
         'check_out_date',
         'status',
         'note',
-        'months_months_duration',
+        'months_duration',
     ];
 
     // Quan hệ với Student
@@ -48,11 +48,11 @@ class Residence extends Model
             }
         });
 
-        static::updating(function ($residence) {
-            if ($residence->start_date && $residence->months_duration) {
-                $residence->end_date = self::calculateEndDate($residence->start_date, $residence->months_duration);
-            }
-        });
+//        static::updating(function ($residence) {
+//            if ($residence->start_date && $residence->months_duration) {
+//                $residence->end_date = self::calculateEndDate($residence->start_date, $residence->months_duration);
+//            }
+//        });
 
         static::created(function ($residence) {
             $residence->updateRoomAndBuildingCounts(1);

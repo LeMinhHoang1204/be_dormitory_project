@@ -145,6 +145,7 @@
                             <label for="confirmEvidenceUpload" class="form-label">Upload Evidence</label>
                             <input class="form-control" type="file" id="confirmEvidenceUpload" accept="image/*" name="image" required>
                         </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

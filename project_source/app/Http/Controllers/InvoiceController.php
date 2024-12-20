@@ -6,6 +6,7 @@ use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\Invoice;
 use App\Models\Residence;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -124,7 +125,6 @@ class InvoiceController extends Controller
 
     public function accountantConfirmInvoice(Request $request, Invoice $invoice)
     {
-
         $invoice->update([
             'status' => 'Paid',
             'paid_date' => now(),
@@ -143,20 +143,38 @@ class InvoiceController extends Controller
         }
 
         // default: khong co anh khong update
-        (new ImageController)->saveToInvoice($request, $invoice->id);
-
-        if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room') {
-
-            $residence = Residence::where('stu_user_id', $invoice->object_id)->where('status', 'Registered')->orderBy('start_date', 'desc')->first();
-            $residence->update([
-                'status' => 'Paid',
-            ]);
+        if($request->hasFile('image')) {
+            (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
+        if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room') {
+            $user = User::find($invoice->object_id);
+            $latestResidence = $user->residence()->latest()->first();
+            if($latestResidence->status == 'Registered') {
+                $latestResidence->update([
+                    'status' => 'Paid',
+                ]);
+            }
+            else if($latestResidence->status == 'Checked in' && $request->invoice_type == 'Renewal') {
+                $oldRequest = $user->sendRequest()->where('status', 'Accepted')->where('type', 'Renewal')->latest()->first();
+                $note = $oldRequest->note;
+                preg_match('/\d+/', $note, $matches);
+                $firstNumber = $matches[0] ?? null;
+//                echo($latestResidence->end_date->addMonths((int)$firstNumber));exit;
 
-        session()->flash('notification', [
-            'message' => 'Payment success!',
-        ]);
+                if ($firstNumber !== null) {
+                    $new_end_date = $latestResidence->end_date->addMonths((int)$firstNumber);
+                    $new_months_duration = (int)$latestResidence->months_duration + (int)$firstNumber;
+
+                    $latestResidence->update([
+                        'end_date' => $new_end_date,
+                        'status' => 'Renewed',
+                        'months_duration' => $new_months_duration,
+                        'note' => 'Renewed ' . $firstNumber . ' months',
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('showAllInvoices');
     }

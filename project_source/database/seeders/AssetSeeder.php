@@ -12,7 +12,7 @@ class AssetSeeder extends Seeder
      */
     public function run(): void
     {
-        $names = ['air conditioner', 'table', 'chair', 'bed', 'fridge', 'fan'];
+        $names = ['air conditioner', 'table', 'chair', 'bed', 'fridge', 'fan', 'television', 'water heater', 'toilet'];
 
         foreach ($names as $name) {
             \App\Models\Asset::factory()->state(['name' => $name])->create();

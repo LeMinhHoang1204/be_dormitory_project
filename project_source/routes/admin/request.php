@@ -7,25 +7,6 @@ Route::middleware('auth')->group(function () {
 
     // requests
     Route::prefix('/requests')->group(function () {
-        Route::get('/', [RequestController::class, 'index'])->name('requests.index')->can('viewAny', \App\Models\Request::class);
-
-        Route::get('/create', [RequestController::class, 'create'])->name('requests.create')->can('create', \App\Models\Request::class);
-
-        Route::post('/create', [RequestController::class, 'store'])->name('requests.store')->can('create', \App\Models\Request::class);
-
-        Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show')->can('view', 'request');
-
-        Route::get('/edit/{request}', [RequestController::class, 'edit'])->name('requests.edit')->can('update', 'request');
-
-        Route::post('/edit/{request}', [RequestController::class, 'update'])->name('requests.update')->can('update', 'request');
-
-        Route::delete('/delete/{request}', [RequestController::class, 'destroy'])->name('requests.destroy')->can('delete', 'request');
-
-        Route::put('/{request}/accept', [RequestController::class, 'accept'])->name('requests.accept')->can('confirmRequest', 'request');
-
-        Route::put('/{request}/reject', [RequestController::class, 'reject'])->name('requests.decline')->can('confirmRequest', 'request');
-
-        Route::post('/{request}/resolve', [RequestController::class, 'resolve'])->name('requests.resolve')->can('resolveRequest', 'request');
-    });
+        });
 
 });

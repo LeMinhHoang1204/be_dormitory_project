@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\Residence;
 use App\Models\Room;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
@@ -21,22 +24,15 @@ class StudentController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        // Validate the request...
-
-        $student = new Student();
-
-        $student->name = $request->name;
-
-        $student->save();
-
-        return redirect('/flights');
+        //
     }
 
 //    TODO: FIX THIS
     public function showRoomRenewalForm()
     {
+//        echo(auth()->id());
         $residence = Residence::where('stu_user_id', auth()->id())
-            ->where('status', 'Checked in')
+            ->where('status', 'Checked in')->orderBy('created_at', 'desc')
             ->first();
 
         if (!$residence) {
@@ -48,22 +44,43 @@ class StudentController extends Controller
 
     public function createRenewalRequest(Request $request)
     {
+        $oldRequest = \App\Models\Request::where('sender_id', Auth::id())->where('type', 'Renewal')->where('status', 'Pending')->first();
+        if ($oldRequest) {
+            session()->flash('error', [
+                'message' => 'You already have a renewal request pending!',
+            ]);
+            return redirect()->back();
+        }
+        else if (!$request->residence_id){
+            session()->flash('error', [
+                'message' => "You don't have a room to renew!",
+            ]);
+            return redirect()->back();
+        }
 
         $validatedData = $request->validate([
-            'start_date' => 'required|string',
-            'renewal-period' => 'required|integer',
+            'renewal_period' => 'required|integer',
             'description' => 'nullable|string',
         ]);
+
         if (!$request->receiver_id) {
             return redirect()->route('students.extend.form')->with('error', 'Manager ID is missing.');
         }
-        $note = "Start Date: " . $validatedData['start_date'] . ", Renewal Period: " . $validatedData['renewal-period'] . " months, Description: " . $validatedData['description'];
 
-        \App\Models\Request::create([
+        $note =  "Renewal Duration: " . $validatedData['renewal_period'] . " months, Description: " . $validatedData['description'];
+
+        $newRequest = \App\Models\Request::create([
             'sender_id' => Auth::id(),
             'receiver_id' => $request->receiver_id,
             'type' => 'Renewal',
             'note' => $note,
+        ]);
+        if($request->hasFile('image')) {
+            (new ImageController)->saveToRequest($request, $newRequest->id);
+        }
+
+        session()->flash('notification', [
+            'message' => 'You already created a new renewal request!',
         ]);
 
         return redirect()->route('dashboard')->with('status', 'Renewal request created successfully!');
@@ -198,23 +215,11 @@ class StudentController extends Controller
         return response()->json($room);
     }
 
-    public function getCurrentUser()
-    {
-        $user = Auth::user();
 
-        $residence = Residence::where('stu_user_id', $user->id)->orderBy('start_date', 'desc')->first();
-
-        return response()->json([
-            'userId' => $user->id,
-            'studentId' => $user->student->id,
-            'name' => $user->name,
-            'gender' => $user->student->gender,
-            'residenceStatus' => $residence ? $residence->status : null,
-        ]);
-    }
 
     public function registerRoom(Request $request)
     {
+        echo($request);exit;
         $currentRoom = Room::where('id', $request->roomId)->first();
         if($currentRoom->member_count >= $currentRoom->type){
             session()->flash('notification', [
@@ -263,9 +268,108 @@ class StudentController extends Controller
         return redirect()->route('student.room')->with('success', 'Registered room successfully!.');
     }
 
-    public function getLatestResidence($userId)
+    public function registerRoom2(Request $request)
     {
-        $residence = Residence::where('stu_user_id', $userId)->orderBy('start_date', 'desc')->first();
+        try {
+            DB::beginTransaction();
+
+            $validated = $request->validate([
+                'room_id' => 'required|exists:rooms,id',
+                'check_in_date' => 'required|date|after:today',
+                'duration' => 'required|in:3,6,9,12',
+            ]);
+
+            // Kiểm tra xem phòng còn chỗ không
+            $room = Room::find($validated['room_id']);
+
+            if ($room->member_count >= $room->type) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This room is already full'
+                ], 422);
+            }
+
+            $end_date = Carbon::parse($validated['check_in_date'])
+                ->addMonths((int) $validated['duration']);
+
+            $residence = Residence::create([
+                'room_id' => $validated['room_id'],
+                'stu_user_id' => auth()->id(),
+                'start_date' => $validated['check_in_date'],
+                'end_date' => $end_date,
+                'months_duration' => (int) $validated['duration'],
+            ]);
+
+            if (!$residence) {
+                throw new \Exception('Failed to create residence record');
+            }
+
+            // Invoice
+            $total = $room->unit_price * (int)$validated['duration'];
+
+            try {
+                $invoice = Invoice::create([
+                    'sender_id' => 1,
+                    'object_type' => 'App\Models\User',
+                    'object_id' => auth()->id(),
+                    'start_date' => $validated['check_in_date'],
+                    'send_date' => now(),
+                    'due_date' => now()->addDays(7),
+                    'type' => 'Room',
+                    'total' => $total,
+                    'note' => 'Room registration fee for ' . $room->name,
+                ]);
+
+                if (!$invoice) {
+                    throw new \Exception('Failed to create invoice record');
+                }
+            } catch (\Exception $e) {
+                \Log::error('Invoice creation failed: ' . $e->getMessage());
+                throw new \Exception('Failed to create invoice: ' . $e->getMessage());
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Room registration successful! Please complete your payment.',
+                'invoice' => [
+                    'total' => $total,
+                    'due_date' => $invoice->due_date,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Registration failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Registration failed: ' . $e->getMessage()
+            ], 422);
+        }
+    }
+
+    public function getCurrentUser()
+    {
+        $user = Auth::user();
+
+        $residence = Residence::where('stu_user_id', $user->id)->orderBy('start_date', 'desc')->first();
+
+        return response()->json([
+            'userId' => $user->id,
+            'studentId' => $user->student->id,
+            'name' => $user->name,
+            'gender' => $user->student->gender,
+            'residenceStatus' => $residence ? $residence->status : null,
+        ]);
+    }
+
+    public function getLatestResidence()
+    {
+        $user = Auth::user();
+
+        $residence = Residence::where('stu_user_id', $user->id)->orderBy('created_at', 'desc')->first();
         return response()->json(['residence' => $residence]);
     }
 

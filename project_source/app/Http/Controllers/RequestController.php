@@ -16,7 +16,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $requests = Request::paginate(10);
+        $requests = Request::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.admin_building_manager_requests.list', compact('requests'));
     }
 
@@ -64,7 +64,7 @@ class RequestController extends Controller
             ['object_id', '=', $request->tranfferingID],
             ['type', '=', 'Room'],
             ['object_type', '=', 'App\Models\User'],
-            ['send_date', '=', $residence->start_date],
+            ['start_date', '=', $residence->start_date],
         ])->first();
         $invoice->update(['status' => 'Transferred Room']);
 
@@ -84,6 +84,7 @@ class RequestController extends Controller
             'sender_id' => $invoice->sender_id,
             'object_type' => $invoice->object_type,
             'object_id' => $request->tranferredID,
+            'start_date' => $new_start_date,
             'send_date' => $new_start_date,
             'due_date' => $new_start_date->addDays(7),
             'paid_date' => $invoice->paid_date,
@@ -106,7 +107,7 @@ class RequestController extends Controller
             ['object_id', '=', $residence->stu_user_id],
             ['object_type', '=', 'App\Models\User'],
             ['type', '=', 'Room'],
-            ['send_date', '=', $residence->start_date],
+            ['start_date', '=', $residence->start_date],
         ])->first();
 
         if($invoice->status == 'Paid') {
@@ -138,22 +139,47 @@ class RequestController extends Controller
         return redirect()->route('requests.getCheckInReq');
     }
 
-    public function accept(Request $request)
+    public function accept(\Illuminate\Http\Request $requestApi, Request $request)
     {
-        $request->update(['status' => 'Accepted']);
-        return redirect()->back();
+        if($request->type == 'Renewal') {
+            $note = $request->note;
+            preg_match('/\d+/', $note, $matches);
+            $firstNumber = $matches[0] ?? null;
+
+            if ($firstNumber !== null) {
+                $newInvoice = Invoice::create([
+                    'sender_id' => Auth::user()->id,
+                    'object_type' => 'App\Models\User',
+                    'object_id' => $request->sender_id,
+                    'send_date' => now(),
+                    'due_date' => now()->addDays(7),
+                    'type' => 'Room',
+                    'total' => $firstNumber * $request->sender->residence()->latest()->first()->room->unit_price,
+                    'note' => 'Renewal for user '. $request->sender_id . ' from ' . $request->sender->residence()->latest()->first()->room->name .
+                        ' on ' . $request->sender->residence()->latest()->first()->start_date . ' more: ' . $firstNumber . ' months',
+                ]);
+            }
+
+        }
+        $request->update(['status' => 'Accepted', 'note' => $requestApi->description]);
+        if($requestApi->hasFile('image')) {
+            (new ImageController)->saveToRequest($requestApi, $request->id);
+        }
+        return redirect()->route('requests.index');
     }
 
-    public function reject(Request $request)
+    public function reject(\Illuminate\Http\Request $requestApi, Request $request)
     {
-        $request->update(['status' => 'Rejected']);
+        $request->update(['status' => 'Rejected', 'resolve_date' => now(), 'note' => $requestApi->description]);
+        if($requestApi->hasFile('image')) {
+            (new ImageController)->saveToRequest($requestApi, $request->id);
+        }
         return redirect()->back();
     }
 
     public function resolve(\Illuminate\Http\Request $requestApi ,Request $request)
     {
         if($request->type == 'Refund') {
-
             // cập nhật cư trú cũ
             $note = $request->note;
             preg_match('/\d+/', $note, $matches);
@@ -171,7 +197,7 @@ class RequestController extends Controller
                     ['object_id', '=', $residence->stu_user_id],
                     ['type', '=', 'Room'],
                     ['object_type', '=', 'App\Models\User'],
-                    ['send_date', '=', $residence->start_date],
+                    ['start_date', '=', $residence->start_date],
                 ])->first();
 
                 if($invoice->status == 'Refunding') {
@@ -196,6 +222,16 @@ class RequestController extends Controller
 
                 (new ImageController)->saveToInvoice($requestApi, $newInvoice->id);
             }
+
+            }
+            else if ($request->type == 'Renewal') {
+                $note = $request->note;
+                preg_match('/\d+/', $note, $matches);
+                $firstNumber = $matches[0] ?? null;
+
+                if ($firstNumber !== null) {
+
+                }
         }
 
         // cập nhật request

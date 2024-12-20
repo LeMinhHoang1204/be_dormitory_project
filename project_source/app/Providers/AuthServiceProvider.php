@@ -14,6 +14,7 @@ use App\Models\Request;
 use App\Models\Residence;
 use App\Models\Room;
 use App\Models\RoomAsset;
+use App\Models\Student;
 use app\Models\User;
 use App\Models\Violation;
 use App\Policies\ActivityPolicy;
@@ -27,6 +28,7 @@ use App\Policies\RequestPolicy;
 use App\Policies\ResidencePolicy;
 use App\Policies\RoomAssetPolicy;
 use App\Policies\RoomPolicy;
+use App\Policies\StudentPolicy;
 use app\Policies\UserPolicy;
 use App\Policies\ViolationPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -44,6 +46,8 @@ class   AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class, // Mapping User model to UserPolicy
         Notification::class => NotificationPolicy::class,
         NotificationRecipient::class => NotificationRecipient::class,
+
+        Student::class => StudentPolicy::class,
 
         Building::class => BuildingPolicy::class,
         Room::class => RoomPolicy::class,

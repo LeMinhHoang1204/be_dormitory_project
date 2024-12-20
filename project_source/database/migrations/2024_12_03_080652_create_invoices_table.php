@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->bigInteger('sender_id')->unsigned();
             $table->morphs('object');
+            $table->dateTime('start_date')->nullable(); // dành cho hoá đơn user
             $table->dateTime('send_date');
             $table->dateTime('due_date');
             $table->dateTime('paid_date')->nullable();

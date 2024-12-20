@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\StudentController;
 use App\Models\Student;
@@ -19,11 +20,11 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/current-student-user' , [StudentController::class, 'getCurrentUser'])->name('students.current-user');
 
-            Route::get('/latest-residence/{userId}', [StudentController::class, 'getLatestResidence'])->name('students.latest-residence');
+            Route::get('/latest-residence', [StudentController::class, 'getLatestResidence'])->name('students.latest-residence');
 
-            Route::get('/', [StudentController::class, 'showRegisterRoomList'])->name('students.register-room.list');
+            Route::get('/', [StudentController::class, 'showRegisterRoomList'])->name('students.register-room.list')->can('registerRoom', Student::class);
 
-            Route::post('/', [StudentController::class, 'registerRoom'])->name('students.register-room.create');
+            Route::post('/', [StudentController::class, 'registerRoom2'])->name('students.register-room.create')->can('registerRoom', Student::class);
 
         });
 
@@ -39,19 +40,27 @@ Route::middleware('auth')->group(function () {
 
         });
 
+        // request
+        Route::prefix('/requests')->group(function () {
+            Route::get('/', [RequestController::class, 'index'])->name('requests.index')->can('viewAny', \App\Models\Request::class);
+
+            Route::get('/repair-request', [StudentController::class, 'showRepairRequestForm'])->name('students.repair-request');
+
+            Route::post('/repair-request', [StudentController::class, 'createRepairRequest'])->name('students.repair-request.store');
+
+            Route::get('/renew', [StudentController::class, 'showRoomRenewalForm'])->name('students.extend');
+
+            Route::post('/renew', [StudentController::class, 'createRenewalRequest'])->name('students.extend.store');
+
+            Route::get('/checkout', [StudentController::class, 'showCheckOutForm'])->name('students.checkout');
+
+            Route::post('/leave', [StudentController::class, 'leaveRequest'])->name('students.leave');
+
+        });
+
+
         Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
 
-        Route::get('/repair-request', [StudentController::class, 'showRepairRequestForm'])->name('students.repair-request');
-
-        Route::post('/repair-request', [StudentController::class, 'createRepairRequest'])->name('students.repair-request.store');
-
-        Route::get('/renew', [StudentController::class, 'showRoomRenewalForm'])->name('students.extend');
-
-        Route::post('/renew', [StudentController::class, 'createRenewalRequest'])->name('students.extend.store');
-
-        Route::get('/checkout', [StudentController::class, 'showCheckOutForm'])->name('students.checkout');
-
-        Route::post('/leave', [StudentController::class, 'leaveRequest'])->name('students.leave');
 
         Route::get('/my_profile', [StudentController::class, 'showProfile'])->name('student.profile');
         //        Route::get('/student/user_profile.php/edit', [StudentController::class, 'editProfile'])->name('student.user_profile.php.edit');

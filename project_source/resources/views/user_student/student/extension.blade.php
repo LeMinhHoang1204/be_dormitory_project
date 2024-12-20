@@ -8,32 +8,7 @@
 
 <!-- Modal JavaScript -->
 <script>
-    {{--document.addEventListener("DOMContentLoaded", function() {--}}
-    {{--    console.log("DOM fully loaded and parsed");--}}
 
-    {{--    var modal = document.getElementById("noResidenceModal");--}}
-    {{--    var span = document.getElementsByClassName("close")[0];--}}
-
-    {{--    // Show the modal if the user does not have a residence--}}
-    {{--    @if(session('no_residence'))--}}
-    {{--    console.log("No residence session variable is set");--}}
-    {{--    modal.style.display = "block";--}}
-    {{--    @endif--}}
-
-    {{--    // Close the modal when the user clicks on <span> (x)--}}
-    {{--    span.onclick = function() {--}}
-    {{--        console.log("Close button clicked");--}}
-    {{--        modal.style.display = "none";--}}
-    {{--    }--}}
-
-    {{--    // Close the modal when the user clicks anywhere outside of the modal--}}
-    {{--    window.onclick = function(event) {--}}
-    {{--        if (event.target == modal) {--}}
-    {{--            console.log("Clicked outside the modal");--}}
-    {{--            modal.style.display = "none";--}}
-    {{--        }--}}
-    {{--    }--}}
-    {{--});--}}
     document.addEventListener("DOMContentLoaded", function() {
         var modal = document.getElementById("noResidenceModal");
         var span = document.getElementsByClassName("close")[0];
@@ -57,7 +32,32 @@
 
 </script>
 
+@if (session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const error = @json(session('error'));
+            // Display the notification
+            toastr.warning(
+                `${error.message}`
+            );
+        });
+    </script>
+@endif
 
+<style>
+    .toast-warning {
+        color: #ffffff !important; /* Text color for warning notification */
+        background-color: #ffc107 !important; /* Background color */
+        font-family: "Poppins", sans-serif !important; /* Font family */
+        border-left: 5px solid #ff9800 !important; /* Left border color */
+    }
+
+    .toast-info {
+        color: #ffffff !important; /* Màu chữ cho thông báo thông tin */
+        background-color: #17a2b8 !important; /* Màu nền */
+        font-family: "Poppins", sans-serif !important; /* Font chữ */
+    }
+</style>
 
 @extends('Auth_.index')
 
@@ -65,6 +65,11 @@
     <title>Room Extension</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
+    {{-- WEBSITE: toastr --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 </head>
 
 @section('content')
@@ -78,16 +83,17 @@
             <h5 class="section-title">Current room information</h5>
             <p><strong>Room:</strong> {{ isset($residence) ? $residence->room->name : 'Room 101' }}</p>
             <p><strong>Unit Price:</strong> {{ isset($residence) ? number_format($residence->room->unit_price) : '800,000' }} VNĐ</p> <!-- Unit Price -->
-            <p><strong>Check-in Date:</strong> {{ isset($residence) ? \Carbon\Carbon::parse($residence->start_date)->format('d-m-Y') : '01-12-2023' }}</p>
-            <p><strong>Expiration Date:</strong> {{ isset($residence) ? \Carbon\Carbon::parse($residence->end_date)->format('d-m-Y') : '01-12-2024' }}</p>
+            <p><strong>Check-in Date:</strong> {{ isset($residence) ? \Carbon\Carbon::parse($residence->start_date)->format('d-m-Y') : 'N/A' }}</p>
+            <p><strong>Expiration Date:</strong> {{ isset($residence) ? \Carbon\Carbon::parse($residence->end_date)->format('d-m-Y') : 'N/A' }}</p>
         </div>
 
-        <form method="POST" action="{{ route('students.extend.store') }}">
+        <form method="POST" action="{{ route('students.extend.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="section">
-                <h5 class="section-title">Extend</h5>
+                <h5 class="section-title">Duration</h5>
                 <label for="renewal-period" >Select renewal period:</label>
-                <select name="renewal-period" id="renewal-period" class="form-control">
+                <select name="renewal_period" id="renewal-period" class="form-control" required>
+                    <option disabled selected>Select months</option>
                     <option value="3">3 months</option>
                     <option value="6">6 months</option>
                     <option value="9">9 months</option>
@@ -96,21 +102,22 @@
             </div>
 
             <div class="section">
-                <h5 class="section-title">Describe</h5>
-                <textarea name="description" id="description" class="form-control" placeholder="Fill in here"></textarea>
+                <h5 class="section-title">Description</h5>
+                <textarea name="description" id="description" class="form-control" placeholder="Fill in here" required></textarea>
             </div>
 
-            <input type="hidden" name="start_date" value="{{ $residence->start_date }}">
-            <input type="hidden" name="receiver_id" value="{{ $residence->room->building->manager_id }}">
-
-
             <div class="section">
-                <button class="btn-complete">Complete</button>
+                <label for="confirmEvidenceUpload" class="form-label">Upload Evidence</label>
+                <input class="form-control" type="file" id="confirmEvidenceUpload" accept="image/*" name="image">
+            </div>
+
+            <input type="hidden" name="receiver_id" value="{{ $residence->room->building->managedBy->user_id }}">
+            <input type="hidden" name="residence_id" value="{{ $residence->id }}">
+            <div class="section">
+                <button class="btn-complete">Send</button>
                 <button class="btn-cancel" onclick="window.location.href='{{ route('dashboard') }}'">Cancel</button>
             </div>
         </form>
-
-
 
         @if(isset($message))
             <div class="message-alert">

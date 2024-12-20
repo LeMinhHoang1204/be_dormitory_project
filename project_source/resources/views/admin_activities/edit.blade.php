@@ -68,7 +68,6 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
                 <div class="form-actions">
                     <a href="javascript:void(0);" class="grey-btn" onclick="window.history.back()">Cancel</a>
                     <button type="submit" class="blue-btn">Update</button>

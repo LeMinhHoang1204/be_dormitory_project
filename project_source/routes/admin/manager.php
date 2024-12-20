@@ -22,4 +22,29 @@ Route::middleware('auth')->group(function () {
 
     });
 
+    // building manager all requests
+    Route::prefix('/building-manager/requests')->group(function () {
+
+        Route::get('/', [RequestController::class, 'index'])->name('requests.index')->can('viewAny', \App\Models\Request::class);
+
+//        Route::get('/create', [RequestController::class, 'create'])->name('requests.create')->can('create', \App\Models\Request::class);
+//
+//        Route::post('/create', [RequestController::class, 'store'])->name('requests.store')->can('create', \App\Models\Request::class);
+
+        Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show')->can('view', 'request');
+
+//        Route::get('/edit/{request}', [RequestController::class, 'edit'])->name('requests.edit')->can('update', 'request');
+//
+//        Route::post('/edit/{request}', [RequestController::class, 'update'])->name('requests.update')->can('update', 'request');
+
+        Route::delete('/delete/{request}', [RequestController::class, 'destroy'])->name('requests.destroy')->can('delete', 'request');
+
+        Route::post('/accept/{request}', [RequestController::class, 'accept'])->name('requests.accept')->can('confirmRequest', 'request');
+
+        Route::post('/reject/{request}', [RequestController::class, 'reject'])->name('requests.reject')->can('confirmRequest', 'request');
+
+        Route::post('/resolve/{request}', [RequestController::class, 'resolve'])->name('requests.resolve')->can('resolveRequest', 'request');
+
+    });
+
 });

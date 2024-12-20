@@ -13,7 +13,9 @@ class ViolationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin';
+        return $user->role === 'admin'
+            || $user->role === 'building manager'
+            ;
     }
 
     /**
@@ -32,8 +34,8 @@ class ViolationPolicy
     public function create(User $user): bool
     {
         return $user->role === 'admin'
-            || $user->role === 'building manager'
-            || $user->role === 'accountant';
+            || $user->role === 'building manager';
+//            || $user->role === 'accountant';
     }
 
     /**
@@ -42,7 +44,8 @@ class ViolationPolicy
     public function update(User $user, Violation $violation): bool
     {
         return $user->role === 'admin'
-            || $user->id === $violation->creator_id;
+            || $user->role === 'building manager'
+        || $user->id === $violation->creator_id;
     }
 
     /**
@@ -50,7 +53,9 @@ class ViolationPolicy
      */
     public function delete(User $user, Violation $violation): bool
     {
-        return $user->role === 'admin';
+        return $user->role === 'admin'
+            || $user->id === $violation->creator_id;
+
     }
 
     /**
@@ -58,7 +63,8 @@ class ViolationPolicy
      */
     public function restore(User $user, Violation $violation): bool
     {
-        return false;
+        return $user->role === 'admin'
+            || $user->id === $violation->creator_id;
     }
 
     /**
@@ -66,6 +72,12 @@ class ViolationPolicy
      */
     public function forceDelete(User $user, Violation $violation): bool
     {
-        return false;
+        return $user->role === 'admin'
+            || $user->id === $violation->creator_id;
     }
+    public function createComplaint(User $user, Violation $violation)
+    {
+        return $user->role === 'student';
+    }
+
 }

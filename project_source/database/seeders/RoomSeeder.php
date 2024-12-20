@@ -26,7 +26,7 @@ class RoomSeeder extends Seeder
 //                    ])->create();
 //                }
 //            }
-//            / Tạo phòng cho mỗi tầng trong tòa nhà
+//            // Tạo phòng cho mỗi tầng trong tòa nhà
             for ($i = 1; $i <= $floorNumbers; $i++) {
                 $roomsPerFloor = $roomNumbers / $floorNumbers;
 
@@ -39,6 +39,7 @@ class RoomSeeder extends Seeder
                     $floorNumber = $i < 10 ? $i : str_pad($i, 2, '0', STR_PAD_LEFT); // Chỉ thêm số 0 nếu tầng >= 10
                     $roomName = $building->build_name . '.' . $floorNumber . $roomNumber;
                     $unitPrice = rand(5, 30) * 100000;
+
                     Room::create([
                         'name' => $roomName,
                         'floor_number' => $i,

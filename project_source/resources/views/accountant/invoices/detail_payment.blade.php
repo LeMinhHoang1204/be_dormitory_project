@@ -34,6 +34,7 @@
                 <p>Paid Date: <strong>{{ $invoice->paid_date }}</strong></p>
                 <p>Payment Method: <strong>{{ $invoice->payment_method }}</strong></p>
                 <p class="text-success">Status: <strong>{{$invoice->status}}</strong></p>
+
                 <h3>Details</h3>
                 <table class="table table-bordered">
                     <thead class="table-light">
@@ -49,11 +50,6 @@
                             <td>2</td>
                             <td>{{ $invoice->total }}</td>
                         </tr>
-                        {{-- <tr>
-                            <td>Product B</td>
-                            <td>1</td>
-                            <td>$15.00</td>
-                        </tr> --}}
                     </tbody>
                 </table>
                 <h4 class="text-end">Total: <strong>{{ $invoice->total }}</strong></h4>
@@ -133,18 +129,26 @@
                 <h5 class="modal-title" id="confirmModalLabel">Confirm Payment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('studentConfirmInvoice', $invoice->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('accountantConfirmInvoice', $invoice->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
 
-                        <div class="mb-3">
-                            <label for="confirmDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="confirmDescription" name="description" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmEvidenceUpload" class="form-label">Upload Evidence</label>
-                            <input class="form-control" type="file" id="confirmEvidenceUpload" accept="image/*" name="image" required>
-                        </div>
+                    <div class="mb-3">
+                        <label for="confirmDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="confirmDescription" name="description" rows="3" ></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="radio" name="IsDirectPayment" value="direct" required>
+                        <label for="reportDescription" class="form-label">Direct Payment</label>
+                        <input type="radio" name="IsDirectPayment" value="indirect">
+                        <label for="reportDescription" class="form-label">Indirect Payment</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirmEvidenceUpload" class="form-label">Upload Evidence</label>
+                        <input class="form-control" type="file" id="confirmEvidenceUpload" accept="image/*" name="image">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -164,17 +168,6 @@
         $('#reportModal').modal('hide');
     });
 });
-</script>
-
-<script>
-    $(document).ready(function() {
-        $('#sendConfirm').click(function() {
-            $('#successNotification').fadeIn().delay(1000).fadeOut();
-
-            // Hide modal
-            $('#confirmModal').modal('hide');
-        });
-    });
 </script>
 
 

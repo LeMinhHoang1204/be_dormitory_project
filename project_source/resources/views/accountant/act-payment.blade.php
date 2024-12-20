@@ -11,7 +11,10 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="{{ asset('./css/payment.css') }}" type="text/css">
-    <script src="{{ asset('./payment.js') }}"></script>
+    <script src="{{ asset('./javascript/accountant/act-payment.js') }}"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 </head>
 
 @section('content')
@@ -41,7 +44,20 @@
                         <td>{{ $invoice->paid_date }}</td>
                         <td>{{ $invoice->status }}</td>
                         <td>{{ $invoice->note }}</td>
-                        <td><a href="{{ route('detailInvoice', $invoice->id) }}" class="btn-task">Check</a></td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-task dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Check
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-action="confirm">Confirm</a></li>
+                                    <li><a class="dropdown-item" href="#" data-action="refuse">Refuse</a></li>
+                                    <li><a class="dropdown-item" href="#" data-action="report">Report</a></li>
+                                    <li><a class="dropdown-item" href="#" data-action="delete">Delete</a></li>
+                                    <li><a class="dropdown-item" href="#" data-action="update">Update</a></li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

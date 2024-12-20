@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Residence extends Model
 {
@@ -28,7 +28,7 @@ class Residence extends Model
     // Quan hệ với Student
     public function student()
     {
-        return $this->belongsTo(Student::class, 'stu_user_id', 'id');
+        return $this->belongsTo(User::class, 'stu_user_id', 'id');
     }
 
     // Quan hệ với Room
@@ -53,6 +53,14 @@ class Residence extends Model
                 $residence->end_date = self::calculateEndDate($residence->start_date, $residence->months_duration);
             }
         });
+
+        static::created(function ($residence) {
+            $residence->updateRoomAndBuildingCounts(1);
+        });
+
+        static::deleted(function ($residence) {
+            $residence->updateRoomAndBuildingCounts(-1);
+        });
     }
 
     /**
@@ -60,7 +68,7 @@ class Residence extends Model
      */
     public static function calculateEndDate($startDate, $months_duration)
     {
-        $int_months_duration = (int)$months_duration;
+        $int_months_duration = (int) $months_duration;
         return Carbon::parse($startDate)->addMonths($int_months_duration);
     }
 
@@ -72,6 +80,14 @@ class Residence extends Model
     public function getEndDateAttribute($value)
     {
         return $value ? Carbon::parse($value) : null;
+    }
+
+    public function updateRoomAndBuildingCounts($count)
+    {
+        if ($this->room) {
+            $this->room->increment('member_count', $count);
+            $this->room->building->increment('student_count', $count);
+        }
     }
 
 }

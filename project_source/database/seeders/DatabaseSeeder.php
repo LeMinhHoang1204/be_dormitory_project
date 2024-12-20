@@ -81,6 +81,33 @@ class DatabaseSeeder extends Seeder
             'role' => 'accountant',
         ]);
 
+        User::factory()->create([
+            'name' => 'Nam Student',
+            'email' => 'bonny.nii23@gmail.com', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'student',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Nam Admin',
+            'email' => '22520921@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Nam Accountant',
+            'email' => 'duckyabso.y24@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'accountant',
+        ]);
+
         $this->call([
             UserSeeder::class,
             StudentSeeder::class,

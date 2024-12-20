@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Invoice;
 
 class PaymentController extends Controller
 {
@@ -113,5 +114,95 @@ class PaymentController extends Controller
             }
             // vui lòng tham khảo thêm tại code demo
 
+    }
+
+    public function accountantPaymentView()
+    {
+        $invoices = Invoice::paginate(10); // Paginate 10 invoices per page
+        return view('accountant.act-payment', compact('invoices'));
+    }
+
+    public function confirm($id)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            $invoice->status = 'confirmed';
+            $invoice->paid_date = now();
+            $invoice->save();
+
+            return response()->json(['message' => 'Payment confirmed successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to confirm payment'], 500);
+        }
+    }
+
+    public function refuse($id, Request $request)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            $invoice->status = 'refused';
+            $invoice->note = $request->reason;
+            $invoice->save();
+
+            return response()->json(['message' => 'Payment refused successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to refuse payment'], 500);
+        }
+    }
+
+    public function report($id, Request $request)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            // Implement report logic here
+            // You might want to create a new Report model and save the report details
+
+            return response()->json(['message' => 'Report submitted successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to submit report'], 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            $invoice->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invoice deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting invoice'
+            ], 500);
+        }
+    }
+
+    public function getInvoice($id)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            return response()->json($invoice);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Invoice not found'], 404);
+        }
+    }
+
+    public function update($id, Request $request)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            $invoice->total = $request->total;
+            $invoice->due_date = $request->due_date;
+            $invoice->note = $request->note;
+            $invoice->save();
+
+            return response()->json(['message' => 'Payment updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update payment'], 500);
+        }
     }
 }

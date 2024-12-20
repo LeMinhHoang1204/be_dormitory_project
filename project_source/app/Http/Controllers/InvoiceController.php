@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\Invoice;
+use App\Models\Residence;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
@@ -43,7 +45,11 @@ class InvoiceController extends Controller
         }
 
         $invoices = $invoices->orderBy('id', 'desc')->paginate(8);
-        return view('student_payment.payment', ['invoices' => $invoices]);
+        if($user->role == 'student') {
+            return view('student_payment.payment', ['invoices' => $invoices]);
+        } elseif($user->role == 'accountant' || $user->role == 'admin') {
+            return view('accountant.invoices.payment', ['invoices' => $invoices]);
+        }
     }
 
     /**
@@ -94,9 +100,64 @@ class InvoiceController extends Controller
         //
     }
 
-    public function showDetail($id)
+    public function showDetail(Invoice $invoice)
     {
-        $invoice = Invoice::findOrFail($id);
-        return view('student_payment/detail_payment', compact('invoice'));
+        $user = Auth::user();
+        if($user->role == 'student') {
+            return view('student_payment.detail_payment', ['invoice' => $invoice]);
+        } elseif($user->role == 'accountant' || $user->role == 'admin') {
+            return view('accountant.invoices.detail_payment', ['invoice' => $invoice]);
+        }
+    }
+
+
+    public function studentConfirmInvoice(Request $request, $id)
+    {
+        Invoice::where('id', $id)->update([
+            'note' => $request->description,
+        ]);
+
+        (new ImageController)->saveToInvoice($request, $id);
+
+        return redirect()->route('showAllInvoices');
+    }
+
+    public function accountantConfirmInvoice(Request $request, Invoice $invoice)
+    {
+
+        $invoice->update([
+            'status' => 'Paid',
+            'paid_date' => now(),
+            'note' => $request->description,
+        ]);
+
+        if($request->IsDirectPayment == 'direct') {
+            $invoice->update([
+                'payment_method' => 'Cash',
+            ]);
+        }
+        else{
+            $invoice->update([
+                'payment_method' => 'Bank transfer',
+            ]);
+        }
+
+        // default: khong co anh khong update
+        (new ImageController)->saveToInvoice($request, $invoice->id);
+
+        if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room') {
+
+            $residence = Residence::where('stu_user_id', $invoice->object_id)->where('status', 'Registered')->orderBy('start_date', 'desc')->first();
+            $residence->update([
+                'status' => 'Paid',
+            ]);
+        }
+
+
+        session()->flash('notification', [
+            'message' => 'Payment success!',
+        ]);
+
+        return redirect()->route('showAllInvoices');
     }
 }

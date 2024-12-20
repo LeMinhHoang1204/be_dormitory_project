@@ -3,28 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
-use App\Models\RoomAsset;
-
 use App\Models\Building;
-use App\Models\Residence;
-use App\Models\Student;
-
-
 use App\Models\Room;
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
+use App\Models\RoomAsset;
+use App\Models\Student;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
 class RoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    /** Display a listing of the resource. */
     use AuthorizesRequests;
+
     public function index(Building $building)
     {
         if (
@@ -44,21 +36,21 @@ class RoomController extends Controller
      */
     public function create(Building $building)
     {
-                $nextId = DB::select("SHOW TABLE STATUS LIKE 'rooms'")[0]->Auto_increment;
+        $nextId = DB::select("SHOW TABLE STATUS LIKE 'rooms'")[0]->Auto_increment;
 
         // Query for the latest room in the building
         $room = Room::where('building_id', $building->id)->latest()->first();
 
         if (!$room) {
             $room = (object) [
-                'id' => $nextId,  // Ensure $nextId is defined
+                'id' => $nextId, // Ensure $nextId is defined
                 'created_at' => now(),
             ];
         }
         $assets = Asset::all();
         $rooms = $building->hasRooms()->where('building_id', $building->id)->paginate(10);
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin.admin_rooms.create', compact('building', 'distinctRoomTypes', 'rooms','room','assets'));
+        return view('admin.admin_rooms.create', compact('building', 'distinctRoomTypes', 'rooms', 'room', 'assets'));
     }
 
     /**
@@ -141,7 +133,7 @@ class RoomController extends Controller
         $availableAssets = Asset::all(); // Lấy toàn bộ tài sản
         $assets = Asset::all();
         $distinctRoomTypes = $this->getAllRoomType();
-        return view('admin.admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes','availableAssets','assets'));
+        return view('admin.admin_rooms.edit', compact('building', 'room', 'distinctRoomTypes', 'availableAssets', 'assets'));
     }
 
     /**
@@ -208,7 +200,6 @@ class RoomController extends Controller
         return Room::distinct('type')->orderBy('type', 'asc')->get('type');
     }
 
-
     // Xử lý yêu cầu sửa chữa
     public function repairRequest()
     {
@@ -218,7 +209,6 @@ class RoomController extends Controller
 
         // Lấy thông tin người dùng đang đăng nhập
         $user = auth()->user();
-
 
         // Lấy thông tin sinh viên
         $student = Auth::user()->student;
@@ -237,34 +227,33 @@ class RoomController extends Controller
         }
 
         return view('.student.repair', compact('studentRoom'));
-//        if (!$student) {
-//            return view('student.repair', ['message' => 'You do not have a room, register!']);
-//        }
-//
-//        // Kiểm tra xem sinh viên có đang ở trong phòng nào không (qua bảng `residences`)
-//        $residence = DB::table('residences')
-//            ->where('stu_id', $student->id)
-//            ->where('status', 'Da nhan phong') // Tìm những sinh viên đã nhận phòng
-//            ->first();
-//
-//        if (!$residence) {
-//            return redirect()->route('dashboard')->with('message', 'Bạn chưa nhận phòng hoặc chưa đủ điều kiện yêu cầu sửa chữa.');
-//        }
-//
-//        // Lấy thông tin phòng từ bảng `rooms` thông qua `room_id` trong bảng `residences`
-//        $room = DB::table('rooms')->where('id', $residence->room_id)->first();
-//
-//        if (!$room) {
-//            return redirect()->route('dashboard')->with('message', 'Phòng của bạn không tồn tại.');
-//        }
-//
-//        // Hiển thị trang yêu cầu sửa chữa với thông tin phòng
-//        return view('student.repair-request', [
-//            'room' => $room, // Chuyển thông tin phòng đến view
-//            'student' => $student,
-//        ]);
+        //        if (!$student) {
+        //            return view('student.repair', ['message' => 'You do not have a room, register!']);
+        //        }
+        //
+        //        // Kiểm tra xem sinh viên có đang ở trong phòng nào không (qua bảng `residences`)
+        //        $residence = DB::table('residences')
+        //            ->where('stu_id', $student->id)
+        //            ->where('status', 'Da nhan phong') // Tìm những sinh viên đã nhận phòng
+        //            ->first();
+        //
+        //        if (!$residence) {
+        //            return redirect()->route('dashboard')->with('message', 'Bạn chưa nhận phòng hoặc chưa đủ điều kiện yêu cầu sửa chữa.');
+        //        }
+        //
+        //        // Lấy thông tin phòng từ bảng `rooms` thông qua `room_id` trong bảng `residences`
+        //        $room = DB::table('rooms')->where('id', $residence->room_id)->first();
+        //
+        //        if (!$room) {
+        //            return redirect()->route('dashboard')->with('message', 'Phòng của bạn không tồn tại.');
+        //        }
+        //
+        //        // Hiển thị trang yêu cầu sửa chữa với thông tin phòng
+        //        return view('student.repair-request', [
+        //            'room' => $room, // Chuyển thông tin phòng đến view
+        //            'student' => $student,
+        //        ]);
     }
-
 
     //
     //    public function extendRoomContract(Request $request)
@@ -289,37 +278,17 @@ class RoomController extends Controller
     //        // Trả về thông báo thành công
     //        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
 
-
-//  Hien thi thong tin phong
-    public function showRoomInfor($roomId)
+    public function showRoomInfor(Request $request)
     {
-        $room = Room::find($roomId);
+        $roomId = $request->query('roomId');
+        $room = Room::findOrFail($roomId);
         return view('roomInfor.roomInfor', compact('room'));
     }
 
-// Lay du lieu room tu DB
-    public function showRoom($id)
+    public function showListRoom()
     {
-        $room = Room::find($id);
-        return view('roomInfor.roomInfor', compact('room'));
-    }
-
-    public function fetchRoomsForStudent()
-    {
-        $rooms = Room::with(['hasRoomAssets' => function ($query) {
-            $query->select('id', 'room_id', 'asset_id', 'quantity');
-        }, 'hasRoomAssets.asset' => function ($query) {
-            $query->select('id', 'name');
-        }])->get();
-
-        return response()->json($rooms);
-    }
-
-    public function getRoomDataforStudent(Room $room)
-    {
-
-        $room = Room::find($room->id);
-        return response()->json($room);
+        $rooms = Room::with(['hasRoomAssets.asset'])->orderBy('id', 'asc')->paginate(6);
+        return view('Reg_room.reg_room', ['rooms' => $rooms]);
     }
 
 }

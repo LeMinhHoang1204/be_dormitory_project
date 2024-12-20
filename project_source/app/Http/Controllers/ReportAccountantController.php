@@ -43,9 +43,9 @@ class ReportAccountantController extends Controller
 
         $buildings = Building::pluck('build_name')->unique();
 
-        $receiptStatus = Invoice::pluck('status')->unique();
+        $receiptStatus = Invoice::pluck('invoices.status')->unique();
 
-        $receiptsType = Invoice::pluck('type')->unique();
+        $receiptsType = Invoice::pluck('invoices.type')->unique();
 
         $schools = Student::pluck('uni_name')->unique();
 
@@ -107,8 +107,6 @@ class ReportAccountantController extends Controller
 
     public function queryCondition (Request $request, $query)
     {
-
-
         if ($request->has('building') && !empty($request->building)) {
             if (is_string($request->building)) {
                 // Nếu là chuỗi, chuyển thành mảng
@@ -224,9 +222,10 @@ class ReportAccountantController extends Controller
         $user = auth()->user();
         $id = $user->id;
 
-        $receiptStatus = Invoice::pluck('status')->unique();
+        //for filter
+        $receiptStatus = Invoice::pluck('invoices.status')->unique();
 
-        $receiptsType = Invoice::pluck('type')->unique();
+        $receiptsType = Invoice::pluck('invoices.type')->unique();
 
         $queryUser = Invoice::where('object_id', $id)->where('object_type', 'App\Models\User');
         $queryRoom = Invoice::join('rooms', function ($join) {
@@ -246,28 +245,64 @@ class ReportAccountantController extends Controller
             $room = $room->first()->name;
         }
 
-        $receiptsTypeUser = $queryUser->select('type', DB::raw('SUM(total) as total_amount'))
-            ->groupBy('type')
-            ->pluck('total_amount', 'type')->toArray();
-        $receiptsTypeRoom = $queryRoom->select('invoices.type', DB::raw('SUM(total) as total_amount'))
-            ->groupBy('invoices.type')
-            ->pluck('total_amount', 'type')->toArray();
+        $totalByReceiptType =  [];
 
-        $totalByReceiptType = $this->mergeAndSumArrays($receiptsTypeUser, $receiptsTypeRoom);
+        foreach ([$queryUser, $queryRoom] as $q) {
+            if($request->has('receiptType') && !empty($request->receiptType)) {
+                $q->whereIn('invoices.type', (array) $request->receiptType);
+            }
+            if($request->has('receiptStatus') && !empty($request->receiptStatus)) {
+                $q->whereIn('invoices.status', (array) $request->receiptStatus);
+            }
+            $result = $q->select('invoices.type', DB::raw('SUM(total) as total_amount'))
+                ->groupBy('invoices.type')
+                ->pluck('total_amount', 'invoices.type')->toArray();
+            $totalByReceiptType = $this->mergeAndSumArrays($receiptsType, $result);
+        }
 
-//        $totalTypePerMonth = $queryUser->select(DB::raw('MONTH(send_date) as month'), 'type', DB::raw('SUM(total) as total_amount'))
-//            ->groupBy(DB::raw('MONTH(send_date)'), 'type')
-//            ->pluck('total_amount', 'month', 'type')->toArray();
 
-        $queryResult = $queryUser->select( DB::raw('MONTH(send_date) as month'), 'type',
-            DB::raw('SUM(total) as total_amount')
-        )
-            ->groupBy(DB::raw('MONTH(send_date)'), 'type')
-            ->get();
+
+//        $totalTypePerMonth = $queryUser->select(DB::raw('MONTH(send_date) as month'), 'invoices.type', DB::raw('SUM(total) as total_amount'))
+//            ->groupBy(DB::raw('MONTH(send_date)'), 'invoices.type')
+//            ->pluck('total_amount', 'month', 'invoices.type')->toArray();
+        $i=0;
+        foreach ([$queryUser, $queryRoom] as $q) {
+            if($request->has('receiptType') && !empty($request->receiptType)) {
+                $q->whereIn('invoices.type', (array) $request->receiptType);
+            }
+            if($request->has('receiptStatus') && !empty($request->receiptStatus)) {
+                $q->whereIn('invoices.status', (array) $request->receiptStatus);
+            }
+            $result = $q->select( DB::raw('MONTH(send_date) as month'), 'invoices.type',
+                DB::raw('SUM(total) as total_amount')
+            )
+                ->groupBy(DB::raw('MONTH(send_date)'), 'invoices.type');
+            $queryResult[++$i] = $result;
+        }
+
+        //Merge 2 query
+        $queryResult = $queryResult[1]->union($queryResult[2]);
+
+//        echo($queryResult[1]->toArray());
+//        echo($queryResult[2]->toArray());
+//        echo($queryResult->toArray());
+//        exit;
+
+//        $queryResult = $queryUser->select( DB::raw('MONTH(send_date) as month'), 'invoices.type',
+//            DB::raw('SUM(total) as total_amount')
+//        )
+//            ->groupBy(DB::raw('MONTH(send_date)'), 'invoices.type');
+//        if ($request->has('receiptType') && !empty($request->receiptType)) {
+//            $queryResult->whereIn('invoices.type', (array) $request->receiptType);
+//        }
+//        if ($request->has('receiptStatus') && !empty($request->receiptStatus)) {
+//            $queryResult->whereIn('invoices.status', (array) $request->receiptStatus);
+//        }
 
 //        echo($queryResult); exit;
 
         $totalTypePerMonth = [];
+
         foreach ($queryResult as $row) {
             $type = $row->type;
             $month = $row->month;
@@ -277,9 +312,7 @@ class ReportAccountantController extends Controller
                 $totalTypePerMonth[$type] = array_fill(0, 12, 0);
             }
             if(isset($totalTypePerMonth[$type][$month])) {
-                $total_invoice = $totalTypePerMonth[$type][$month] + $total_amount;
-            } else {
-                $total_invoice = $total_amount;
+                $totalTypePerMonth[$type][$month] = $totalTypePerMonth[$type][$month] + $total_amount;
             }
         }
 

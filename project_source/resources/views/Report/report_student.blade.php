@@ -9,16 +9,41 @@
             room: '{{ $reportData['room'] }}',
             total: {{ $reportData['total'] }},
             receiptsType: {!! json_encode(collect($reportData['totalByReceiptType'])->keys()->toArray()) !!},
+            sendDateStart: "{{ $reportData['sendDateStart'] }}",
+            sendDateEnd: "{{ $reportData['sendDateEnd'] }}",
+            dueDateStart: "{{ $reportData['dueDateStart'] }}",
+            dueDateEnd: "{{ $reportData['dueDateEnd'] }}"
         }];
 
         function createReceiptInfo(receipt) {
-            return `
-    <p>Dorm Stu ID: ${receipt.dormStuId}</p>
-    <p>Room: ${receipt.room}</p>
-    <p class="receipt-total">Total: ${receipt.total}</p>
-    <p class="receipt-type">Type: ${receipt.receiptsType} </p>
-    <p>Date:</p>
-  `;
+            let receiptHtml = `
+                <p>Dorm Stu ID: ${receipt.dormStuId}</p>
+                <p>Room: ${receipt.room}</p>
+                <p class="receipt-total">Total: ${receipt.total}</p>
+                <p class="receipt-type">Type: ${receipt.receiptsType}</p>
+            `;
+
+            if (receipt.sendDateStart === '' && receipt.sendDateEnd === '') {
+                return receiptHtml;
+            } else if (receipt.sendDateStart === '') {
+                receiptHtml += `<p>Date: Đến ngày ${receipt.sendDateEnd}</p>`;
+            } else if (receipt.sendDateEnd === '') {
+                receiptHtml += `<p>Date: Từ ngày ${receipt.sendDateStart}</p>`;
+            } else {
+                receiptHtml += `<p>Date: ${receipt.sendDateStart} - ${receipt.sendDateEnd}</p>`;
+            }
+
+            if(receipt.dueDateStart === '' && receipt.dueDateEnd === '') {
+                return receiptHtml;
+            } else if (receipt.dueDateStart === '') {
+                receiptHtml += `<p>Due date: Đến ngày ${receipt.dueDateEnd}</p>`;
+            } else if (receipt.dueDateEnd === '') {
+                receiptHtml += `<p>Due date: Từ ngày ${receipt.dueDateStart}</p>`;
+            } else {
+                receiptHtml += `<p>Due date: ${receipt.dueDateStart} - ${receipt.dueDateEnd}</p>`;
+            }
+
+            return receiptHtml;
         }
 
         function displayReceiptInfo() {
@@ -56,52 +81,6 @@
                 }
             })});
 
-        {{--const type = {!! json_encode(array_keys($reportData['totalTypePerMonth'])) !!}--}}
-
-        // const receiptData = {
-        //     labels: [1,2,3,4,5,6,7,8,9,10,11,12], // Months
-        //     datasets: [
-        //         {
-        //             type: 'line',
-        //             label: 'type',
-        //             data: [200, 300, 400, 350, 450, 500],
-        //             borderColor: '#3498db',
-        //             borderWidth: 2,
-        //             fill: false,
-        //         },
-        //         {
-        //             type: 'line',
-        //             label: 'Electricity',
-        //             data: [150, 200, 250, 300, 200, 400],
-        //             borderColor: '#1abc9c',
-        //             borderWidth: 2,
-        //             fill: false,
-        //         },
-        //         {
-        //             type: 'line',
-        //             label: 'Water',
-        //             data: [100, 120, 180, 200, 160, 300],
-        //             borderColor: '#f1c40f',
-        //             borderWidth: 2,
-        //             fill: false,
-        //         },
-        //         {
-        //             type: 'line',
-        //             label: 'Other',
-        //             data: [80, 100, 120, 150, 130, 170],
-        //             borderColor: '#e74c3c',
-        //             borderWidth: 2,
-        //             fill: false,
-        //         },
-        //         {
-        //             type: 'bar',
-        //             label: 'Total Cost',
-        //             data: [], // This will be calculated
-        //             backgroundColor: 'rgba(52, 152, 219, 0.5)',
-        //             borderWidth: 1,
-        //         },
-        //     ],
-        // };
 
         // Hàm để gán màu sắc cho các loại
         function getColor(index) {
@@ -117,6 +96,7 @@
         // Tạo datasets từ totalTypePerMonth
         const datasets = Object.keys(totalTypePerMonth).map((type, index) => {
             return {
+                type: 'line',
                 label: type, // Tên của loại (type1, type2, ...)
                 data: totalTypePerMonth[type], // Dữ liệu của loại
                 borderColor: getColor(index), // Hàm lấy màu sắc
@@ -266,20 +246,32 @@
                         <label for="receiptType">Receipt type:</label>
                         <br>
                         @foreach($reportData['receiptsType'] as $type)
-                            <p><input type="checkbox" name="receiptType" value="{{ $type }}"> {{ $type }}</p>
+                            <p><input type="checkbox" name="receiptType[]" value="{{ $type }}"> {{ $type }}</p>
                         @endforeach
                     </div>
                     <div class="form-group-stu">
                         <label for="receiptStatus">Receipt status:</label>
                         <br>
                         @foreach($reportData['receiptStatus'] as $status)
-                            <p><input type="checkbox" name="receiptStatus" value="{{ $status }}"> {{ $status }}</p>
+                            <p><input type="checkbox" name="receiptStatus[]" value="{{ $status }}"> {{ $status }}</p>
                         @endforeach
                     </div>
                 </div>
                 <div class="form-group-stu">
-                    <label for="receiptDate">Receipt date:</label>
-                    <input type="date" id="receiptDate" name="receiptDate">
+                    <label for="sendDate">Send date:</label>
+                    <div class="form-group-row">
+                        <input type="date" id="sendDate" name="sendDateStart">
+                        &nbsp &nbsp
+                        <input type="date" id="sendDate" name="sendDateEnd">
+                    </div>
+                </div>
+                <div class="form-group-stu">
+                    <label for="dueDate">Due date:</label>
+                    <div class="form-group-row">
+                        <input type="date" id="dueDate" name="dueDateStart">
+                        &nbsp &nbsp
+                        <input type="date" id="dueDate" name="dueDateEnd">
+                    </div>
                 </div>
                 <div class="form-actions">
                     <button type="submit">Apply Filter</button>

@@ -11,16 +11,41 @@
         const receiptInfo = [{
             total: {{ $reportData['total'] }},
             buildings: {!! json_encode(collect($reportData['totalByBuilding'])->keys()->toArray()) !!},
-            receiptsType: {!! json_encode(collect($reportData['totalByReceiptType'])->keys()->toArray()) !!}
+            receiptsType: {!! json_encode(collect($reportData['totalByReceiptType'])->keys()->toArray()) !!},
+            sendDateStart: "{{ $reportData['sendDateStart'] }}",
+            sendDateEnd: "{{ $reportData['sendDateEnd'] }}",
+            dueDateStart: "{{ $reportData['dueDateStart'] }}",
+            dueDateEnd: "{{ $reportData['dueDateEnd'] }}"
         }];
 
         function createReceiptInfo(receipt) {
-            return `
-      <p class="receipt-total">Total: ${receipt.total} Invoices</p>
-      <p class="receipt-building">Building: ${receipt.buildings} </p>
-      <p class="receipt-type">Type: ${receipt.receiptsType} </p>
-      <p>Date:</p>
-    `;
+            let receiptHtml = `
+              <p class="receipt-total">Total: ${receipt.total} Invoices</p>
+              <p class="receipt-building">Building: ${receipt.buildings} </p>
+              <p class="receipt-type">Type: ${receipt.receiptsType} </p>
+            `;
+
+            if (receipt.sendDateStart === '' && receipt.sendDateEnd === '') {
+                return receiptHtml;
+            } else if (receipt.sendDateStart === '') {
+                receiptHtml += `<p>Date: Đến ngày ${receipt.sendDateEnd}</p>`;
+            } else if (receipt.sendDateEnd === '') {
+                receiptHtml += `<p>Date: Từ ngày ${receipt.sendDateStart}</p>`;
+            } else {
+                receiptHtml += `<p>Date: ${receipt.sendDateStart} - ${receipt.sendDateEnd}</p>`;
+            }
+
+            if(receipt.dueDateStart === '' && receipt.dueDateEnd === '') {
+                return receiptHtml;
+            } else if (receipt.dueDateStart === '') {
+                receiptHtml += `<p>Due date: Đến ngày ${receipt.dueDateEnd}</p>`;
+            } else if (receipt.dueDateEnd === '') {
+                receiptHtml += `<p>Due date: Từ ngày ${receipt.dueDateStart}</p>`;
+            } else {
+                receiptHtml += `<p>Due date: ${receipt.dueDateStart} - ${receipt.dueDateEnd}</p>`;
+            }
+
+            return receiptHtml;
         }
 
         function displayReceiptInfo() {
@@ -237,7 +262,7 @@
                         <label for="receiptStatus">Receipt status:</label>
                         <br>
                         @foreach($reportData['receiptStatus'] as $status)
-                            <p><input type="checkbox" name="receiptStatus" value="{{ $status }}"> {{ $status }}</p>
+                            <p><input type="checkbox" name="receiptStatus[]" value="{{ $status }}"> {{ $status }}</p>
                         @endforeach
                     </div>
                     <div class="form-group">
@@ -248,14 +273,20 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="sendDate">Send date:</label>
-                        <input type="date" id="sendDate" name="sendDate">
+                <div class="form-group-stu">
+                    <label for="sendDate">Send date:</label>
+                    <div class="form-group-row">
+                        <input type="date" id="sendDate" name="sendDateStart">
+                        &nbsp &nbsp
+                        <input type="date" id="sendDate" name="sendDateEnd">
                     </div>
-                    <div class="form-group">
-                        <label for="dueDate">Receipt date:</label>
-                        <input type="date" id="dueDate" name="dueDate">
+                </div>
+                <div class="form-group-stu">
+                    <label for="dueDate">Due date:</label>
+                    <div class="form-group-row">
+                        <input type="date" id="dueDate" name="dueDateStart">
+                        &nbsp &nbsp
+                        <input type="date" id="dueDate" name="dueDateEnd">
                     </div>
                 </div>
                 <div class="form-actions">

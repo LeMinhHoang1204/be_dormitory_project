@@ -1,6 +1,12 @@
 function toggleFilter() {
     const filterPopup = document.getElementById("filter-popup");
     filterPopup.classList.toggle("show");
+
+    // Thêm event listener cho nút Apply nếu chưa có
+    const applyButton = document.getElementById("apply-filter-btn");
+    if (applyButton) {
+        applyButton.onclick = applyFilter;
+    }
 }
 
 // Close Popup
@@ -83,7 +89,6 @@ async function handleRegisterClick(event, roomId) {
     const roomPrice = roomItem.querySelector(".price").textContent;
     const floorNumber = roomItem.dataset.floor;
     const roomType = roomItem.dataset.type;
-    const capacity = roomItem.dataset.capacity;
     // Cập nhật thông tin trong form
     document.getElementById("room-id-input").value = roomId;
     document.getElementById("display-room-name").textContent = roomName;
@@ -91,7 +96,6 @@ async function handleRegisterClick(event, roomId) {
         roomPrice + "/month";
     document.getElementById("display-floor-number").textContent = floorNumber;
     document.getElementById("display-room-type").textContent = roomType;
-    document.getElementById("display-room-capacity").textContent = capacity;
     // Hiển thị modal đăng ký
     document.getElementById("register-popup").style.display = "block";
 }
@@ -104,7 +108,6 @@ function closeConfirmModal() {
 
 function proceedToRegistration() {
     if (selectedRoomId) {
-
         const registerPopup = document.getElementById("register-popup");
         registerPopup.style.display = "flex";
         document.getElementById("room-id-input").value = selectedRoomId;
@@ -193,12 +196,60 @@ function showPaymentInfo(invoice) {
 
 function downloadPaymentInfo() {
     // Create a link element
-    const link = document.createElement('a');
-    link.href = '/images/qrcode.png';
-    link.download = 'payment_qrcode.png';
+    const link = document.createElement("a");
+    link.href = "/images/qrcode.png";
+    link.download = "payment_qrcode.png";
 
     // Append link to body, click it, and remove it
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+// filter
+function applyFilter() {
+    const priceMin = document.getElementById("price-min").value;
+    const priceMax = document.getElementById("price-max").value;
+    const selectedFloor = document.getElementById("floor-select").value;
+    const selectedType = document.getElementById("type-select").value;
+    const selectedCapacity = document.getElementById("capacity-select").value;
+
+    const roomItems = document.querySelectorAll(".room-item");
+
+    roomItems.forEach((room) => {
+        const price = parseInt(
+            room.querySelector(".price").textContent.replace(/[^0-9]/g, "")
+        );
+        const floor = room.dataset.floor;
+        const type = room.dataset.type;
+        const capacity = room.dataset.capacity;
+
+        let isVisible = true;
+
+        // Kiểm tra giá
+        if (priceMin && price < parseInt(priceMin)) isVisible = false;
+        if (priceMax && price > parseInt(priceMax)) isVisible = false;
+
+        // Kiểm tra tầng
+        if (selectedFloor && selectedFloor !== "all" && floor !== selectedFloor)
+            isVisible = false;
+
+        // Kiểm tra loại phòng
+        if (selectedType && selectedType !== "all" && type !== selectedType)
+            isVisible = false;
+
+        // Kiểm tra sức chứa
+        if (
+            selectedCapacity &&
+            selectedCapacity !== "all" &&
+            capacity !== selectedCapacity
+        )
+            isVisible = false;
+
+        // Hiển thị hoặc ẩn phòng
+        room.style.display = isVisible ? "block" : "none";
+    });
+
+    // Đóng popup filter sau khi áp dụng
+    closePopup();
 }

@@ -21,7 +21,7 @@ class RoomFactory extends Factory
             'name' => $this->faker->word(),
             'type' => $this->faker->randomElement(['2', '4', '6', '8', '10']), // số sinh viên tối đa trong phòng
             'unit_price' => $this->faker->randomFloat(2, 500, 2000),
-            'member_number' => 0, // hoặc mặc định từ schema
+            'member_count' => 0, // hoặc mặc định từ schema
             'status' => $this->faker->randomElement([0, 1]),
         ];
     }

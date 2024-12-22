@@ -1,226 +1,110 @@
 {{-- resources/views/notifications/create.blade.php --}}
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Notification') }}
-        </h2>
-    </x-slot>
+@extends('Auth_.index')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form action="{{ route('notifications.store') }}" method="POST">
-                        @csrf
+<head>
+    <title>Create Notification</title>
+    <link rel="icon" href="{{ asset('./img/img.png') }}" type="image/x-icon">
 
-                        <div class="mb-4">
-                            <label for="sender_id" class="block text-gray-700 font-bold mb-2">Sender ID:</label>
-                            <input type="number" id="sender_id" name="sender_id" value="{{ auth()->user()->id }}" required readonly
-                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">
+    <script src="{{ asset('./javascript/notification/notification.js') }}"></script>
 
-                        <div class="mb-4">
-                            <label for="type" class="block text-gray-700 font-bold mb-2">Type:</label>
-                            <select id="type" name="type" required
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    onchange="toggleGroupOptions(this.value)">
-                                <option value="" disabled selected>Receiver type</option>
-                                <option value="individual">Individual</option>
-                                <option value="group">Group</option>
-                            </select>
-                        </div>
+    {{-- WEBSITE: tabler icons --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@1.74.0/icons-react/dist/index.umd.min.js"></script>
 
-                        <div id="group-options" class="mb-4 hidden">
-                            <label for="group" class="block text-gray-700 font-bold mb-2">Select Room or Building:</label>
-                            <select id="group" name="group"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    onchange="loadBuildings(this.value)">
-                                <option value="" disabled selected>Group type</option>
-                                <option value="building">Building</option>
-                                <option value="room">Room</option>
-                            </select>
-                        </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-                        <div id="building-options" class="mb-4 hidden">
-                            <label for="building" class="block text-gray-700 font-bold mb-2">Select Building:</label>
-                            <select id="building" name="building_object_id"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                <!-- Options will be populated by JavaScript -->
-                            </select>
-                        </div>
+    {{-- Bootstrap --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 
-                        <div id="room-options" class="mb-4 hidden">
-                            <label for="room" class="block text-gray-700 font-bold mb-2">Select Room:</label>
-                            <select id="room" name="room_object_id"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                <!-- Options will be populated by JavaScript -->
-                            </select>
-                        </div>
+    {{-- SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                    <div id="user-options" class="mb-4 hidden">
-                        <label for="user" class="block text-gray-700 font-bold mb-2">Select Receiver:</label>
-                        <select id="user" name="user_object_id"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <optgroup label="Building Manager">
-                                <!-- Options for Building Manager will be populated by JavaScript -->
-                            </optgroup>
-                            <optgroup label="Accountant">
-                                <!-- Options for Accountant will be populated by JavaScript -->
-                            </optgroup>
-                            <optgroup label="Student">
-                                <!-- Options for Student will be populated by JavaScript -->
-                            </optgroup>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('a42fc293e9345264b282', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('be-dormitory-channel');
+
+        channel.bind('user-login', function(data) {
+            toastr.success(JSON.stringify(data.email) + ' has joined our website');
+        });
+    </script>
+</head>
+
+@section('content')
+    @include('layouts.sidebar_student')
+
+    <div class="notification-form">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0 text-white">
+                    <i class="fas fa-plus-circle me-2"></i>{{ __('Create New Notification') }}
+                </h4>
+            </div>
+
+            <div class="card-body p-4">
+                <form action="{{ route('notifications.store') }}" method="POST">
+                    @csrf
+
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control readonly-field" id="sender_id"
+                            name="sender_id" value="{{ auth()->user()->id }}" readonly>
+                        <label for="sender_id">Sender ID</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="object_id" name="object_id"
+                            value="{{ old('object_id') }}" required>
+                        <label for="object_id">Object ID</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="title" name="title"
+                            value="{{ old('title') }}" required>
+                        <label for="title">Title</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="type" name="type" required>
+                            <option value="individual" {{ old('type') == 'individual' ? 'selected' : '' }}>
+                                Individual
+                            </option>
+                            <option value="group" {{ old('type') == 'group' ? 'selected' : '' }}>
+                                Group
+                            </option>
                         </select>
+                        <label for="type">Notification Type</label>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="recipients" class="block text-gray-700 font-bold mb-2">Title:</label>
-                        <input type="text" id="title" name="title" required
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <div class="form-floating mb-4">
+                        <textarea class="form-control" id="content" name="content"
+                            style="height: 150px" required>{{ old('content') }}</textarea>
+                        <label for="content">Content</label>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="content" class="block text-gray-700 font-bold mb-2">Content:</label>
-                        <textarea id="content" name="content" rows="4" required
-                                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane me-2"></i>{{ __('Create Notification') }}
+                        </button>
                     </div>
-
-
-
-{{--                        @can('create', App\Models\Notification::class)--}}
-                            <x-primary-button class="ms-4" type="submit">
-                                {{ ('Create Notification') }}
-                            </x-primary-button>
-{{--                        @endcan--}}
-
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-</x-app-layout>
-
-<script>
-    function toggleGroupOptions(value) {
-        const groupOptions = document.getElementById('group-options');
-        const buildingOptions = document.getElementById('building-options');
-        const roomOptions = document.getElementById('room-options');
-        const userOptions = document.getElementById('user-options');
-
-        if (value === 'group') {
-            groupOptions.classList.remove('hidden');
-            buildingOptions.classList.add('hidden');
-            roomOptions.classList.add('hidden');
-            userOptions.classList.add('hidden');
-        }
-        else if (value === 'individual') {
-            userOptions.classList.remove('hidden');
-            groupOptions.classList.add('hidden');
-            buildingOptions.classList.add('hidden');
-            roomOptions.classList.add('hidden');
-        }
-        else {
-            groupOptions.classList.add('hidden');
-            buildingOptions.classList.add('hidden');
-            roomOptions.classList.add('hidden');
-            userOptions.classList.add('hidden');
-        }
-    }
-
-    function loadBuildings(value) {
-        const buildingOptions = document.getElementById('building-options');
-        const roomOptions = document.getElementById('room-options');
-        const buildingSelect = document.getElementById('building');
-        const roomSelect = document.getElementById('room');
-
-        if (value === 'building') {
-            fetch('/admin/getAllBuildings')
-                .then(response => response.json())
-                .then(data => {
-                    buildingSelect.innerHTML = '';
-                    data.forEach(building => {
-                        const option = document.createElement('option');
-                        option.value = building.id;
-                        option.textContent = building.build_name;
-                        buildingSelect.appendChild(option);
-                    });
-                    buildingOptions.classList.remove('hidden');
-                    roomOptions.classList.add('hidden');
-                })
-                .catch(error => console.error('Error loading buildings:', error));
-        } else if (value === 'room') {
-            fetch('/admin/getAllBuildings')
-                .then(response => response.json())
-                .then(data => {
-                    buildingSelect.innerHTML = '';
-                    data.forEach(building => {
-                        const option = document.createElement('option');
-                        option.value = building.id;
-                        option.textContent = building.build_name;
-                        buildingSelect.appendChild(option);
-                    });
-                    buildingOptions.classList.remove('hidden');
-                    roomOptions.classList.add('hidden');
-
-                    buildingSelect.addEventListener('change', function() {
-                        fetch('/admin/getAllRooms/' + buildingSelect.value)
-                            .then(response => response.json())
-                            .then(data => {
-                                roomSelect.innerHTML = '';
-                                data.forEach(room => {
-                                    const option = document.createElement('option');
-                                    option.value = room.id;
-                                    option.textContent = room.name;
-                                    roomSelect.appendChild(option);
-                                });
-                                roomOptions.classList.remove('hidden');
-                            })
-                            .catch(error => console.error('Error loading rooms:', error));
-                    });
-                })
-                .catch(error => console.error('Error loading buildings:', error));
-        } else {
-            buildingOptions.classList.add('hidden');
-            roomOptions.classList.add('hidden');
-        }
-    }
-
-    function loadUsers() {
-    fetch('/admin/getAllUsers')
-        .then(response => response.json())
-        .then(data => {
-            const userSelect = document.getElementById('user');
-            const buildingManagerOptions = document.createElement('optgroup');
-            buildingManagerOptions.label = 'Building Manager';
-            const accountantOptions = document.createElement('optgroup');
-            accountantOptions.label = 'Accountant';
-            const studentOptions = document.createElement('optgroup');
-            studentOptions.label = 'Student';
-
-            userSelect.innerHTML = '';
-
-            data.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.id;
-                option.textContent = user.name;
-                if (user.role === 'building manager') {
-                    buildingManagerOptions.appendChild(option);
-                } else if (user.role === 'accountant') {
-                    accountantOptions.appendChild(option);
-                } else if (user.role === 'student') {
-                    studentOptions.appendChild(option);
-                }
-            });
-
-            userSelect.appendChild(buildingManagerOptions);
-            userSelect.appendChild(accountantOptions);
-            userSelect.appendChild(studentOptions);
-        })
-        .catch(error => console.error('Error loading users:', error));
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    loadUsers();
-});
-
-</script>
+@endsection

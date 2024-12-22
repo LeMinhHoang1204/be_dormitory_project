@@ -304,11 +304,4 @@
 
     <div class="overlay2"></div>
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> 932774eb28714833597b5e7b60593566052ffc64
 @endsection

@@ -1,70 +1,124 @@
 {{-- resources/views/notifications/create.blade.php --}}
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Notification') }}
-        </h2>
-    </x-slot>
+@extends('Auth_.index')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form action="{{ route('notifications.edit', $notification->id) }}" method="POST">
-                        @csrf
+<head>
+    <title>Edit Notification</title>
+    <link rel="icon" href="{{ asset('./img/img.png') }}" type="image/x-icon">
 
-                        <div class="mb-4">
-                            <label for="id" class="block text-gray-700 font-bold mb-2">Notification ID:</label>
-                            <input type="number" id="id" name="id" value="{{ $notification->id }}" required readonly
-                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">
+    <script src="{{ asset('./javascript/notification/notification.js') }}"></script>
+
+    {{-- WEBSITE: tabler icons --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@1.74.0/icons-react/dist/index.umd.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    {{-- Bootstrap --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+
+    {{-- SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('a42fc293e9345264b282', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('be-dormitory-channel');
+
+        channel.bind('user-login', function(data) {
+            toastr.success(JSON.stringify(data.email) + ' has joined our website');
+        });
+    </script>
+</head>
+
+
+@section('content')
+    @include('layouts.sidebar_student')
+
+    <div class="notification-form">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0 text-white">
+                    <i class="fas fa-edit me-2"></i>{{ __('Edit Notification') }}
+                </h4>
+            </div>
+
+            <div class="card-body p-4">
+                <form action="{{ route('notifications.edit', $notification->id) }}" method="POST">
+                    @csrf
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control readonly-field" id="id" name="id"
+                                    value="{{ $notification->id }}" readonly>
+                                <label for="id">Notification ID</label>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="sender_id" class="block text-gray-700 font-bold mb-2">Sender ID:</label>
-                            <input type="number" id="sender_id" name="sender_id" value="{{ auth()->user()->id }}" required readonly
-                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control readonly-field" id="sender_id"
+                                    name="sender_id" value="{{ auth()->user()->id }}" readonly>
+                                <label for="sender_id">Sender ID</label>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="recipients" class="block text-gray-700 font-bold mb-2">Object (ID):</label>
-                            <input type="number" id="object_id" name="object_id" value="{{ $notification->object_id }}" required
-                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="object_id" name="object_id"
+                            value="{{ $notification->object_id }}" required>
+                        <label for="object_id">Object ID</label>
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="recipients" class="block text-gray-700 font-bold mb-2">Title:</label>
-                            <input type="text" id="title" name="title" value="{{ $notification->title }}" required
-                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="title" name="title"
+                            value="{{ $notification->title }}" required>
+                        <label for="title">Title</label>
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="type" class="block text-gray-700 font-bold mb-2">Type:</label>
-                            <select id="type" name="type" required
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                <option value="individual" {{ $notification->type == 'individual' ? 'selected' : '' }}>Individual</option>
-                                <option value="group {{ $notification->type == 'group' ? 'selected' : '' }}">Group</option>
-                            </select>
-                        </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="type" name="type" required>
+                            <option value="individual" {{ $notification->type == 'individual' ? 'selected' : '' }}>
+                                Individual
+                            </option>
+                            <option value="group" {{ $notification->type == 'group' ? 'selected' : '' }}>
+                                Group
+                            </option>
+                        </select>
+                        <label for="type">Notification Type</label>
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="content" class="block text-gray-700 font-bold mb-2">Content:</label>
-                            <textarea id="content" name="content" rows="4"  required
-                                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                {{ old('content', $notification->content) }}
-                            </textarea>
-                        </div>
+                    <div class="form-floating mb-4">
+                        <textarea class="form-control" id="content" name="content"
+                            style="height: 150px" required>{{ old('content', $notification->content) }}</textarea>
+                        <label for="content">Content</label>
+                    </div>
 
-
-
-                        {{-- @can('create', App\Models\Notification::class)--}}
-                        <x-primary-button type="submit">
-                            {{ ('Save') }}
-                        </x-primary-button>
-                        {{-- @endcan--}}
-
-                    </form>
-                </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-save me-2"></i>{{ __('Save Changes') }}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

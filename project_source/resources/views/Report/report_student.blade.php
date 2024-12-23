@@ -1,8 +1,6 @@
 @extends('Auth_.index')
 
-
 <head>
-    {{--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">--}}
     <script src={{ asset('https://cdn.jsdelivr.net/npm/chart.js') }}></script>
     <link rel="stylesheet" href="{{ asset('css/Report/Report.css') }}" type="text/css">
     <script>
@@ -11,16 +9,41 @@
             room: '{{ $reportData['room'] }}',
             total: {{ $reportData['total'] }},
             receiptsType: {!! json_encode(collect($reportData['totalByReceiptType'])->keys()->toArray()) !!},
+            sendDateStart: "{{ $reportData['sendDateStart'] }}",
+            sendDateEnd: "{{ $reportData['sendDateEnd'] }}",
+            dueDateStart: "{{ $reportData['dueDateStart'] }}",
+            dueDateEnd: "{{ $reportData['dueDateEnd'] }}"
         }];
 
         function createReceiptInfo(receipt) {
-            return `
-    <p>Dorm Stu ID: ${receipt.dormStuId}</p>
-    <p>Room: ${receipt.room}</p>
-    <p class="receipt-total">Total: ${receipt.total}</p>
-    <p class="receipt-type">Type: ${receipt.receiptsType} </p>
-    <p>Date:</p>
-  `;
+            let receiptHtml = `
+                <p>Dorm Stu ID: ${receipt.dormStuId}</p>
+                <p>Room: ${receipt.room}</p>
+                <p class="receipt-total">Total: ${receipt.total}</p>
+                <p class="receipt-type">Type: ${receipt.receiptsType}</p>
+            `;
+
+            if (receipt.sendDateStart === '' && receipt.sendDateEnd === '') {
+                return receiptHtml;
+            } else if (receipt.sendDateStart === '') {
+                receiptHtml += `<p>Date: Đến ngày ${receipt.sendDateEnd}</p>`;
+            } else if (receipt.sendDateEnd === '') {
+                receiptHtml += `<p>Date: Từ ngày ${receipt.sendDateStart}</p>`;
+            } else {
+                receiptHtml += `<p>Date: ${receipt.sendDateStart} - ${receipt.sendDateEnd}</p>`;
+            }
+
+            if(receipt.dueDateStart === '' && receipt.dueDateEnd === '') {
+                return receiptHtml;
+            } else if (receipt.dueDateStart === '') {
+                receiptHtml += `<p>Due date: Đến ngày ${receipt.dueDateEnd}</p>`;
+            } else if (receipt.dueDateEnd === '') {
+                receiptHtml += `<p>Due date: Từ ngày ${receipt.dueDateStart}</p>`;
+            } else {
+                receiptHtml += `<p>Due date: ${receipt.dueDateStart} - ${receipt.dueDateEnd}</p>`;
+            }
+
+            return receiptHtml;
         }
 
         function displayReceiptInfo() {
@@ -58,52 +81,6 @@
                 }
             })});
 
-        {{--const type = {!! json_encode(array_keys($reportData['totalTypePerMonth'])) !!}--}}
-
-        // const receiptData = {
-        //     labels: [1,2,3,4,5,6,7,8,9,10,11,12], // Months
-        //     datasets: [
-        //         {
-        //             type: 'line',
-        //             label: 'type',
-        //             data: [200, 300, 400, 350, 450, 500],
-        //             borderColor: '#3498db',
-        //             borderWidth: 2,
-        //             fill: false,
-        //         },
-        //         {
-        //             type: 'line',
-        //             label: 'Electricity',
-        //             data: [150, 200, 250, 300, 200, 400],
-        //             borderColor: '#1abc9c',
-        //             borderWidth: 2,
-        //             fill: false,
-        //         },
-        //         {
-        //             type: 'line',
-        //             label: 'Water',
-        //             data: [100, 120, 180, 200, 160, 300],
-        //             borderColor: '#f1c40f',
-        //             borderWidth: 2,
-        //             fill: false,
-        //         },
-        //         {
-        //             type: 'line',
-        //             label: 'Other',
-        //             data: [80, 100, 120, 150, 130, 170],
-        //             borderColor: '#e74c3c',
-        //             borderWidth: 2,
-        //             fill: false,
-        //         },
-        //         {
-        //             type: 'bar',
-        //             label: 'Total Cost',
-        //             data: [], // This will be calculated
-        //             backgroundColor: 'rgba(52, 152, 219, 0.5)',
-        //             borderWidth: 1,
-        //         },
-        //     ],
-        // };
 
         // Hàm để gán màu sắc cho các loại
         function getColor(index) {
@@ -119,6 +96,7 @@
         // Tạo datasets từ totalTypePerMonth
         const datasets = Object.keys(totalTypePerMonth).map((type, index) => {
             return {
+                type: 'line',
                 label: type, // Tên của loại (type1, type2, ...)
                 data: totalTypePerMonth[type], // Dữ liệu của loại
                 borderColor: getColor(index), // Hàm lấy màu sắc
@@ -237,30 +215,9 @@
                                 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1132_2655" />
                                 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1132_2655" result="shape" />
                             </filter>
-                            {{--                            <filter id="filter1_d_1132_2655" x="0" y="0" width="67" height="66" filterUnits="userSpaceOnUse"--}}
-                            {{--                                    color-interpolation-filters="sRGB">--}}
-                            {{--                                <feFlood flood-opacity="0" result="BackgroundImageFix" />--}}
-                            {{--                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"--}}
-                            {{--                                               result="hardAlpha" />--}}
-                            {{--                                <feOffset dy="6" />--}}
-                            {{--                                <feGaussianBlur stdDeviation="2" />--}}
-                            {{--                                <feComposite in2="hardAlpha" operator="out" />--}}
-                            {{--                                <feColorMatrix type="matrix" values="0 0 0 0 0.925499 0 0 0 0 0.937916 0 0 0 0 1 0 0 0 1 0" />--}}
-                            {{--                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1132_2655" />--}}
-                            {{--                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1132_2655" result="shape" />--}}
-                            {{--                            </filter>--}}
                         </defs>
                     </svg>
                 </div>
-                {{--                <div class="search">--}}
-                {{--                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19"--}}
-                {{--                         fill="none" class="search-icon" onclick="handleSearch(event)">--}}
-                {{--                        <path--}}
-                {{--                            d="M13.0429 12.1366C14.1019 10.8532 14.7708 9.20705 14.7708 7.39354C14.7708 3.32012 11.4543 0 7.3854 0C3.31646 0 0 3.32012 0 7.39354C0 11.467 3.31646 14.7871 7.3854 14.7871C9.16905 14.7871 10.8412 14.1454 12.1232 13.0573L17.8643 18.8047C18.0037 18.9442 18.1709 19 18.3381 19C18.5053 19 18.6725 18.9442 18.8119 18.8047C19.0627 18.5536 19.0627 18.1072 18.8119 17.8561L13.0429 12.1366ZM7.35754 13.4479C4.0132 13.4479 1.30986 10.7416 1.30986 7.39354C1.30986 4.04552 4.0132 1.33921 7.35754 1.33921C10.7019 1.33921 13.4052 4.04552 13.4052 7.39354C13.4052 10.7416 10.7019 13.4479 7.35754 13.4479Z"--}}
-                {{--                            fill="#757575" />--}}
-                {{--                    </svg>--}}
-                {{--                    <input type="search" id="searchInput" placeholder="Search" oninput="handleInput(event)">--}}
-                {{--                </div>--}}
             </div>
         </div>
 
@@ -283,26 +240,38 @@
     <div id="filter-popup" class="popup hidden" onclick="closePanel(event)">
         <div class="popup-content">
             <h2>Filter</h2>
-            <form>
+            <form action="{{ route('report_student.studentIndex') }}" method="GET">
                 <div class="form-group-row">
                     <div class="form-group-stu">
                         <label for="receiptType">Receipt type:</label>
                         <br>
                         @foreach($reportData['receiptsType'] as $type)
-                            <p><input type="checkbox" name="receiptType" value="{{ $type }}"> {{ $type }}</p>
+                            <p><input type="checkbox" name="receiptType[]" value="{{ $type }}"> {{ $type }}</p>
                         @endforeach
                     </div>
                     <div class="form-group-stu">
                         <label for="receiptStatus">Receipt status:</label>
                         <br>
                         @foreach($reportData['receiptStatus'] as $status)
-                            <p><input type="checkbox" name="receiptStatus" value="{{ $status }}"> {{ $status }}</p>
+                            <p><input type="checkbox" name="receiptStatus[]" value="{{ $status }}"> {{ $status }}</p>
                         @endforeach
                     </div>
                 </div>
                 <div class="form-group-stu">
-                    <label for="receiptDate">Receipt date:</label>
-                    <input type="date" id="receiptDate" name="receiptDate">
+                    <label for="sendDate">Send date:</label>
+                    <div class="form-group-row">
+                        <input type="date" id="sendDate" name="sendDateStart">
+                        &nbsp &nbsp
+                        <input type="date" id="sendDate" name="sendDateEnd">
+                    </div>
+                </div>
+                <div class="form-group-stu">
+                    <label for="dueDate">Due date:</label>
+                    <div class="form-group-row">
+                        <input type="date" id="dueDate" name="dueDateStart">
+                        &nbsp &nbsp
+                        <input type="date" id="dueDate" name="dueDateEnd">
+                    </div>
                 </div>
                 <div class="form-actions">
                     <button type="submit">Apply Filter</button>

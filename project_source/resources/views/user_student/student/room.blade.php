@@ -33,19 +33,25 @@
 {{--                <p>No room information available at the moment.</p>--}}
 {{--            @else--}}
         <!-- Thông tin phòng -->
-        <div class="current-room-info">
-            <h5 class="section-title">Room Details</h5>
-            <p><strong>Room Name:</strong> {{ isset($residence) ? $residence->room->name : 'Room 101' }}</p>
-            <p><strong>Building:</strong> {{ isset($residence) ? $residence->room->building->build_name : 'Building A' }}</p>
-            <p><strong>Start Date:</strong> {{isset($residence) ? \Carbon\Carbon::parse($residence->start_date)->format('d-m-Y') : '01-12-2023'  }}</p>
-            <p><strong>End Date:</strong> {{isset($residence) ? \Carbon\Carbon::parse($residence->end_date)->format('d-m-Y') : '01-12-2024'}}</p>
-            <p><strong>Status:</strong> {{ isset($residence) ? $residence->status :'' }}</p>
-        </div>
+
+        @foreach($residences as $residence)
+            <div class="current-room-info">
+                <h5 class="section-title">Room Details</h5>
+                <p><strong>Building:</strong> {{ $residence->room->building->id }} - {{ $residence->room->building->build_name }}</p>
+                <p><strong>The information that is only valid at that time </strong></p>
+                <p><strong>Room:</strong> {{ $residence->room->id }} - {{ $residence->room->name }}</p>
+                <p><strong>Room Price:</strong> {{ $residence->room->unit_price }}</p>
+                <p><strong>Room Type:</strong> {{ $residence->room->type }}</p>
+                <p><strong>Room Member:</strong> {{ $residence->room->member_count }}</p>
+                <p><strong>Start Date:</strong> {{ \Carbon\Carbon::parse($residence->start_date)->format('d-m-Y H:i:s') }}</p>
+                <p><strong>End Date:</strong> {{ \Carbon\Carbon::parse($residence->end_date)->format('d-m-Y H:i:s') }}</p>
+                <p><strong>Status:</strong> {{ $residence->status }}</p>
+                <p><strong>Note:</strong> {{ $residence->note }}</p>
+            </div>
+        @endforeach
 
         <div class="section" style="align-content: space-between">
             <button class="grey-btn" onclick="window.location.href='{{ route('dashboard') }}'">< Back</button>
-
-            <button class="blue-btn" onclick="alert('Action Completed')">Extend</button>
         </div>
 {{--            @endif--}}
         @if(isset($message))

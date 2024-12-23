@@ -19,12 +19,12 @@ return new class extends Migration
             $table->dateTime('send_date');
             $table->dateTime('due_date');
             $table->dateTime('paid_date')->nullable();
-            $table->enum('type', ['Room', 'Electricity', 'Water', 'Fixing', 'Cleaning']);
-            $table->enum('status', ['Not Paid', 'Paid', 'Overdue', 'Transferred Room', 'Refunding', 'Refunded'])->default('Not Paid');
+            $table->enum('type', ['Electricity', 'Water', 'Fixing', 'Cleaning', 'Room Registration', 'Room Change', 'Renewal', 'Refund']);
+            $table->enum('status', ['Not Paid', 'Paid', 'Overdue', 'Transferred Room', 'Refunding', 'Refunded', 'Reported'])->default('Not Paid');
             $table->decimal('total', 10, 2);
             $table->enum('payment_method', ['Cash', 'Bank Transfer'])->nullable();
-            $table->string('note', 200)->nullable();
-            $table->string('evidence_image', 200)->nullable();
+            $table->string('note')->nullable();
+            $table->string('evidence_image')->nullable();
             $table->timestamps();
 
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');

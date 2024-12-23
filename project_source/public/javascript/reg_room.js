@@ -65,18 +65,23 @@ function redirectToRoomInfo(roomId) {
 
 let selectedRoomId = null;
 
-async function handleRegisterClick(event, roomId) {
+async function handleRegisterClick(event, roomId, isChange) {
     // Prevent event bubbling
     event.stopPropagation();
 
-    const response = await fetch(`/students/room-registration/latest-residence`);
-    const data = await response.json();
-    if (data.residence && (data.residence.status === 'Registered'
-                        || data.residence.status === 'Paid'
-                        || data.residence.status === 'Checked in')) {
-        toastr.warning('You already have a registered room.');
-        return;
+    if(!isChange){
+        const response = await fetch(`/students/room-registration/latest-residence`);
+        const data = await response.json();
+        if (data.residence && (data.residence.status === 'Registered'
+            || data.residence.status === 'Paid'
+            || data.residence.status === 'Checked in'
+            || data.residence.status === 'Renewed'
+            || data.residence.status === 'Changed room')) {
+            toastr.warning('You already have a registered room.');
+            return;
+        }
     }
+
     // Lấy thông tin phòng từ room-item
     const roomItem = event.target.closest(".room-item");
     const roomName = roomItem.querySelector(".roomname").textContent;

@@ -28,23 +28,79 @@ class StudentController extends Controller
     {
         //
     }
-
-
-
-
-
-    public function showRegisterRoomList()
+    public function showRegisterRoomList(Request $request)
     {
+        $searchTerm = $request->input('search');
+
         $rooms = Room::with('hasRoomAssets.asset')
             ->where('status', 1)
-            ->whereColumn('member_count' , '<', 'type')
+            ->whereColumn('member_count', '<', 'type')
             ->whereHas('building', function ($query) {
                 $query->where('type', auth()->user()->student->gender);
-            })
-            ->paginate(6);
+            });
+
+        if ($searchTerm) {
+            $rooms->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
+        $rooms = $rooms->paginate(9)->appends(['search' => $searchTerm]);
 
         return view('Reg_room.reg_room', compact('rooms'));
     }
+    public function showFilteredRoomList(Request $request)
+    {
+        $query = Room::with('hasRoomAssets.asset')
+            ->whereHas('building', function ($query) {
+                $query->where('type',  auth()->user()->student->gender); // Chỉ lọc theo gender của user
+            });
+
+        if ($request->has('status') && !empty($request->input('status'))) {
+            $query->whereIn('status', $request->input('status'));
+        }
+        if ($request->has('floorNumber') && $request->input('floorNumber') != '') {
+            $query->where('floor_number', $request->input('floorNumber'));
+        }
+
+        if ($request->has('roomType') && !empty($request->input('roomType'))) {
+            $query->whereIn('type', $request->input('roomType'));
+        }
+
+        if ($request->has('price') && !empty($request->input('price'))) {
+            foreach ($request->input('price') as $price) {
+                switch ($price) {
+                    case 1:
+                        $query->where('unit_price', '<', 500000);
+                        break;
+                    case 2:
+                        $query->whereBetween('unit_price', [500000, 1000000]);
+                        break;
+                    case 3:
+                        $query->whereBetween('unit_price', [1000000, 2000000]);
+                        break;
+                    case 4:
+                        $query->whereBetween('unit_price', [2000000, 3000000]);
+                        break;
+                }
+            }
+        }
+        if ($request->has('facilities') && !empty($request->input('facilities'))) {
+            $facilities = $request->input('facilities');
+
+            foreach ($facilities as $facility) {
+                $query->whereHas('hasRoomAssets', function ($q) use ($facility) {
+                    $q->whereHas('asset', function ($q) use ($facility) {
+                        $q->where('name', $facility);
+                    });
+                });
+            }
+        }
+
+        $rooms = $query->paginate(9);
+
+        return view('reg_room.reg_room', compact('rooms'));
+    }
+
+
 
     public function showRegisterRoomForm($room)
     {

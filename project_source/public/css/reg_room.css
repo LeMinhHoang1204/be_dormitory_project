@@ -1,3 +1,4 @@
+
 body {
     background-color: #f8f9fa;
     font-family: "Poppins", sans-serif;
@@ -852,7 +853,7 @@ body {
     background-color: #1d4ed8;
     transform: translateY(-1px);
     box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1),
-        0 2px 4px -1px rgba(37, 99, 235, 0.06);
+    0 2px 4px -1px rgba(37, 99, 235, 0.06);
 }
 
 /* Payment Info Modal Styles */

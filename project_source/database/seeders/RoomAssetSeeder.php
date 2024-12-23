@@ -28,14 +28,54 @@ class RoomAssetSeeder extends Seeder
             }
 
             // Assign specific assets based on room type
-            $specialAssets = ['air conditioner', 'television', 'water heater', 'toilet'];
+            $specialAssets = ['air conditioner', 'television', 'water heater', 'toilet', 'fridge'];
             foreach ($specialAssets as $name) {
                 $asset = $assets->firstWhere('name', $name);
-                \App\Models\RoomAsset::factory()->state([
-                    'room_id' => $room->id,
-                    'asset_id' => $asset->id,
-                    'quantity' => $room->type === 2 || $room->type === 4 ? 1 : 2,
-                ])->create();
+
+                if ($name === 'air conditioner') {
+                    if ($room->unit_price >= 1500000) {
+                        \App\Models\RoomAsset::factory()->state([
+                            'room_id' => $room->id,
+                            'asset_id' => $asset->id,
+                            'quantity' => $room->type === 2 || $room->type === 4 ? 1 : 2,
+                        ])->create();
+                    }
+                }
+
+                if ($name === 'water heater') {
+                    if ($room->unit_price > 2500000) {
+                        \App\Models\RoomAsset::factory()->state([
+                            'room_id' => $room->id,
+                            'asset_id' => $asset->id,
+                            'quantity' => 1, // Chỉ có 1 cái
+                        ])->create();
+                    }
+                }
+
+                if ($name === 'television') {
+                    if ($room->unit_price > 2800000) {
+                        \App\Models\RoomAsset::factory()->state([
+                            'room_id' => $room->id,
+                            'asset_id' => $asset->id,
+                            'quantity' => 1,
+                        ])->create();
+                    }
+                }
+                if ($name === 'fridge') {
+                    if ($room->unit_price > 2000000) {
+                        \App\Models\RoomAsset::factory()->state([
+                            'room_id' => $room->id,
+                            'asset_id' => $asset->id,
+                            'quantity' => $room->type === 2 || $room->type === 4 ? 1 : 2,                        ])->create();
+                    }
+                }
+                if ($name === 'toilet') {
+                    \App\Models\RoomAsset::factory()->state([
+                        'room_id' => $room->id,
+                        'asset_id' => $asset->id,
+                        'quantity' => $room->type === 2 || $room->type === 4 ? 1 : 2,
+                    ])->create();
+                }
             }
         });
     }

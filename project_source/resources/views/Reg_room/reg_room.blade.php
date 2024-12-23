@@ -2,7 +2,7 @@
 
 @if (session('notification'))
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const notification = @json(session('notification'));
             // Display the notification
             toastr.info(
@@ -19,6 +19,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
 
+    {{-- WEBSITE: tabler icons --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@1.74.0/icons-react/dist/index.umd.min.js"></script>
+
     {{-- WEBSITE: toastr --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -30,27 +34,23 @@
     <link rel="stylesheet" href="{{ asset('./css/reg_room.css') }}" type="text/css">
     <script src="{{ asset('./javascript/reg_room.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 </head>
 
 <style>
     .toast-warning {
-        color: #ffffff !important;
-        /* Text color for warning notification */
-        background-color: #ffc107 !important;
-        /* Background color */
-        font-family: "Poppins", sans-serif !important;
-        /* Font family */
-        border-left: 5px solid #ff9800 !important;
-        /* Left border color */
+        color: #ffffff !important; /* Text color for warning notification */
+        background-color: #ffc107 !important; /* Background color */
+        font-family: "Poppins", sans-serif !important; /* Font family */
+        border-left: 5px solid #ff9800 !important; /* Left border color */
     }
 
     .toast-info {
-        color: #ffffff !important;
-        /* Màu chữ cho thông báo thông tin */
-        background-color: #17a2b8 !important;
-        /* Màu nền */
-        font-family: "Poppins", sans-serif !important;
-        /* Font chữ */
+        color: #ffffff !important; /* Màu chữ cho thông báo thông tin */
+        background-color: #17a2b8 !important; /* Màu nền */
+        font-family: "Poppins", sans-serif !important; /* Font chữ */
     }
 </style>
 
@@ -64,148 +64,196 @@
                 Residence Confirmation
             </a>
         </div>
-    </div>
+        </div>
 
-    <div class="grid-container" id="room-list">
-        @foreach ($rooms as $room)
-            <div class="room-item" onclick="redirectToRoomInfo({{ $room->id }})" data-floor="{{ $room->floor_number }}"
-                data-type="{{ $room->type }}" data-capacity="{{ $room->member_count }}">
-                <img src="/img/room.png">
-                <div class="room-item-group">
-                    <div class="roomname">{{ $room->name }}</div>
-                    <div id="room-price">
-                        <span class="price">{{ $room->unit_price }}₫</span>
-                        <span class="per-month">/month</span>
-                    </div>
-                    <div class="room-info">Phòng được thiết kế mới mẻ với đầy đủ các vật dụng cần thiết</div>
-                    <div class="type-group">
-                        @foreach ($room->hasRoomAssets as $asset)
-                            <span class="detail-item">
-                                @php
-                                    $iconMap = [
-                                        'bed' => 'bed',
-                                        'table' => 'desk',
-                                        'chair' => 'armchair',
-                                        'fan' => 'propeller',
-                                        'air conditioner' => 'air-conditioning',
-                                        'fridge' => 'fridge',
-                                    ];
-                                    $icon = $iconMap[strtolower($asset->asset->name)] ?? 'box';
-                                @endphp
-                                <i class="ti ti-{{ $icon }}"></i>
-                                {{ $asset->quantity }}
-                            </span>
-                        @endforeach
-                        <button class="change-button"
-                            onclick="handleRegisterClick(event, {{ $room->id }})">Register</button>
+        <div class="grid-container" id="room-list">
+            @foreach ($rooms as $room)
+                <div class="room-item" onclick="redirectToRoomInfo({{ $room->id }})"
+                     data-floor="{{ $room->floor_number }}" data-type="{{ $room->type }}"
+                     data-capacity="{{ $room->member_count }}">
+                    <img src="/img/room.png">
+                    <div class="room-item-group">
+                        <div class="roomname">{{ $room->name }}</div>
+                        <div id="room-price">
+                            <span class="price">{{ $room->unit_price }}₫</span>
+                            <span class="per-month">/month</span>
+                        </div>
+                        <div class="room-info">Phòng được thiết kế mới mẻ với đầy đủ các vật dụng cần thiết</div>
+                        <div class="type-group">
+                            @foreach ($room->hasRoomAssets as $asset)
+                                <span class="detail-item">
+                                    @php
+                                        $iconMap = [
+                                            'bed' => 'bed',
+                                            'table' => 'desk',
+                                            'chair' => 'armchair',
+                                            'fan' => 'propeller',
+                                            'air conditioner' => 'air-conditioning',
+                                            'fridge' => 'fridge',
+                                        ];
+                                        $icon = $iconMap[strtolower($asset->asset->name)] ?? 'box';
+                                    @endphp
+                                    <i class="ti ti-{{ $icon }}"></i>
+                                    {{ $asset->quantity }}
+                                </span>
+                            @endforeach
+                            <button class="change-button"
+                                    onclick="handleRegisterClick(event, {{ $room->id }})">Register</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+
+            @endforeach
+        </div>
     </div>
-    </div>
+
 
 
     <!-- Pagination -->
-    <div class="pagination">
-        @if ($rooms->onFirstPage())
-            <span class="gap">Previous</span>
-        @else
-            <a href="{{ $rooms->previousPageUrl() }}" class="previous">Previous</a>
-        @endif
+            <div class="pagination">
+{{--                {{ $rooms->appends(request()->except('page'))->links() }}--}}
 
-        @php
-            $currentPage = $rooms->currentPage();
-            $lastPage = $rooms->lastPage();
-        @endphp
-
-        <!-- Nếu số trang ít hơn hoặc bằng 5, hiển thị tất cả các trang -->
-        @if ($lastPage <= 5)
-            @for ($i = 1; $i <= $lastPage; $i++)
-                @if ($i == $currentPage)
-                    <span class="pagination-page current">{{ $i }}</span>
+            @if ($rooms->onFirstPage())
+                    <span class="gap">Previous</span>
                 @else
-                    <a href="{{ $rooms->url($i) }}" class="pagination-page">{{ $i }}</a>
+                    <a href="{{ $rooms->previousPageUrl() }}" class="previous">Previous</a>
                 @endif
-            @endfor
-        @else
-            @if ($currentPage > 3)
-                <a href="{{ $rooms->url(1) }}" class="pagination-page">1</a>
-                <span class="ellipsis">...</span>
-            @endif
 
-            @for ($i = max(1, $currentPage - 1); $i <= min($lastPage, $currentPage + 1); $i++)
-                @if ($i == $currentPage)
-                    <span class="pagination-page current">{{ $i }}</span>
+                @php
+                    $currentPage = $rooms->currentPage();
+                    $lastPage = $rooms->lastPage();
+                @endphp
+
+                    <!-- Nếu số trang ít hơn hoặc bằng 5, hiển thị tất cả các trang -->
+                @if ($lastPage <= 5)
+                    @for ($i = 1; $i <= $lastPage; $i++)
+                        @if ($i == $currentPage)
+                            <span class="pagination-page current">{{ $i }}</span>
+                        @else
+                            <a href="{{ $rooms->appends(request()->all())->url($i) }}" class="pagination-page">{{ $i }}</a>
+                        @endif
+                    @endfor
                 @else
-                    <a href="{{ $rooms->url($i) }}" class="pagination-page">{{ $i }}</a>
+                    @if ($currentPage > 3)
+                        <a href="{{ $rooms->appends(request()->all())->url(1) }}" class="pagination-page">1</a>
+                        <span class="ellipsis">...</span>
+                    @endif
+
+                    @for ($i = max(1, $currentPage - 1); $i <= min($lastPage, $currentPage + 1); $i++)
+                        @if ($i == $currentPage)
+                            <span class="pagination-page current">{{ $i }}</span>
+                        @else
+                            <a href="{{ $rooms->appends(request()->all())->url($i) }}" class="pagination-page">{{ $i }}</a>
+                        @endif
+                    @endfor
+
+                    @if ($currentPage < $lastPage - 2)
+                        <span class="ellipsis">...</span>
+                        <a href="{{ $rooms->appends(request()->all())->url($lastPage) }}" class="pagination-page">{{ $lastPage }}</a>
+                    @endif
                 @endif
-            @endfor
 
-            @if ($currentPage < $lastPage - 2)
-                <span class="ellipsis">...</span>
-                <a href="{{ $rooms->url($lastPage) }}" class="pagination-page">{{ $lastPage }}</a>
-            @endif
-        @endif
+                @if ($rooms->hasMorePages())
+                    <a href="{{ $rooms->nextPageUrl() }}" class="next">Next</a>
+                @else
+                    <span class="gap">Next</span>
+                @endif
+            </div>
 
-        @if ($rooms->hasMorePages())
-            <a href="{{ $rooms->nextPageUrl() }}" class="next">Next</a>
-        @else
-            <span class="gap">Next</span>
-        @endif
-    </div>
 
-@endsection
+        @endsection
+        <script>
+            document.querySelector('.apply-btn').addEventListener('click', function(event) {
+                event.preventDefault();
+
+                const status = [];
+                document.querySelectorAll('input[type="checkbox"][name="status[]"]:checked').forEach(function(checkbox) {
+                    status.push(checkbox.value);
+                });
+
+                const buildingType = [];
+                document.querySelectorAll('input[type="checkbox"][name="buildingType[]"]:checked').forEach(function(checkbox) {
+                    buildingType.push(checkbox.value);
+                });
+
+                const floorNumber = document.querySelector('select[name="floorNumber"]').value;
+                const roomType = [];
+                document.querySelectorAll('input[type="checkbox"][name="roomType[]"]:checked').forEach(function(checkbox) {
+                    roomType.push(checkbox.value);
+                });
+
+                const price = [];
+                document.querySelectorAll('input[type="checkbox"]:checked').forEach(function(checkbox) {
+                    price.push(checkbox.value);
+                });
+
+                const facilities = [];
+                document.querySelectorAll('input[type="checkbox"]:checked').forEach(function(checkbox) {
+                    facilities.push(checkbox.value);
+                });
+
+                // Lấy giá trị của trang hiện tại nếu có
+                const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
+
+                // Tạo URL với các tham số lọc và trang hiện tại
+                let filterParams = `?status=${status.length ? status.join(',') : ''}&buildingType=${buildingType.length ? buildingType.join(',') : ''}&floorNumber=${floorNumber || ''}&roomType=${roomType.length ? roomType.join(',') : ''}&price=${price.length ? price.join(',') : ''}&facilities=${facilities.length ? facilities.join(',') : ''}&page=${currentPage}`;
+
+                // Thực hiện gửi URL với các tham số lọc
+                window.location.href = `{{ route('students.register-room.list') }}${filterParams}`;
+            });
+
+        </script>
 
 <!-- Modal Filter Popup -->
 <div id="filter-popup" class="filter-popup">
     <div class="filter-popup-content">
+        <form action="{{ route('students.filter-rooms') }}" method="GET">
+            @csrf
         <div class="filter-container">
+            <!-- Thêm hidden input cho room_id -->
+            <input type="hidden" id="room-id-input" name="room_id" value="{{ $room_id ?? '' }}">
+
             <!-- Room Status -->
             <div class="filter-group">
                 <h3>Room Status</h3>
                 <div class="checkbox-list">
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox"  name="status[]" value="1">
                         <span class="checkmark"></span>
                         <span class="label-text">Vacancy</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="status[]" value="2">
                         <span class="checkmark"></span>
                         <span class="label-text">Full</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Building Type -->
             <div class="filter-group">
                 <h3>Building Type</h3>
-                <div class="checkbox-list">
-                    <label class="checkbox-item">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                        <span class="label-text">Male</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                        <span class="label-text">Female</span>
-                    </label>
-                </div>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="{{ auth()->user()->student->gender }}"
+                           name="buildingType[]"
+                           readonly
+                           checked>
+                    <span class="checkmark"></span>
+                    <span class="label-text">
+            {{ ucfirst(auth()->user()->student->gender) }}
+        </span>
+                </label>
             </div>
+
 
             <!-- Floor Number -->
             <div class="filter-group">
                 <h3>Floor Number</h3>
                 <div class="select-wrapper">
-                    <select class="floor-select">
-                        <option value="">Choose a floor</option>
-                        <option value="1">Floor 1</option>
-                        <option value="2">Floor 2</option>
-                        <option value="3">Floor 3</option>
-                        <option value="4">Floor 4</option>
-                        <option value="5">Floor 5</option>
+                    <select name="floorNumber" class="floor-select" >
+                        <option value="" >Choose a floor</option>
+                        @for ($i = 1; $i <= 20; $i++)
+                            <option value="{{ $i }}">Floor {{ $i }}</option>
+                        @endfor
                     </select>
                 </div>
             </div>
@@ -215,102 +263,86 @@
                 <h3>Room Type</h3>
                 <div class="checkbox-list">
                     <label class="checkbox-item">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                        <span class="label-text">1 person</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="roomType[]" value="2">
                         <span class="checkmark"></span>
                         <span class="label-text">2 people</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="roomType[]" value="4">
                         <span class="checkmark"></span>
                         <span class="label-text">4 people</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="roomType[]" value="6">
                         <span class="checkmark"></span>
                         <span class="label-text">6 people</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="roomType[]" value="8">
                         <span class="checkmark"></span>
                         <span class="label-text">8 people</span>
                     </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="roomType[]" value="10">
+                        <span class="checkmark"></span>
+                        <span class="label-text">10 people</span>
+                    </label>
                 </div>
             </div>
+
 
             <!-- Price -->
             <div class="filter-group">
-                <h3>Price</h3>
+                <h3>Price (VNĐ)</h3>
                 <div class="checkbox-list">
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="price[]" value="1">
                         <span class="checkmark"></span>
-                        <span class="label-text">
-                            < 500.000 VND</span>
+                        <span class="label-text"> < 500.000</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="price[]" value="2">
                         <span class="checkmark"></span>
-                        <span class="label-text">
-                            < 1.000.000 VND</span>
+                        <span class="label-text">500.000 - 1.000.000</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="price[]" value="3">
                         <span class="checkmark"></span>
-                        <span class="label-text">
-                            < 2.000.000 VND</span>
+                        <span class="label-text">1.000.000 - 2.000.000</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox">
+                        <input type="checkbox" name="price[]" value="4">
                         <span class="checkmark"></span>
-                        <span class="label-text">
-                            < 3.000.000 VND</span>
+                        <span class="label-text">2.000.000 - 3.000.000</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Facilities -->
+
             <div class="filter-group">
                 <h3>Facilities</h3>
                 <div class="checkbox-list">
-                    <label class="checkbox-item">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                        <span class="label-text">Fridge</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                        <span class="label-text">Washing machine</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                        <span class="label-text">Air-Conditioner</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                        <span class="label-text">Water heater</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                        <span class="label-text">Study desk</span>
-                    </label>
+                    @php
+                        $names = ['air conditioner', 'fridge', 'television', 'water heater'];
+                    @endphp
+
+                    @foreach ($names as $name)
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="facilities[]" value="{{ $name }}">
+                            <span class="checkmark"></span>
+                            <span class="label-text">{{ ucfirst($name) }}</span>
+                        </label>
+                    @endforeach
                 </div>
             </div>
 
             <!-- Button -->
             <div class="button-group">
                 <button type="button" class="btn btn-secondary cancel-btn" onclick="closePopup()">Cancel</button>
-                <button class="btn btn-primary apply-btn">Apply</button>
+                <button type="submit" class="btn btn-primary apply-btn">Apply</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
@@ -337,8 +369,8 @@
             <h2>Room Registration</h2>
         </div>
         <div class="popup-body">
-            <form action="{{ route('register.room') }}" method="POST" id="registration-form"
-                onsubmit="return handleFormSubmit(event)">
+            <form action="{{ route('students.register-room.create') }}" method="POST" id="registration-form"
+                  onsubmit="return handleFormSubmit(event)">
                 @csrf
                 <input type="hidden" id="room-id-input" name="room_id">
 
@@ -487,5 +519,4 @@
         });
     </script>
 @endif
-
 <script src="{{ asset('./javascript/reg_room.js') }}"></script>

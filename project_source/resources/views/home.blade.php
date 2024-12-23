@@ -110,7 +110,7 @@
             <div class="button-wrapper">
                 <button class="button">
                     <i id="icon-search" class="fa-solid fa-magnifying-glass"></i>
-                    <div class="text-wrapper-3">Search</div>
+                    <div class="text-wrapper-3" onclick="window.location.href='/students/room-registration'">Search</div>
                 </button>
             </div>
         </div>

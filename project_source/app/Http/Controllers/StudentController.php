@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asset;
 use App\Models\Invoice;
 use App\Models\Residence;
 use App\Models\Room;
@@ -12,6 +13,7 @@ use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use function Webmozart\Assert\Tests\StaticAnalysis\lower;
 
 class StudentController extends Controller
 {
@@ -27,100 +29,8 @@ class StudentController extends Controller
         //
     }
 
-//    TODO: FIX THIS
-    public function showRoomRenewalForm()
-    {
-//        echo(auth()->id());
-        $residence = Residence::where('stu_user_id', auth()->id())
-            ->where('status', 'Checked in')->orderBy('created_at', 'desc')
-            ->first();
-
-        if (!$residence) {
-            return view('user_student.student.room')->with('error', 'You have not checked in the room, cannot check out!');
-        }
-
-        return view('user_student.student.extension', compact('residence'));
-    }
-
-    public function createRenewalRequest(Request $request)
-    {
-        $oldRequest = \App\Models\Request::where('sender_id', Auth::id())->where('type', 'Renewal')->where('status', 'Pending')->first();
-        if ($oldRequest) {
-            session()->flash('error', [
-                'message' => 'You already have a renewal request pending!',
-            ]);
-            return redirect()->back();
-        }
-        else if (!$request->residence_id){
-            session()->flash('error', [
-                'message' => "You don't have a room to renew!",
-            ]);
-            return redirect()->back();
-        }
-
-        $validatedData = $request->validate([
-            'renewal_period' => 'required|integer',
-            'description' => 'nullable|string',
-        ]);
-
-        if (!$request->receiver_id) {
-            return redirect()->route('students.extend.form')->with('error', 'Manager ID is missing.');
-        }
-
-        $note =  "Renewal Duration: " . $validatedData['renewal_period'] . " months, Description: " . $validatedData['description'];
-
-        $newRequest = \App\Models\Request::create([
-            'sender_id' => Auth::id(),
-            'receiver_id' => $request->receiver_id,
-            'type' => 'Renewal',
-            'note' => $note,
-        ]);
-        if($request->hasFile('image')) {
-            (new ImageController)->saveToRequest($request, $newRequest->id);
-        }
-
-        session()->flash('notification', [
-            'message' => 'You already created a new renewal request!',
-        ]);
-
-        return redirect()->route('dashboard')->with('status', 'Renewal request created successfully!');
-    }
-
-    public function showCheckOutForm()
-    {
-        $user = auth()->user();
-
-        // Lấy thông tin sinh viên từ cơ sở dữ liệu
-        $student = Auth::user()->student;
-
-        // Kiểm tra nếu không có thông tin sinh viên
-        if (!$student) {
-            return view('students.register-room.list', ['message' => 'You do not have a room, register!']);
-        }
-
-        // Lấy thông tin phòng của sinh viên
-        $residence = Residence::where('stu_user_id', $user->id)
-            ->with('room.building')
-            ->first();
 
 
-        if (!$residence) {
-            return redirect()->route('students.register-room.list')->with('error', 'You do not have a room, register!');
-        }
-
-        // Trả về trang checkout với thông tin sinh viên và phòng
-        return view('user_student.student.checkout', compact('student', 'residence'));
-    }
-
-    public function leaveRequest()
-    {
-        // Thực hiện xử lý khi nhấn "Leave" gửi yêu cầu checkout
-
-        // Lưu thông tin yêu cầu checkout vào cơ sở dữ liệu hoặc gửi email thông báo
-
-        // Chuyển hướng về trang checkout và hiển thị thông báo yêu cầu đã được gửi
-        return redirect()->route('students.checkout')->with('message', 'Request sent');
-    }
 
 
     public function showRegisterRoomList()
@@ -153,7 +63,7 @@ class StudentController extends Controller
 
         // Nếu sinh viên không có phòng, chuyển hướng hoặc hiển thị thông báo
         if ($residence) {
-            return view('student.register-room', ['message' => 'You already have a room.']);
+            return view('student.register-room', ['message' => 'You already have a current room.']);
         }
 
         // Trả về trang đăng ký phòng với thông tin sinh viên và phòng
@@ -219,57 +129,6 @@ class StudentController extends Controller
 
     public function registerRoom(Request $request)
     {
-        echo($request);exit;
-        $currentRoom = Room::where('id', $request->roomId)->first();
-        if($currentRoom->member_count >= $currentRoom->type){
-            session()->flash('notification', [
-                'message' => 'Room is full!',
-            ]);
-            return redirect()->back();
-        }
-
-        $validatedData = $request->validate([
-            'dormId' => 'required|integer',
-            'roomId' => 'required|integer',
-            'startDate' => 'required|date',
-            'duration' => 'required|integer',
-            'price' => 'required|numeric',
-        ]);
-
-        $end_date = Residence::calculateEndDate($validatedData['startDate'], $validatedData['duration']);
-
-
-        \App\Models\Residence::create([
-            'stu_user_id' => $validatedData['dormId'],
-            'room_id' => $validatedData['roomId'],
-            'start_date' => $validatedData['startDate'],
-            'duration' => $validatedData['duration'],
-            'end_date' => $end_date,
-        ]);
-
-        \App\Models\Invoice::create([
-            'sender_id' => '1',
-            'object_type' => 'App\Models\User',
-            'object_id' => $validatedData['dormId'],
-            'send_date' => $validatedData['startDate'],
-            'due_date' => now()->addDays(7),
-            'type' => 'Room',
-            'total' => $validatedData['duration'] * $validatedData['price'],
-        ]);
-
-        // Store notification data in session
-        session()->flash('notification', [
-            'message' => 'You had a new room invoice!',
-//            'details' => [
-//                'type' => 'Room',
-//            ],
-        ]);
-
-        return redirect()->route('student.room')->with('success', 'Registered room successfully!.');
-    }
-
-    public function registerRoom2(Request $request)
-    {
         try {
             DB::beginTransaction();
 
@@ -298,6 +157,7 @@ class StudentController extends Controller
                 'start_date' => $validated['check_in_date'],
                 'end_date' => $end_date,
                 'months_duration' => (int) $validated['duration'],
+                'note' => $request->note,
             ]);
 
             if (!$residence) {
@@ -315,7 +175,7 @@ class StudentController extends Controller
                     'start_date' => $validated['check_in_date'],
                     'send_date' => now(),
                     'due_date' => now()->addDays(7),
-                    'type' => 'Room',
+                    'type' => 'Room Registration',
                     'total' => $total,
                     'note' => 'Room registration fee for ' . $room->name,
                 ]);

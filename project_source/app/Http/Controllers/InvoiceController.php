@@ -46,6 +46,7 @@ class InvoiceController extends Controller
         }
 
         $invoices = $invoices->orderBy('id', 'desc')->paginate(8);
+
         if($user->role == 'student') {
             return view('student_payment.payment', ['invoices' => $invoices]);
         } elseif($user->role == 'accountant' || $user->role == 'admin') {
@@ -112,13 +113,25 @@ class InvoiceController extends Controller
     }
 
 
-    public function studentConfirmInvoice(Request $request, $id)
+    public function studentConfirmInvoice(Request $request, Invoice $invoice)
     {
-        Invoice::where('id', $id)->update([
-            'note' => $request->description,
+        $invoice->update([
+            'note' => $invoice->note . ' - Paid by ' . Auth::user()->id . ' - ' . Auth::user()->name . ' - ' . $request->description,
         ]);
 
-        (new ImageController)->saveToInvoice($request, $id);
+        (new ImageController)->saveToInvoice($request, $invoice->id);
+
+        return redirect()->route('showAllInvoices');
+    }
+
+    public function studentReportInvoice(Request $request, Invoice $invoice)
+    {
+        $invoice->update([
+            'status' => 'Reported',
+            'note' => $invoice->note . ' - ' . $request->description,
+        ]);
+
+        (new ImageController)->saveToInvoice($request, $invoice->id);
 
         return redirect()->route('showAllInvoices');
     }
@@ -128,7 +141,7 @@ class InvoiceController extends Controller
         $invoice->update([
             'status' => 'Paid',
             'paid_date' => now(),
-            'note' => $request->description,
+            'note' => $invoice->note . ' - ' . $request->description . ' - Confirmed by ' . Auth::user()->name,
         ]);
 
         if($request->IsDirectPayment == 'direct') {
@@ -142,12 +155,11 @@ class InvoiceController extends Controller
             ]);
         }
 
-        // default: khong co anh khong update
         if($request->hasFile('image')) {
             (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
-        if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room') {
+        if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
             $user = User::find($invoice->object_id);
             $latestResidence = $user->residence()->latest()->first();
             if($latestResidence->status == 'Registered') {
@@ -155,12 +167,17 @@ class InvoiceController extends Controller
                     'status' => 'Paid',
                 ]);
             }
-            else if($latestResidence->status == 'Checked in' && $request->invoice_type == 'Renewal') {
+            else if(($latestResidence->status == 'Checked in'
+                    || $latestResidence->status == 'Renewed'
+                    || $latestResidence->status == 'Changed Room') && $request->invoice_type == 'Renewal') {
                 $oldRequest = $user->sendRequest()->where('status', 'Accepted')->where('type', 'Renewal')->latest()->first();
+                $oldRequest->update([
+                    'status' => 'Resolved',
+                    'note' => $oldRequest->note . ' - Confirmed student paid by ' . Auth::user()->id . ' - ' . Auth::user()->name,
+                ]);
                 $note = $oldRequest->note;
                 preg_match('/\d+/', $note, $matches);
                 $firstNumber = $matches[0] ?? null;
-//                echo($latestResidence->end_date->addMonths((int)$firstNumber));exit;
 
                 if ($firstNumber !== null) {
                     $new_end_date = $latestResidence->end_date->addMonths((int)$firstNumber);

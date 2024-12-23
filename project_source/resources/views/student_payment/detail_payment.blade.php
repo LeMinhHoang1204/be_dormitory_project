@@ -106,7 +106,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('reportInvoice', $invoice->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('studentReportInvoice', $invoice->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="reportDescription" class="form-label">Description</label>
@@ -116,12 +116,13 @@
                         <label for="evidenceUpload" class="form-label">Upload Evidence</label>
                         <input class="form-control" type="file" id="evidenceUpload" accept="image/*" name="image">
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="sendReport">Send</button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="sendReport">Send</button>
-            </div>
+
         </div>
     </div>
 </div>
@@ -157,27 +158,27 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-    $('#sendReport').click(function() {
-        $('#successNotification').fadeIn().delay(1000).fadeOut();
+{{--<script>--}}
+{{--    $(document).ready(function() {--}}
+{{--    $('#sendReport').click(function() {--}}
+{{--        $('#successNotification').fadeIn().delay(1000).fadeOut();--}}
 
-        // An modal
-        $('#reportModal').modal('hide');
-    });
-});
-</script>
+{{--        // An modal--}}
+{{--        $('#reportModal').modal('hide');--}}
+{{--    });--}}
+{{--});--}}
+{{--</script>--}}
 
-<script>
-    $(document).ready(function() {
-        $('#sendConfirm').click(function() {
-            $('#successNotification').fadeIn().delay(1000).fadeOut();
+{{--<script>--}}
+{{--    $(document).ready(function() {--}}
+{{--        $('#sendConfirm').click(function() {--}}
+{{--            $('#successNotification').fadeIn().delay(1000).fadeOut();--}}
 
-            // Hide modal
-            $('#confirmModal').modal('hide');
-        });
-    });
-</script>
+{{--            // Hide modal--}}
+{{--            $('#confirmModal').modal('hide');--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 
 
 <script src="{{ asset('javascript/payment.js') }}"></script>

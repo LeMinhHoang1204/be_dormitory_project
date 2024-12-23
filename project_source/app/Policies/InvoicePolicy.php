@@ -24,7 +24,7 @@ class InvoicePolicy
      */
     public function view(User $user, Invoice $invoice): bool
     {
-            $residence = $user->residence()->orderBy('start_date', 'desc')->first();
+            $residence = $user->residence()->orderBy('created_at', 'desc')->first();
 
             return $user->role === 'admin'
             || $user->role === 'accountant'

@@ -20,7 +20,7 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h2 class="mb-0">Invoice Detail</h2>
+                <h2 class="mb-0">Residence Detail</h2>
             </div>
             <div class="card-body">
                 <h3>Residence Information</h3>
@@ -93,16 +93,16 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-        $('#sendReport').click(function() {
-            $('#successNotification').fadeIn().delay(1000).fadeOut();
+{{--<script>--}}
+{{--    $(document).ready(function() {--}}
+{{--        $('#sendReport').click(function() {--}}
+{{--            $('#successNotification').fadeIn().delay(1000).fadeOut();--}}
 
-            // An modal
-            $('#reportModal').modal('hide');
-        });
-    });
-</script>
+{{--            // An modal--}}
+{{--            $('#reportModal').modal('hide');--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

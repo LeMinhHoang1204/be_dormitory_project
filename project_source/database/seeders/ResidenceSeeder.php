@@ -22,7 +22,7 @@ class ResidenceSeeder extends Seeder
     public function run(): void
     {
         // Lấy tất cả sinh viên nam ngoại trừ sinh viên có id = 3
-        $students = Student::where('id', '!=', 3)->where('gender', 'male')->orderBy('id', 'asc')->limit(2000)->get();
+        $students = Student::where('user_id', '!=', 3)->where('gender', 'male')->orderBy('id', 'asc')->limit(2000)->get();
 
         // Lấy tất cả tòa nam có sẵn
         $maleBuildings = Building::where('type', 'male')->with('hasRooms')->get();
@@ -63,7 +63,7 @@ class ResidenceSeeder extends Seeder
                         'send_date' => $start_date,
                         'due_date' => $start_date->addDays(7),
                         'paid_date' => $start_date,
-                        'type' => 'Room',
+                        'type' => 'Room Registration',
                         'status' => 'Paid',
                         'total' => $room->unit_price * $months_duration,
                         'payment_method' => rand(1, 2) === 1 ? 'Cash' : 'Bank transfer',
@@ -96,7 +96,7 @@ class ResidenceSeeder extends Seeder
         }
 
         // Lấy tất cả sinh viên nu ngoại trừ sinh viên có id = 3
-        $students = Student::where('id', '!=', 3)->where('gender', 'female')->orderBy('id', 'asc')->limit(2000)->get();
+        $students = Student::where('user_id', '!=', 3)->where('gender', 'female')->orderBy('id', 'asc')->limit(2000)->get();
 
         // Lấy tất cả tòa nam có sẵn
         $femaleBuildings = Building::where('type', 'female')->with('hasRooms')->get();
@@ -137,7 +137,7 @@ class ResidenceSeeder extends Seeder
                         'send_date' => $start_date,
                         'due_date' => $start_date->addDays(7),
                         'paid_date' => $start_date,
-                        'type' => 'Room',
+                        'type' => 'Room Registration',
                         'status' => 'Paid',
                         'total' => $room->unit_price * $months_duration,
                         'payment_method' => rand(1, 2) === 1 ? 'Cash' : 'Bank transfer',

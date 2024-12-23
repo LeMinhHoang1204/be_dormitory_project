@@ -32,22 +32,29 @@
             </tr>
             </thead>
             <tbody>
-            @foreach ($residences as $residence)
-                <tr>
-                    <td scope="row">{{ $residence->id }}</td>
-                    <td>{{ $residence->student->id }}</td>
-                    <td>{{ $residence->student->name }}</td>
-                    <td>{{ $residence->room_id }}</td>
-                    <td>{{ $residence->room->member_count }}</td>
-                    <td>{{ $residence->start_date }}</td>
-                    <td>{{ $residence->status }}</td>
-                    <td><a href="{{ route('requests.getDetailCheckInReq', $residence->id) }}" class="btn-task">Check</a></td>
-                </tr>
-            @endforeach
+                @if($residences)
+                    @foreach ($residences as $residence)
+                        <tr>
+                            <td scope="row">{{ $residence->id }}</td>
+                            <td>{{ $residence->student->id }}</td>
+                            <td>{{ $residence->student->name }}</td>
+                            <td>{{ $residence->room_id }}</td>
+                            <td>{{ $residence->room->member_count }}</td>
+                            <td>{{ $residence->start_date }}</td>
+                            <td>{{ $residence->status }}</td>
+                            <td><a href="{{ route('requests.getDetailCheckInReq', $residence->id) }}" class="btn-task">View</a></td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td align="center" colspan="8">No data found</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>
     <div class="d-flex justify-content-center">
-        {{ $residences->links() }}
+        {{$residences ? $residences->links() : ''}}
     </div>
+
 @endsection

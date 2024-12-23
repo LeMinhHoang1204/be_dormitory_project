@@ -60,6 +60,24 @@ class DatabaseSeeder extends Seeder
             'role' => 'accountant',
         ]);
 
+        User::factory()->create([
+            'name' => 'Nam Nguyen',
+            'email' => '22521516@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'building manager',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Lê Minh Trí',
+            'email' => '22520465@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'student',
+        ]);
+
 
 
         $this->call([
@@ -101,11 +119,12 @@ class DatabaseSeeder extends Seeder
             'send_date' => Carbon::create(2024, 9, 1),
             'due_date' => Carbon::create(2024, 9, 1)->addDays(7),
             'paid_date' => Carbon::create(2024, 9, 1)->addDays(3),
-            'type' => 'Room',
+            'type' => 'Room Registration',
             'status' => 'Paid',
             'total' => 1000000 * 6,
             'payment_method' => rand(1, 2) === 1 ? 'Cash' : 'Bank transfer',
             'note' => 'Invoice test',
         ]);
+
     }
 }

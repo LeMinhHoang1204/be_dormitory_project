@@ -140,9 +140,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <input type="radio" name="IsDirectPayment" value="direct" required>
+                        <input type="radio" name="IsDirectPayment" value="direct" checked>
                         <label for="reportDescription" class="form-label">Direct Payment</label>
-                        <input type="radio" name="IsDirectPayment" value="indirect">
+                        <input type="radio" name="IsDirectPayment" value="indirect" {{$invoice->evidence_image ? 'checked' : ''}}>
                         <label for="reportDescription" class="form-label">Indirect Payment</label>
                     </div>
 

@@ -104,11 +104,13 @@
                 </a>
                 <ul class="submenu">
                     <li><a href="{{ url('/students/my-room') }}">My room</a></li>
+
                     <li><a href="{{ url('/students/room-registration') }}">Register</a></li>
-                    <li><a href="/students/requests/repair-room">Repair</a></li>
-                    <li><a href="/students/requests/change-room">Change</a></li>
-                    <li><a href="/students/requests/renew">Renew</a></li>
-                    <li><a href="/students/requests/checkout">Check out</a></li>
+
+                    <li><a href="/students/repair-request">Repair</a></li>
+                    <li><a href="#">Change</a></li>
+                    <li><a href="/students/renew">Extension</a></li>
+                    <li><a href="/students/checkout">Check-out</a></li>
                 </ul>
             </li>
             <li class="menu-item">

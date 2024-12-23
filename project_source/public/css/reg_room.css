@@ -23,20 +23,8 @@ body {
     padding: 20px 0px;
     margin: 0 auto;
     max-width: 1200px;
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 40px auto 20px auto;
-    max-width: 1200px;
-}
-
-.header-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .room-item {
@@ -146,16 +134,6 @@ body {
 }
 
 /* filter button */
-.filter-container {
-    background: white;
-    padding: 24px;
-    border-radius: 24px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
 
 .filter-popup {
     display: none;
@@ -213,7 +191,7 @@ body {
 }
 
 .filter-group h3::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     width: 16px;
@@ -223,7 +201,7 @@ body {
 }
 
 .filter-group h3::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 4px;
     width: 8px;
@@ -372,34 +350,16 @@ body {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
         padding: 20px;
+        margin: 0 20px;
     }
 }
 
 @media (max-width: 640px) {
     .grid-container {
         grid-template-columns: 1fr;
+        padding: 20px;
+        margin: 0 20px;
     }
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.search-input {
-    padding: 8px 16px;
-    border: 2px solid #cbd4f3;
-    border-radius: 10px;
-    font-size: 0.875rem;
-    outline: none;
-    width: 300px;
-    height: 42px;
-    box-sizing: border-box;
-}
-
-.search-input:hover {
-    border-color: #2563eb;
 }
 
 @media (max-width: 1024px) {
@@ -411,30 +371,6 @@ body {
     .grid-container {
         padding: 20px;
     }
-}
-
-.filter-icon {
-    background: white;
-    padding: 8px;
-    border-radius: 10px;
-    cursor: pointer;
-    border: 2px solid #cbd4f3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    height: 42px;
-    width: 42px;
-}
-
-.filter-icon i {
-    font-size: 20px;
-    color: #757575;
-}
-
-.filter-icon:hover {
-    background: #f3f4f6;
-    border-color: #2563eb;
 }
 
 /* Register popup styling */
@@ -469,7 +405,6 @@ body {
     margin-top: 80px;
 }
 
-
 .register-popup-content h2 {
     color: #0e3b9c;
     font-size: 1.75rem;
@@ -479,8 +414,6 @@ body {
     padding-bottom: 12px;
 }
 
-
-
 #confirm-register-modal .register-popup-content {
     max-width: 500px;
     padding: 40px;
@@ -488,7 +421,7 @@ body {
 
 .room-info-display {
     border-bottom: 1px solid #e5e7eb;
-    margin:24px 0;
+    margin: 24px 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;

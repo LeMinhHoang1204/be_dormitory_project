@@ -41,7 +41,7 @@ class StudentController extends Controller
             ->whereHas('building', function ($query) {
                 $query->where('type', auth()->user()->student->gender);
             })
-            ->paginate(9);
+            ->paginate(6);
 
         return view('Reg_room.reg_room', compact('rooms'));
     }

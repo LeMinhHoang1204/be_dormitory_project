@@ -62,7 +62,7 @@
                                         <i class="fas fa-users"></i>
                                         <div class="info-content">
                                             <label>Member</label>
-                                            <span>{{ $room->member_number }} members</span>
+                                            <span>{{ $room->member_count }} count</span>
                                         </div>
                                     </div>
                                 </div>

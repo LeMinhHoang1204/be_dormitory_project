@@ -37,6 +37,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             const error = @json(session('error'));
             // Display the notification
+            console.log(error.message);
             toastr.warning(
                 `${error.message}`
             );
@@ -111,7 +112,7 @@
                 <input class="form-control" type="file" id="confirmEvidenceUpload" accept="image/*" name="image">
             </div>
 
-            <input type="hidden" name="receiver_id" value="{{ $residence->room->building->managedBy->user_id }}">
+            <input type="hidden" name="receiver_id" value="{{ $residence->room->building->managedBy->user_id ?? 1 }}">
             <input type="hidden" name="residence_id" value="{{ $residence->id }}">
             <div class="section">
                 <button class="btn-complete">Send</button>

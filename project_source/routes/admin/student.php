@@ -5,6 +5,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\StudentController;
+use App\Models\Room;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
@@ -12,8 +13,12 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('/students')->group(function () {
 
+        // my room
+        Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room')->can('roomHistory', Room::class);
+
         // register room
         Route::prefix('/room-registration')->group(function () {
+
             Route::get('/rooms', [StudentController::class, 'fetchRoomsForStudent'])->name('students.rooms');
 
             Route::get('/rooms/{room}', [StudentController::class, 'getRoomDataforStudent'])->name('students.rooms');
@@ -24,7 +29,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/', [StudentController::class, 'showRegisterRoomList'])->name('students.register-room.list')->can('registerRoom', Student::class);
 
-            Route::post('/', [StudentController::class, 'registerRoom2'])->name('students.register-room.create')->can('registerRoom', Student::class);
+            Route::post('/', [StudentController::class, 'registerRoom'])->name('students.register-room.create')->can('registerRoom', Student::class);
 
         });
 
@@ -34,32 +39,36 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/detail/{invoice}', [InvoiceController::class, 'showDetail'])->name('detailInvoice')->can('view', 'invoice');
 
-            Route::post('/detail/confirm/{id}', [InvoiceController::class, 'studentConfirmInvoice'])->name('studentConfirmInvoice');
+            Route::post('/detail/confirm/{invoice}', [InvoiceController::class, 'studentConfirmInvoice'])->name('studentConfirmInvoice');
 
-            Route::get('/detail/report/{id}', [InvoiceController::class, 'reportInvoice'])->name('reportInvoice')->can('view', 'invoice');
+            Route::post('/detail/report/{invoice}', [InvoiceController::class, 'studentReportInvoice'])->name('studentReportInvoice')->can('view', 'invoice');
 
         });
 
         // request
         Route::prefix('/requests')->group(function () {
+
             Route::get('/', [RequestController::class, 'index'])->name('requests.index')->can('viewAny', \App\Models\Request::class);
 
-            Route::get('/repair-request', [StudentController::class, 'showRepairRequestForm'])->name('students.repair-request');
+            Route::get('/detail/{request}', [RequestController::class, 'show'])->name('studentDetailRequest')->can('view', 'request');
 
-            Route::post('/repair-request', [StudentController::class, 'createRepairRequest'])->name('students.repair-request.store');
+            Route::get('/repair-room', [RequestController::class, 'showRepairRequestForm'])->name('students.repair-request');
 
-            Route::get('/renew', [StudentController::class, 'showRoomRenewalForm'])->name('students.extend');
+            Route::post('/repair-room', [RequestController::class, 'createRepairRequest'])->name('students.repair-request.store');
 
-            Route::post('/renew', [StudentController::class, 'createRenewalRequest'])->name('students.extend.store');
+            Route::get('/renew', [RequestController::class, 'showRoomRenewalForm'])->name('students.extend');
 
-            Route::get('/checkout', [StudentController::class, 'showCheckOutForm'])->name('students.checkout');
+            Route::post('/renew', [RequestController::class, 'createRenewalRequest'])->name('students.extend.store');
 
-            Route::post('/leave', [StudentController::class, 'leaveRequest'])->name('students.leave');
+            Route::get('/checkout', [RequestController::class, 'showCheckOutForm'])->name('students.checkout');
+
+            Route::post('/checkout/{residence}', [RequestController::class, 'leaveRequest'])->name('students.leave');
+
+            Route::get('/change-room', [RequestController::class, 'showChangeRequestForm'])->name('students.change-room-request');
+
+            Route::post('/change-room', [RequestController::class, 'createChangeRoomRequest'])->name('students.change-room-store');
 
         });
-
-
-        Route::get('/my-room', [ResidenceController::class, 'myRoom'])->name('student.room');
 
 
         Route::get('/my_profile', [StudentController::class, 'showProfile'])->name('student.profile');

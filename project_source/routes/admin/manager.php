@@ -14,11 +14,11 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/detail/accept/{id}', [RequestController::class, 'acceptCheckIn'])->name('requests.acceptCheckIn')->can('viewAcceptRejectTransferCheckInReq', \App\Models\Request::class);
 
-        Route::post('/detail/reject/{id}', [RequestController::class, 'rejectCheckIn'])->name('requests.rejectCheckIn')->can('viewAcceptRejectTransferCheckInReq', \App\Models\Request::class);
+        Route::post('/detail/reject/{residence}', [RequestController::class, 'rejectCheckIn'])->name('requests.rejectCheckIn')->can('viewAcceptRejectTransferCheckInReq', \App\Models\Request::class);
 
-        Route::get('/tranfer-room/{id}', [RequestController::class, 'getTransferCheckInReq'])->name('requests.getTransferCheckInReq')->can('viewAcceptRejectTransferCheckInReq', \App\Models\Request::class);
+        Route::get('/tranfer-room/{residence}', [RequestController::class, 'getTransferCheckInReq'])->name('requests.getTransferCheckInReq')->can('viewAcceptRejectTransferCheckInReq', \App\Models\Request::class);
 
-        Route::post('/tranfer-room/{id}', [RequestController::class, 'acceptTransferCheckInReq'])->name('requests.acceptTransferCheckInReq')->can('viewAcceptRejectTransferCheckInReq', \App\Models\Request::class);
+        Route::post('/tranfer-room/{residence}', [RequestController::class, 'acceptTransferCheckInReq'])->name('requests.acceptTransferCheckInReq')->can('viewAcceptRejectTransferCheckInReq', \App\Models\Request::class);
 
     });
 
@@ -27,15 +27,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', [RequestController::class, 'index'])->name('requests.index')->can('viewAny', \App\Models\Request::class);
 
-//        Route::get('/create', [RequestController::class, 'create'])->name('requests.create')->can('create', \App\Models\Request::class);
-//
-//        Route::post('/create', [RequestController::class, 'store'])->name('requests.store')->can('create', \App\Models\Request::class);
-
         Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show')->can('view', 'request');
-
-//        Route::get('/edit/{request}', [RequestController::class, 'edit'])->name('requests.edit')->can('update', 'request');
-//
-//        Route::post('/edit/{request}', [RequestController::class, 'update'])->name('requests.update')->can('update', 'request');
 
         Route::delete('/delete/{request}', [RequestController::class, 'destroy'])->name('requests.destroy')->can('delete', 'request');
 

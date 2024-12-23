@@ -63,4 +63,9 @@ class RoomPolicy
     {
         return false;
     }
+
+    public function roomHistory(User $user)
+    {
+        return $user->role == 'student';
+    }
 }

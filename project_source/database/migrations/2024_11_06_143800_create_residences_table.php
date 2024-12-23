@@ -21,8 +21,8 @@ return new class extends Migration
             $table->integer('months_duration');
             $table->dateTime('end_date');
             $table->dateTime('check_out_date')->nullable();
-            $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Rejected', 'Refunded', 'Transfered', 'Checked out', 'Renewed', 'Changed Room'])->default('Registered');
-            $table->string('note', 200)->nullable();
+            $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Renewed', 'Changed Room', 'Checked out', 'Rejected', 'Refunded', 'Transfered'])->default('Registered');
+            $table->string('note')->nullable();
 
             $table->unique(['stu_user_id', 'room_id', 'start_date']);
             $table->foreign('stu_user_id')->references('id')->on('users')->onDelete('cascade');

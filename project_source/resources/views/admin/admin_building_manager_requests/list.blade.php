@@ -48,12 +48,16 @@
                                     &#x22EE;
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="{{ route('requests.show', $request->id) }}">View Details</a>
-                                    <a class="dropdown-item" href="{{ route('requests.accept', $request->id) }}">Accept</a>
-                                    <a class="dropdown-item" href="{{ route('requests.reject', $request->id) }}">Reject</a>
+                                        <a class="dropdown-item" href="{{ Auth::user()->role == 'student'
+                                            ? route('studentDetailRequest', $request->id ) : (Auth::user()->role != 'accountant'
+                                            ? route('requests.show', $request->id ) : route('accountantDetailRequest', $request->id )) }}">View Details</a>                                    @if(Auth::user()->role != 'student')
+                                        <a class="dropdown-item" href="{{ route('requests.accept', $request->id) }}">Accept</a>
+                                        <a class="dropdown-item" href="{{ route('requests.reject', $request->id) }}">Reject</a>
+                                    @endif
                                 </div>
                             </div>
                         </td>
+
                     </tr>
                 @empty
                     <tr>

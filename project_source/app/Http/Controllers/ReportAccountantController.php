@@ -15,17 +15,6 @@ class ReportAccountantController extends Controller
 {
     public function index(Request $request)
     {
-//        echo($request);
-//        echo($request->building);
-//        echo($request->receiptType);
-//        $type = '';
-//       if ($request->has('receiptType')) {
-//            $type = implode('', (array) $request->receiptType);
-//        }
-//        echo($type);
-//
-//        exit;
-
 //        $Auth = Auth()->user();
 //        if ($Auth->role == 'student') {
 //            return redirect()->route('report_student.studentIndex');
@@ -43,9 +32,9 @@ class ReportAccountantController extends Controller
 
         $buildings = Building::pluck('build_name')->unique();
 
-        $receiptStatus = Invoice::pluck('status')->unique();
+        $receiptStatus = Invoice::pluck('invoices.status')->unique();
 
-        $receiptsType = Invoice::pluck('type')->unique();
+        $receiptsType = Invoice::pluck('invoices.type')->unique();
 
         $schools = Student::pluck('uni_name')->unique();
 
@@ -55,7 +44,10 @@ class ReportAccountantController extends Controller
 
         $totalByBuilding = $this->getTotalByBuilding($request);
 
-//        echo($request->floor); exit;
+        $sendStartDate = $request->sendDateStart;
+        $sendEndDate = $request->sendDateEnd;
+        $dueStartDate = $request->dueDateStart;
+        $dueEndDate = $request->dueDateEnd;
 
         $reportData = [
             'total' => $total,
@@ -66,9 +58,12 @@ class ReportAccountantController extends Controller
             'totalByReceiptType' => $totalByReceiptType,
             'totalByMonth' => $totalByMonth,
             'totalByBuilding' => $totalByBuilding,
+            'sendDateStart' => $sendStartDate,
+            'sendDateEnd' => $sendEndDate,
+            'dueDateStart' => $dueStartDate,
+            'dueDateEnd' => $dueEndDate,
         ];
 
-//        $reportData = $query;
         return view('Report.report_accountant', compact('reportData'));
     }
 
@@ -107,8 +102,6 @@ class ReportAccountantController extends Controller
 
     public function queryCondition (Request $request, $query)
     {
-
-
         if ($request->has('building') && !empty($request->building)) {
             if (is_string($request->building)) {
                 // Nếu là chuỗi, chuyển thành mảng
@@ -148,6 +141,16 @@ class ReportAccountantController extends Controller
         }
         if ($request->has('receiptType') && !empty($request->receiptType)) {
             $query->whereIn('invoices.type', (array) $request->receiptType);
+        }
+        if($request->has('sendDateStart') || $request->has('sendDateStart')) {
+            $startDate = $request->sendDateStart == '' ? '1900-01-01' : $request->sendDateStart;
+            $endDate = $request->sendDateEnd == '' ? '2100-01-01' : $request->sendDateEnd;
+            $query->whereBetween('send_date', [$startDate, $endDate]);
+        }
+        if($request->has('dueDateStart') || $request->has('dueDateStart')) {
+            $startDate = $request->dueDateStart == '' ? '1900-01-01' : $request->dueDateStart;
+            $endDate = $request->dueDateEnd == '' ? '2100-01-01' : $request->dueDateEnd;
+            $query->whereBetween('due_date', [$startDate, $endDate]);
         }
     }
 
@@ -197,6 +200,8 @@ class ReportAccountantController extends Controller
         }
         return collect($result);
     }
+
+
     public function getTotalByBuilding(Request $request)
     {
         $queries = $this->queryJoined();
@@ -224,66 +229,107 @@ class ReportAccountantController extends Controller
         $user = auth()->user();
         $id = $user->id;
 
-        $receiptStatus = Invoice::pluck('status')->unique();
+        //for filter
+        $receiptStatus = Invoice::pluck('invoices.status')->unique();
 
-        $receiptsType = Invoice::pluck('type')->unique();
+        $receiptsType = Invoice::pluck('invoices.type')->unique();
 
+        //For chart
         $queryUser = Invoice::where('object_id', $id)->where('object_type', 'App\Models\User');
         $queryRoom = Invoice::join('rooms', function ($join) {
-            $join->on('invoices.object_id', '=', 'rooms.id')
-                ->where('invoices.object_type', '=', 'App\Models\Room');
+            $join->on('invoices.object_id', '=', 'rooms.id');
         })
             ->join('residences', 'rooms.id', '=', 'residences.room_id')
-            ->join('students', 'residences.stu_user_id', '=', 'students.id')
-            ->where('students.user_id', $id);
+            ->where('residences.stu_user_id', $id);
 
         $total = $queryUser->count() + $queryRoom->count();
 
-        $room = $queryRoom->select('rooms.name');
+        //create clone for get room name
+        $qr = clone $queryRoom;
+        $room = $qr->select('rooms.name');
         if (!$room->exists()) {
             $room = '';
-        } else {
+        }
+        else {
             $room = $room->first()->name;
         }
 
-        $receiptsTypeUser = $queryUser->select('type', DB::raw('SUM(total) as total_amount'))
-            ->groupBy('type')
-            ->pluck('total_amount', 'type')->toArray();
-        $receiptsTypeRoom = $queryRoom->select('invoices.type', DB::raw('SUM(total) as total_amount'))
-            ->groupBy('invoices.type')
-            ->pluck('total_amount', 'type')->toArray();
 
-        $totalByReceiptType = $this->mergeAndSumArrays($receiptsTypeUser, $receiptsTypeRoom);
+        $result = [];
 
-//        $totalTypePerMonth = $queryUser->select(DB::raw('MONTH(send_date) as month'), 'type', DB::raw('SUM(total) as total_amount'))
-//            ->groupBy(DB::raw('MONTH(send_date)'), 'type')
-//            ->pluck('total_amount', 'month', 'type')->toArray();
-
-        $queryResult = $queryUser->select( DB::raw('MONTH(send_date) as month'), 'type',
-            DB::raw('SUM(total) as total_amount')
-        )
-            ->groupBy(DB::raw('MONTH(send_date)'), 'type')
-            ->get();
-
-//        echo($queryResult); exit;
-
-        $totalTypePerMonth = [];
-        foreach ($queryResult as $row) {
-            $type = $row->type;
-            $month = $row->month;
-            $total_amount = $row->total_amount;
-
-            if (!isset($totalTypePerMonth[$type])) {
-                $totalTypePerMonth[$type] = array_fill(0, 12, 0);
+        $i=0;
+        foreach ([$queryUser, $queryRoom] as $q) {
+            if($request->has('receiptType') && !empty($request->receiptType)) {
+                $q->whereIn('invoices.type', (array) $request->receiptType);
             }
-            if(isset($totalTypePerMonth[$type][$month])) {
-                $total_invoice = $totalTypePerMonth[$type][$month] + $total_amount;
-            } else {
-                $total_invoice = $total_amount;
+            if($request->has('receiptStatus') && !empty($request->receiptStatus)) {
+                $q->whereIn('invoices.status', (array) $request->receiptStatus);
+            }
+            if($request->has('sendDateStart') || $request->has('sendDateStart')) {
+                $startDate = $request->sendDateStart == '' ? '1900-01-01' : $request->sendDateStart;
+                $endDate = $request->sendDateEnd == '' ? '2100-01-01' : $request->sendDateEnd;
+                $q->whereBetween('send_date', [$startDate, $endDate]);
+            }
+            if($request->has('dueDateStart') || $request->has('dueDateStart')) {
+                $startDate = $request->dueDateStart == '' ? '1900-01-01' : $request->dueDateStart;
+                $endDate = $request->dueDateEnd == '' ? '2100-01-01' : $request->dueDateEnd;
+                $q->whereBetween('due_date', [$startDate, $endDate]);
+            }
+            $result[$i++] = $q->select('invoices.type', DB::raw('SUM(total) as total_amount'))
+                ->groupBy('invoices.type')
+                ->pluck('total_amount', 'invoices.type');
+
+        }
+        $totalByReceiptType = $this->mergeAndSumArrays($result[0]->toArray(), $result[1]->toArray());
+
+
+//        $totalTypePerMonth = $queryUser->select(DB::raw('MONTH(send_date) as month'), 'invoices.type', DB::raw('SUM(total) as total_amount'))
+//            ->groupBy(DB::raw('MONTH(send_date)'), 'invoices.type')
+//            ->pluck('total_amount', 'month', 'invoices.type')->toArray();
+        $i=0;
+        $queryResult = [];
+        $totalTypePerMonth = [];
+        foreach ([$queryUser, $queryRoom] as $q) {
+            if($request->has('receiptType') && !empty($request->receiptType)) {
+                $q->whereIn('invoices.type', (array) $request->receiptType);
+            }
+            if($request->has('receiptStatus') && !empty($request->receiptStatus)) {
+                $q->whereIn('invoices.status', (array) $request->receiptStatus);
+            }
+            if($request->has('sendDateStart') || $request->has('sendDateStart')) {
+                $startDate = $request->sendDateStart == '' ? '1900-01-01' : $request->sendDateStart;
+                $endDate = $request->sendDateEnd == '' ? '2100-01-01' : $request->sendDateEnd;
+                $q->whereBetween('send_date', [$startDate, $endDate]);
+            }
+            if($request->has('dueDateStart') || $request->has('dueDateStart')) {
+                $startDate = $request->dueDateStart == '' ? '1900-01-01' : $request->dueDateStart;
+                $endDate = $request->dueDateEnd == '' ? '2100-01-01' : $request->dueDateEnd;
+                $q->whereBetween('due_date', [$startDate, $endDate]);
+            }
+            $result = $q->select( DB::raw('MONTH(send_date) as month'), 'invoices.type',
+                DB::raw('SUM(total) as total_amount')
+            )
+                ->groupBy('month', 'invoices.type')
+                ->get();
+
+            foreach ($result as $row) {
+                $month = $row->month;
+                $type = $row->type;
+                $total_amount = $row->total_amount;
+
+                if (!isset($totalTypePerMonth[$type])) {
+                    $totalTypePerMonth[$type] = array_fill(0, 12, 0);
+                }
+                if(isset($totalTypePerMonth[$type][$month-1])) {
+                    $totalTypePerMonth[$type][$month-1] = $totalTypePerMonth[$type][$month-1] + $total_amount;
+                }
             }
         }
 
-
+        $sendStartDate = $request->sendDateStart;
+        $sendEndDate = $request->sendDateEnd;
+        $dueStartDate = $request->dueDateStart;
+        $dueEndDate = $request->dueDateEnd;
 
         $reportData = [
             'total' => $total,
@@ -293,6 +339,10 @@ class ReportAccountantController extends Controller
             'receiptsType' => $receiptsType,
             'totalByReceiptType' => $totalByReceiptType,
             'totalTypePerMonth' => $totalTypePerMonth,
+            'sendDateStart' => $sendStartDate,
+            'sendDateEnd' => $sendEndDate,
+            'dueDateStart' => $dueStartDate,
+            'dueDateEnd' => $dueEndDate,
             ];
         return view('Report.report_student', compact('reportData'));
     }

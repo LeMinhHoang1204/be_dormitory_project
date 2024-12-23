@@ -32,14 +32,6 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
-    // Route trang yêu cầu sửa chữa
-    Route::get('/student/repair-request', [RoomController::class, 'repairRequest'])->name('repair-request');
-    // Route gửi yêu cầu sửa chữa
-    Route::post('/student/repair-request', [RoomController::class, 'storeRepairRequest'])->name('repair-request.store');
-});
-
-
 
 
 // Display roomInfor
@@ -61,13 +53,12 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';
 require __DIR__ . '/admin/building-room-residence.php';
 require __DIR__ . '/admin/student.php';
+require __DIR__ . '/admin/accountant.php';
+
 require __DIR__ . '/admin/activity.php';
-require __DIR__ . '/admin/asset.php';
 require __DIR__ . '/admin/invoice.php';
-require __DIR__ . '/admin/request.php';
 require __DIR__ . '/admin/my_profile.php';
 require __DIR__ . '/admin/manager.php';
-require __DIR__ . '/admin/accountant.php';
 require __DIR__ . '/admin/report.php';
 
 

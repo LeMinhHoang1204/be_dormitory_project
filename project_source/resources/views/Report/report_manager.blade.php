@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="{{ asset('css/Report/Report.css') }}" type="text/css">
     <script>
         const receiptInfo = [{
-            dormStuId: {{ $reportData['id'] }},
-            room: '{{ $reportData['room'] }}',
+            userId: {{ $reportData['id'] }},
+            building: '{{ $reportData['building'] }}',
             total: {{ $reportData['total'] }},
             receiptsType: {!! json_encode(collect($reportData['totalByReceiptType'])->keys()->toArray()) !!},
             sendDateStart: "{{ $reportData['sendDateStart'] }}",
@@ -17,8 +17,8 @@
 
         function createReceiptInfo(receipt) {
             let receiptHtml = `
-                <p>Dorm Stu ID: ${receipt.dormStuId}</p>
-                <p>Room: ${receipt.room}</p>
+                <p>User ID: ${receipt.userId}</p>
+                <p>Building: ${receipt.building}</p>
                 <p class="receipt-total">Total: ${receipt.total}</p>
                 <p class="receipt-type">Type: ${receipt.receiptsType}</p>
             `;
@@ -240,7 +240,7 @@
     <div id="filter-popup" class="popup hidden" onclick="closePanel(event)">
         <div class="popup-content">
             <h2>Filter</h2>
-            <form action="{{ route('report_student.studentIndex') }}" method="GET">
+            <form action="{{ route('report_manager.managerIndex') }}" method="GET">
                 <div class="form-group-row">
                     <div class="form-group-stu">
                         <label for="receiptType">Receipt type:</label>

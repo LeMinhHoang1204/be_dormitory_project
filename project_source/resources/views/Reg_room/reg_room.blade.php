@@ -1269,19 +1269,21 @@
                 </div>
             </div>
 
-            <!-- Building Type -->
             <div class="filter-group">
                 <h3>Building Type</h3>
-                <label class="checkbox-item">
-                    <input type="checkbox" value="male" name="buildingType[]">
-                    <span class="checkmark"></span>
-                    <span class="label-text">Male</span>
-                </label>
-                <label class="checkbox-item">
-                    <input type="checkbox" value="female" name="buildingType[]">
-                    <span class="checkmark"></span>
-                    <span class="label-text">Female</span>
-                </label>
+                @if (auth()->user()->student->gender === 'male')
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="male" name="buildingType[]" readonly >
+                        <span class="checkmark"></span>
+                        <span class="label-text">Male</span>
+                    </label>
+                @elseif (auth()->user()->student->gender === 'female')
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="female" name="buildingType[]" readonly >
+                        <span class="checkmark"></span>
+                        <span class="label-text">Female</span>
+                    </label>
+                @endif
             </div>
 
             <!-- Floor Number -->

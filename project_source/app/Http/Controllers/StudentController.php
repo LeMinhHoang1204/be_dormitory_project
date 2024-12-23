@@ -37,10 +37,17 @@ class StudentController extends Controller
     {
         $searchTerm = $request->input('search');
 
-        $rooms = Room::with('hasRoomAssets.asset');
-          if ($searchTerm) {
-              $rooms = $rooms->where('name', 'like', '%' . $searchTerm . '%');
-          }
+        $rooms = Room::with('hasRoomAssets.asset')
+            ->where('status', 1)
+            ->whereColumn('member_count', '<', 'type')
+            ->whereHas('building', function ($query) {
+                $query->where('type', auth()->user()->student->gender);
+            });
+
+        if ($searchTerm) {
+            $rooms->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
         $rooms = $rooms->paginate(9)->appends(['search' => $searchTerm]);
 
         return view('Reg_room.reg_room', compact('rooms'));

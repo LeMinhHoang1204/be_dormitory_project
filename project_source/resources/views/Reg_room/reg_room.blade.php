@@ -59,9 +59,9 @@
     <div class="container">
         <x-header-search title="Room Registration" />
         <div class="residence-container">
-            <a href="{{ asset('./pdf/mau-xac-nhan-thong-tin-ve-cu-tru-ct-07_0112100225.pdf') }}" target="_blank">
-                <i class="ti ti-file-description"></i>
-                Residence confirmation
+            <a href="{{ asset('./pdf/mau-xac-nhan-thong-tin-ve-cu-tru-ct-07_0112100225.pdf') }}" class="residence-link" target="_blank">
+                <i class="ti ti-id-badge"></i>
+                Residence Confirmation
             </a>
         </div>
     </div>
@@ -104,7 +104,6 @@
         @endforeach
     </div>
     </div>
-
 
 
     <!-- Pagination -->

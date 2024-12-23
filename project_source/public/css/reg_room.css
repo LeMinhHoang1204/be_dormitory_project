@@ -350,27 +350,128 @@ body {
 @media (max-width: 1024px) {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
-        padding: 20px;
-        margin: 0 20px;
+        padding: 16px;
+        margin: 0 16px;
+    }
+
+    .title {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 12px;
+        margin: 0 12px;
+    }
+
+    .room-item-group {
+        padding: 16px;
+    }
+
+    .roomname {
+        font-size: 1.1rem;
+    }
+
+    .price {
+        font-size: 1rem;
+    }
+
+    .room-info {
+        font-size: 0.9rem;
+    }
+
+    .detail-item {
+        font-size: 0.65rem;
     }
 }
 
 @media (max-width: 640px) {
     .grid-container {
         grid-template-columns: 1fr;
+        padding: 12px;
+        margin: 0 12px;
+    }
+
+    /* Improve register popup on mobile */
+    .register-popup-content {
         padding: 20px;
-        margin: 0 20px;
+        margin-top: 40px;
+    }
+
+    .register-popup-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+    }
+
+    .form-fields-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .info-column {
+        gap: 12px;
+    }
+
+    /* Improve payment info display on mobile */
+    .payment-info {
+        padding: 16px;
+    }
+
+    .bank-details {
+        padding: 12px;
+    }
+
+    .info-row {
+        flex-direction: column;
+        gap: 4px;
+        padding: 6px 0;
+    }
+
+    .info-row .label,
+    .info-row .value {
+        font-size: 0.9rem;
+    }
+
+    /* Adjust buttons on mobile */
+    .button-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .button-group button {
+        width: 100%;
+        padding: 10px 16px;
+    }
+
+    /* Adjust pagination on mobile */
+    .pagination {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .pagination a,
+    .pagination span {
+        padding: 6px 12px;
+        font-size: 0.9rem;
     }
 }
 
-@media (max-width: 1024px) {
-    .header-container {
-        padding: 0 20px;
-        margin: 40px 20px 20px 20px;
+/* Add better touch targets for mobile */
+@media (hover: none) {
+    .room-item,
+    .checkbox-item,
+    .btn,
+    .pagination a {
+        cursor: default;
     }
 
-    .grid-container {
-        padding: 20px;
+    .checkbox-item,
+    .btn {
+        min-height: 44px; /* Minimum touch target size */
     }
 }
 
@@ -852,4 +953,26 @@ body {
 
 .button-group button {
     padding: 8px 20px;
+}
+
+
+/* Residence confirmation */
+.residence-container {
+    display: flex;
+    gap: 5px;
+}
+
+.residence-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #387F39;
+}
+
+.residence-link:hover {
+    color: #285A28;
+    transform: translateY(-1px);
+    text-decoration: none;
 }

@@ -58,6 +58,12 @@
     @include('layouts.sidebar_student')
     <div class="container">
         <x-header-search title="Room Registration" />
+        <div class="residence-container">
+            <a href="{{ asset('./pdf/mau-xac-nhan-thong-tin-ve-cu-tru-ct-07_0112100225.pdf') }}" target="_blank">
+                <i class="ti ti-file-description"></i>
+                Residence confirmation
+            </a>
+        </div>
     </div>
 
     <div class="grid-container" id="room-list">

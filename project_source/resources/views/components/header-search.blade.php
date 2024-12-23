@@ -14,13 +14,12 @@
         </div>
 
         {{-- Search bar --}}
-        <div class="search-bar">
-            <input type="text"
-                placeholder="Search {{ strtolower($title) }}..."
-                class="search-input"
-                onkeyup="handleSearchKeyup(event)"
-                autocomplete="off"
-                aria-label="Search {{ strtolower($title) }}">
+        <div class="search-bar" style="margin-bottom: -15px">
+            <form method="GET" action="{{ route('students.register-room.list') }}">
+                <input type="text" name="search" value="{{ request('search') }}"
+                       placeholder="Search rooms..." class="search-input"
+                       aria-label="Search rooms">
+            </form>
         </div>
     </div>
 </div>

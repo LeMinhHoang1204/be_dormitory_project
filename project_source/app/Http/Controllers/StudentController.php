@@ -28,11 +28,6 @@ class StudentController extends Controller
     {
         //
     }
-
-
-
-
-
     public function showRegisterRoomList(Request $request)
     {
         $searchTerm = $request->input('search');
@@ -54,18 +49,14 @@ class StudentController extends Controller
     }
     public function showFilteredRoomList(Request $request)
     {
-        $query = Room::with('hasRoomAssets.asset');
+        $query = Room::with('hasRoomAssets.asset')
+            ->whereHas('building', function ($query) {
+                $query->where('type',  auth()->user()->student->gender); // Chỉ lọc theo gender của user
+            });
 
         if ($request->has('status') && !empty($request->input('status'))) {
             $query->whereIn('status', $request->input('status'));
         }
-
-        if ($request->has('buildingType') && !empty($request->input('buildingType'))) {
-            $query->whereHas('building', function($query) use ($request) {
-                $query->whereIn('type', $request->input('buildingType'));
-            });
-        }
-
         if ($request->has('floorNumber') && $request->input('floorNumber') != '') {
             $query->where('floor_number', $request->input('floorNumber'));
         }

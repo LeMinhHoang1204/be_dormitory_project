@@ -64,28 +64,6 @@
                 Residence Confirmation
             </a>
         </div>
-    </div>
-        @section('content')
-            @include('layouts.sidebar_student')
-        <div class="container">
-            <div class="header-container">
-                <h1 class="title">Room Registration</h1>
-                <div class="header-controls">
-                    {{-- Button filter --}}
-                <div class="filter-icon" onclick="toggleFilter()">
-                    <i class="ti ti-adjustments-horizontal"></i>
-                </div>
-
-                {{-- Search bar --}}
-                    <div class="search-bar" style="margin-bottom: -15px">
-                        <form method="GET" action="{{ route('students.register-room.list') }}">
-                            <input type="text" name="search" value="{{ request('search') }}"
-                                   placeholder="Search rooms..." class="search-input"
-                                   aria-label="Search rooms">
-                        </form>
-                    </div>
-
-            </div>
         </div>
 
         <div class="grid-container" id="room-list">
@@ -254,20 +232,18 @@
 
             <div class="filter-group">
                 <h3>Building Type</h3>
-                @if (auth()->user()->student->gender === 'male')
-                    <label class="checkbox-item">
-                        <input type="checkbox" value="male" name="buildingType[]" readonly >
-                        <span class="checkmark"></span>
-                        <span class="label-text">Male</span>
-                    </label>
-                @elseif (auth()->user()->student->gender === 'female')
-                    <label class="checkbox-item">
-                        <input type="checkbox" value="female" name="buildingType[]" readonly >
-                        <span class="checkmark"></span>
-                        <span class="label-text">Female</span>
-                    </label>
-                @endif
+                <label class="checkbox-item">
+                    <input type="checkbox" value="{{ auth()->user()->student->gender }}"
+                           name="buildingType[]"
+                           readonly
+                           checked>
+                    <span class="checkmark"></span>
+                    <span class="label-text">
+            {{ ucfirst(auth()->user()->student->gender) }}
+        </span>
+                </label>
             </div>
+
 
             <!-- Floor Number -->
             <div class="filter-group">

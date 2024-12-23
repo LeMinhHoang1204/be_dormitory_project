@@ -6,6 +6,7 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">
@@ -15,9 +16,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@1.74.0/icons-react/dist/index.umd.min.js"></script>
 
-
+    {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    {{-- Pusher --}}
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
+    {{-- Toastr --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
@@ -71,7 +76,10 @@
 
     <div class="extension">
         <div class="create-button-container">
-            @if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->role === 'building manager' || auth()->user()->role === 'accountant'))
+            @if (auth()->check() &&
+                    (auth()->user()->role === 'admin' ||
+                        auth()->user()->role === 'building manager' ||
+                        auth()->user()->role === 'accountant'))
                 <a href="{{ route('notifications.create') }}" class="btn-create">
                     <i class="fas fa-plus"></i>
                     <span>Create Notification</span>
@@ -95,12 +103,13 @@
                     </p>
                     <p class="notification-content">{{ $notification->content }}</p>
 
-                    @can('update', $notification)
-                        <div class="btn-group-action">
-                            <button type="button" class="btn-view"
-                                onclick="showNotificationModal({{ $notification->id }}, '{{ $notification->title }}', '{{ $notification->content }}', '{{ $notification->sender->name }}', '{{ $notification->created_at->format('d/m/Y H:i') }}')">
-                                <i class="far fa-eye"></i> View
-                            </button>
+                    <div class="btn-group-action">
+                        <button type="button" class="btn-view"
+                            onclick="showNotificationModal({{ $notification->id }}, '{{ $notification->title }}', '{{ $notification->content }}', '{{ $notification->sender->name }}', '{{ $notification->created_at->format('d/m/Y H:i') }}')">
+                            <i class="far fa-eye"></i> View
+                        </button>
+
+                        @can('update', $notification)
                             <a href="{{ route('notifications.show', $notification->id) }}" class="btn-edit">
                                 <i class="far fa-edit"></i> Edit
                             </a>
@@ -113,8 +122,8 @@
                                 @csrf
                                 @method('DELETE')
                             </form>
-                        </div>
-                    @endcan
+                        @endcan
+                    </div>
                 </div>
             @empty
                 <div class="text-center py-8 text-gray-500">

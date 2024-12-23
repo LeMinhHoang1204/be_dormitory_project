@@ -239,14 +239,6 @@
     margin-bottom: 1.25rem;
 }
 
-.filter-panel-content {
-    background: white;
-    border-radius: 1rem;
-    padding: 2rem;
-    max-width: 500px;
-    width: 90%;
-}
-
 .search-input {
     border-radius: 0.5rem;
     border: 1px solid #dee2e6;

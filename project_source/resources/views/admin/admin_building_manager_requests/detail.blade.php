@@ -186,6 +186,11 @@
                             : '' }}
                         </textarea>
                     </div>
+{{--                    1 refund khi nhan phong: refund full
+                        2 refund khi chuyen phong: refund 1 nua
+                        can truyen refund type lam sao de biet chuyen phong hay nhan phong
+
+                        --}}
                     @if($request->type == 'Change Room')
                         <div class="mb-3">
                             <input type="checkbox" id="fixingCost" name="IsCost">

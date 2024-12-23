@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Invoice;
-
+use Illuminate\Pagination\Paginator;
 class PaymentController extends Controller
 {
     public function vnpay_payment(Request $request)
@@ -114,12 +114,6 @@ class PaymentController extends Controller
             }
             // vui lòng tham khảo thêm tại code demo
 
-    }
-
-    public function accountantPaymentView()
-    {
-        $invoices = Invoice::paginate(10); // Paginate 10 invoices per page
-        return view('accountant.act-payment', compact('invoices'));
     }
 
     public function confirm($id)

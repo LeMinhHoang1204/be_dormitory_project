@@ -1079,7 +1079,6 @@
         background-color: #17a2b8 !important; /* Màu nền */
         font-family: "Poppins", sans-serif !important; /* Font chữ */
     }
-
 </style>
 
         @section('content')

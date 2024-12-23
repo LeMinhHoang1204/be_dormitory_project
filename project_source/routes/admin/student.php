@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('/invoices')->group(function () {
             Route::get('/', [InvoiceController::class, 'index'])->name('showAllInvoices');
 
-            Route::get('/detail/{invoice}', [InvoiceController::class, 'showDetail'])->name('detailInvoice')->can('view', 'invoice');
+            Route::get('/detail/{invoice}', [InvoiceController::class, 'showDetail'])->name('detailInvoice')->can('view', 'invoice');  // forbitden
 
             Route::post('/detail/confirm/{invoice}', [InvoiceController::class, 'studentConfirmInvoice'])->name('studentConfirmInvoice');
 

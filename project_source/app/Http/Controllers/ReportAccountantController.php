@@ -377,7 +377,29 @@ class ReportAccountantController extends Controller
             ->join('employees', 'buildings.manager_id', '=', 'employees.id')
             ->where('employees.user_id', $id);
 
-        $total = $queryUser->count() + $queryRoom->count();
+        $total = 0;
+        foreach ([$queryUser, $queryRoom] as $q) {
+            if($request->has('receiptType') && !empty($request->receiptType)) {
+                $q->whereIn('invoices.type', (array) $request->receiptType);
+            }
+            if($request->has('receiptStatus') && !empty($request->receiptStatus)) {
+                $q->whereIn('invoices.status', (array) $request->receiptStatus);
+            }
+            if($request->has('sendDateStart') || $request->has('sendDateStart')) {
+                $startDate = $request->sendDateStart == '' ? '1900-01-01' : $request->sendDateStart;
+                $endDate = $request->sendDateEnd == '' ? '2100-01-01' : $request->sendDateEnd;
+                $q->whereBetween('send_date', [$startDate, $endDate]);
+            }
+            if($request->has('dueDateStart') || $request->has('dueDateStart')) {
+                $startDate = $request->dueDateStart == '' ? '1900-01-01' : $request->dueDateStart;
+                $endDate = $request->dueDateEnd == '' ? '2100-01-01' : $request->dueDateEnd;
+                $q->whereBetween('due_date', [$startDate, $endDate]);
+            }
+
+            $total += $q->select(DB::raw('count(invoices.id) as total'))->first()->total;
+        }
+
+
 
         $i = 0;
         $result = [];

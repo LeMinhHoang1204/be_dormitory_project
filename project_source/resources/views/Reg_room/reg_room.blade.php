@@ -211,7 +211,7 @@
             @csrf
         <div class="filter-container">
             <!-- Thêm hidden input cho room_id -->
-            <input type="hidden" id="room-id-input" name="room_id" value="{{ $room_id ?? '' }}">
+            <input type="hidden" id="room-id-input1" name="room_id" value="{{ $room_id ?? '' }}">
 
             <!-- Room Status -->
             <div class="filter-group">
@@ -230,20 +230,36 @@
                 </div>
             </div>
 
+            @if (auth()->user()->student->gender ?? '')
             <div class="filter-group">
                 <h3>Building Type</h3>
                 <label class="checkbox-item">
-                    <input type="checkbox" value="{{ auth()->user()->student->gender }}"
+                    <input type="checkbox" value="{{ auth()->user()->student->gender ?? '' }}"
                            name="buildingType[]"
                            readonly
                            checked>
                     <span class="checkmark"></span>
                     <span class="label-text">
-            {{ ucfirst(auth()->user()->student->gender) }}
-        </span>
-                </label>
-            </div>
-
+            {{ ucfirst(auth()->user()->student->gender ?? '') }}
+            @else
+                    <div class="filter-group">
+                    <h3>Building Type</h3>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="{{ 'female' }}"
+                               name="buildingType[]"
+                               readonly>
+                        <span class="checkmark"></span>
+                        <span class="label-text">Female</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="{{ 'male' }}"
+                               name="buildingType[]"
+                               readonly>
+                        <span class="checkmark"></span>
+                        <span class="label-text">Male</span>
+                    </label>
+                </div>
+            @endif
 
             <!-- Floor Number -->
             <div class="filter-group">
@@ -397,7 +413,7 @@
                                 <span class="room-detail" id="display-room-type"></span>
                             </div>
                             <div class="info-item">
-                                <span class="label-text">Capacity: </span>
+                                <span class="label-text">Members: </span>
                                 <span class="room-detail" id="display-room-capacity"></span>
                             </div>
                         </div>

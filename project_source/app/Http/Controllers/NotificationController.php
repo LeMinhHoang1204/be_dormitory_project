@@ -111,7 +111,7 @@ class NotificationController extends Controller
 
         if ($validatedData['type'] === 'individual') {
             $validatedData['object_type'] = 'App\Models\User';
-            $validatedData['object_id'] = $request->user_object_id;
+            $validatedData['object_id'] = $request->object_id;
         } elseif ($validatedData['type'] === 'group' and $request->group === 'building') {
             $validatedData['object_type'] = 'App\Models\Building';
             $validatedData['object_id'] = $request->building_object_id;

@@ -131,15 +131,13 @@ class RequestController extends Controller
 
     public function rejectCheckIn(\Illuminate\Http\Request $request, Residence $residence)
     {
-        $residence->update(['status' => 'Rejected',
-            'note' => $residence->note . ' - ' . 'Rejected for user '. $residence->stu_user_id . ' from ' . $residence->room->name .
-            ' on ' . $residence->start_date . ' with reason: ' . $request->description]);
+        $prevResidence = Residence::where('stu_user_id', $residence->stu_user_id)->orderBy('created_at', 'desc')->skip(1)->first();
 
         $invoice = Invoice::where([
             ['object_id', '=', $residence->stu_user_id],
             ['object_type', '=', 'App\Models\User'],
             ['type', '=', 'Room Registration'],
-            ['start_date', '=', $residence->start_date], // start_date de xac dinh hoa don
+            ['start_date', '=', $prevResidence->start_date], // start_date de xac dinh hoa don
         ])->first();
 
         // nếu chưa thanh toán thì không thể đi nhận phòng
@@ -153,6 +151,10 @@ class RequestController extends Controller
             (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
+        $residence->update(['status' => 'Rejected',
+            'note' => $residence->note . ' - ' . 'Rejected for user '. $residence->stu_user_id . ' from ' . $residence->room->name .
+                ' on ' . $residence->start_date . ' with reason: ' . $request->description]);
+
         // nếu được chọn hoàn tiền
         if($request->IsRefund == 'on') {
             $residence->update(['note' => $residence->note . ' - ' . 'Refunding for user '. $residence->stu_user_id]);
@@ -161,6 +163,7 @@ class RequestController extends Controller
                 $invoice->update(['status' => 'Refunding',
                     'note' => $residence->note . ' - ' . 'Refunding for user '. $residence->stu_user_id]);
             }
+
 
             $accountant = \App\Models\User::where('role', 'Accountant')->first();
             $newRequest = Request::create([

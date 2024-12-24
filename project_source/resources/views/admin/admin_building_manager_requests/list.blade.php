@@ -61,7 +61,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">No requests found</td>
+                        <td colspan="8" class="text-center">No requests found</td>
                     </tr>
                 @endforelse
             </tbody>

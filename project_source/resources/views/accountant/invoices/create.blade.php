@@ -1,4 +1,4 @@
-{{-- @extends('Auth_.index')
+ @extends('Auth_.index')
 
 @section('content')
     <div class="container-fluid">
@@ -163,4 +163,4 @@
             });
         </script>
     @endpush
-@endsection --}}
+@endsection

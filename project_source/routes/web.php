@@ -84,7 +84,7 @@ require __DIR__ . '/admin/report.php';
 require __DIR__ . '/violation.php';
 
 // Thêm route group với middleware auth và role
-Route::middleware(['auth', 'role:admin,accountant'])->group(function () {
-    Route::get('/invoices/create', 'InvoiceController@create')->name('invoices.create');
-    Route::post('/invoices', 'InvoiceController@store')->name('invoices.store');
-});
+//Route::middleware(['auth', 'role:admin,accountant'])->group(function () {
+//    Route::get('/invoices/create', 'InvoiceController@create')->name('invoices.create');
+//    Route::post('/invoices', 'InvoiceController@store')->name('invoices.store');
+//});

@@ -20,14 +20,14 @@
     <div class="container mt-5">
         <x-header-search title="Invoices" />
 
-        {{-- @if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->role === 'accountant'))
+         @can('create', App\Models\Invoice::class)
             <div class="create-button-container">
                 <a href="{{ route('invoices.create') }}" class="btn-create">
                     <i class="fas fa-plus"></i>
                     <span>Create Invoice</span>
                 </a>
             </div>
-        @endif --}}
+        @endcan
 
         <table class="table table-bordered">
             <thead>

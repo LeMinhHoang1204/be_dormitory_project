@@ -88,7 +88,7 @@
             <h5 class="section-title">Current room information</h5>
             <p><strong>Room:</strong> {{$residence->room->name}}</p>
             <p><strong>Building:</strong> {{$residence->room->building->build_name}}</p>
-            <p><strong>Manager:</strong> {{$residence->room->building->managedBy->user->name}}</p>
+            <p><strong>Manager:</strong> {{$residence->room->building->managedBy->user->name ?? ''}}</p>
         </div>
 
         <form action="{{ route('students.repair-request.store') }}" method="POST" enctype="multipart/form-data">

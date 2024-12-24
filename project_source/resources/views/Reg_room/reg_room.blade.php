@@ -107,10 +107,9 @@
             @endforeach
         </div>
     @else
-        <div class="no-result">
-            <img src="/img/no-result.png" alt="No result">
+        <div class="no-result" style="margin-top: 40px; text-align: center">
             <h2>No rooms found</h2>
-            <p>There are no rooms that match your search criteria</p>
+            <p>There are no rooms that match your search</p>
         </div>
     @endif
 
@@ -171,7 +170,10 @@
         @endsection
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('.apply-btn').addEventListener('click', function(event) {
+
+            document.querySelector('.apply-btn').addEventListener('click', function(event, roomId) {
+                document.getElementById("room-id-input-filter").value = roomId;
+
                 event.preventDefault();
 
                 const status = [];
@@ -215,155 +217,106 @@
 <!-- Modal Filter Popup -->
 <div id="filter-popup" class="filter-popup">
     <div class="filter-popup-content">
-        <form action="{{ route('students.filter-rooms') }}" method="GET">
-            @csrf
-            <div class="filter-container">
-                <!-- Thêm hidden input cho room_id -->
-                <input type="hidden" id="room-id-input1" name="room_id" value="{{ $room_id ?? '' }}">
+    <form action="{{ route('students.filter-rooms') }}" method="GET">
+    @csrf
+    <div class="filter-container">
 
-                <!-- Room Status -->
-                <div class="filter-group">
-                    <h3>Room Status</h3>
-                    <div class="checkbox-list">
-                        <label class="checkbox-item">
-                            <input type="checkbox"  name="status[]" value="1">
-                            <span class="checkmark"></span>
-                            <span class="label-text">Vacancy</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="status[]" value="2">
-                            <span class="checkmark"></span>
-                            <span class="label-text">Full</span>
-                        </label>
-                    </div>
-                </div>
+        <input type="hidden" name="room_id" value="{{ $room_id ?? '' }}">
 
-                @if (auth()->user()->student->gender ?? '')
-                <div class="filter-group">
-                    <h3>Building Type</h3>
-                    <label class="checkbox-item">
-                        <input type="checkbox" value="{{ auth()->user()->student->gender ?? '' }}"
-                               name="buildingType[]">
-                        <span class="checkmark"></span>
-                        <span class="label-text">{{ ucfirst(auth()->user()->student->gender ?? '') }}</span>
-                    </label>
-                </div>
-                @else
-                        <div class="filter-group">
-                        <h3>Building Type</h3>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="{{ 'female' }}"
-                                   name="buildingType[]" >
-                            <span class="checkmark"></span>
-                            <span class="label-text">Female</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="{{ 'male' }}"
-                                   name="buildingType[]">
-                            <span class="checkmark"></span>
-                            <span class="label-text">Male</span>
-                        </label>
-                    </div>
-                @endif
-
-                <!-- Floor Number -->
-                <div class="filter-group">
-                    <h3>Floor Number</h3>
-                    <div class="select-wrapper">
-                        <select name="floorNumber" class="floor-select" >
-                            <option value="" >Choose a floor</option>
-                            @for ($i = 1; $i <= 20; $i++)
-                                <option value="{{ $i }}">Floor {{ $i }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Room Type -->
-                <div class="filter-group">
-                    <h3>Room Type</h3>
-                    <div class="checkbox-list">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="roomType[]" value="2">
-                            <span class="checkmark"></span>
-                            <span class="label-text">2 people</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="roomType[]" value="4">
-                            <span class="checkmark"></span>
-                            <span class="label-text">4 people</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="roomType[]" value="6">
-                            <span class="checkmark"></span>
-                            <span class="label-text">6 people</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="roomType[]" value="8">
-                            <span class="checkmark"></span>
-                            <span class="label-text">8 people</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="roomType[]" value="10">
-                            <span class="checkmark"></span>
-                            <span class="label-text">10 people</span>
-                        </label>
-                    </div>
-                </div>
-
-
-                <!-- Price -->
-                <div class="filter-group">
-                    <h3>Price (VNĐ)</h3>
-                    <div class="checkbox-list">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="price[]" value="1">
-                            <span class="checkmark"></span>
-                            <span class="label-text"> < 500.000</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="price[]" value="2">
-                            <span class="checkmark"></span>
-                            <span class="label-text">500.000 - 1.000.000</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="price[]" value="3">
-                            <span class="checkmark"></span>
-                            <span class="label-text">1.000.000 - 2.000.000</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="price[]" value="4">
-                            <span class="checkmark"></span>
-                            <span class="label-text">2.000.000 - 3.000.000</span>
-                        </label>
-                    </div>
-                </div>
-
-
-                <div class="filter-group">
-                    <h3>Facilities</h3>
-                    <div class="checkbox-list">
-                        @php
-                            $names = ['air conditioner', 'fridge', 'television', 'water heater'];
-                        @endphp
-
-                        @foreach ($names as $name)
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="facilities[]" value="{{ $name }}">
-                                <span class="checkmark"></span>
-                                <span class="label-text">{{ ucfirst($name) }}</span>
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Button -->
-                <div class="button-group">
-                    <button type="button" class="btn btn-secondary cancel-btn" onclick="closePopup()">Cancel</button>
-                    <button type="submit" class="btn btn-primary apply-btn">Apply</button>
-                </div>
+        <div class="filter-group">
+            <h3>Room Status</h3>
+            <div class="checkbox-list">
+                <label class="checkbox-item">
+                    <input type="checkbox" name="status[]" value="1" checked>
+                    <span class="checkmark"></span>
+                    <span class="label-text">Vacancy</span>
+                </label>
             </div>
-        </form>
+        </div>
+
+        @if ($userGender)
+            <div class="filter-group">
+                <h3>Building Type</h3>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="{{ $userGender }}"
+                           name="buildingType[]"
+                           readonly
+                           checked
+                    >
+                    <span class="checkmark"></span>
+                    <span class="label-text">{{ ucfirst($userGender) }}</span>
+                </label>
+            </div>
+        @else
+            <div class="filter-group">
+                <h3>Building Type</h3>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="female"
+                           name="buildingType[]">
+                    <span class="checkmark"></span>
+                    <span class="label-text">Female</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="male"
+                           name="buildingType[]">
+                    <span class="checkmark"></span>
+                    <span class="label-text">Male</span>
+                </label>
+            </div>
+        @endif
+
+        <div class="filter-group">
+            <h3>Floor Number</h3>
+            <div class="select-wrapper">
+                <select name="floorNumber" class="floor-select">
+                    <option value="">Choose a floor</option>
+                    @for ($i = 1; $i <= 20; $i++)
+                        <option value="{{ $i }}">Floor {{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <h3>Room Type</h3>
+            @foreach ([2, 4, 6, 8, 10] as $people)
+                <label class="checkbox-item">
+                    <input type="checkbox" name="roomType[]" value="{{ $people }}">
+                    <span class="checkmark"></span>
+                    <span class="label-text">{{ $people }} people</span>
+                </label>
+            @endforeach
+        </div>
+
+        <div class="filter-group">
+            <h3>Price (VNĐ)</h3>
+            @foreach ([ 1 => '< 1.000.000', 2 => '1.000.000 - 1.500.000', 3 => '1.500.000 - 2.000.000', 4 => '2.000.000 - 2.500.000', 5 => '> 2.500.000'] as $value => $label)
+                <label class="checkbox-item">
+                    <input type="checkbox" name="price[]" value="{{ $value }}">
+                    <span class="checkmark"></span>
+                    <span class="label-text">{{ $label }}</span>
+                </label>
+            @endforeach
+        </div>
+
+        <div class="filter-group">
+            <h3>Facilities</h3>
+            @foreach (['air conditioner', 'fridge', 'water heater', 'television'] as $facility)
+                <label class="checkbox-item">
+                    <input type="checkbox" name="facilities[]" value="{{ $facility }}">
+                    <span class="checkmark"></span>
+                    <span class="label-text">{{ ucfirst($facility) }}</span>
+                </label>
+            @endforeach
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+            <button type="button" class="btn btn-secondary cancel-btn" onclick="closePopup()">Cancel</button>
+            <button type="submit" class="btn btn-primary apply-btn">Apply</button>
+        </div>
+    </div>
+</form>
     </div>
 </div>
 

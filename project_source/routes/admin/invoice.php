@@ -4,7 +4,6 @@ use App\Http\Controllers\DetailInvoiceController;
 use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
-
 Route::middleware('auth')->group(function () {
 
     // invoices
@@ -23,7 +22,6 @@ Route::middleware('auth')->group(function () {
 
         Route::delete('/delete/{invoice}', [InvoiceController::class, 'destroy'])->name('invoices.destroy')->can('delete', \App\Models\Invoice::class);
     });
-
     // detail invoices
     Route::prefix('/invoices/{invoice}/detailInvoices')->group(function () {
         Route::get('/create', [DetailInvoiceController::class, 'create'])->name('detail-invoices.create')->can('create', \App\Models\DetailInvoice::class);
@@ -33,7 +31,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{detailInvoice}', [DetailInvoiceController::class, 'edit'])->name('detail-invoices.edit')->can('update', \App\Models\DetailInvoice::class);
 
         Route::post('/edit/{detailInvoice}', [DetailInvoiceController::class, 'update'])->name('detail-invoices.update')->can('update', \App\Models\DetailInvoice::class);
-
         Route::delete('/delete/{detailInvoice}', [DetailInvoiceController::class, 'destroy'])->name('detail-invoices.destroy')->can('delete', \App\Models\DetailInvoice::class);
     });
 });

@@ -76,6 +76,11 @@ Route::get('/get-user-info/{id}', function ($id) {
     return response()->json(['error' => 'User not found'], 404);
 });
 
+
+Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
+
+
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';
 require __DIR__ . '/admin/building-room-residence.php';

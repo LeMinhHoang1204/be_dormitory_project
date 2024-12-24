@@ -3,7 +3,6 @@
 
 <head>
     <title>Create Notification</title>
-    <link rel="icon" href="{{ asset('./img/img.png') }}" type="image/x-icon">
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -63,8 +62,8 @@
                     @csrf
 
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control readonly-field" id="sender_id"
-                            name="sender_id" value="{{ auth()->user()->id }}" readonly>
+                        <input type="number" class="form-control readonly-field" id="sender_id" name="sender_id"
+                            value="{{ auth()->user()->id }}" readonly>
                         <label for="sender_id">Sender ID</label>
                     </div>
 
@@ -75,8 +74,8 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="title" name="title"
-                            value="{{ old('title') }}" required>
+                        <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}"
+                            required>
                         <label for="title">Title</label>
                     </div>
 
@@ -92,9 +91,45 @@
                         <label for="type">Notification Type</label>
                     </div>
 
+
+                    {{-- User Selection --}}
+                    
+                    {{-- <div class="form-floating mb-3" id="userSelection" style="display: none;">
+                        <select class="form-select" id="user_object_id" name="user_object_id">
+                            <option value="">Select User</option>
+                        </select>
+                        <label for="user_object_id">Select User</label>
+                    </div> --}}
+
+                    <div id="groupOptions" style="display: none;">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="group" name="group">
+                                <option value="building">Building</option>
+                                {{-- <option value="room">Room</option> --}}
+                            </select>
+                            <label for="group">Group Type</label>
+                        </div>
+
+                        <div class="form-floating mb-3" id="buildingSelection" style="display: none;">
+                            <select name="building_object_id" id="building_object_id" class="form-select">
+                                <option value="">Select Building</option>
+                                @foreach ($buildings as $building)
+                                    <option value="{{ $building->id }}">{{ $building->build_name }}</option>
+                                @endforeach
+                            </select>
+                            <label for="building_object_id">Select Building</label>
+                        </div>
+
+                        <div class="form-floating mb-3" id="roomSelection" style="display: none;">
+                            <select class="form-select" id="room_object_id" name="room_object_id">
+                                <option value="">Select Room</option>
+                            </select>
+                            <label for="room_object_id">Select Room</label>
+                        </div>
+                    </div>
+
                     <div class="form-floating mb-4">
-                        <textarea class="form-control" id="content" name="content"
-                            style="height: 150px" required>{{ old('content') }}</textarea>
+                        <textarea class="form-control" id="content" name="content" style="height: 150px" required>{{ old('content') }}</textarea>
                         <label for="content">Content</label>
                     </div>
 
@@ -107,4 +142,123 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        $(document).ready(function() {
+            $('form').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Notification created successfully',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href =
+                                    "{{ route('notifications.index') }}";
+                            }
+                        });
+                    },
+                    error: function(xhr) {
+                        let errorMessage =
+                            'An error occurred while creating the notification. Please try again!';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: errorMessage,
+                            confirmButtonColor: '#d33'
+                        });
+                    }
+                });
+            });
+
+            // Load users when page loads
+            $.get('/get-all-users', function(users) {
+                users.forEach(function(user) {
+                    $('#user_object_id').append(new Option(user.name, user.id));
+                });
+            });
+
+            // Load buildings when page loads
+            $.get('/get-all-buildings', function(buildings) {
+                buildings.forEach(function(building) {
+                    $('#building_object_id').append(new Option(building.build_name, building.id));
+                });
+            });
+
+            // Handle notification type change
+            $('#type').change(function() {
+                if ($(this).val() === 'individual') {
+                    $('#userSelection').show();
+                    $('#groupOptions').hide();
+                } else if ($(this).val() === 'group') {
+                    $('#userSelection').hide();
+                    $('#groupOptions').show();
+                    $('#buildingSelection').show();
+                }
+            });
+
+            // Handle group type change
+            $('#group').change(function() {
+                if ($(this).val() === 'building') {
+                    $('#buildingSelection').show();
+                    $('#roomSelection').hide();
+                } else if ($(this).val() === 'room') {
+                    $('#buildingSelection').show();
+                    $('#roomSelection').show();
+                }
+            });
+
+            // Handle building selection change
+            $('#building_object_id').change(function() {
+                const buildingId = $(this).val();
+                console.log('Selected building ID:', buildingId);
+
+                const roomSelect = $('#room_object_id');
+                roomSelect.empty().append('<option value="">Select Room</option>');
+
+                if (buildingId) {
+                    const url = `/get-rooms-by-building/${buildingId}`;
+                    console.log('Fetching rooms from:', url);
+
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(response) {
+                            console.log('Received response:', response);
+                            response.forEach(function(room) {
+                                console.log('Adding room:', room);
+                                roomSelect.append(
+                                    `<option value="${room.id}">${room.name}</option>`
+                                );
+                            });
+                            $('#roomSelection').show();
+                        },
+                        error: function(error) {
+                            console.error('Error details:', error);
+                            toastr.error('Failed to load rooms. Please try again.');
+                        }
+                    });
+                } else {
+                    $('#roomSelection').hide();
+                }
+            });
+        });
+    </script>
 @endsection

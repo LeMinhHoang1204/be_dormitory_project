@@ -23,33 +23,33 @@ class InvoiceController extends Controller
         if ($user->role == 'student') {
             $invoices->where(function ($q) use ($user) {
                 $q->where('sender_id', $user->id) // Lọc nếu người dùng là người gửi
-                ->orWhereHas('object', function ($q) use ($user) {
-                    $q->where(function ($q) use ($user) {
-                        $q->where('object_type', 'App\Models\User')
-                            ->where('object_id', $user->id); // So sánh object_id với user_id
+                    ->orWhereHas('object', function ($q) use ($user) {
+                        $q->where(function ($q) use ($user) {
+                            $q->where('object_type', 'App\Models\User')
+                                ->where('object_id', $user->id); // So sánh object_id với user_id
 
-                    })->orWhere(function ($q) use ($user) {
-                        $residence = $user->residence()->where('status', 'Checked in')->first();
-                        if ($residence && $residence->room) {
-                            $q->where('object_type', 'App\Models\Room')
-                                ->where('object_id', $residence->room->id); // So sánh object_id với residence->room->name
-                        }
-                    })->orWhere(function ($q) use ($user) {
-                        $residence = $user->residence()->where('status', 'Checked in')->first();
-                        if ($residence && $residence->room && $residence->room->building) {
-                            $q->where('object_type', 'App\Models\Building')
-                                ->where('object_id', $residence->room->building->id); // So sánh object_id với residence->room->building->build_name
-                        }
+                        })->orWhere(function ($q) use ($user) {
+                            $residence = $user->residence()->where('status', 'Checked in')->first();
+                            if ($residence && $residence->room) {
+                                $q->where('object_type', 'App\Models\Room')
+                                    ->where('object_id', $residence->room->id); // So sánh object_id với residence->room->name
+                            }
+                        })->orWhere(function ($q) use ($user) {
+                            $residence = $user->residence()->where('status', 'Checked in')->first();
+                            if ($residence && $residence->room && $residence->room->building) {
+                                $q->where('object_type', 'App\Models\Building')
+                                    ->where('object_id', $residence->room->building->id); // So sánh object_id với residence->room->building->build_name
+                            }
+                        });
                     });
-                });
             });
         }
 
         $invoices = $invoices->orderBy('id', 'desc')->paginate(8);
 
-        if($user->role == 'student') {
+        if ($user->role == 'student') {
             return view('student_payment.payment', ['invoices' => $invoices]);
-        } elseif($user->role == 'accountant' || $user->role == 'admin') {
+        } elseif ($user->role == 'accountant' || $user->role == 'admin') {
             return view('accountant.invoices.payment', ['invoices' => $invoices]);
         }
     }
@@ -105,13 +105,12 @@ class InvoiceController extends Controller
     public function showDetail(Invoice $invoice)
     {
         $user = Auth::user();
-        if($user->role == 'student') {
+        if ($user->role == 'student') {
             return view('student_payment.detail_payment', ['invoice' => $invoice]);
-        } elseif($user->role == 'accountant' || $user->role == 'admin') {
+        } elseif ($user->role == 'accountant' || $user->role == 'admin') {
             return view('accountant.invoices.detail_payment', ['invoice' => $invoice]);
         }
     }
-
 
     public function studentConfirmInvoice(Request $request, Invoice $invoice)
     {
@@ -144,32 +143,30 @@ class InvoiceController extends Controller
             'note' => $invoice->note . ' - ' . $request->description . ' - Confirmed by ' . Auth::user()->name,
         ]);
 
-        if($request->IsDirectPayment == 'direct') {
+        if ($request->IsDirectPayment == 'direct') {
             $invoice->update([
                 'payment_method' => 'Cash',
             ]);
-        }
-        else{
+        } else {
             $invoice->update([
                 'payment_method' => 'Bank transfer',
             ]);
         }
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
-        if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
+        if ($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
             $user = User::find($invoice->object_id);
             $latestResidence = $user->residence()->latest()->first();
-            if($latestResidence->status == 'Registered') {
+            if ($latestResidence->status == 'Registered') {
                 $latestResidence->update([
                     'status' => 'Paid',
                 ]);
-            }
-            else if(($latestResidence->status == 'Checked in'
-                    || $latestResidence->status == 'Renewed'
-                    || $latestResidence->status == 'Changed Room') && $request->invoice_type == 'Renewal') {
+            } else if (($latestResidence->status == 'Checked in'
+                || $latestResidence->status == 'Renewed'
+                || $latestResidence->status == 'Changed Room') && $request->invoice_type == 'Renewal') {
                 $oldRequest = $user->sendRequest()->where('status', 'Accepted')->where('type', 'Renewal')->latest()->first();
                 $oldRequest->update([
                     'status' => 'Resolved',
@@ -180,8 +177,8 @@ class InvoiceController extends Controller
                 $firstNumber = $matches[0] ?? null;
 
                 if ($firstNumber !== null) {
-                    $new_end_date = $latestResidence->end_date->addMonths((int)$firstNumber);
-                    $new_months_duration = (int)$latestResidence->months_duration + (int)$firstNumber;
+                    $new_end_date = $latestResidence->end_date->addMonths((int) $firstNumber);
+                    $new_months_duration = (int) $latestResidence->months_duration + (int) $firstNumber;
 
                     $latestResidence->update([
                         'end_date' => $new_end_date,

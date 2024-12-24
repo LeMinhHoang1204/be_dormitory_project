@@ -89,7 +89,8 @@ class NotificationController extends Controller
      */
     public function create(Request $request)
     {
-        return view('admin/notification/create');
+        $buildings = Building::all();
+        return view('admin/notification/create', compact('buildings'));
     }
 
     /**
@@ -97,35 +98,43 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-//        Gate::authorize('create', Notification::class);
-
-//        $this->authorize('create', Notification::class);
-
         // Validate data
         $validatedData = $request->validate([
             'sender_id' => 'required|integer',
             'title' => 'required|string',
-            'type' => 'required|string',
+            'type' => 'required|string|in:individual,group',
             'content' => 'required|string',
+            'user_object_id' => 'required_if:type,individual|integer|nullable',
+            'building_object_id' => 'required_if:group,building|integer|nullable',
+            'room_object_id' => 'required_if:group,room|integer|nullable',
+            'group' => 'required_if:type,group|in:building,room|nullable',
         ]);
 
+        // Set object type and ID based on notification type
         if ($validatedData['type'] === 'individual') {
             $validatedData['object_type'] = 'App\Models\User';
-            $validatedData['object_id'] = $request->object_id;
-        } elseif ($validatedData['type'] === 'group' and $request->group === 'building') {
-            $validatedData['object_type'] = 'App\Models\Building';
-            $validatedData['object_id'] = $request->building_object_id;
-        } elseif ($validatedData['type'] === 'group' and $request->group === 'room') {
-            $validatedData['object_type'] = 'App\Models\Room';
-            $validatedData['object_id'] = $request->room_object_id;
+            $validatedData['object_id'] = $request->user_object_id;
+        } elseif ($validatedData['type'] === 'group') {
+            if ($request->group === 'building') {
+                $validatedData['object_type'] = 'App\Models\Building';
+                $validatedData['object_id'] = $request->building_object_id;
+            } elseif ($request->group === 'room') {
+                $validatedData['object_type'] = 'App\Models\Room';
+                $validatedData['object_id'] = $request->room_object_id;
+            }
         }
 
-//        dd($request->all());
-        Notification::create($validatedData); // Sử dụng dữ liệu đã xác thực
+        // Create notification
+        $notification = Notification::create([
+            'sender_id' => $validatedData['sender_id'],
+            'title' => $validatedData['title'],
+            'content' => $validatedData['content'],
+            'object_type' => $validatedData['object_type'],
+            'object_id' => $validatedData['object_id'],
+        ]);
 
         $sender = User::getSpecificUser($validatedData['sender_id']);
-//        broadcast(new NotificationEvent($sender))->toOthers();
-        event(new NotificationEvent($sender->name, $validatedData['object_id'])); // Gửi thông báo đến kênh
+        event(new NotificationEvent($sender->name, $validatedData['object_id']));
 
         return redirect(route('notifications.index', absolute: false));
     }

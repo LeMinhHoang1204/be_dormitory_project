@@ -5,6 +5,41 @@
             font-family: 'Poppins', sans-serif !important;
             font-size: 16px !important;
         }
+        /* Định dạng chung cho nút */
+        .navbar a {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4a4a4a;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+        }
+
+        /* Nút Login */
+        .navbar .login {
+            padding: 4px 8px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+        }
+
+        .navbar .login:hover {
+            background-color: #f0f0f5;
+            color: #007bff;
+            border-color: #007bff;
+        }
+
+        /* Nút Sign up */
+        .navbar .border {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .navbar .border:hover {
+            background-color: #0056b3;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <div class="container-fluid layout" style=" box-shadow: 0px 6px 4px 0px  #ECEFFF;height: 70px; flex-shrink: 0;">
@@ -58,8 +93,8 @@
                             </div>
                         </li>
                     @else
-                        <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}" class="border">Sign up</a></li>
+                        <li><a href="{{ route('login') }}" class="login" style="margin-left: 30px; text-decoration: none;">Login</a></li>
+                        <li><a href="{{ route('register') }}" class="border" style="margin-right: 50px!important; border-radius: 10px!important; padding: 5px; text-decoration: none;">Sign up</a></li>
                     @endauth
                 </ul>
             </div>

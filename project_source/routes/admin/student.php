@@ -4,6 +4,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ResidenceController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
 use App\Models\Room;
 use App\Models\Student;
@@ -25,6 +26,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/rooms', [StudentController::class, 'fetchRoomsForStudent'])->name('students.rooms');
 
             Route::get('/rooms/{room}', [StudentController::class, 'getRoomDataforStudent'])->name('students.rooms');
+
+            Route::get('/roomInfor/{room}', [StudentController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 
             Route::get('/current-student-user' , [StudentController::class, 'getCurrentUser'])->name('students.current-user');
 

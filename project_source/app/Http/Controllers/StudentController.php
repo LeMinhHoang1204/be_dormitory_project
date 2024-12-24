@@ -314,5 +314,13 @@ class StudentController extends Controller
         if(Auth::check()) {
             return response()->json(['success' => true]);
         }
-        return response()->json(['success' => false]);}
+        return response()->json(['success' => false]);
+    }
+
+    public function showRoomInfor(Request $request, Room $room)
+    {
+//        $roomId = $request->query('roomId');
+//        $room = Room::findOrFail($roomId);
+        return view('roomInfor.roomInfor', compact('room'));
+    }
 }

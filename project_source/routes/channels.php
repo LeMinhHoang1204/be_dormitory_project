@@ -15,6 +15,6 @@ Broadcast::channel('privateNotification.{objectId}', function ($user, $objectId)
     return true;
 });
 
-Broadcast::channel('notification-channel', function ($user) {
-    return true; // You can add authorization logic here if needed
-});
+//Broadcast::channel('notification-channel', function ($user) {
+//    return true; // You can add authorization logic here if needed
+//});

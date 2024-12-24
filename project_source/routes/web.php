@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
@@ -27,11 +28,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/students/check-login', [StudentController::class, 'studentCheckLogin'])
     ->name('studentCheckLogin');
-
-// Display roomInfor
-Route::middleware('auth')->group(function () {
-    Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
-});
 
 //Route::get('/room-registration', [RoomController::class, 'showListRoom'])->name('register-room');
 
@@ -79,10 +75,7 @@ Route::get('/get-user-info/{id}', function ($id) {
     return response()->json(['error' => 'User not found'], 404);
 });
 
-
 // Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
-
-
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';
@@ -103,3 +96,5 @@ require __DIR__ . '/violation.php';
 //    Route::get('/invoices/create', 'InvoiceController@create')->name('invoices.create');
 //    Route::post('/invoices', 'InvoiceController@store')->name('invoices.store');
 //});
+
+Route::post('/invoices/store', [InvoiceController::class, 'store'])->name('invoices.store');

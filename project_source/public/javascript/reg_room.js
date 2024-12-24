@@ -60,7 +60,7 @@ function performSearch(searchValue) {
 }
 
 function redirectToRoomInfo(roomId) {
-    window.location.href = `/roomInfor?roomId=${roomId}`;
+    window.location.href = `/students/room-registration/roomInfor/${roomId}`;
 }
 
 let selectedRoomId = null;

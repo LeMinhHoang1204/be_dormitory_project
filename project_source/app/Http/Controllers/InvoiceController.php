@@ -159,6 +159,9 @@ class InvoiceController extends Controller
             (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
+        preg_match('/\bRenewal\b/', $invoice->note, $matchestring);
+
+
         if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
             $user = User::find($invoice->object_id);
             $latestResidence = $user->residence()->latest()->first();
@@ -169,7 +172,7 @@ class InvoiceController extends Controller
             }
             else if(($latestResidence->status == 'Checked in'
                     || $latestResidence->status == 'Renewed'
-                    || $latestResidence->status == 'Changed Room') && $request->invoice_type == 'Renewal') {
+                    || $latestResidence->status == 'Changed Room') && $matchestring[0] == 'Renewal') {
                 $oldRequest = $user->sendRequest()->where('status', 'Accepted')->where('type', 'Renewal')->latest()->first();
                 $oldRequest->update([
                     'status' => 'Resolved',
@@ -187,7 +190,7 @@ class InvoiceController extends Controller
                         'end_date' => $new_end_date,
                         'status' => 'Renewed',
                         'months_duration' => $new_months_duration,
-                        'note' => 'Renewed ' . $firstNumber . ' months',
+                        'note' => $latestResidence->note . ' - ' . 'Renewed ' . $firstNumber . ' months',
                     ]);
                 }
             }

@@ -9,9 +9,8 @@ use App\Models\Room;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/students/room-registration', [StudentController::class, 'showRegisterRoomList'])->name('students.register-room.list');
+//Route::get('/students/room-registration', [StudentController::class, 'showRegisterRoomList'])->name('students.register-room.list');
 
-Route::get('/students/room-registration/filter-rooms', [StudentController::class, 'showFilteredRoomList'])->name('students.filter-rooms');
 
 Route::middleware('auth')->group(function () {
 
@@ -31,8 +30,9 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/latest-residence', [StudentController::class, 'getLatestResidence'])->name('students.latest-residence');
 
-//            Route::get('/', [StudentController::class, 'showRegisterRoomList'])->name('students.register-room.list')->can('registerRoom', Student::class);
-//            Route::post('/', [StudentController::class, 'showRegisterRoomList']);
+            Route::get('/', [StudentController::class, 'showRegisterRoomList'])->name('students.register-room.list');
+
+            Route::get('/filter-rooms', [StudentController::class, 'showRegisterRoomList'])->name('students.filter-rooms');
 
             Route::post('/', [StudentController::class, 'registerRoom'])->name('students.register-room.create')->can('registerRoom', Student::class);
 

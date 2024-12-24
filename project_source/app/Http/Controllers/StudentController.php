@@ -33,7 +33,6 @@ class StudentController extends Controller
     {
         $searchTerm = $request->input('search');
 
-
         if (auth()->check()) {
             $rooms = Room::with('hasRoomAssets.asset')
                 ->where('status', 1)
@@ -55,6 +54,7 @@ class StudentController extends Controller
         $rooms = $rooms->paginate(9)->appends(['search' => $searchTerm]);
 
         return view('Reg_room.reg_room', compact('rooms'));
+
     }
     public function showFilteredRoomList(Request $request)
     {
@@ -314,4 +314,11 @@ class StudentController extends Controller
 
         return response()->json(['success' => true, 'student' => $student]);
     }
+
+    public function studentCheckLogin()
+    {
+        if(Auth::check()) {
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false]);}
 }

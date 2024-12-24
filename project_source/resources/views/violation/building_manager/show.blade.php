@@ -51,7 +51,7 @@
             <div class="modal-body">
                 <div class="violation-details">
                     <div class="violation-info">
-                        <div class="student-details">
+                        <div class="student-details" style=" margin-left: 40px">
                             <div class="info-left">
                         <p><strong>Violation ID:</strong> #{{ $violation->id }}</p>
                         <p><strong>Title:</strong> {{ $violation->title }}</p>
@@ -71,7 +71,7 @@
                             </div>
                     </div>
                     <div class="manager-info" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
-                        <div class="student-details">
+                        <div class="student-details" style="margin-left: 40px">
                         <div class="info-left">
                             <p><strong>Creator:</strong> {{ $manager->name ?? 'N/A' }}</p>
                         <p><strong>Email:</strong> {{ $manager->email ?? 'N/A' }}</p>

@@ -43,11 +43,12 @@ class ViolationController extends Controller
         } elseif ($user->role === 'building manager') {
             if ($user->employee) {
                 $violations = Violation::where('creator_id', $user->id)
-                    ->orWhereHas('receiver.student.latestResidence', function ($query) use ($user) {
+                    ->orWhereHas('receiver.student.residence', function ($query) use ($user) {
                         $query->whereHas('room.building', function ($query) use ($user) {
                             // Kiểm tra nếu building mà sinh viên cư trú thuộc quản lý của manager
                             $query->where('manager_id', $user->employee->id);
-                        });
+                        })
+                            ->whereIn('status', ['Paid', 'Checked in', 'Registered']);
                     })
                     ->paginate(10);
             } else {

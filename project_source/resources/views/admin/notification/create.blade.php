@@ -20,46 +20,46 @@
     </script>
 
     {{-- Pusher --}}
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+{{--    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>--}}
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>--}}
+{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">--}}
 
-    <script>
-        // Pusher configuration
-        const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-            encrypted: true
-        });
+{{--    <script>--}}
+{{--        // Pusher configuration--}}
+{{--        const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {--}}
+{{--            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',--}}
+{{--            encrypted: true--}}
+{{--        });--}}
 
-        const channel = pusher.subscribe('notification-channel');
-        const currentUserId = {{ auth()->id() }};
+{{--        const channel = pusher.subscribe('notification-channel');--}}
+{{--        const currentUserId = {{ auth()->id() }};--}}
 
-        // Listen for notification events
-        channel.bind('new-notification', function(data) {
-            console.log('Received notification:', data);
-            console.log('Current user ID:', currentUserId);
-            console.log('Recipient IDs:', data.recipientIds);
+{{--        // Listen for notification events--}}
+{{--        channel.bind('new-notification', function(data) {--}}
+{{--            console.log('Received notification:', data);--}}
+{{--            console.log('Current user ID:', currentUserId);--}}
+{{--            console.log('Recipient IDs:', data.recipientIds);--}}
 
-            // Kiểm tra xem người dùng hiện tại có trong danh sách người nhận không
-            if (data.recipientIds && Array.isArray(data.recipientIds) && data.recipientIds.includes(
-                    currentUserId)) {
-                console.log('Current user is in recipients list, showing notification');
-                toastr.options = {
-                    "closeButton": true,
-                    "progressBar": true,
-                    "positionClass": "toast-top-right",
-                    "timeOut": "5000",
-                    "onclick": function() {
-                        console.log('Notification clicked');
-                    }
-                };
+{{--            // Kiểm tra xem người dùng hiện tại có trong danh sách người nhận không--}}
+{{--            if (data.recipientIds && Array.isArray(data.recipientIds) && data.recipientIds.includes(--}}
+{{--                    currentUserId)) {--}}
+{{--                console.log('Current user is in recipients list, showing notification');--}}
+{{--                toastr.options = {--}}
+{{--                    "closeButton": true,--}}
+{{--                    "progressBar": true,--}}
+{{--                    "positionClass": "toast-top-right",--}}
+{{--                    "timeOut": "5000",--}}
+{{--                    "onclick": function() {--}}
+{{--                        console.log('Notification clicked');--}}
+{{--                    }--}}
+{{--                };--}}
 
-                toastr.success(data.message);
-            } else {
-                console.log('Current user is not in recipients list, notification will not be shown');
-            }
-        });
-    </script>
+{{--                toastr.success(data.message);--}}
+{{--            } else {--}}
+{{--                console.log('Current user is not in recipients list, notification will not be shown');--}}
+{{--            }--}}
+{{--        });--}}
+{{--    </script>--}}
 
 
 </head>
@@ -83,12 +83,6 @@
                         <input type="number" class="form-control readonly-field" id="sender_id" name="sender_id"
                             value="{{ auth()->user()->id }}" readonly>
                         <label for="sender_id">Sender ID</label>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="object_id" name="object_id"
-                            value="{{ old('object_id') }}" required>
-                        <label for="object_id">Object ID</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -126,6 +120,7 @@
                             <select class="form-select" id="group" name="group">
                                 <option value="" disabled selected>Select Group Type</option>
                                 <option value="building">Building</option>
+                                <option value="room">Room</option>
                             </select>
                             <label for="group">Group Type</label>
                         </div>
@@ -244,6 +239,8 @@
 
             $('#room_object_id').change(function() {
                 const roomId = $(this).val();
+                console.log('Selected room ID:', roomId);
+
                 const userCheckboxesContainer = $('#room_users_checkboxes');
                 userCheckboxesContainer.empty();
 

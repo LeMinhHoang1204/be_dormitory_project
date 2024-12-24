@@ -99,6 +99,8 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request);
+//        echo($request);exit;
         // Validate data
         $validatedData = $request->validate([
             'sender_id' => 'required|integer',
@@ -135,9 +137,11 @@ class NotificationController extends Controller
         ]);
 
         $sender = User::getSpecificUser($validatedData['sender_id']);
-        event(new NotificationEvent($sender->name, $validatedData['object_id']));
+//        event(new NotificationEvent($sender->name, $validatedData['object_id']));
 
-        // Xác định recipientIds dựa trên loại thông báo
+//        return redirect(route('notifications.index', absolute: false));
+
+//        // Xác định recipientIds dựa trên loại thông báo
         $recipientIds = [];
         if ($validatedData['type'] === 'individual') {
             $recipientIds[] = $request->user_object_id;
@@ -159,10 +163,12 @@ class NotificationController extends Controller
         }
 
         // Broadcast event với recipientIds
-        broadcast(new NewNotification([
-            'message' => 'New notification: ' . $notification->title,
-            'recipientIds' => $recipientIds,
-        ]))->toOthers();
+        foreach ($recipientIds as $recipientId) {
+            broadcast(new NotificationEvent(
+                $sender->name,
+                $recipientId
+            ))->toOthers();
+        }
 
         return response()->json([
             'success' => true,

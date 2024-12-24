@@ -10,7 +10,7 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     z-index: 500;
     overflow: visible;
-
+    border-radius: 0 15px ;
 }
 
 #sidebar:hover {
@@ -160,4 +160,8 @@
 }
 #sidebar .menu-item.has-submenu:hover ~ .menu-item {
     transition: transform 0.01s ease;
+}
+
+a, span, .menu-item .text {
+    text-decoration: none;
 }

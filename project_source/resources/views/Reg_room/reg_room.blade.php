@@ -145,7 +145,7 @@
                         <span class="ellipsis">...</span>
                     @endif
 
-                    @for ($i = max(1, $currentPage - 1); $i <= min($lastPage, $currentPage + 1); $i++)
+                    @for ($i = max(1, $currentPage - 2); $i <= min($lastPage, $currentPage + 2); $i++)
                         @if ($i == $currentPage)
                             <span class="pagination-page current">{{ $i }}</span>
                         @else
@@ -153,7 +153,7 @@
                         @endif
                     @endfor
 
-                    @if ($currentPage < $lastPage - 2)
+                    @if ($currentPage < $lastPage - 3)
                         <span class="ellipsis">...</span>
                         <a href="{{ $rooms->appends(request()->all())->url($lastPage) }}" class="pagination-page">{{ $lastPage }}</a>
                     @endif

@@ -28,93 +28,87 @@ class StudentController extends Controller
     {
         //
     }
-
     public function showRegisterRoomList(Request $request)
     {
         $searchTerm = $request->input('search');
-
-
+        $status = $request->input('status', []);
+        $buildingType = $request->input('buildingType', []);
+        $floorNumber = $request->input('floorNumber');
+        $roomType = $request->input('roomType', []);
+        $price = $request->input('price', []);
+        $facilities = $request->input('facilities', []);
+        $userGender = auth()->check() ? auth()->user()->student->gender : null;
         if (auth()->check()) {
             $rooms = Room::with('hasRoomAssets.asset')
                 ->where('status', 1)
                 ->whereColumn('member_count', '<', 'type')
-                ->whereHas('building', function ($query) {
-                    $query->where('type', auth()->user()->student->gender);
+                ->whereHas('building', function ($query) use ($userGender) {
+                    $query->where('type', $userGender);
                 });
-        }
-        else {
+        } else {
             $rooms = Room::with('hasRoomAssets.asset')
                 ->where('status', 1)
                 ->whereColumn('member_count', '<', 'type');
+        }
+
+        if (!empty($status) && in_array(1, $status)) {
+            $rooms->whereColumn('member_count', '<', 'type');
+        }
+
+        if (!empty($buildingType)) {
+            $rooms->whereHas('building', function ($query) use ($buildingType) {
+                $query->whereIn('type', $buildingType);
+            });
+        }
+
+        if ($floorNumber) {
+            $rooms->where('floor_number', $floorNumber);
+        }
+
+        if (!empty($roomType)) {
+            $rooms->whereIn('type', $roomType);
+        }
+
+        if (!empty($price)) {
+            foreach ($price as $priceRange) {
+                switch ($priceRange) {
+                    case 1:
+                        $rooms->where('unit_price', '<', 1000000);
+                        break;
+                    case 2:
+                        $rooms->whereBetween('unit_price', [1000000, 1500000]);
+                        break;
+                    case 3:
+                        $rooms->whereBetween('unit_price', [1500000, 2000000]);
+                        break;
+                    case 4:
+                        $rooms->whereBetween('unit_price', [2000000, 2500000]);
+                        break;
+                    case 5:
+                        $rooms->where('unit_price', '>',2500000);
+                        break;
+                }
+            }
+        }
+
+        if (!empty($facilities)) {
+            foreach ($facilities as $facility) {
+                $rooms->whereHas('hasRoomAssets', function ($query) use ($facility) {
+                    $query->whereHas('asset', function ($query) use ($facility) {
+                        $query->where('name', 'like', '%' . $facility . '%');
+                    });
+                });
+            }
         }
 
         if ($searchTerm) {
             $rooms->where('name', 'like', '%' . $searchTerm . '%');
         }
 
-        $rooms = $rooms->paginate(9)->appends(['search' => $searchTerm]);
+        $rooms = $rooms->paginate(9)->appends($request->all());
 
-        return view('Reg_room.reg_room', compact('rooms'));
+        return view('Reg_room.reg_room', compact('rooms','userGender'));
     }
-    public function showFilteredRoomList(Request $request)
-    {
-        $query = Room::with('hasRoomAssets.asset');
-
-        $buildingType = $request->buildingType[0] ?? null;
-        if ($buildingType !== null) {
-            $query->whereHas('building', function ($query) use ($buildingType) {
-                $query->where('type', $buildingType); // Use the buildingType variable
-            });
-        }
-
-        if ($request->has('status') && !empty($request->input('status'))) {
-            $query->whereIn('status', $request->input('status'));
-        }
-        if ($request->has('floorNumber') && $request->input('floorNumber') != '') {
-            $query->where('floor_number', $request->input('floorNumber'));
-        }
-
-        if ($request->has('roomType') && !empty($request->input('roomType'))) {
-            $query->whereIn('type', $request->input('roomType'));
-        }
-
-        if ($request->has('price') && !empty($request->input('price'))) {
-            foreach ($request->input('price') as $price) {
-                switch ($price) {
-                    case 1:
-                        $query->where('unit_price', '<', 500000);
-                        break;
-                    case 2:
-                        $query->whereBetween('unit_price', [500000, 1000000]);
-                        break;
-                    case 3:
-                        $query->whereBetween('unit_price', [1000000, 2000000]);
-                        break;
-                    case 4:
-                        $query->whereBetween('unit_price', [2000000, 3000000]);
-                        break;
-                }
-            }
-        }
-        if ($request->has('facilities') && !empty($request->input('facilities'))) {
-            $facilities = $request->input('facilities');
-
-            foreach ($facilities as $facility) {
-                $query->whereHas('hasRoomAssets', function ($q) use ($facility) {
-                    $q->whereHas('asset', function ($q) use ($facility) {
-                        $q->where('name', $facility);
-                    });
-                });
-            }
-        }
-
-        $rooms = $query->paginate(9);
-
-        return view('reg_room.reg_room', compact('rooms'));
-    }
-
-
-
     public function showRegisterRoomForm($room)
     {
         // Lấy thông tin sinh viên từ cơ sở dữ liệu
@@ -314,4 +308,11 @@ class StudentController extends Controller
 
         return response()->json(['success' => true, 'student' => $student]);
     }
+
+    public function studentCheckLogin()
+    {
+        if(Auth::check()) {
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false]);}
 }

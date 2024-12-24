@@ -69,9 +69,17 @@ async function handleRegisterClick(event, roomId, isChange) {
     // Prevent event bubbling
     event.stopPropagation();
 
+    const userResponse = await fetch('/students/check-login');
+    const userData = await userResponse.json();
+    if (!userData.success) {
+        window.location.href = '/students/room-registration';
+        return;
+    }
+
     if(!isChange){
         const response = await fetch(`/students/room-registration/latest-residence`);
         const data = await response.json();
+        console.log(data);
         if (data.residence && (data.residence.status === 'Registered'
             || data.residence.status === 'Paid'
             || data.residence.status === 'Checked in'

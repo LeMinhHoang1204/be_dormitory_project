@@ -5,6 +5,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+Route::get('/students/check-login', [StudentController::class, 'studentCheckLogin'])
+    ->name('studentCheckLogin');
 
 
 
@@ -39,11 +41,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
 
-Route::get('/room-registration', [RoomController::class, 'showListRoom'])->name('register-room');
 
-Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
 
-Route::post('/room-registration', [ResidenceController::class, 'store'])->name('register.room');
+//Route::get('/room-registration', [RoomController::class, 'showListRoom'])->name('register-room');
+
+//Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
+//
+//Route::post('/room-registration', [ResidenceController::class, 'store'])->name('register.room');
 
 // Route::get('/payment', function () {
 //     return view('student_payment.payment');

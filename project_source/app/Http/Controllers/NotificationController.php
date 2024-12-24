@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewNotification;
 use App\Events\NotificationEvent;
 use App\Models\Building;
 use App\Models\Notification;
@@ -136,9 +137,37 @@ class NotificationController extends Controller
         $sender = User::getSpecificUser($validatedData['sender_id']);
         event(new NotificationEvent($sender->name, $validatedData['object_id']));
 
+        // Xác định recipientIds dựa trên loại thông báo
+        $recipientIds = [];
+        if ($validatedData['type'] === 'individual') {
+            $recipientIds[] = $request->user_object_id;
+        } elseif ($validatedData['type'] === 'group') {
+            if ($request->group === 'building') {
+                // Lấy tất cả user ID trong tòa nhà
+                $recipientIds = User::whereHas('residence', function ($query) use ($request) {
+                    $query->whereHas('room', function ($q) use ($request) {
+                        $q->where('building_id', $request->building_object_id);
+                    })->where('status', 'Checked in');
+                })->pluck('id')->toArray();
+            } elseif ($request->group === 'room') {
+                // Lấy tất cả user ID trong phòng
+                $recipientIds = User::whereHas('residence', function ($query) use ($request) {
+                    $query->where('room_id', $request->room_object_id)
+                        ->where('status', 'Checked in');
+                })->pluck('id')->toArray();
+            }
+        }
+
+        // Broadcast event với recipientIds
+        broadcast(new NewNotification([
+            'message' => 'New notification: ' . $notification->title,
+            'recipientIds' => $recipientIds,
+        ]))->toOthers();
+
         return response()->json([
             'success' => true,
             'message' => 'Notification created successfully',
+            'notification' => $notification,
         ]);
     }
 

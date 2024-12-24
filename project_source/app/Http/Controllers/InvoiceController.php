@@ -64,6 +64,7 @@ class InvoiceController extends Controller
         return view('accountant.invoices.create', compact('types', 'payment_methods'));
     }
 
+
     /**
      * Store a newly created resource in storage.
      */

@@ -80,7 +80,7 @@ Route::get('/get-user-info/{id}', function ($id) {
 });
 
 
-Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
+// Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
 
 
 

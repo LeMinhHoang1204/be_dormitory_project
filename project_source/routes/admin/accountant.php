@@ -31,6 +31,10 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/detail/report/{id}', [InvoiceController::class, 'reportInvoice'])->name('reportInvoice')->can('update', 'invoice');
 
+            Route::get('/create', [InvoiceController::class, 'create'])->name('invoices.create');
+
+            Route::post('/create', [InvoiceController::class, 'store'])->name('invoices.store');
+
         });
     });
 });

@@ -162,7 +162,6 @@ class InvoiceController extends Controller
         preg_match('/\bRenewal\b/', $invoice->note, $matchestring);
 
 
-        if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
         if ($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
             $user = User::find($invoice->object_id);
             $latestResidence = $user->residence()->latest()->first();

@@ -136,7 +136,10 @@ class NotificationController extends Controller
         $sender = User::getSpecificUser($validatedData['sender_id']);
         event(new NotificationEvent($sender->name, $validatedData['object_id']));
 
-        return redirect(route('notifications.index', absolute: false));
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification created successfully',
+        ]);
     }
 
     /**
@@ -207,6 +210,28 @@ class NotificationController extends Controller
     {
         $users = User::where('id', '!=', auth()->id())->get();
         return response()->json($users);
+    }
+
+    public function getUsersByRoom($roomId)
+    {
+        try {
+            // Lấy users thông qua residences
+            $users = User::whereHas('residence', function ($query) use ($roomId) {
+                $query->where('room_id', $roomId)
+                    ->where('status', 'Checked in');
+            })
+                ->select('id', 'name')
+                ->get();
+
+            if ($users->isEmpty()) {
+                return response()->json(['message' => 'No users found in this room'], 404);
+            }
+
+            return response()->json($users);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching users by room: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to fetch users'], 500);
+        }
     }
 
 }

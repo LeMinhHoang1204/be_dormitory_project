@@ -7,7 +7,17 @@
     <link rel="stylesheet" href="{{ asset('./css/student/user_profile.php.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/avatar.css') }}" type="text/css">
-
+<style>
+    .student-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .info-left,
+    .info-right {
+        width: 48%;
+    }
+</style>
 </head>
 
 @section('content')
@@ -41,28 +51,35 @@
             <div class="modal-body">
                 <div class="violation-details">
                     <div class="violation-info">
+                        <div class="student-details">
+                            <div class="info-left">
                         <p><strong>Violation ID:</strong> #{{ $violation->id }}</p>
                         <p><strong>Title:</strong> {{ $violation->title }}</p>
                         <p><strong>Name:</strong> {{ $student ? $student->user->name : 'No student assigned' }}</p>
                         <p><strong>Email:</strong> {{ $student ? $student->user->email : 'No email' }}</p>
                         <p><strong>Phone:</strong> {{ $student ? $student->user->phone ?? 'Not provided' : 'No phone' }}</p>
                         <p><strong>Room:</strong> {{ $currentResidence->room->name ?? 'No room assigned' }}</p>
-                        <p><strong>Residence:</strong> {{ $currentResidence->status ?? 'No residence' }}</p>
+                            </div>
+                            <div class="info-right">
+                            <p><strong>Residence:</strong> {{ $currentResidence->status ?? 'No residence' }}</p>
                         <p><strong>Type of violation:</strong> {{ $violation->type }}</p>
                         <p><strong>Minus points:</strong> {{ $violation->minus_point }}</p>
                         <p><strong>Training point:</strong> {{ $student->training_point ?? 'Not found' }}</p>
-                        <p><strong>Detail:</strong> {{ $violation->description }}</p>
+                        <p><strong>Detail:</strong> {{ $violation->description ?? 'None'}}</p>
                         <p><strong>Date Occurred:</strong> {{ \Carbon\Carbon::parse($violation->occurred_at)->format('d M, Y') }}</p>
                         {{--                        <p><strong>Images:</strong></p>--}}
+                            </div>
                     </div>
                     <div class="manager-info" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
-                        <h4>Creator Violation</h4>
-                        <p><strong>Name:</strong> {{ $manager->name ?? 'N/A' }}</p>
+                        <div class="student-details">
+                        <div class="info-left">
+                            <p><strong>Creator:</strong> {{ $manager->name ?? 'N/A' }}</p>
                         <p><strong>Email:</strong> {{ $manager->email ?? 'N/A' }}</p>
-                        <p><strong>Phone:</strong> {{ $manager->phone ?? 'Not provided' }}</p>
-                        <p><strong>Created Violation At:</strong>
-                            {{ \Carbon\Carbon::parse($violation->created_at)->format('d M, Y - H:i') }}
-                        </p>
+                            </div>
+                            <div class="info-right">
+                            <p><strong>Phone:</strong> {{ $manager->phone ?? 'Not provided' }}</p>
+                                <p><strong>Created Violation At:</strong></p>
+                            </div>
                     </div>
                 </div>
                 <div class="action-buttons">
@@ -79,5 +96,6 @@
                 </div>
             </div>
         </div>
+
 @endsection
 

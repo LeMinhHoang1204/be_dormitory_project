@@ -163,9 +163,10 @@ class InvoiceController extends Controller
 
 
         if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
+        if ($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
             $user = User::find($invoice->object_id);
             $latestResidence = $user->residence()->latest()->first();
-            if($latestResidence->status == 'Registered') {
+            if ($latestResidence->status == 'Registered') {
                 $latestResidence->update([
                     'status' => 'Paid',
                 ]);
@@ -183,8 +184,8 @@ class InvoiceController extends Controller
                 $firstNumber = $matches[0] ?? null;
 
                 if ($firstNumber !== null) {
-                    $new_end_date = $latestResidence->end_date->addMonths((int)$firstNumber);
-                    $new_months_duration = (int)$latestResidence->months_duration + (int)$firstNumber;
+                    $new_end_date = $latestResidence->end_date->addMonths((int) $firstNumber);
+                    $new_months_duration = (int) $latestResidence->months_duration + (int) $firstNumber;
 
                     $latestResidence->update([
                         'end_date' => $new_end_date,

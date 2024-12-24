@@ -7,13 +7,20 @@ use Illuminate\Http\Request;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        // Kiểm tra role
-        if (auth()->check() && auth()->user()->role === $role) {
-            return $next($request);
+        if (!auth()->check()) {
+            return redirect('login');
         }
 
-        return abort(403, 'Unauthorized');
+        $user = auth()->user();
+
+        foreach ($roles as $role) {
+            if ($user->hasRole($role)) {
+                return $next($request);
+            }
+        }
+
+        return abort(403, 'Unauthorized action.');
     }
 }

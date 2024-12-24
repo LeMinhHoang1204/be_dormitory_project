@@ -19,6 +19,16 @@
     @include('layouts.sidebar_student')
     <div class="container mt-5">
         <x-header-search title="Invoices" />
+
+        {{-- @if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->role === 'accountant'))
+            <div class="create-button-container">
+                <a href="{{ route('invoices.create') }}" class="btn-create">
+                    <i class="fas fa-plus"></i>
+                    <span>Create Invoice</span>
+                </a>
+            </div>
+        @endif --}}
+
         <table class="table table-bordered">
             <thead>
                 <tr>

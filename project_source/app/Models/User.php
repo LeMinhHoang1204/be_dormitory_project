@@ -5,12 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
-
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -39,7 +35,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
-
     /**
      * Get the attributes that should be cast.
      *
@@ -63,15 +58,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return User::find($id);
     }
 
-
-
     // student relationships
     public function student()
     {
         return $this->hasOne(Student::class, 'user_id', 'id');
     }
-
-
 
     // employee relationships
     public function employee()
@@ -79,19 +70,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Employee::class, 'user_id', 'id');
     }
 
-    public function manageEmployee(){
+    public function manageEmployee()
+    {
         return $this->hasMany(Employee::class, 'manager_id', 'id');
     }
-
-
 
     // notification recipient relationships
     public function read()
     {
         return $this->hasMany(NotificationRecipient::class, 'user_id', 'id');
     }
-
-
 
     // notification relationships
     public function senderNotification()
@@ -105,10 +93,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphMany(Notification::class, 'object');
     }
 
-
-
     // residence relationships
-    public function residence(){
+    public function residence()
+    {
         return $this->hasMany(Residence::class, 'stu_user_id', 'id');
     }
 
@@ -118,8 +105,6 @@ class User extends Authenticatable implements MustVerifyEmail
             ->whereNotIn('status', ['Checked out', 'Transfered'])
             ->latest('start_date');
     }
-
-
 
     // request relationships
     public function sendRequest()
@@ -137,8 +122,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Request::class, 'forwarder_id', 'id');
     }
 
-
-
     // invoice relationships
     public function sendInvoice()
     {
@@ -149,8 +132,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->morphMany(Invoice::class, 'object');
     }
-
-
 
     // activity relationships
     public function createActivity()
@@ -170,7 +151,6 @@ class User extends Authenticatable implements MustVerifyEmail
             ->withTimestamps();
     }
 
-
     // violation relationships
     public function createViolation()
     {
@@ -180,6 +160,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function receiveViolation()
     {
         return $this->hasMany(Violation::class, 'receiver_id', 'id');
+    }
+
+    public function hasRole($role)
+    {
+        // Giả sử role được lưu trong cột 'role' của bảng users
+        if (is_array($role)) {
+            return in_array($this->role, $role);
+        }
+        return $this->role === $role;
     }
 
 }

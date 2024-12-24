@@ -22,4 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/getAllRooms/{building_id}', [NotificationController::class, 'getAllRoom'])->name('notifications.getAllRoom')->can('create', \App\Models\Notification::class);;
 
     Route::get('/admin/getAllUsers', [NotificationController::class, 'getAllUser'])->name('notifications.getAllUser')->can('create', \App\Models\Notification::class);;
+
+    Route::get('/get-users-by-room/{roomId}', [NotificationController::class, 'getUsersByRoom'])
+        ->name('notifications.getUsersByRoom')
+        ->middleware('auth');
 });

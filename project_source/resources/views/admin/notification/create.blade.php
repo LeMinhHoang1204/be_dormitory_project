@@ -10,36 +10,14 @@
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">
     <script src="{{ asset('./javascript/notification/notification.js') }}"></script>
-
-    {{-- WEBSITE: tabler icons --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@1.74.0/icons-react/dist/index.umd.min.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-    {{-- Bootstrap --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-
-    {{-- SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
-
         var pusher = new Pusher('a42fc293e9345264b282', {
             cluster: 'ap1'
         });
-
         var channel = pusher.subscribe('be-dormitory-channel');
-
         channel.bind('user-login', function(data) {
             toastr.success(JSON.stringify(data.email) + ' has joined our website');
         });
@@ -58,7 +36,7 @@
             </div>
 
             <div class="card-body p-4">
-                <form action="{{ route('notifications.store') }}" method="POST">
+                <form action="{{ route('notifications.store') }}" method="POST" id="notificationForm">
                     @csrf
 
                     <div class="form-floating mb-3">
@@ -93,19 +71,17 @@
 
 
                     {{-- User Selection --}}
-                    
-                    {{-- <div class="form-floating mb-3" id="userSelection" style="display: none;">
-                        <select class="form-select" id="user_object_id" name="user_object_id">
+                    <div class="form-floating mb-3" id="userSelection" style="display: none;">
+                        <select class="form-select" id="user_object_id" name="user_object_id" data-live-search="true">
                             <option value="">Select User</option>
                         </select>
                         <label for="user_object_id">Select User</label>
-                    </div> --}}
+                    </div>
 
                     <div id="groupOptions" style="display: none;">
                         <div class="form-floating mb-3">
                             <select class="form-select" id="group" name="group">
                                 <option value="building">Building</option>
-                                {{-- <option value="room">Room</option> --}}
                             </select>
                             <label for="group">Group Type</label>
                         </div>
@@ -125,6 +101,15 @@
                                 <option value="">Select Room</option>
                             </select>
                             <label for="room_object_id">Select Room</label>
+                        </div>
+
+                        <div class="mb-3" id="roomUsersSelection" style="display: none;">
+                            <label class="form-label">Select Users in Room</label>
+                            <div class="user-selection-container border rounded p-3">
+                                <div class="row" id="room_users_checkboxes">
+                                    <!-- Checkboxes will be dynamically added here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -146,47 +131,6 @@
 
     <script>
         $(document).ready(function() {
-            $('form').on('submit', function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Notification created successfully',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#3085d6'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href =
-                                    "{{ route('notifications.index') }}";
-                            }
-                        });
-                    },
-                    error: function(xhr) {
-                        let errorMessage =
-                            'An error occurred while creating the notification. Please try again!';
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            errorMessage = xhr.responseJSON.message;
-                        }
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: errorMessage,
-                            confirmButtonColor: '#d33'
-                        });
-                    }
-                });
-            });
 
             // Load users when page loads
             $.get('/get-all-users', function(users) {
@@ -252,13 +196,136 @@
                         },
                         error: function(error) {
                             console.error('Error details:', error);
-                            toastr.error('Failed to load rooms. Please try again.');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Failed to load rooms. Please try again later.',
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'OK'
+                            });
                         }
                     });
                 } else {
                     $('#roomSelection').hide();
                 }
             });
+
+            // Handle room selection change
+            $('#room_object_id').change(function() {
+                const roomId = $(this).val();
+                const userCheckboxesContainer = $('#room_users_checkboxes');
+                userCheckboxesContainer.empty();
+
+                if (roomId) {
+                    $.ajax({
+                        url: `/get-users-by-room/${roomId}`,
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (Array.isArray(response) && response.length > 0) {
+                                response.forEach(function(user) {
+                                    const checkboxDiv = `
+                                        <div class="col-md-6 mb-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                       name="room_users[]"
+                                                       value="${user.id}"
+                                                       id="user_${user.id}">
+                                                <label class="form-check-label" for="user_${user.id}">
+                                                    ${user.name}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    `;
+                                    userCheckboxesContainer.append(checkboxDiv);
+                                });
+                                $('#roomUsersSelection').show();
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'No Users Found',
+                                    text: 'There are no users registered in this room.',
+                                    confirmButtonColor: '#3085d6',
+                                });
+                                $('#roomUsersSelection').hide();
+                            }
+                        },
+                        error: function(xhr) {
+                            let errorMessage = 'Failed to load users. Please try again later.';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: errorMessage,
+                                confirmButtonColor: '#d33',
+                            });
+                            $('#roomUsersSelection').hide();
+                        }
+                    });
+                } else {
+                    $('#roomUsersSelection').hide();
+                }
+            });
+
+            // Add this new code for form submission
+            $('#notificationForm').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Notification created successfully',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href =
+                                    "{{ route('notifications.index') }}";
+                            }
+                        });
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'Something went wrong. Please try again.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorMessage,
+                            confirmButtonColor: '#d33',
+                        });
+                    }
+                });
+            });
         });
     </script>
+
+    <style>
+        .user-selection-container {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+        }
+
+        .form-check-input:checked+.form-check-label {
+            color: #0d6efd;
+            font-weight: 500;
+        }
+    </style>
 @endsection
+
+<meta name="csrf-token" content="{{ csrf_token() }}">

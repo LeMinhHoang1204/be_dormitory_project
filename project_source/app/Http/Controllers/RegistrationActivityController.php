@@ -133,15 +133,17 @@ class RegistrationActivityController extends Controller
                 ->with('error', 'Has expired to register for this activity.');
         }
 
-        $existingRegistration = $activity->hasParticipants()->where('participant_id', $user->id)
-            ->whereIn('status', ['Registered', 'Joined'])
-            ->first();
+        // neu đã đăng ký hoặc tham gia rồi thì acti đó không hiện nút đăng ký
+//        $existingRegistration = $activity->hasParticipants()->where('participant_id', $user->id)
+//            ->whereIn('status', ['Registered', 'Joined'])
+//            ->first();
+//
+//        if ($existingRegistration) {
+//            return redirect()->route('activities.show', $activity->id)
+//                ->with('success', 'You have already registered for this activity before.');
+//        }
 
-        if ($existingRegistration) {
-            return redirect()->route('activities.show', $activity->id)
-                ->with('success', 'You have already registered for this activity before.');
-        }
-
+//        // Nếu đã hủy đăng ký trước đó, có thể đăng ký lại
         $existingCancelled = $activity->hasParticipants()->where('participant_id', $user->id)
             ->where('status', 'Cancelled')
             ->first();

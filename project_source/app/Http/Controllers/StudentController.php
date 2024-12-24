@@ -28,16 +28,24 @@ class StudentController extends Controller
     {
         //
     }
+
     public function showRegisterRoomList(Request $request)
     {
         $searchTerm = $request->input('search');
 
-        $rooms = Room::with('hasRoomAssets.asset')
-            ->where('status', 1)
-            ->whereColumn('member_count', '<', 'type')
-            ->whereHas('building', function ($query) {
-                $query->where('type', auth()->user()->student->gender);
-            });
+        if (auth()->check()) {
+            $rooms = Room::with('hasRoomAssets.asset')
+                ->where('status', 1)
+                ->whereColumn('member_count', '<', 'type')
+                ->whereHas('building', function ($query) {
+                    $query->where('type', auth()->user()->student->gender);
+                });
+        }
+        else {
+            $rooms = Room::with('hasRoomAssets.asset')
+                ->where('status', 1)
+                ->whereColumn('member_count', '<', 'type');
+        }
 
         if ($searchTerm) {
             $rooms->where('name', 'like', '%' . $searchTerm . '%');
@@ -46,13 +54,18 @@ class StudentController extends Controller
         $rooms = $rooms->paginate(9)->appends(['search' => $searchTerm]);
 
         return view('Reg_room.reg_room', compact('rooms'));
+
     }
     public function showFilteredRoomList(Request $request)
     {
-        $query = Room::with('hasRoomAssets.asset')
-            ->whereHas('building', function ($query) {
-                $query->where('type',  auth()->user()->student->gender); // Chỉ lọc theo gender của user
+        $query = Room::with('hasRoomAssets.asset');
+
+        $buildingType = $request->buildingType[0] ?? null;
+        if ($buildingType !== null) {
+            $query->whereHas('building', function ($query) use ($buildingType) {
+                $query->where('type', $buildingType); // Use the buildingType variable
             });
+        }
 
         if ($request->has('status') && !empty($request->input('status'))) {
             $query->whereIn('status', $request->input('status'));
@@ -301,4 +314,11 @@ class StudentController extends Controller
 
         return response()->json(['success' => true, 'student' => $student]);
     }
+
+    public function studentCheckLogin()
+    {
+        if(Auth::check()) {
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false]);}
 }

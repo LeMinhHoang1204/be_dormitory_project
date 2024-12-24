@@ -131,15 +131,13 @@ class RequestController extends Controller
 
     public function rejectCheckIn(\Illuminate\Http\Request $request, Residence $residence)
     {
-        $residence->update(['status' => 'Rejected',
-            'note' => $residence->note . ' - ' . 'Rejected for user '. $residence->stu_user_id . ' from ' . $residence->room->name .
-            ' on ' . $residence->start_date . ' with reason: ' . $request->description]);
+        $prevResidence = Residence::where('stu_user_id', $residence->stu_user_id)->orderBy('created_at', 'desc')->skip(1)->first();
 
         $invoice = Invoice::where([
             ['object_id', '=', $residence->stu_user_id],
             ['object_type', '=', 'App\Models\User'],
             ['type', '=', 'Room Registration'],
-            ['start_date', '=', $residence->start_date], // start_date de xac dinh hoa don
+            ['start_date', '=', $prevResidence->start_date], // start_date de xac dinh hoa don
         ])->first();
 
         // nếu chưa thanh toán thì không thể đi nhận phòng
@@ -153,6 +151,10 @@ class RequestController extends Controller
             (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
+        $residence->update(['status' => 'Rejected',
+            'note' => $residence->note . ' - ' . 'Rejected for user '. $residence->stu_user_id . ' from ' . $residence->room->name .
+                ' on ' . $residence->start_date . ' with reason: ' . $request->description]);
+
         // nếu được chọn hoàn tiền
         if($request->IsRefund == 'on') {
             $residence->update(['note' => $residence->note . ' - ' . 'Refunding for user '. $residence->stu_user_id]);
@@ -161,6 +163,7 @@ class RequestController extends Controller
                 $invoice->update(['status' => 'Refunding',
                     'note' => $residence->note . ' - ' . 'Refunding for user '. $residence->stu_user_id]);
             }
+
 
             $accountant = \App\Models\User::where('role', 'Accountant')->first();
             $newRequest = Request::create([
@@ -247,6 +250,7 @@ class RequestController extends Controller
                         'room_id' => $newRoom->id,
                         'start_date' => $requestApi->new_start_date,
                         'months_duration' => Carbon::parse($requestApi->new_start_date)->diffInMonths(Carbon::parse($oldResidence->end_date)),
+                        'status' => 'Paid',
                         'note' => 'Change Room from room ' . $oldResidence->room->name . ' to room ' . $newRoom->name . ' on ' . now(),
                     ]);
 
@@ -299,7 +303,7 @@ class RequestController extends Controller
 
     public function resolve(\Illuminate\Http\Request $requestApi ,Request $request)
     {
-        if($request->type == 'Refund') {
+        if ($request->type == 'Refund') {
             // cập nhật cư trú cũ
             $note = $request->note;
             preg_match('/\d+/', $note, $matches);
@@ -309,67 +313,104 @@ class RequestController extends Controller
                 $residence = Residence::where([
                     ['stu_user_id', '=', $firstNumber],
                 ])->orderBy('created_at', 'desc')->first();
-                $residence->update(['status' => 'Refunded' , 'note' => $residence->note . ' - ' . 'Refunded for user '. $residence->stu_user_id]);
 
-                // câp nhật hoá đơn cũ
-                $invoice = Invoice::where([
-                    ['object_id', '=', $residence->stu_user_id],
-                    ['type', '=', 'Room Registration'],
-                    ['object_type', '=', 'App\Models\User'],
-                    ['start_date', '=', $residence->start_date],
-                ])->first();
-
-                // cái này chỉ phù hợp vơới hoá đơn hoàn tiền khi nhận phòng
-                if($invoice && $invoice->status == 'Refunding') {
-                    $invoice->update(['status' => 'Refunded', 'note' => $invoice->note . ' - ' . 'Refunded for user '. $residence->stu_user_id]);
-
-                    // tạo hoá đơn hoàn tiền mới
-                    $newInvoice = Invoice::create([
-                        'sender_id' => Auth::user()->id,
-                        'object_type' => 'App\Models\User',
-                        'object_id' => $residence->stu_user_id,
-                        'send_date' => now(),
-                        'due_date' => now()->addDays(7),
-                        'paid_date' => now(),
-                        'type' => 'Refund',
-                        'status' => 'Paid',
-                        'total' => $invoice->total, // sai tiền đóối với hoàn tiền đổi phong
-                        'payment_method' => 'Bank Transfer',
-                        'note' => 'Refunded for user '. $residence->stu_user_id . ' from ' . $residence->room->name .
-                            ' on ' . $residence->start_date . ' with reason: ' . $request->description . ' - Refunded by ' . Auth::user()->id . ' - ' . Auth::user()->name,
-                    ]);
+                if($residence){
+                    $invoice = Invoice::where([
+                        ['object_id', '=', $residence->stu_user_id],
+                        ['type', '=', 'Room Registration'],
+                        ['object_type', '=', 'App\Models\User'],
+                        ['start_date', '=', $residence->start_date],
+                    ])->first();
                 }
-                if($requestApi->hasFile('image')) {
+            }
+
+
+            // cái này chỉ phù hợp vơới hoá đơn hoàn tiền khi nhận phòng
+            if ($invoice && $invoice->status == 'Refunding' && $residence->status == 'Rejected') {
+                $invoice->update(['status' => 'Refunded', 'note' => $invoice->note . ' - ' . 'Refunded for user ' . $residence->stu_user_id]);
+                $residence->update(['status' => 'Refunded', 'note' => $residence->note . ' - ' . 'Refunded for user ' . $residence->stu_user_id]);
+                // tạo hoá đơn hoàn tiền mới
+                $newInvoice = Invoice::create([
+                    'sender_id' => Auth::user()->id,
+                    'object_type' => 'App\Models\User',
+                    'object_id' => $residence->stu_user_id,
+                    'send_date' => now(),
+                    'due_date' => now()->addDays(7),
+                    'paid_date' => now(),
+                    'type' => 'Refund',
+                    'status' => 'Paid',
+                    'total' => $invoice->total, // sai tiền đóối với hoàn tiền đổi phong
+                    'payment_method' => 'Bank Transfer',
+                    'note' => 'Refunded for user ' . $residence->stu_user_id . ' from ' . $residence->room->name .
+                        ' on ' . $residence->start_date . ' with reason: ' . $request->description . ' - Refunded by ' . Auth::user()->id . ' - ' . Auth::user()->name,
+                ]);
+                if ($requestApi->hasFile('image')) {
+                    (new ImageController)->saveToInvoice($requestApi, $newInvoice->id);
+                }
+
+            }
+
+            // sinh vien dang ky phong moi it tien hon phong cu
+            // tinh so tien can hoan = (so tien phong cu - so tien phong moi) * so thang con lai
+            // lay oldResidence paid
+            elseif ($residence->status == 'Paid') {
+                // start date moi nen khong tim duoc hoa don cu --> bo qua hoa don cu
+                // tạo hoá đơn hoàn tiền mới
+                // so tien phong cu = note
+                // so tien phong moi = residence->room->unit_price
+                // so thang con lai = residence->months_duration
+
+                // lay phong cu
+                $pattern = '/from room ([A-Z]\d\.\d+)/';
+                preg_match($pattern, $residence->note, $matches);
+                $oldRoomName = $matches[1];
+                $oldRoom = Room::where('name', $oldRoomName)->first();
+
+                $total = ($oldRoom->unit_price - $residence->room->unit_price) * $residence->months_duration;
+
+                $newInvoice = Invoice::create([
+                    'sender_id' => Auth::user()->id,
+                    'object_type' => 'App\Models\User',
+                    'object_id' => $residence->stu_user_id,
+                    'send_date' => now(),
+                    'due_date' => now()->addDays(7),
+                    'paid_date' => now(),
+                    'type' => 'Refund',
+                    'status' => 'Paid',
+                    'total' => $total,
+                    'payment_method' => 'Bank Transfer',
+                    'note' => 'Refunded for user ' . $residence->stu_user_id . ' from ' . $residence->room->name .
+                        ' on ' . $residence->start_date . ' with reason: ' . $request->description . ' - Refunded by ' . Auth::user()->id . ' - ' . Auth::user()->name,
+                ]);
+                if ($requestApi->hasFile('image')) {
                     (new ImageController)->saveToInvoice($requestApi, $newInvoice->id);
                 }
             }
-        }
-        else if($request->type == 'Check out'){
-            $residence = $request->sender->residence()->latest()->first();
-            $residence->update(['status' => 'Checked Out', 'check_out_date' => now(), 'note' => $residence->note . " - " . "Checked out on " . now()]);
-        }
-        else if($request->type == 'Fixing'){
-            if($requestApi->IsCost == 'on') {
-                Invoice::create([
-                    'sender_id' => Auth::user()->id,
-                    'object_type' => 'App\Models\User',
-                    'object_id' => $request->sender_id,
-                    'send_date' => now(),
-                    'due_date' => now()->addDays(7),
-                    'type' => 'Fixing',
-                    'total' => $requestApi->fixingCost,
-                    'note' => 'Fixing cost for user '. $request->sender_id . ' on room: ' . $request->sender->residence()->latest()->first()->room->name
-                        . ' with reason: ' . $requestApi->description,
-                ]);
+            } else if ($request->type == 'Check out') {
+                $residence = $request->sender->residence()->latest()->first();
+                $residence->update(['status' => 'Checked Out', 'check_out_date' => now(), 'note' => $residence->note . " - " . "Checked out on " . now()]);
+            } else if ($request->type == 'Fixing') {
+                if ($requestApi->IsCost == 'on') {
+                    Invoice::create([
+                        'sender_id' => Auth::user()->id,
+                        'object_type' => 'App\Models\User',
+                        'object_id' => $request->sender_id,
+                        'send_date' => now(),
+                        'due_date' => now()->addDays(7),
+                        'type' => 'Fixing',
+                        'total' => $requestApi->fixingCost,
+                        'note' => 'Fixing cost for user ' . $request->sender_id . ' on room: ' . $request->sender->residence()->latest()->first()->room->name
+                            . ' with reason: ' . $requestApi->description,
+                    ]);
+                }
             }
-        }
 
-        // cập nhật request
-        if($requestApi->hasFile('image')) {
-            (new ImageController)->saveToRequest($requestApi, $request->id);
-        }
-        $request->update(['status' => 'Resolved' , 'resolve_date' => now(), 'note' => $request->note . ' - ' . $requestApi->description . ' - Resolved by ' . Auth::user()->id . ' - ' . Auth::user()->name]);
-        return redirect()->route('requests.index');
+            // cập nhật request
+            if ($requestApi->hasFile('image')) {
+                (new ImageController)->saveToRequest($requestApi, $request->id);
+            }
+            $request->update(['status' => 'Resolved', 'resolve_date' => now(), 'note' => $request->note . ' - ' . $requestApi->description . ' - Resolved by ' . Auth::user()->id . ' - ' . Auth::user()->name]);
+            return redirect()->route('requests.index');
     }
 
     /**
@@ -638,7 +679,7 @@ class RequestController extends Controller
 
         // lay cu tru hien tai
         $residence = Residence::where('stu_user_id', auth()->id())
-            ->orderBy('start_date', 'desc')->first();
+            ->orderBy('created_at', 'desc')->first();
 
         if($this->checkHasOldRequestSameType($request)) {
             session()->flash('error', [

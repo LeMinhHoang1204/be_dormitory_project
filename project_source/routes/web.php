@@ -69,6 +69,16 @@ Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name
 
 Route::get('/get-rooms-by-building/{buildingId}', [RoomController::class, 'getRoomsByBuilding']);
 
+Route::get('/get-user-info/{id}', function ($id) {
+    $user = \App\Models\User::find($id);
+    if ($user) {
+        return response()->json([
+            'name' => $user->name,
+        ]);
+    }
+    return response()->json(['error' => 'User not found'], 404);
+});
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';
 require __DIR__ . '/admin/building-room-residence.php';

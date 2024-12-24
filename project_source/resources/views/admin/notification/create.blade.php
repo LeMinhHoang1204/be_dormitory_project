@@ -12,16 +12,56 @@
     <script src="{{ asset('./javascript/notification/notification.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    {{-- Bootstrap --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+
+    {{-- Pusher --}}
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     <script>
-        Pusher.logToConsole = true;
-        var pusher = new Pusher('a42fc293e9345264b282', {
-            cluster: 'ap1'
+        // Pusher configuration
+        const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+            encrypted: true
         });
-        var channel = pusher.subscribe('be-dormitory-channel');
-        channel.bind('user-login', function(data) {
-            toastr.success(JSON.stringify(data.email) + ' has joined our website');
+
+        const channel = pusher.subscribe('notification-channel');
+        const currentUserId = {{ auth()->id() }};
+
+        // Listen for notification events
+        channel.bind('new-notification', function(data) {
+            console.log('Received notification:', data);
+            console.log('Current user ID:', currentUserId);
+            console.log('Recipient IDs:', data.recipientIds);
+
+            // Kiểm tra xem người dùng hiện tại có trong danh sách người nhận không
+            if (data.recipientIds && Array.isArray(data.recipientIds) && data.recipientIds.includes(
+                    currentUserId)) {
+                console.log('Current user is in recipients list, showing notification');
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "timeOut": "5000",
+                    "onclick": function() {
+                        console.log('Notification clicked');
+                    }
+                };
+
+                toastr.success(data.message);
+            } else {
+                console.log('Current user is not in recipients list, notification will not be shown');
+            }
         });
     </script>
+
+
 </head>
 
 @section('content')
@@ -52,13 +92,14 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}"
-                            required>
+                        <input type="text" class="form-control" id="title" name="title"
+                            value="{{ old('title') }}" required>
                         <label for="title">Title</label>
                     </div>
 
                     <div class="form-floating mb-3">
                         <select class="form-select" id="type" name="type" required>
+                            <option value="" disabled selected>Select Notification Type</option>
                             <option value="individual" {{ old('type') == 'individual' ? 'selected' : '' }}>
                                 Individual
                             </option>
@@ -72,15 +113,18 @@
 
                     {{-- User Selection --}}
                     <div class="form-floating mb-3" id="userSelection" style="display: none;">
-                        <select class="form-select" id="user_object_id" name="user_object_id" data-live-search="true">
-                            <option value="">Select User</option>
-                        </select>
-                        <label for="user_object_id">Select User</label>
+                        <input type="number" class="form-control" id="user_object_id" name="user_object_id"
+                            placeholder="Enter User ID">
+                        <label for="user_object_id">Enter User ID</label>
+                        <div id="userName" class="form-text mt-2" style="display: none;">
+                            User Name: <span id="userNameText" class="fw-bold"></span>
+                        </div>
                     </div>
 
                     <div id="groupOptions" style="display: none;">
                         <div class="form-floating mb-3">
                             <select class="form-select" id="group" name="group">
+                                <option value="" disabled selected>Select Group Type</option>
                                 <option value="building">Building</option>
                             </select>
                             <label for="group">Group Type</label>
@@ -107,7 +151,7 @@
                             <label class="form-label">Select Users in Room</label>
                             <div class="user-selection-container border rounded p-3">
                                 <div class="row" id="room_users_checkboxes">
-                                    <!-- Checkboxes will be dynamically added here -->
+                                    <!-- Checkboxes -->
                                 </div>
                             </div>
                         </div>
@@ -131,22 +175,12 @@
 
     <script>
         $(document).ready(function() {
-
-            // Load users when page loads
-            $.get('/get-all-users', function(users) {
-                users.forEach(function(user) {
-                    $('#user_object_id').append(new Option(user.name, user.id));
-                });
-            });
-
-            // Load buildings when page loads
             $.get('/get-all-buildings', function(buildings) {
                 buildings.forEach(function(building) {
                     $('#building_object_id').append(new Option(building.build_name, building.id));
                 });
             });
 
-            // Handle notification type change
             $('#type').change(function() {
                 if ($(this).val() === 'individual') {
                     $('#userSelection').show();
@@ -158,7 +192,6 @@
                 }
             });
 
-            // Handle group type change
             $('#group').change(function() {
                 if ($(this).val() === 'building') {
                     $('#buildingSelection').show();
@@ -169,7 +202,6 @@
                 }
             });
 
-            // Handle building selection change
             $('#building_object_id').change(function() {
                 const buildingId = $(this).val();
                 console.log('Selected building ID:', buildingId);
@@ -210,7 +242,6 @@
                 }
             });
 
-            // Handle room selection change
             $('#room_object_id').change(function() {
                 const roomId = $(this).val();
                 const userCheckboxesContainer = $('#room_users_checkboxes');
@@ -275,11 +306,28 @@
             $('#notificationForm').on('submit', function(e) {
                 e.preventDefault();
 
+                // Validate user ID when type is individual
+                if ($('#type').val() === 'individual') {
+                    const userId = $('#user_object_id').val();
+                    if (!userId || userId <= 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Please enter a valid user ID',
+                            confirmButtonColor: '#d33',
+                        });
+                        return;
+                    }
+                }
+
+                // Continue with form submission
                 $.ajax({
                     url: $(this).attr('action'),
                     method: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
+
+                        // Hiển thị SweetAlert2
                         Swal.fire({
                             icon: 'success',
                             title: 'Success!',
@@ -307,10 +355,61 @@
                     }
                 });
             });
+
+            // Add this new function to handle user ID input
+            $('#user_object_id').on('change', function() {
+                const userId = $(this).val();
+                if (userId) {
+                    // Call API to get user info
+                    $.ajax({
+                        url: `/get-user-info/${userId}`,
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.name) {
+                                $('#userNameText').text(response.name);
+                                $('#userName').show();
+                            } else {
+                                $('#userName').hide();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'User Not Found',
+                                    text: 'No user found with this ID',
+                                    confirmButtonColor: '#d33',
+                                });
+                            }
+                        },
+                        error: function() {
+                            $('#userName').hide();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to fetch user information',
+                                confirmButtonColor: '#d33',
+                            });
+                        }
+                    });
+                } else {
+                    $('#userName').hide();
+                }
+            });
         });
     </script>
 
     <style>
+        /* Existing styles... */
+
+        /* Remove spinners from number inputs */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            /* Firefox */
+        }
+
         .user-selection-container {
             max-height: 300px;
             overflow-y: auto;

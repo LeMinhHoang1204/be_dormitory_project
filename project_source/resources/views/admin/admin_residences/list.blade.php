@@ -149,6 +149,7 @@
     <title>Request List</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/Notification/notification.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
 
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
@@ -218,33 +219,24 @@
             </tr>
             </thead>
             <tbody>
-            @forelse($residences as $residence)
+            @forelse($residences as $currentResidence)
                 <tr>
-                    <td>{{ $residence->id }}</td>
-                    <td>{{ $residence->student->user->name ?? 'N/A' }}</td>
-                    <td>{{ $residence->room_id ?? 'N/A' }}</td>
-                    <td>{{ $residence->start_date }}</td>
-                    <td>{{ $residence->end_date }}</td>
-                    <td>{{ $residence->status }}</td>
-                    <td>{{ $residence->updated_at->diffForHumans() }}</td>
+                    <td>{{ $currentResidence->id }}</td>
+                    <td>{{ $currentResidence->student->name ?? 'N/A' }}</td>
+                    <td>{{ $currentResidence->room_id ?? 'N/A' }}</td>
+                    <td>{{ $currentResidence->start_date }}</td>
+                    <td>{{ $currentResidence->end_date }}</td>
+                    <td>{{ $currentResidence->status }}</td>
+                    <td>{{ $currentResidence->updated_at->diffForHumans() }}</td>
                     <td>
                         <div class="dropdown">
                             <i class="fa-solid fa-ellipsis-vertical" onclick="toggleDropdown(event)"></i>
                             <div class="dropdown-content">
-                                <!-- Edit Button -->
-                                <a href="{{ route('residences.edit', [$building->id, $room->id, $residence->id]) }}">
-                                    <i class="fa-solid fa-pen-nib" style="margin-right:5px "></i> Edit
+                                <a href="{{ route('student.profile', ['studentId' => $student->id]) }}" class="more">
+                                    More
                                 </a>
-                                <!-- Delete Button -->
-                                @can('delete', $residence)
-                                    <form action="{{ route('residences.destroy', [$building->id, $room->id, $residence->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this residence?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-delete">
-                                            <i class="fa-solid fa-trash" style="margin-right:5px "></i> Delete
-                                        </button>
-                                    </form>
-                                @endcan
+
+
                             </div>
                         </div>
                     </td>
@@ -262,7 +254,7 @@
             var dropdown = event.target.closest('.dropdown');
             var dropdownContent = dropdown.querySelector('.dropdown-content');
 
-            // Close all other dropdowns
+            // Đóng tất cả các dropdown khác
             var allDropdowns = document.querySelectorAll('.dropdown-content');
             allDropdowns.forEach(function(content) {
                 if (content !== dropdownContent) {
@@ -270,7 +262,7 @@
                 }
             });
 
-            // Toggle the current dropdown
+            // Toggle trạng thái hiển thị của dropdown hiện tại
             if (dropdownContent.style.display === "block") {
                 dropdownContent.style.display = "none";
             } else {
@@ -278,7 +270,7 @@
             }
         }
 
-        // Close dropdown when clicking outside the menu
+        // Đóng dropdown khi nhấn ngoài menu
         window.onclick = function(event) {
             if (!event.target.matches('.fa-ellipsis-vertical')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -290,6 +282,7 @@
                 }
             }
         }
+
     </script>
             @endsection
     <style>

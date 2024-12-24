@@ -113,6 +113,16 @@
 {{--                    <p><strong>Gender:</strong> {{ ucfirst($student->gender) }}</p>--}}
                     <p><strong>Status:</strong> {{ auth()->user()->status ? 'Active' : 'Inactive' }}</p>
                     <p><strong>Role:</strong>{{ auth()->user()->role }}</p>
+                    @if (auth()->user()->role === 'building manager' && auth()->user()->employee && auth()->user()->employee->manageBuilding)
+                        <p><strong>Building managed:</strong>
+                            <a href="{{ route('mybuilding.show', $buildingId = auth()->user()->employee->manageBuilding->id) }}">
+                                {{ auth()->user()->employee->manageBuilding->build_name }}
+                            </a>
+                        </p>
+                    @else
+                        <p><strong>Building managed:</strong> Not assigned</p>
+                    @endif
+
                     {{--                    <p><strong>Profile Image:</strong> <img src="{{ asset('storage/' . auth()->user()->profile_image_path) }}" alt="Profile Image" style="width: 100px; height: 100px; border-radius: 50%"></p>--}}
                 </div>
             </div>

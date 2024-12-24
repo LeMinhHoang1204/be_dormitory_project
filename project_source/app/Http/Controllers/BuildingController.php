@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Building;
 use App\Models\Employee;
+use App\Models\Residence;
 use App\Models\Room;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBuildingRequest;
 use Illuminate\Support\Facades\DB;
@@ -148,5 +151,52 @@ class BuildingController extends Controller
             ->whereNotIn('id', Building::pluck('manager_id')->filter())
             ->get();
     }
+    public function showBuildingDetails(Building $building)
+    {
+        $user = auth()->user();
+
+        if ($user && $user->type == 'building manager' && $user->id != $building->manager_id) {
+
+            return view('building_manager.show', [
+                'building' => $building,
+                'message' => 'You do not manage this building.'
+            ]);
+        }
+
+        $rooms = $building->hasRooms()
+            ->where('building_id', $building->id)
+            ->orderBy('floor_number', 'asc')
+            ->paginate(10);
+
+        return view('building_manager.show', compact('building', 'rooms'));
+    }
+
+//    public function showProfile($studentId, Room $room)
+//    {
+//        $student = Student::with('residence.room')->findOrFail($studentId);
+//
+//        $residences = Residence::with('student')->where('room_id', $room->id)->get();
+//
+//        $currentResidence = $residences->firstWhere(fn($res) => in_array($res->status, ['Paid', 'Checked in', 'Registered']));
+//
+//        if (!in_array(auth()->user()->role, ['admin', 'building manager'])) {
+//            return redirect()->back()->with('error', 'Bạn không có quyền truy cập trang này.');
+//        }
+//
+//        return view('building_manager.student_profile', compact('student', 'currentResidence', 'room'));
+//    }
+    public function showProfile($roomId, $studentId)
+    {
+        $room = Room::findOrFail($roomId);
+        $student = Student::with('residence.room')->findOrFail($studentId);
+        $currentResidence = $student->residence->firstWhere(fn($res) => in_array($res->status, ['Paid', 'Checked in', 'Registered']));
+
+        if (!in_array(auth()->user()->role, ['admin', 'building manager'])) {
+            return redirect()->back()->with('error', 'You do not have permission to access this page.');
+        }
+
+        return view('building_manager.student_profile', compact('student', 'room', 'currentResidence'));
+    }
+
 
 }

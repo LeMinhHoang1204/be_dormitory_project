@@ -100,6 +100,52 @@
 
             </tbody>
         </table>
+        <div class="pagination">
+            @if ($violations->onFirstPage())
+                <span class="gap">Previous</span>
+            @else
+                <a href="{{ $violations->previousPageUrl() }}" class="previous">Previous</a>
+            @endif
+
+            @php
+                $currentPage = $violations->currentPage();
+                $lastPage = $violations->lastPage();
+            @endphp
+
+            @if ($lastPage <= 5)
+                @for ($i = 1; $i <= $lastPage; $i++)
+                    @if ($i == $currentPage)
+                        <span class="pagination-page current">{{ $i }}</span>
+                    @else
+                        <a href="{{ $violations->appends(request()->all())->url($i) }}" class="pagination-page">{{ $i }}</a>
+                    @endif
+                @endfor
+            @else
+                @if ($currentPage > 3)
+                    <a href="{{ $violations->appends(request()->all())->url(1) }}" class="pagination-page">1</a>
+                    <span class="ellipsis">...</span>
+                @endif
+
+                @for ($i = max(1, $currentPage - 2); $i <= min($lastPage, $currentPage + 2); $i++)
+                    @if ($i == $currentPage)
+                        <span class="pagination-page current">{{ $i }}</span>
+                    @else
+                        <a href="{{ $violations->appends(request()->all())->url($i) }}" class="pagination-page">{{ $i }}</a>
+                    @endif
+                @endfor
+
+                @if ($currentPage < $lastPage - 3)
+                    <span class="ellipsis">...</span>
+                    <a href="{{ $violations->appends(request()->all())->url($lastPage) }}" class="pagination-page">{{ $lastPage }}</a>
+                @endif
+            @endif
+
+            @if ($violations->hasMorePages())
+                <a href="{{ $violations->nextPageUrl() }}" class="next">Next</a>
+            @else
+                <span class="gap">Next</span>
+            @endif
+        </div>
         <script>
             // Toggle dropdown menu khi nhấn vào icon ba chấm cột Action
             function toggleDropdown(event) {

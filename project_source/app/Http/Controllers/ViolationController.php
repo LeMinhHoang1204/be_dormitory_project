@@ -29,7 +29,7 @@ class ViolationController extends Controller
             ->whereHas('receiver', function ($query) {
                 $query->where('role', 'student');
             })
-            ->get();
+            ->paginate(10);
 
         return view('violation.building_manager.list', compact('violations'));
     }
@@ -39,7 +39,7 @@ class ViolationController extends Controller
         $user = auth()->user();
 
         if ($user->role === 'student') {
-            $violations = Violation::where('receiver_id', $user->id)->get();
+            $violations = Violation::where('receiver_id', $user->id)->paginate(10);;
         } elseif ($user->role === 'building manager') {
             if ($user->employee) {
                 $violations = Violation::where('creator_id', $user->id)
@@ -49,12 +49,12 @@ class ViolationController extends Controller
                             $query->where('manager_id', $user->employee->id);
                         });
                     })
-                    ->get();
+                    ->paginate(10);
             } else {
-                $violations = Violation::where('creator_id', $user->id)->get();
+                $violations = Violation::where('creator_id', $user->id)->paginate(10);
             }
         } elseif ($user->role === 'admin') {
-            $violations = Violation::where('creator_id', $user->id)->get();
+            $violations = Violation::where('creator_id', $user->id)->paginate(10);
         } else {
             $violations = collect();
         }

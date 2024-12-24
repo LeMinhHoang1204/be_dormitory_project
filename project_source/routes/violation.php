@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::prefix('/violations')->group(function () {
-
         Route::get('/', [ViolationController::class, 'indexManager'])->name('violations.indexManager');
         Route::get('/my-violations', [ViolationController::class, 'myViolations'])->name('violations.my');
         Route::get('/create', [ViolationController::class, 'create'])->name('admin.violations.create');

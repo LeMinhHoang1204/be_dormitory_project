@@ -6,6 +6,7 @@ use App\Models\Building;
 use App\Models\Invoice;
 use App\Models\Residence;
 use App\Models\Room;
+use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +18,13 @@ class ResidenceController extends Controller
      */
     public function index(Building $building, Room $room)
     {
-        $residences = Residence::where('room_id', $room->id)->get();
-        return view('admin.admin_residences.list', compact('residences', 'building', 'room'));
+        $student = Student::find(1);
+        $residences = Residence::with('student')->where('room_id', $room->id)->get();
+
+        $currentResidence = $residences->firstWhere(fn($res) => in_array($res->status, ['Paid', 'Checked in', 'Registered']));
+
+
+        return view('admin.admin_residences.list', compact('residences','currentResidence', 'building', 'room', 'student'));
     }
 
     /**

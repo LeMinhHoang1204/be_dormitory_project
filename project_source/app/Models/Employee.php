@@ -46,7 +46,7 @@ class Employee extends Model
     }
 
     // building relationship
-    public function manageBuilding()
+    public function manageBuilding(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Building::class, 'manager_id', 'id');
     }

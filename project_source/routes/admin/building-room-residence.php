@@ -33,6 +33,11 @@ Route::middleware('auth')->group(function () {
         ->name('buildings.destroy')
         ->middleware('can:delete,building');
 
+    Route::get('building-manager/buildings/{building}', [BuildingController::class, 'showBuildingDetails'])->middleware('auth')->name('mybuilding.show');
+
+    Route::get('student/{studentId}/profile/{roomId}', [BuildingController::class, 'showProfile'])
+        ->middleware(['auth', 'role:admin,building manager'])
+        ->name('student.profile');
     // rooms
     Route::prefix('/buildings/{building}/rooms')->group(function () {
         Route::get('/', [RoomController::class, 'index'])->name('rooms.index')->can('viewAny', \App\Models\Room::class);

@@ -354,8 +354,8 @@
             <span class="text">Violations</span>
         </a>
         <ul class="submenu">
-            <li><a href="#">List of violations</a></li>
-            <li><a href="#">Complaint</a></li>
+            <li><a href="/violations/my-violations">List of violations</a></li>
+            <li><a href="/my-complaints">Complaint</a></li>
         </ul>
     </li>
 @endif

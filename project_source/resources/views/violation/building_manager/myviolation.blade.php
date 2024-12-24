@@ -7,6 +7,31 @@
     <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/avatar.css') }}" type="text/css">
+    <style>
+        .all-violation-link {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: #2F6BFF;
+            font-weight: 550;
+            /*text-transform: uppercase;*/
+            font-family: 'Poppins', sans-serif; /* Font */
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            margin: 10px 0;
+        }
+
+        .all-violation-link:hover {
+            background-color: #2F6BFF;
+            color: #ffffff;
+            border-color: #2F6BFF;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+    </style>
 </head>
 
 @section('content')
@@ -18,6 +43,7 @@
         <div class="create-violation-button">
             <a href="{{ route('admin.violations.create') }}" class="blue-btn" >Create</a>
         </div>
+            <a href="{{ route('violations.indexManager') }}" class="all-violation-link" style="float: right; margin-top: -15px">All Violation</a>
         @endif
         @if (session('success'))
             <div class="alert alert-success" style="margin-top: 20px">
@@ -105,6 +131,52 @@
             @endforelse
             </tbody>
         </table>
+        <div class="pagination">
+            @if ($violations->onFirstPage())
+                <span class="gap">Previous</span>
+            @else
+                <a href="{{ $violations->previousPageUrl() }}" class="previous">Previous</a>
+            @endif
+
+            @php
+                $currentPage = $violations->currentPage();
+                $lastPage = $violations->lastPage();
+            @endphp
+
+            @if ($lastPage <= 5)
+                @for ($i = 1; $i <= $lastPage; $i++)
+                    @if ($i == $currentPage)
+                        <span class="pagination-page current">{{ $i }}</span>
+                    @else
+                        <a href="{{ $violations->appends(request()->all())->url($i) }}" class="pagination-page">{{ $i }}</a>
+                    @endif
+                @endfor
+            @else
+                @if ($currentPage > 3)
+                    <a href="{{ $violations->appends(request()->all())->url(1) }}" class="pagination-page">1</a>
+                    <span class="ellipsis">...</span>
+                @endif
+
+                @for ($i = max(1, $currentPage - 2); $i <= min($lastPage, $currentPage + 2); $i++)
+                    @if ($i == $currentPage)
+                        <span class="pagination-page current">{{ $i }}</span>
+                    @else
+                        <a href="{{ $violations->appends(request()->all())->url($i) }}" class="pagination-page">{{ $i }}</a>
+                    @endif
+                @endfor
+
+                @if ($currentPage < $lastPage - 3)
+                    <span class="ellipsis">...</span>
+                    <a href="{{ $violations->appends(request()->all())->url($lastPage) }}" class="pagination-page">{{ $lastPage }}</a>
+                @endif
+            @endif
+
+            @if ($violations->hasMorePages())
+                <a href="{{ $violations->nextPageUrl() }}" class="next">Next</a>
+            @else
+                <span class="gap">Next</span>
+            @endif
+        </div>
         <script>
             // Toggle dropdown menu khi nhấn vào icon ba chấm cột Action
             function toggleDropdown(event) {

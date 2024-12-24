@@ -12,7 +12,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/create', [InvoiceController::class, 'create'])->name('invoices.create')->can('create', \App\Models\Invoice::class);
 
-        Route::post('/create', [InvoiceController::class, 'store'])->name('invoices.store')->can('create', \App\Models\Invoice::class);
+        Route::post('/create', [InvoiceController::class, 'store'])->name('invoices.store');
 
         Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show')->can('view', \App\Models\Invoice::class);
 

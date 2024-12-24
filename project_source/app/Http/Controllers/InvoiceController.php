@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\Building;
 use App\Models\Invoice;
 use App\Models\Residence;
 use App\Models\User;
@@ -60,16 +61,36 @@ class InvoiceController extends Controller
     public function create()
     {
         $types = Invoice::distinct()->pluck('type')->toArray();
-        $payment_methods = ['Bank transfer', 'Cash'];
-        return view('accountant.invoices.create', compact('types', 'payment_methods'));
+        $buildings = Building::all();
+        return view('accountant.invoices.create', compact('types', 'buildings'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInvoiceRequest $request)
+    public function store(Request $request)
     {
-        //
+        echo($request);
+        $validated = $request->validate([
+            'type' => 'required|string',
+            'amount' => 'required|numeric',
+            'payment_method' => 'required|string',
+            'due_date' => 'required|date',
+            'receiver_id' => 'required|integer',
+            'note' => 'nullable|string',
+        ]);
+
+        $invoice = Invoice::create([
+            'type' => $validated['type'],
+            'amount' => $validated['amount'],
+            'payment_method' => $validated['payment_method'],
+            'due_date' => $validated['due_date'],
+            'receiver_id' => $validated['receiver_id'],
+            'note' => $validated['note'],
+            'sender_id' => Auth::id(),
+        ]);
+        return redirect()->route('invoices.index')->with('success', 'Invoice created successfully.');
+
     }
 
     /**

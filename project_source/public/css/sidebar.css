@@ -13,6 +13,10 @@
     border-radius: 0 15px ;
 }
 
+a, span, .menu-item .text {
+    text-decoration: none;
+}
+
 #sidebar:hover {
     width: 235px;
 }

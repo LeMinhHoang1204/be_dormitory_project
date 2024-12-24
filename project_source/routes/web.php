@@ -28,10 +28,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/students/check-login', [StudentController::class, 'studentCheckLogin'])
     ->name('studentCheckLogin');
 
-// Display roomInfor
-Route::middleware('auth')->group(function () {
-    Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
-});
+
 
 //Route::get('/room-registration', [RoomController::class, 'showListRoom'])->name('register-room');
 

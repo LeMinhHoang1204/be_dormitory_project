@@ -4,8 +4,10 @@
     <title>Building List</title>
     <link rel="stylesheet" href="{{ asset('./css/student/activities.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/button.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('./css/table.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('./css/student/extension.css') }}" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
         .extension{
             max-width: 55%;

@@ -1,3 +1,4 @@
+
 @extends('Auth_.index')
 
 @if (session('error'))
@@ -117,7 +118,7 @@
 
             <div class="section">
                 <label for="confirmEvidenceUpload" class="section-title">Upload Evidence</label>
-                <input type="file" id="confirmEvidenceUpload" accept="image/*" name="image">
+                <input class="form-control" type="file" id="confirmEvidenceUpload" accept="image/*" name="image">
             </div>
 
             <div class="section">

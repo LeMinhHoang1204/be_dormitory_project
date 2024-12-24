@@ -111,7 +111,7 @@
             </div>
 
             <div class="section">
-                <label for="confirmEvidenceUpload" class="form-label">Upload Evidence</label>
+                <label for="confirmEvidenceUpload" class="section-title">Upload Evidence</label>
                 <input class="form-control" type="file" id="confirmEvidenceUpload" accept="image/*" name="image">
             </div>
 

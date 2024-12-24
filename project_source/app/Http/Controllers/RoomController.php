@@ -291,4 +291,13 @@ class RoomController extends Controller
         return view('Reg_room.reg_room', ['rooms' => $rooms]);
     }
 
+    public function getRoomsByBuilding($buildingId)
+    {
+        $rooms = Room::where('building_id', $buildingId)
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        return response()->json($rooms);
+    }
+
 }

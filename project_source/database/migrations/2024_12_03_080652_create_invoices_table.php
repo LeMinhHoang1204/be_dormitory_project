@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('status', ['Not Paid', 'Paid', 'Overdue', 'Transferred Room', 'Refunding', 'Refunded', 'Reported'])->default('Not Paid');
             $table->decimal('total', 10, 2);
             $table->enum('payment_method', ['Cash', 'Bank Transfer'])->nullable();
-            $table->string('note')->nullable();
+            $table->text('note')->nullable();
             $table->string('evidence_image')->nullable();
             $table->timestamps();
 

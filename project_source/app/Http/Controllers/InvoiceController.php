@@ -159,17 +159,20 @@ class InvoiceController extends Controller
             (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
-        if($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
+        preg_match('/\bRenewal\b/', $invoice->note, $matchestring);
+
+
+        if ($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
             $user = User::find($invoice->object_id);
             $latestResidence = $user->residence()->latest()->first();
-            if($latestResidence->status == 'Registered') {
+            if ($latestResidence->status == 'Registered') {
                 $latestResidence->update([
                     'status' => 'Paid',
                 ]);
             }
             else if(($latestResidence->status == 'Checked in'
                     || $latestResidence->status == 'Renewed'
-                    || $latestResidence->status == 'Changed Room') && $request->invoice_type == 'Renewal') {
+                    || $latestResidence->status == 'Changed Room') && $matchestring[0] == 'Renewal') {
                 $oldRequest = $user->sendRequest()->where('status', 'Accepted')->where('type', 'Renewal')->latest()->first();
                 $oldRequest->update([
                     'status' => 'Resolved',
@@ -180,14 +183,14 @@ class InvoiceController extends Controller
                 $firstNumber = $matches[0] ?? null;
 
                 if ($firstNumber !== null) {
-                    $new_end_date = $latestResidence->end_date->addMonths((int)$firstNumber);
-                    $new_months_duration = (int)$latestResidence->months_duration + (int)$firstNumber;
+                    $new_end_date = $latestResidence->end_date->addMonths((int) $firstNumber);
+                    $new_months_duration = (int) $latestResidence->months_duration + (int) $firstNumber;
 
                     $latestResidence->update([
                         'end_date' => $new_end_date,
                         'status' => 'Renewed',
                         'months_duration' => $new_months_duration,
-                        'note' => 'Renewed ' . $firstNumber . ' months',
+                        'note' => $latestResidence->note . ' - ' . 'Renewed ' . $firstNumber . ' months',
                     ]);
                 }
             }

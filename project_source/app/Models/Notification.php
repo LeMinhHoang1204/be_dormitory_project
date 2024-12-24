@@ -33,7 +33,8 @@ class Notification extends Model
     }
 
     // user relationship
-    public function sender(){
+    public function sender()
+    {
         return $this->belongsTo(User::class, 'sender_id', 'id');
     }
 

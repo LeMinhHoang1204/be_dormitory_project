@@ -1,16 +1,11 @@
 <?php
 
-use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\RoomController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Broadcast;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\ReportAccountantController;
 
 Route::get('/', function () {
     return view('home');
@@ -30,25 +25,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-
-
+Route::get('/students/check-login', [StudentController::class, 'studentCheckLogin'])
+    ->name('studentCheckLogin');
 
 // Display roomInfor
 Route::middleware('auth')->group(function () {
     Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
 });
 
-Route::get('/room-registration', [RoomController::class, 'showListRoom'])->name('register-room');
+//Route::get('/room-registration', [RoomController::class, 'showListRoom'])->name('register-room');
 
-Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
-
-Route::post('/room-registration', [ResidenceController::class, 'store'])->name('register.room');
+//Route::get('/roomInfor', [RoomController::class, 'showRoomInfor'])->name('roomInfor');
+//
+//Route::post('/room-registration', [ResidenceController::class, 'store'])->name('register.room');
 
 // Route::get('/payment', function () {
 //     return view('student_payment.payment');
 // })->name('payment');
-
 
 // Payment for accountant
 Route::get('/accountant/payment', [PaymentController::class, 'accountantPaymentView'])
@@ -67,7 +60,6 @@ Route::prefix('accountant/payment')->middleware(['auth'])->group(function () {
 
 Route::delete('/accountant/payment/delete/{id}', [PaymentController::class, 'delete'])->name('payment.delete');
 
-
 // Xem trang thông tin phòng hiện tại của tôi
 Route::middleware('auth')->group(function () {
     Route::get('/student/room', [ResidenceController::class, 'myRoom'])->name('student.room');
@@ -75,6 +67,7 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
 
+Route::get('/get-rooms-by-building/{buildingId}', [RoomController::class, 'getRoomsByBuilding']);
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';
@@ -88,5 +81,10 @@ require __DIR__ . '/admin/my_profile.php';
 require __DIR__ . '/admin/manager.php';
 require __DIR__ . '/admin/report.php';
 
-
 require __DIR__ . '/violation.php';
+
+// Thêm route group với middleware auth và role
+//Route::middleware(['auth', 'role:admin,accountant'])->group(function () {
+//    Route::get('/invoices/create', 'InvoiceController@create')->name('invoices.create');
+//    Route::post('/invoices', 'InvoiceController@store')->name('invoices.store');
+//});

@@ -75,8 +75,8 @@
 
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <input type="number" class="form-control readonly-field" id="sender_id"
-                                    name="sender_id" value="{{ auth()->user()->id }}" readonly>
+                                <input type="number" class="form-control readonly-field" id="sender_id" name="sender_id"
+                                    value="{{ auth()->user()->id }}" readonly>
                                 <label for="sender_id">Sender ID</label>
                             </div>
                         </div>
@@ -107,8 +107,7 @@
                     </div>
 
                     <div class="form-floating mb-4">
-                        <textarea class="form-control" id="content" name="content"
-                            style="height: 150px" required>{{ old('content', $notification->content) }}</textarea>
+                        <textarea class="form-control" id="content" name="content" style="height: 150px" required>{{ old('content', $notification->content) }}</textarea>
                         <label for="content">Content</label>
                     </div>
 

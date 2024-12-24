@@ -59,13 +59,20 @@ class Residence extends Model
 //            }
 //        });
 
+        static::updating(function ($residence) {
+            if ($residence->isDirty('status') && in_array($residence->status, ['Checked out', 'Rejected', 'Transfered', 'Changed Room'])) {
+                $residence->updateRoomAndBuildingCounts(-1);
+            }
+        });
+
+
         static::created(function ($residence) {
             $residence->updateRoomAndBuildingCounts(1);
         });
 
-        static::deleted(function ($residence) {
-            $residence->updateRoomAndBuildingCounts(-1);
-        });
+//        static::deleted(function ($residence) {
+//            $residence->updateRoomAndBuildingCounts(-1);
+//        });
     }
 
     /**
@@ -92,6 +99,10 @@ class Residence extends Model
         if ($this->room) {
             $this->room->increment('member_count', $count);
             $this->room->building->increment('student_count', $count);
+        }
+        else {
+            $this->room->decrement('member_count', abs($count));
+            $this->room->building->decrement('student_count', abs($count));
         }
     }
 

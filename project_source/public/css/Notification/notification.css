@@ -788,21 +788,169 @@ textarea {
 
 /* Thêm màu sắc cho các icon */
 .notification-meta i.fa-calendar {
-    color: #3b82f6;  /* Màu xanh dương cho icon lịch */
+    color: #3b82f6; /* Màu xanh dương cho icon lịch */
 }
 
 .notification-meta i.fa-clock {
-    color: #10b981;  /* Màu xanh lá cho icon đồng hồ */
+    color: #10b981; /* Màu xanh lá cho icon đồng hồ */
 }
 
 .notification-meta i.fa-user {
-    color: #f59e0b;  /* Màu cam cho icon người dùng */
+    color: #f59e0b; /* Màu cam cho icon người dùng */
 }
 
 .notification-meta i.fa-building {
-    color: #6366f1;  /* Màu tím nhạt cho icon tòa nhà */
+    color: #6366f1; /* Màu tím nhạt cho icon tòa nhà */
 }
 
 .notification-meta i.fa-users {
-    color: #ec4899;  /* Màu hồng cho icon nhóm người dùng */
+    color: #ec4899; /* Màu hồng cho icon nhóm người dùng */
 }
+
+/* Thêm styles cho group options */
+#groupOptions {
+    background-color: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1.5rem;
+}
+
+#groupOptions .form-floating {
+    margin-bottom: 1rem;
+}
+
+/* Style cho select elements */
+.form-select {
+    height: 3.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1rem 0.75rem;
+    font-size: 0.95rem;
+    color: #1e293b;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.form-select:hover {
+    border-color: #3b82f6;
+}
+
+.form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+/* Style cho labels */
+.form-floating > label {
+    padding: 1rem 0.75rem;
+    color: #64748b;
+}
+
+.form-floating > .form-select ~ label {
+    padding: 1rem 0.75rem;
+}
+
+/* Style cho options trong select */
+.form-select option {
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+/* Style cho group type section */
+#group {
+    background-color: #fff;
+    border: 2px solid #e2e8f0;
+}
+
+/* Hiệu ứng hover cho select options */
+.form-select option:hover {
+    background-color: #f1f5f9;
+}
+
+/* Style cho disabled states */
+.form-select:disabled {
+    background-color: #f1f5f9;
+    cursor: not-allowed;
+}
+
+/* Style cho placeholder options */
+.form-select option[value=""] {
+    color: #94a3b8;
+}
+
+/* Thêm icon cho select elements */
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+/* Style cho group container */
+#groupOptions {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Style cho select containers */
+#buildingSelection,
+#roomSelection,
+#userSelection {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Thêm divider giữa các sections */
+#groupOptions > div:not(:last-child) {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1rem;
+}
+
+/* Style cho group header */
+#groupOptions::before {
+    content: "Group Options";
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #groupOptions {
+        padding: 1rem;
+    }
+
+    .form-select {
+        height: 3.2rem;
+        font-size: 0.9rem;
+    }
+
+    .form-floating > label {
+        font-size: 0.9rem;
+    }
+}
+
+#roomUsersSelection {

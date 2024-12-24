@@ -22,7 +22,7 @@ return new class extends Migration
             $table->dateTime('end_date');
             $table->dateTime('check_out_date')->nullable();
             $table->enum('status', ['Registered', 'Paid', 'Checked in', 'Renewed', 'Changed Room', 'Checked out', 'Rejected', 'Refunded', 'Transfered'])->default('Registered');
-            $table->string('note')->nullable();
+            $table->text('note')->nullable();
 
             $table->unique(['stu_user_id', 'room_id', 'start_date']);
             $table->foreign('stu_user_id')->references('id')->on('users')->onDelete('cascade');
@@ -38,4 +38,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('residences');
     }
+
 };

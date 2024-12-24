@@ -97,7 +97,7 @@ class RequestController extends Controller
                 . ' - Accepted by ' . Auth::user()->id . ' - ' . Auth::user()->name]);
 
         // mới
-        $new_start_date = now();
+        $new_start_date = $residence < now() ? now() : $residence->start_date;
         $newResidence = \App\Models\Residence::create([
             'stu_user_id' => $request->tranferredID,
             'room_id' => $residence->room_id,
@@ -131,9 +131,8 @@ class RequestController extends Controller
 
     public function rejectCheckIn(\Illuminate\Http\Request $request, Residence $residence)
     {
-        $residence->update(['status' => 'Rejected',
-            'note' => $residence->note . ' - ' . 'Rejected for user '. $residence->stu_user_id . ' from ' . $residence->room->name .
-            ' on ' . $residence->start_date . ' with reason: ' . $request->description]);
+        // sai khi nao
+//        $prevResidence = Residence::where('stu_user_id', $residence->stu_user_id)->orderBy('created_at', 'desc')->skip(1)->first();
 
         $invoice = Invoice::where([
             ['object_id', '=', $residence->stu_user_id],
@@ -144,8 +143,7 @@ class RequestController extends Controller
 
         // nếu chưa thanh toán thì không thể đi nhận phòng
         if($invoice->status == 'Paid') {
-            $invoice->update(['note' => 'Rejected for user '. $residence->stu_user_id . ' from ' . $residence->room->name .
-                ' on ' . $residence->start_date . ' with reason: ' . $request->description]);
+            $invoice->update(['note' => 'Rejected for user '. $residence->stu_user_id . ' with reason: ' . $request->description]);
         }
 
         // nếu có ảnh thì chuyển ảnh vào invoice
@@ -153,13 +151,16 @@ class RequestController extends Controller
             (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
+        $residence->update(['status' => 'Rejected',
+            'note' => $residence->note . ' - ' . 'Rejected for user '. $residence->stu_user_id . ' with reason: ' . $request->description]);
+
         // nếu được chọn hoàn tiền
         if($request->IsRefund == 'on') {
-            $residence->update(['note' => $residence->note . ' - ' . 'Refunding for user '. $residence->stu_user_id]);
+            $residence->update(['note' => $residence->note . ' - ' . 'Requested refund for user '. $residence->stu_user_id]);
 
             if($invoice->status == 'Paid') {
                 $invoice->update(['status' => 'Refunding',
-                    'note' => $residence->note . ' - ' . 'Refunding for user '. $residence->stu_user_id]);
+                    'note' => $residence->note . ' - ' . 'Requested refund for user '. $residence->stu_user_id]);
             }
 
             $accountant = \App\Models\User::where('role', 'Accountant')->first();
@@ -169,7 +170,7 @@ class RequestController extends Controller
                 'type' => 'Refund',
                 'status' => 'Pending',
                 'note' => 'Refund for user '. $residence->stu_user_id . ' from ' . $residence->room->name .
-                    ' on ' . $residence->start_date . ' with reason: ' . $request->description,
+                    ' on ' . $residence->start_date . ' with reason: ' . $request->description . ' with money ' . $invoice->total,
             ]);
 
             // neu có hoàn tiền và có ảnh thì chuyển ảnh vào request
@@ -209,6 +210,9 @@ class RequestController extends Controller
         else if($request->type == 'Check out'){
             $this->resolve($requestApi, $request);
         }
+        else if($request->type == 'Fixing'){
+            $request->update(['note' => $request->note . ' - ' . 'Fixing date: ' . $requestApi->fixing_date]);
+        }
         else if($request->type == 'Change Room'){
 
             $oldResidence = $request->sender->residence()->orderBy('created_at', 'desc')->first();
@@ -227,7 +231,7 @@ class RequestController extends Controller
                     'receiver_id' => $newRoom->building->managedBy->user->id,
                     'type' => 'Change Room',
                     'status' => 'Pending',
-                    'forwarded_id' => Auth::user()->id,
+                    'forwarder_id' => Auth::user()->id,
                     'note' => 'Change Room for user ' . $oldResidence->stu_user_id . ' from room ' . $oldResidence->room->name .
                         ' to room ' . $newRoom->name . ' on ' . $requestApi->new_start_date . ' with reason: ' . $requestApi->description,
                 ]);
@@ -247,7 +251,7 @@ class RequestController extends Controller
                         'room_id' => $newRoom->id,
                         'start_date' => $requestApi->new_start_date,
                         'months_duration' => Carbon::parse($requestApi->new_start_date)->diffInMonths(Carbon::parse($oldResidence->end_date)),
-                        'status' => 'Paid',
+                        'status' => $newRoom->unit_price > $oldResidence->room->unit_price ? 'Registered' : 'Paid',
                         'note' => 'Change Room from room ' . $oldResidence->room->name . ' to room ' . $newRoom->name . ' on ' . now(),
                     ]);
 
@@ -274,7 +278,7 @@ class RequestController extends Controller
                             'type' => 'Refund',
                             'status' => 'Pending',
                             'note' => 'Refund for user ' . $oldResidence->stu_user_id . ' from ' . $oldResidence->room->name .
-                                ' on ' . $oldResidence->start_date . ' with reason: ' . $request->note,
+                                ' on ' . $oldResidence->start_date . ' with reason: ' . $request->note . ' with money ' . ($oldResidence->room->unit_price - $newRoom->unit_price) * $newResidence->months_duration,
                         ]);
                         if ($requestApi->hasFile('image')) {
                             (new ImageController)->saveToRequest($requestApi, $newRequest->id);
@@ -324,6 +328,7 @@ class RequestController extends Controller
 
             // cái này chỉ phù hợp vơới hoá đơn hoàn tiền khi nhận phòng
             if ($invoice && $invoice->status == 'Refunding' && $residence->status == 'Rejected') {
+
                 $invoice->update(['status' => 'Refunded', 'note' => $invoice->note . ' - ' . 'Refunded for user ' . $residence->stu_user_id]);
                 $residence->update(['status' => 'Refunded', 'note' => $residence->note . ' - ' . 'Refunded for user ' . $residence->stu_user_id]);
                 // tạo hoá đơn hoàn tiền mới
@@ -383,31 +388,31 @@ class RequestController extends Controller
                     (new ImageController)->saveToInvoice($requestApi, $newInvoice->id);
                 }
             }
-            } else if ($request->type == 'Check out') {
-                $residence = $request->sender->residence()->latest()->first();
-                $residence->update(['status' => 'Checked Out', 'check_out_date' => now(), 'note' => $residence->note . " - " . "Checked out on " . now()]);
-            } else if ($request->type == 'Fixing') {
-                if ($requestApi->IsCost == 'on') {
-                    Invoice::create([
-                        'sender_id' => Auth::user()->id,
-                        'object_type' => 'App\Models\User',
-                        'object_id' => $request->sender_id,
-                        'send_date' => now(),
-                        'due_date' => now()->addDays(7),
-                        'type' => 'Fixing',
-                        'total' => $requestApi->fixingCost,
-                        'note' => 'Fixing cost for user ' . $request->sender_id . ' on room: ' . $request->sender->residence()->latest()->first()->room->name
-                            . ' with reason: ' . $requestApi->description,
-                    ]);
-                }
+        } else if ($request->type == 'Check out') {
+            $residence = $request->sender->residence()->latest()->first();
+            $residence->update(['status' => 'Checked Out', 'check_out_date' => now(), 'note' => $residence->note . " - " . "Checked out on " . now()]);
+        } else if ($request->type == 'Fixing') {
+            if ($requestApi->IsCost == 'on') {
+                Invoice::create([
+                    'sender_id' => Auth::user()->id,
+                    'object_type' => 'App\Models\User',
+                    'object_id' => $request->sender_id,
+                    'send_date' => now(),
+                    'due_date' => now()->addDays(7),
+                    'type' => 'Fixing',
+                    'total' => $requestApi->fixingCost,
+                    'note' => 'Fixing cost for user ' . $request->sender_id . ' on room: ' . $request->sender->residence()->latest()->first()->room->name
+                        . ' with reason: ' . $requestApi->description,
+                ]);
             }
+        }
 
-            // cập nhật request
-            if ($requestApi->hasFile('image')) {
-                (new ImageController)->saveToRequest($requestApi, $request->id);
-            }
-            $request->update(['status' => 'Resolved', 'resolve_date' => now(), 'note' => $request->note . ' - ' . $requestApi->description . ' - Resolved by ' . Auth::user()->id . ' - ' . Auth::user()->name]);
-            return redirect()->route('requests.index');
+        // cập nhật request
+        if ($requestApi->hasFile('image')) {
+            (new ImageController)->saveToRequest($requestApi, $request->id);
+        }
+        $request->update(['status' => 'Resolved', 'resolve_date' => now(), 'note' => $request->note . ' - ' . $requestApi->description . ' - Resolved by ' . Auth::user()->id . ' - ' . Auth::user()->name]);
+        return redirect()->route('requests.index');
     }
 
     /**

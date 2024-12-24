@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Student extends Model
 {
     use HasFactory; // tinh nang tao du lieu mau cua Factory trong laravel
@@ -19,7 +18,7 @@ class Student extends Model
 
     // Các attribute được phép thêm vào db
     protected $fillable = ['user_id', 'uni_id',
-            'uni_name', 'dob', 'gender'];
+        'uni_name', 'dob', 'gender'];
 
     protected $casts = [
         'dob' => 'date',

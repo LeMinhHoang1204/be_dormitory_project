@@ -19,6 +19,16 @@
     @include('layouts.sidebar_student')
     <div class="container mt-5">
         <x-header-search title="Invoices" />
+
+         @can('create', App\Models\Invoice::class)
+            <div class="create-button-container">
+                <a href="{{ route('invoices.create') }}" class="btn-create">
+                    <i class="fas fa-plus"></i>
+                    <span>Create Invoice</span>
+                </a>
+            </div>
+        @endcan
+
         <table class="table table-bordered">
             <thead>
                 <tr>

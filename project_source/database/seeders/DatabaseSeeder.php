@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Invoice;
-use App\Models\RegistrationActivity;
 use App\Models\Residence;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -78,8 +77,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'student',
         ]);
 
-
-
         $this->call([
             UserSeeder::class,
             StudentSeeder::class,
@@ -96,7 +93,7 @@ class DatabaseSeeder extends Seeder
             ActivitySeeder::class,
             RegistrationActivitySeeder::class,
             ViolationSeeder::class,
-            ComplaintViolationSeeder::class
+            ComplaintViolationSeeder::class,
         ]);
 
         // test request

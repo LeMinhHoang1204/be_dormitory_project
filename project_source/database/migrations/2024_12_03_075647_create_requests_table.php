@@ -20,7 +20,7 @@ return new class extends Migration
 //            $table->dateTime('send_date');
 //            $table->dateTime('receive_date')->nullable();
             $table->dateTime('resolve_date')->nullable();
-            $table->string('note')->nullable();
+            $table->text('note')->nullable();
             $table->bigInteger('forwarder_id')->unsigned()->nullable();
             $table->string('evidence_image', 200)->nullable();
             $table->timestamps();

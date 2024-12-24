@@ -60,7 +60,7 @@ class Residence extends Model
 //        });
 
         static::updating(function ($residence) {
-            if (in_array($residence->status, ['Checked out', 'Rejected', 'Transferred', 'Changed room'])) {
+            if ($residence->isDirty('status') && in_array($residence->status, ['Checked out', 'Rejected', 'Transfered', 'Changed Room'])) {
                 $residence->updateRoomAndBuildingCounts(-1);
             }
         });
@@ -70,9 +70,9 @@ class Residence extends Model
             $residence->updateRoomAndBuildingCounts(1);
         });
 
-        static::deleted(function ($residence) {
-            $residence->updateRoomAndBuildingCounts(-1);
-        });
+//        static::deleted(function ($residence) {
+//            $residence->updateRoomAndBuildingCounts(-1);
+//        });
     }
 
     /**

@@ -68,12 +68,15 @@
                     </div>
                 </div>
             @endif
-            @if($request->status == 'Accepted' && ( $request->type == 'Fixing' || $request->type == 'Refund') && Auth::user()->role != 'student')
+            @if($request->status == 'Accepted' )
+                @if(($request->type == 'Refund' && Auth::user()->role == 'accountant')
+                || ($request->type == 'Fixing' && Auth::user()->role == 'building manager'))
                 <div class="card-footer">
                     <div class="button-group">
                         <button class="btn btn-primary" id="resolveButton" data-bs-toggle="modal" data-bs-target="#resolveModal">Resolve</button>
                     </div>
                 </div>
+                @endif
             @endif
         </div>
         <!-- Display the uploaded image -->
@@ -148,7 +151,13 @@
                     @if($request->type == 'Change Room')
                         <div class="mb-3">
                             <label for="confirmEvidenceUpload" class="form-label">New start date:</label>
-                            <input class="form-control" type="datetime-local" name="new_start_date" min="{{$residence->start_date->addMonths(1)}}" required>
+                        <input class="form-control" type="datetime-local" name="new_start_date" min="{{ $residence->start_date->addMonths(1)->format('Y-m-d\TH:i') }}" required>                        </div>
+                    @endif
+
+                    @if($request->type == 'Fixing')
+                        <div class="mb-3">
+                            <label for="confirmEvidenceUpload" class="form-label">New start date:</label>
+                            <input class="form-control" type="datetime-local" name="fixing_date" min="{{ now()->format('Y-m-d\TH:i') }}" required>
                         </div>
                     @endif
                     <div class="mb-3">
@@ -186,12 +195,7 @@
                             : '' }}
                         </textarea>
                     </div>
-{{--                    1 refund khi nhan phong: refund full
-                        2 refund khi chuyen phong: refund 1 nua
-                        can truyen refund type lam sao de biet chuyen phong hay nhan phong
-
-                        --}}
-                    @if($request->type == 'Change Room')
+                    @if($request->type == 'Fixing')
                         <div class="mb-3">
                             <input type="checkbox" id="fixingCost" name="IsCost">
                             <label for="reportDescription" class="form-label">Require cost</label>
@@ -229,24 +233,24 @@
 {{--    });--}}
 {{--</script>--}}
 
-{{--<script>--}}
-{{--    $(document).ready(function() {--}}
-{{--        $('#sendConfirm').click(function() {--}}
-{{--            $('#successNotification').fadeIn().delay(1000).fadeOut();--}}
+<script>
+    $(document).ready(function() {
+        $('#sendConfirm').click(function() {
+            $('#successNotification').fadeIn().delay(1000).fadeOut();
 
-{{--            // Hide modal--}}
-{{--            $('#confirmModal').modal('hide');--}}
-{{--        });--}}
+            // Hide modal
+            $('#confirmModal').modal('hide');
+        });
 
-{{--        $('#fixingCost').change(function() {--}}
-{{--            if ($(this).is(':checked')) {--}}
-{{--                $('#fixingCostInput').show();--}}
-{{--            } else {--}}
-{{--                $('#fixingCostInput').hide();--}}
-{{--            }--}}
-{{--        });--}}
-{{--    });--}}
-{{--</script>--}}
+        $('#fixingCost').change(function() {
+            if ($(this).is(':checked')) {
+                $('#fixingCostInput').show();
+            } else {
+                $('#fixingCostInput').hide();
+            }
+        });
+    });
+</script>
 
 @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>

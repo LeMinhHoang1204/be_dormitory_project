@@ -113,7 +113,7 @@
                 @csrf
                 <textarea id="note" rows="3" name="note"></textarea>
                 <div class="button-group">
-                    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#reportModal">Report</button>
+{{--                    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#reportModal">Report</button>--}}
                     <button class="btn btn-primary" id="confirmButton" type="button">Accept</button>
                 </div>
             </form>

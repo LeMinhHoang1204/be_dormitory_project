@@ -152,7 +152,7 @@
                     </div>
 
                     <input type="hidden" name="user_id" value="{{$invoice->object_id}}">
-                    <input type="hidden" name="invoice_type" value="Renewal">
+{{--                    <input type="hidden" name="invoice_type" value="Renewal">--}}
 
                 </div>
                 <div class="modal-footer">

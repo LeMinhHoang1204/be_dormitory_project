@@ -143,7 +143,7 @@ students and administrators.
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/LeMinhHoang1204/be_bakery_store.git
+    git clone https://github.com/LeMinhHoang1204/be_dormitory_project.git
     ```
 2. Install PHP dependencies:
     ```sh

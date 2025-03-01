@@ -278,12 +278,7 @@ class RoomController extends Controller
     //        // Trả về thông báo thành công
     //        return redirect()->route('student.room.extension')->with('success', 'Room contract has been successfully extended!');
 
-    public function showRoomInfor(Request $request)
-    {
-        $roomId = $request->query('roomId');
-        $room = Room::findOrFail($roomId);
-        return view('roomInfor.roomInfor', compact('room'));
-    }
+
 
     public function showListRoom()
     {

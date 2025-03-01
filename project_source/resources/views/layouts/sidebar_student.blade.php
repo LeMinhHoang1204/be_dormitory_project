@@ -69,7 +69,7 @@
                     </span>
                     <span class="text">Dashboard</span>
                 </a>
-            @elseif (auth()->check() && auth()->user()->role === 'building_manager')
+            @elseif (auth()->check() && auth()->user()->role === 'building manager')
                 <a href="{{ url('/report_manager') }}">
                     {{--                <span class="icon">🖥️</span> --}}
                     <span class="icon" style=" color: #0e3b9c">
@@ -228,7 +228,7 @@
 
 @if (auth()->check() && auth()->user()->role === 'admin')
     <li class="menu-item">
-        <a href="/buildings">
+        <a href="/admin/buildings">
             {{--                    <span class="icon">🏢</span> --}}
             <span class="icon" style=" color: #0e3b9c">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -242,7 +242,7 @@
         </a>
     </li>
     <li class="menu-item">
-        <a href="/requests">
+        <a href="/admin/requests">
             {{--                    <span class="icon">📑</span> --}}
             <span class="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor"

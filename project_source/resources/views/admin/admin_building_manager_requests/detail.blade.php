@@ -13,6 +13,25 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{ asset('./css/detail_payment.css') }}" type="text/css">
+    <style>
+        .card {
+            width: 90%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+        .card-body {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 auto;
+            width: 90%;
+        }
+        .card-item {
+            flex: 1 1 50%;
+            margin-bottom: 20px;
+        }
+
+    </style>
 </head>
 
 @section('content')
@@ -22,41 +41,47 @@
                 <h2 class="mb-0">Request Detail</h2>
             </div>
             <div class="card-body">
-                <h3>Request Information</h3>
-                <p>Request ID: <strong>{{ $request->id }}</strong></p>
-                <p>Sender: <strong>{{ $request->sender_id }} - {{$request->sender->name}}</strong></p>
-                <p>Receiver: <strong>{{$request->receiver_id }} - {{$request->receiver->name}} </strong></p>
-                <p>Forwarder: <strong>{{$request->forwarder_id }} - {{$request->forwarder->name ?? 'N/A'}} </strong></p>
-                <p>Type: <strong>{{$request->type }} </strong></p>
-                <p>Status: <strong>{{$request->status }} </strong></p>
-                <p>Send date: <strong>{{$request->created_at }} </strong></p>
-                <p>Resolve date: <strong>{{$request->resolve_date }} </strong></p>
-                <p>Note: <strong>{{$request->note }} </strong></p>
+                <div class="card-item">
+                    <h3 class="mb-0.5;">Request Information</h3>
+                    <p>Request ID: <strong>{{ $request->id }}</strong></p>
+                    <p>Sender: <strong>{{ $request->sender_id }} - {{$request->sender->name}}</strong></p>
+                    <p>Receiver: <strong>{{$request->receiver_id }} - {{$request->receiver->name}} </strong></p>
+                    <p>Forwarder: <strong>{{$request->forwarder_id }} - {{$request->forwarder->name ?? 'N/A'}} </strong></p>
+                    <p>Type: <strong>{{$request->type }} </strong></p>
+                    <p>Status: <strong>{{$request->status }} </strong></p>
+                    <p>Send date: <strong>{{$request->created_at }} </strong></p>
+                    <p>Resolve date: <strong>{{$request->resolve_date }} </strong></p>
+                    <p>Note: <strong>{{$request->note }} </strong></p>
+                </div>
 
                 @if($residence)
-                    <h3>Student Information</h3>
-                    <p>Student ID: <strong>{{$residence->student->id ?? 'N/A'}} </strong></p>
-                    <p>Full Name: <strong>{{$residence->student->name}}</strong></p>
-                    <p>Email: <strong>{{$residence->student->email}}</strong></p>
-                    <p>Phone: <strong>{{$residence->student->phone}}</strong></p>
-                    <p>Gender: <strong>{{$residence->student->student->gender}}</strong></p>
-                    <p>Training point: <strong>{{$residence->student->student->training_point}}</strong></p>
-
-                    <h3>Current Residence Information</h3>
-                    <p>Residence ID: <strong>{{$residence->id}}</strong></p>
-                    <p>Start Date: <strong>{{$residence->start_date}}</strong></p>
-                    <p>End Date: <strong>{{$residence->end_date}}</strong></p>
-                    <p>Check out Date: <strong>{{$residence->check_out_date}}</strong></p>
-                    <p>Status: <strong>{{$residence->status}}</strong></p>
-                    <p>Note: <strong>{{$residence->note}}</strong></p>
-
-                    <h3>Room Information</h3>
-                    <p>Building ID: <strong>{{$residence->room->building_id}}</strong></p>
-                    <p>Building Type: <strong>{{$residence->room->building->type}}</strong></p>
-                    <p>Room ID: <strong>{{$residence->room_id}}</strong></p>
-                    <p>Room Name: <strong>{{$residence->room->name}}</strong></p>
-                    <p>Room Type: <strong>{{$residence->room->type}} members</strong></p>
-                    <p>Current Member Count: <strong>{{$residence->room->member_count}} members</strong></p>
+                    <div class="card-item">
+                        <h3>Student Information</h3>
+                        <p>Student ID: <strong>{{$residence->student->id ?? 'N/A'}} </strong></p>
+                        <p>Full Name: <strong>{{$residence->student->name}}</strong></p>
+                        <p>Email: <strong>{{$residence->student->email}}</strong></p>
+                        <p>Phone: <strong>{{$residence->student->phone}}</strong></p>
+                        <p>Gender: <strong>{{$residence->student->student->gender}}</strong></p>
+                        <p>Training point: <strong>{{$residence->student->student->training_point}}</strong></p>
+                    </div>
+                    <div class="card-item">
+                        <h3>Current Residence Information</h3>
+                        <p>Residence ID: <strong>{{$residence->id}}</strong></p>
+                        <p>Start Date: <strong>{{$residence->start_date}}</strong></p>
+                        <p>End Date: <strong>{{$residence->end_date}}</strong></p>
+                        <p>Check out Date: <strong>{{$residence->check_out_date}}</strong></p>
+                        <p>Status: <strong>{{$residence->status}}</strong></p>
+                        <p>Note: <strong>{{$residence->note}}</strong></p>
+                    </div>
+                    <div class="card-item">
+                        <h3>Room Information</h3>
+                        <p>Building ID: <strong>{{$residence->room->building_id}}</strong></p>
+                        <p>Building Type: <strong>{{$residence->room->building->type}}</strong></p>
+                        <p>Room ID: <strong>{{$residence->room_id}}</strong></p>
+                        <p>Room Name: <strong>{{$residence->room->name}}</strong></p>
+                        <p>Room Type: <strong>{{$residence->room->type}} members</strong></p>
+                        <p>Current Member Count: <strong>{{$residence->room->member_count}} members</strong></p>
+                    </div>
                 @endif
             </div>
 
@@ -70,7 +95,7 @@
             @endif
             @if($request->status == 'Accepted' )
                 @if(($request->type == 'Refund' && Auth::user()->role == 'accountant')
-                || ($request->type == 'Fixing' && Auth::user()->role == 'building manager'))
+                || (($request->type == 'Fixing' || $request->type == 'Change Room') && Auth::user()->role == 'building manager'))
                 <div class="card-footer">
                     <div class="button-group">
                         <button class="btn btn-primary" id="resolveButton" data-bs-toggle="modal" data-bs-target="#resolveModal">Resolve</button>

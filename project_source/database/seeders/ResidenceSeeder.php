@@ -22,7 +22,7 @@ class ResidenceSeeder extends Seeder
     public function run(): void
     {
         // Lấy tất cả sinh viên nam ngoại trừ sinh viên có id = 3
-        $students = Student::where('user_id', '!=', 3)->where('gender', 'male')->orderBy('id', 'asc')->limit(2000)->get();
+        $students = Student::whereNotIn('user_id', [3, 6, 7, 8])->where('gender', 'male')->orderBy('id', 'asc')->limit(5000)->get();
 
         // Lấy tất cả tòa nam có sẵn
         $maleBuildings = Building::where('type', 'male')->with('hasRooms')->get();
@@ -30,7 +30,7 @@ class ResidenceSeeder extends Seeder
 
         foreach ($maleBuildings as $building) {
             foreach ($building->hasRooms as $room) {
-                for ($i = 0; $i < $room->type; $i++) {
+                for ($i = 0; $i < $room->type / 2 + 1; $i++) {
                     if ($studentIndex >= $students->count()) {
                         break;
                     }
@@ -96,7 +96,7 @@ class ResidenceSeeder extends Seeder
         }
 
         // Lấy tất cả sinh viên nu ngoại trừ sinh viên có id = 3
-        $students = Student::where('user_id', '!=', 3)->where('gender', 'female')->orderBy('id', 'asc')->limit(2000)->get();
+        $students = Student::whereNotIn('user_id', [3, 6, 7, 8])->where('gender', 'female')->orderBy('id', 'asc')->limit(5000)->get();
 
         // Lấy tất cả tòa nam có sẵn
         $femaleBuildings = Building::where('type', 'female')->with('hasRooms')->get();
@@ -104,7 +104,7 @@ class ResidenceSeeder extends Seeder
 
         foreach ($femaleBuildings as $building) {
             foreach ($building->hasRooms as $room) {
-                for ($i = 0; $i < $room->type; $i++) {
+                for ($i = 0; $i < $room->type / 2 + 1; $i++) {
                     if ($femaleStudentIndex >= $students->count()) {
                         break;
                     }

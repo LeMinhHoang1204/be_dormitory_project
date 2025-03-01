@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\Facades\Log;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
@@ -16,3 +15,6 @@ Broadcast::channel('privateNotification.{objectId}', function ($user, $objectId)
     return true;
 });
 
+//Broadcast::channel('notification-channel', function ($user) {
+//    return true; // You can add authorization logic here if needed
+//});

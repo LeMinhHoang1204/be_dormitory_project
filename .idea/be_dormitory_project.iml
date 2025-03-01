@@ -141,6 +141,10 @@
       <excludeFolder url="file://$MODULE_DIR$/project_source/vendor/react/promise-timer" />
       <excludeFolder url="file://$MODULE_DIR$/project_source/vendor/react/socket" />
       <excludeFolder url="file://$MODULE_DIR$/project_source/vendor/react/stream" />
+      <excludeFolder url="file://$MODULE_DIR$/project_source/vendor/spatie/laravel-permission" />
+      <excludeFolder url="file://$MODULE_DIR$/project_source/vendor/league/uri" />
+      <excludeFolder url="file://$MODULE_DIR$/project_source/vendor/league/uri-interfaces" />
+      <excludeFolder url="file://$MODULE_DIR$/project_source/vendor/staabm/side-effects-detector" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

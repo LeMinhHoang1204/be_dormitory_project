@@ -28,10 +28,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/students/check-login', [StudentController::class, 'studentCheckLogin'])
     ->name('studentCheckLogin');
 
-// Display roomInfor
-Route::middleware('auth')->group(function () {
-    Route::get('/roomInfor/{roomId}', [RoomController::class, 'showRoomInfor'])->name('roomInfor.roomInfor');
-});
+
 
 //Route::get('/room-registration', [RoomController::class, 'showListRoom'])->name('register-room');
 
@@ -69,6 +66,21 @@ Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name
 
 Route::get('/get-rooms-by-building/{buildingId}', [RoomController::class, 'getRoomsByBuilding']);
 
+Route::get('/get-user-info/{id}', function ($id) {
+    $user = \App\Models\User::find($id);
+    if ($user) {
+        return response()->json([
+            'name' => $user->name,
+        ]);
+    }
+    return response()->json(['error' => 'User not found'], 404);
+});
+
+
+Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
+
+
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin/notification.php';
 require __DIR__ . '/admin/building-room-residence.php';
@@ -80,6 +92,7 @@ require __DIR__ . '/admin/invoice.php';
 require __DIR__ . '/admin/my_profile.php';
 require __DIR__ . '/admin/manager.php';
 require __DIR__ . '/admin/report.php';
+require __DIR__ . '/admin/admin.php';
 
 require __DIR__ . '/violation.php';
 

@@ -26,11 +26,9 @@ students and administrators.
     <summary><strong>Room: </strong> View, Filter, Register, My room, Change, Renew, Transfer, Check out, Repair</summary>
     
     <img src="/readme/room_list.png" alt="Menu Image" title="Menu" width="600px">
-    <img src="/readme/room_register.png" alt="Register Image" title="Register" width="600px">
     <img src="/readme/my_room.png" alt="My Room carts Image" title="My Room carts" width="600px">
     <img src="/readme/room_change.png" alt="Room Change Image" title="Room Change" width="600px">
     <img src="/readme/room_renew.png" alt="Room Renew Detail Image" title="Room Renew" width="600px">
-    <img src="/readme/room_transfer.png" alt="Room Transfer Image" title="Room Transfer" width="600px">
     <img src="/readme/room_check_out.png" alt="Room Checkout Image" title="Room Checkout" width="600px">
     <img src="/readme/room_repair.png" alt="Room Repair Image" title="Room Repair" width="600px">
   </details>
@@ -145,7 +143,7 @@ students and administrators.
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/LeMinhHoang1204/be_bakery_store.git
+    git clone https://github.com/LeMinhHoang1204/be_dormitory_project.git
     ```
 2. Install PHP dependencies:
     ```sh

@@ -18,7 +18,7 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'uni_id' => $this->faker->unique()->numberBetween(1000, 9999),
+            'uni_id' => $this->faker->unique()->numberBetween(10000, 99999),
             'uni_name' => Arr::random(['DHQGHN', 'DHQGTPHCM', 'BKHN','BKHCM','KTQD','FTU','UEH', 'YHN','YTPHCM']),
             'dob' => $this->faker->dateTimeBetween('-25 years', '-18 years'),
             'gender' => $this->faker->randomElement(['male', 'female']),

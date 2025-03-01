@@ -95,7 +95,7 @@
             @endif
             @if($request->status == 'Accepted' )
                 @if(($request->type == 'Refund' && Auth::user()->role == 'accountant')
-                || ($request->type == 'Fixing' && Auth::user()->role == 'building manager'))
+                || (($request->type == 'Fixing' || $request->type == 'Change Room') && Auth::user()->role == 'building manager'))
                 <div class="card-footer">
                     <div class="button-group">
                         <button class="btn btn-primary" id="resolveButton" data-bs-toggle="modal" data-bs-target="#resolveModal">Resolve</button>

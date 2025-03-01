@@ -180,7 +180,8 @@ class InvoiceController extends Controller
             (new ImageController)->saveToInvoice($request, $invoice->id);
         }
 
-        preg_match('/\bRenewal\b/', $invoice->note, $matchestring);
+//        preg_match('/\bRenewal\b/', $invoice->note, $matchestring);
+        preg_match('/\bRenewal\b|\bChange\b/', $invoice->note, $matchestring);
 
         if ($invoice->object_type == 'App\Models\User' && $invoice->type == 'Room Registration') {
             $user = User::find($invoice->object_id);
@@ -189,29 +190,37 @@ class InvoiceController extends Controller
                 $latestResidence->update([
                     'status' => 'Paid',
                 ]);
-            } else if (($latestResidence->status == 'Checked in'
-                || $latestResidence->status == 'Renewed'
-                || $latestResidence->status == 'Changed Room') && $matchestring[0] == 'Renewal') {
-                $oldRequest = $user->sendRequest()->where('status', 'Accepted')->where('type', 'Renewal')->latest()->first();
-                $oldRequest->update([
-                    'status' => 'Resolved',
-                    'note' => $oldRequest->note . ' - Confirmed student paid by ' . Auth::user()->id . ' - ' . Auth::user()->name,
-                ]);
-                $note = $oldRequest->note;
-                preg_match('/\d+/', $note, $matches);
-                $firstNumber = $matches[0] ?? null;
+            }
+            else if (($latestResidence->status == 'Checked in' && ($matchestring[0] == 'Renewal' || $matchestring[0] == 'Change'))
+                || ($latestResidence->status == 'Renewed' && $matchestring[0] == 'Renewal')
+                || ($latestResidence->status == 'Paid' && $matchestring[0] == 'Change')) {
+                    $oldRequest = null;
+                    if ($matchestring[0] == 'Change') {
+                        $oldRequest = $user->sendRequest()->where('status', 'Accepted')->where('type', 'Change Room')->latest()->first();
+                    } else if ($matchestring[0] == 'Renewal') {
+                        $oldRequest = $user->sendRequest()->where('status', 'Accepted')->where('type', 'Renewal')->latest()->first();
+                    }
+                    if($oldRequest) {
+                        $oldRequest->update([
+                            'status' => 'Resolved',
+                            'note' => $oldRequest->note . ' - Confirmed student paid by ' . Auth::user()->id . ' - ' . Auth::user()->name,
+                        ]);
+                        $note = $oldRequest->note;
+                        preg_match('/\d+/', $note, $matches);
+                        $firstNumber = $matches[0] ?? null;
 
-                if ($firstNumber !== null) {
-                    $new_end_date = $latestResidence->end_date->addMonths((int) $firstNumber);
-                    $new_months_duration = (int) $latestResidence->months_duration + (int) $firstNumber;
+                        if ($firstNumber !== null &&  $matchestring[0] == 'Renewal') {
+                            $new_end_date = $latestResidence->end_date->addMonths((int) $firstNumber);
+                            $new_months_duration = (int) $latestResidence->months_duration + (int) $firstNumber;
 
-                    $latestResidence->update([
-                        'end_date' => $new_end_date,
-                        'status' => 'Renewed',
-                        'months_duration' => $new_months_duration,
-                        'note' => $latestResidence->note . ' - ' . 'Renewed ' . $firstNumber . ' months',
-                    ]);
-                }
+                            $latestResidence->update([
+                                'end_date' => $new_end_date,
+                                'status' => 'Renewed',
+                                'months_duration' => $new_months_duration,
+                                'note' => $latestResidence->note . ' - ' . 'Renewed ' . $firstNumber . ' months',
+                            ]);
+                        }
+                    }
             }
         }
 

@@ -92,6 +92,7 @@ require __DIR__ . '/admin/invoice.php';
 require __DIR__ . '/admin/my_profile.php';
 require __DIR__ . '/admin/manager.php';
 require __DIR__ . '/admin/report.php';
+require __DIR__ . '/admin/admin.php';
 
 require __DIR__ . '/violation.php';
 

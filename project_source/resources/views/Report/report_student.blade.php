@@ -183,7 +183,7 @@
     @include('layouts.sidebar_student')
     <div class="container-report">
         <div class="header">
-            <h2 class="title">Receipt Report</h2>
+            <h2 class="title">Dashboard</h2>
             {{--Filter button--}}
             <div class="right-header">
                 <div class="menu" onclick="togglePanel()">

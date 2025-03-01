@@ -68,9 +68,31 @@ class DatabaseSeeder extends Seeder
             'role' => 'building manager',
         ]);
 
+        // user 6 for testing transfer
+        // user 6 for testing transfer
         User::factory()->create([
             'name' => 'Lê Minh Trí',
             'email' => '22520465@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'student',
+        ]);
+
+        // user 7
+        User::factory()->create([
+            'name' => 'Lê Minh Vy',
+            'email' => '22520466@gm.uit.edu.vn', // Set a known email
+            'password' => Hash::make('12345678'), // Use a secure password
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'role' => 'student',
+        ]);
+
+        // user 8
+        User::factory()->create([
+            'name' => 'Lê Minh Vi',
+            'email' => '22520467@gm.uit.edu.vn', // Set a known email
             'password' => Hash::make('12345678'), // Use a secure password
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
@@ -97,31 +119,31 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // test request
-        Residence::create([
-            'stu_user_id' => 3,
-            'room_id' => 1,
-            'start_date' => Carbon::create(2024, 9, 1),
-            'months_duration' => 6,
-            'end_date' => Carbon::create(2024, 9, 1)->addMonths(6),
-            'check_out_date' => null,
-            'status' => 'Checked in',
-            'note' => 'Residence test',
-        ]);
-
-        Invoice::create([
-            'sender_id' => 1,
-            'object_id' => 3,
-            'object_type' => 'App\Models\User',
-            'start_date' => Carbon::create(2024, 9, 1),
-            'send_date' => Carbon::create(2024, 9, 1),
-            'due_date' => Carbon::create(2024, 9, 1)->addDays(7),
-            'paid_date' => Carbon::create(2024, 9, 1)->addDays(3),
-            'type' => 'Room Registration',
-            'status' => 'Paid',
-            'total' => 1000000 * 6,
-            'payment_method' => rand(1, 2) === 1 ? 'Cash' : 'Bank transfer',
-            'note' => 'Invoice test',
-        ]);
+//        Residence::create([
+//            'stu_user_id' => 3,
+//            'room_id' => 1,
+//            'start_date' => Carbon::create(2024, 9, 1),
+//            'months_duration' => 6,
+//            'end_date' => Carbon::create(2024, 9, 1)->addMonths(6),
+//            'check_out_date' => null,
+//            'status' => 'Checked in',
+//            'note' => 'Residence test',
+//        ]);
+//
+//        Invoice::create([
+//            'sender_id' => 1,
+//            'object_id' => 3,
+//            'object_type' => 'App\Models\User',
+//            'start_date' => Carbon::create(2024, 9, 1),
+//            'send_date' => Carbon::create(2024, 9, 1),
+//            'due_date' => Carbon::create(2024, 9, 1)->addDays(7),
+//            'paid_date' => Carbon::create(2024, 9, 1)->addDays(3),
+//            'type' => 'Room Registration',
+//            'status' => 'Paid',
+//            'total' => 1000000 * 6,
+//            'payment_method' => rand(1, 2) === 1 ? 'Cash' : 'Bank transfer',
+//            'note' => 'Invoice test',
+//        ]);
 
     }
 }

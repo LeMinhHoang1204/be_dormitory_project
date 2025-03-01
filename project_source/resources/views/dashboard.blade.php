@@ -1,23 +1,23 @@
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script type="module" src="{{ Vite::useBuildDirectory('build')->asset('resources/js/app.js') }}"></script>
+{{--<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>--}}
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>--}}
+{{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">--}}
+{{--<script type="module" src="{{ Vite::useBuildDirectory('build')->asset('resources/js/app.js') }}"></script>--}}
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        Echo.private('privateNotification.' + {{ Auth::user()->id }})
-            .listen('.notificationPrivateHit', (data) => {
-                console.log(data);
-                toastr.success(JSON.stringify(data.sender) + ' send you a new notification');
-            });
-    });
-</script>
+{{--<script>--}}
+{{--    document.addEventListener("DOMContentLoaded", function() {--}}
+{{--        Echo.private('privateNotification.' + {{ Auth::user()->id }})--}}
+{{--            .listen('.notificationPrivateHit', (data) => {--}}
+{{--                console.log(data);--}}
+{{--                toastr.success(JSON.stringify(data.sender) + ' send you a new notification');--}}
+{{--            });--}}
+{{--    });--}}
+{{--</script>--}}
 
-<script>
-    @if (session('success'))
-    toastr.success("{{ session('success') }}");
-    @endif
-</script>
+{{--<script>--}}
+{{--    @if (session('success'))--}}
+{{--    toastr.success("{{ session('success') }}");--}}
+{{--    @endif--}}
+{{--</script>--}}
 
 {{--<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>--}}
 {{--<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>--}}
